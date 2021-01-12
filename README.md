@@ -26,7 +26,9 @@ Commands implemented:
 
 #### 4. Compile all .bicep files in different directory
 `Invoke-BicepBuild -Path 'c:\bicep\modules\'`
+
 Or
+
 `Invoke-BicepBuild 'c:\bicep\modules\'`
 
 
