@@ -2,9 +2,8 @@ function Invoke-BicepBuild {
     param(
         [string]$Path = $pwd.path
     )
-
-    $bicep = (bicep --version)
-    if ($bicep) {
+    
+    if (TestBicep) {
         $files = Get-Childitem -Path $Path *.bicep -File
         if ($files) {
             foreach ($file in $files) {
@@ -25,8 +24,7 @@ function ConvertFrom-Bicep {
         [string]$Path = $pwd.path
     )
 
-    $bicep = (bicep --version)
-    if ($bicep) {
+    if (TestBicep) {
         $files = Get-Childitem -Path $Path *.json -File
         if ($files) {
             foreach ($file in $files) {
@@ -44,8 +42,8 @@ function ConvertFrom-Bicep {
 
 
 function Get-BicepVersion {
-    $installedVersion = Get-InstalledBicepVersion
-    $latestVersion = Get-LatestBicepVersion
+    $installedVersion = InstalledBicepVersion
+    $latestVersion = LatestBicepVersion
 
     [pscustomobject]@{
         InstalledVersion = $installedVersion
@@ -58,13 +56,7 @@ function Install-BicepCLI {
         [switch]$Force
     )
     if (-not $Force.IsPresent) {
-        try {
-            bicep --version
-            $BicepInstalled = $true
-        }
-        catch {
-            $BicepInstalled = $false
-        }
+        $BicepInstalled=TestBicep
     }
     if ($Force.IsPresent -or $BicepInstalled -eq $false) {
         # Create the install folder
@@ -82,7 +74,7 @@ function Install-BicepCLI {
         # Done!
     }
     else {
-        $versionCheck = Compare-BicepVersion
+        $versionCheck = CompareBicepVersion
         if ($versionCheck) {
             Write-Host "The latest Bicep CLI Version is already installed."
         }
@@ -93,7 +85,7 @@ function Install-BicepCLI {
 }
 
 function Update-BicepCLI {
-    $versionCheck = Compare-BicepVersion
+    $versionCheck = CompareBicepVersion
 
     if ($versionCheck) {
         Write-Host "You are already running the latest version of Bicep CLI."
@@ -103,18 +95,28 @@ function Update-BicepCLI {
     }     
 }
 
-function Get-LatestBicepVersion {
+function TestBicep {
+    $bicep = (bicep --version)
+    if ($bicep) {
+        $true
+    }
+    else {
+        $false
+    }
+}
+
+function LatestBicepVersion {
     $latestVersion = Invoke-WebRequest -URI "https://api.github.com/repos/Azure/Bicep/releases/latest" | convertfrom-json
     $latestVersion.tag_name -replace '[v]', ''
 }
 
-function Get-InstalledBicepVersion {
+function InstalledBicepVersion {
     ((bicep --version) -split "\s+")[3]
 }
 
-function Compare-BicepVersion {
-    $installedVersion = Get-InstalledBicepVersion
-    $latestVersion = Get-LatestBicepVersion
+function CompareBicepVersion {
+    $installedVersion = InstalledBicepVersion
+    $latestVersion = LatestBicepVersion
 
     if ($installedVersion = $latestVersion) {
         $true
