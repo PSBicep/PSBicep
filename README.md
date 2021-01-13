@@ -1,4 +1,4 @@
-# BicepPowerShell
+# Bicep - PowerShell Module
 This is the repo for the Bicep PowerShell Module.
 
 Commands implemented:
