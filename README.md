@@ -1,5 +1,5 @@
 # Bicep - PowerShell Module
-This is the repo for the Bicep PowerShell Module.
+This is the repo for the Bicep PowerShell Module. The module is created as a wrapper for the [Bicep CLI](https://github.com/Azure/bicep). It started with a simple function to enable compilation of all bicep files in a folder, but I came up with additional use cases and the Bicep Module was born.
 
 Commands implemented:
 - Invoke-BicepBuild
@@ -86,3 +86,5 @@ InstalledVersion LatestVersion
 #### 1. Update Bicep CLI
 `Update-BicepCLI`
 
+## Contribution
+No contribution guidelines have been written yet, but contributions are welcome. Check the project board if any cards don't have an assignee and are up for grabs. Create issues for feature requests.
