@@ -3,7 +3,7 @@ This is the repo for the Bicep PowerShell Module.
 
 Commands implemented:
 - Invoke-BicepBuild
-- ConvertFrom-Bicep
+- ConvertTo-Bicep
 - Get-BicepVersion
 - Install-BicepCLI
 - Update-BicepCLI
@@ -31,22 +31,22 @@ Or:
 
 `Invoke-BicepBuild 'c:\bicep\modules\'`
 
-### ConvertFrom-Bicep
-`ConvertFrom-Bicep` is equivalent to `bicep decompile` but with the possibility to decompile all `.bicep` files in a directory.
+### ConvertTo-Bicep
+`ConvertTo-Bicep` is equivalent to `bicep decompile` but with the possibility to decompile all `.bicep` files in a directory.
 
 #### Examples
 
 #### 1. Decompile single .json file in working directory
-`ConvertFrom-Bicep vnet.json`
+`ConvertTo-Bicep vnet.json`
 
 #### 2. Decompile single .json file in different directory
-`ConvertFrom-Bicep 'c:\armtemplates\vnet.json'`
+`ConvertTo-Bicep 'c:\armtemplates\vnet.json'`
 
 #### 3. Decompile all .json files in working directory
-`ConvertFrom-Bicep`
+`ConvertTo-Bicep`
 
 #### 4. Decompile all .json files in different directory
-`ConvertFrom-Bicep -Path 'c:\armtemplates\'`
+`ConvertTo-Bicep -Path 'c:\armtemplates\'`
 
 Or:
 
