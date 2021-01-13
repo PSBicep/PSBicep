@@ -36,16 +36,16 @@ Or:
 
 #### Examples
 
-#### 1. Decompile single bicep file in working directory
+#### 1. Decompile single .json file in working directory
 `ConvertFrom-Bicep vnet.json`
 
-#### 2. Compile single bicep file in different directory
+#### 2. Decompile single .json file in different directory
 `ConvertFrom-Bicep 'c:\armtemplates\vnet.json'`
 
-#### 3. Compile all .bicep files in working directory
+#### 3. Decompile all .json files in working directory
 `ConvertFrom-Bicep`
 
-#### 4. Compile all .bicep files in different directory
+#### 4. Decompile all .json files in different directory
 `ConvertFrom-Bicep -Path 'c:\armtemplates\'`
 
 Or:
