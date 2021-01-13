@@ -95,19 +95,19 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @('azure', 'bicep', 'arm', 'arm-templates', 'windows')
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/StefanIvemo/BicepPowerShell/blob/main/LICENSE'
 
-        # A URL to the main website for this project.
-        # ProjectUri = ''
+        #A URL to the main website for this project.
+        ProjectUri = 'https://github.com/StefanIvemo/BicepPowerShell'
 
         # A URL to an icon representing this module.
         # IconUri = ''
 
         # ReleaseNotes of this module
-        # ReleaseNotes = ''
+        ReleaseNotes = 'https://github.com/StefanIvemo/BicepPowerShell/releases'
 
         # Prerelease string of this module
         # Prerelease = ''
