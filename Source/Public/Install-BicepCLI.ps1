@@ -27,14 +27,20 @@ function Install-BicepCLI {
         $installDir = New-Item -ItemType Directory -Path $installPath -Force
         $installDir.Attributes += 'Hidden'
         # Fetch the latest Bicep CLI binary
+        Write-Host "Downloading binaries"
         (New-Object Net.WebClient).DownloadFile("https://github.com/Azure/bicep/releases/latest/download/bicep-win-x64.exe", "$installPath\bicep.exe")
         # Add bicep to your PATH
+        Write-Host "Installing Bicep CLI"
         $currentPath = (Get-Item -path "HKCU:\Environment" ).GetValue('Path', '', 'DoNotExpandEnvironmentNames')
         if (-not $currentPath.Contains("%USERPROFILE%\.bicep")) { setx PATH ($currentPath + ";%USERPROFILE%\.bicep") }
         if (-not $env:path.Contains($installPath)) { $env:path += ";$installPath" }
         # Verify you can now access the 'bicep' command.
-        bicep --help
-        # Done!
+        if (TestBicep){
+            $bicep=(bicep --version)
+            Write-Host "$bicep successfully installed!"
+        } else {
+            Write-Error "Error installing Bicep CLI"
+        }
     }
     else {
         $versionCheck = CompareBicepVersion
