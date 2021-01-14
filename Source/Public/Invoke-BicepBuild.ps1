@@ -21,15 +21,27 @@
     Go to module repository https://github.com/StefanIvemo/BicepPowerShell for detailed info, reporting issues and to submit contributions.
 #>
 function Invoke-BicepBuild {
+    [cmdletbinding()]
     param(
-        [string]$Path = $pwd.path
+        [string]$Path = $pwd.path,
+        [ValidateScript( {
+                if ($_ -like '*.bicep') {
+                    $true
+                }
+                else {
+                    throw "Only .bicep files are allowed as input to -ExcludeFile."
+                }
+            })]
+        [string]$ExcludeFile        
     )
     
     if (TestBicep) {
         $files = Get-Childitem -Path $Path *.bicep -File
         if ($files) {
             foreach ($file in $files) {
-                bicep build $file
+                if ($file.Name -ne $ExcludeFile) {
+                    bicep build $file                
+                }
             }   
         }
         else {
