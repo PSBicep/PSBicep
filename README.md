@@ -17,6 +17,13 @@ Bicep PowerShell Module is published to [PowerShell Gallery](https://www.powersh
 ### Invoke-BicepBuild
 `Invoke-BicepBuild` is equivalent to `bicep build` but with the possibility to compile all `.bicep` files in a directory.
 
+```powershell
+Invoke-BicepBuild
+    [-Path <string>]
+    [-ExcludeFile <String>]
+    [-GenerateParameterFile]
+```
+
 #### Examples
 
 #### 1. Compile single bicep file in working directory
@@ -35,8 +42,20 @@ Or:
 
 `Invoke-BicepBuild 'c:\bicep\modules\'`
 
+#### 5. Compile all .bicep files in working directory except firewall.bicep
+`Invoke-BicepBuild -Path 'c:\bicep\modules\' -ExcludeFile firewall.bicep`
+
+#### 6. Compile all .bicep files in working directory and generate ARM Template parameter files
+`Invoke-BicepBuild -Path 'c:\bicep\modules\' -GenerateParameterFile`
+
+
 ### ConvertTo-Bicep
 `ConvertTo-Bicep` is equivalent to `bicep decompile` but with the possibility to decompile all `.bicep` files in a directory.
+
+```powershell
+ConvertTo-Bicep
+    [-Path <string>]
+```
 
 #### Examples
 
@@ -57,7 +76,11 @@ Or:
 `Invoke-BicepBuild 'c:\armtemplates\'`
 
 ### Get-BicepVersion
-`Get-BicepVersion` is a command to compare the installed version of Bicep CLI with the latest realease available in the Azure/Bicep repo.
+`Get-BicepVersion` is a command to compare the installed version of Bicep CLI with the latest release available in the Azure/Bicep repo.
+
+```powershell
+Get-BicepVersion
+```
 
 #### Examples
 
@@ -73,6 +96,11 @@ InstalledVersion LatestVersion
 ### Install-BicepCLI
 `Install-BicepCLI` is a command to to install the latest Bicep CLI realease available from the Azure/Bicep repo.
 
+```powershell
+Install-BicepCLI
+    [-Force]
+```
+
 #### Examples
 
 #### 1. Install Bicep CLI
@@ -84,6 +112,10 @@ InstalledVersion LatestVersion
 
 ### Update-BicepCLI
 `Update-BicepCLI` is a command to update Bicep CLI to the latest realease available from the Azure/Bicep repo.
+
+```powershell
+Update-BicepCLI
+```
 
 #### Examples
 
