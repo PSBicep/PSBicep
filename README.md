@@ -9,7 +9,7 @@ Commands implemented:
 - Update-BicepCLI
 
 ## Installation
-Bicep PowerShell Module is published to [PowerShell Gallery](https://www.powershellgallery.com/packages/Bicep/1.0.0) and can be installed using `Install-Module`
+Bicep PowerShell Module is published to [PowerShell Gallery](https://www.powershellgallery.com/packages/Bicep/1.1.0) and can be installed using `Install-Module`
 `Install-Module -Name Bicep`
 
 ## Instructions
