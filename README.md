@@ -155,7 +155,7 @@ InstalledVersion LatestVersion
 
 ### Install-BicepCLI
 
-`Install-BicepCLI` is a command to to install the latest Bicep CLI realease available from the Azure/Bicep repo.
+`Install-BicepCLI` is a command to install the latest Bicep CLI release available from the Azure/Bicep repo.
 
 ```powershell
 Install-BicepCLI
