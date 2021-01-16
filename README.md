@@ -45,25 +45,25 @@ Use this switch to generate ARM Template parameter files for the `.bicep` file(s
 
 #### Examples
 
-#### 1. Compile single bicep file in working directory
+##### 1. Compile single bicep file in working directory
 
 ```powershell
 Invoke-BicepBuild vnet.bicep
 ```
 
-#### 2. Compile single bicep file in different directory
+##### 2. Compile single bicep file in different directory
 
 ```powershell
 Invoke-BicepBuild 'c:\bicep\modules\vnet.bicep'
 ```
 
-#### 3. Compile all .bicep files in working directory
+##### 3. Compile all .bicep files in working directory
 
 ```powershell
 Invoke-BicepBuild
 ```
 
-#### 4. Compile all .bicep files in different directory
+##### 4. Compile all .bicep files in different directory
 
 ```powershell
 Invoke-BicepBuild -Path 'c:\bicep\modules\'
@@ -75,13 +75,13 @@ Or:
 Invoke-BicepBuild 'c:\bicep\modules\'
 ```
 
-#### 5. Compile all .bicep files in working directory except firewall.bicep
+##### 5. Compile all .bicep files in working directory except firewall.bicep
 
 ```powershell
 Invoke-BicepBuild -Path 'c:\bicep\modules\' -ExcludeFile firewall.bicep
 ```
 
-#### 6. Compile all .bicep files in working directory and generate ARM Template parameter files
+##### 6. Compile all .bicep files in working directory and generate ARM Template parameter files
 
 ```powershell
 Invoke-BicepBuild -Path 'c:\bicep\modules\' -GenerateParameterFile
@@ -103,25 +103,25 @@ Specifies the path to the `.bicep` file(s) to decompile.
 
 #### Examples
 
-#### 1. Decompile single .json file in working directory
+##### 1. Decompile single .json file in working directory
 
 ```powershell
 ConvertTo-Bicep vnet.json
 ```
 
-#### 2. Decompile single .json file in different directory
+##### 2. Decompile single .json file in different directory
 
 ```powershell
 ConvertTo-Bicep 'c:\armtemplates\vnet.json'
 ```
 
-#### 3. Decompile all .json files in working directory
+##### 3. Decompile all .json files in working directory
 
 ```powershell
 ConvertTo-Bicep
 ```
 
-#### 4. Decompile all .json files in different directory
+##### 4. Decompile all .json files in different directory
 
 ```powershell
 ConvertTo-Bicep -Path 'c:\armtemplates\'
@@ -133,7 +133,7 @@ Or:
 Invoke-BicepBuild 'c:\armtemplates\'
 ```
 
-### Get-BicepVersion
+#### Get-BicepVersion
 
 `Get-BicepVersion` is a command to compare the installed version of Bicep CLI with the latest release available in the Azure/Bicep repo.
 
@@ -143,7 +143,7 @@ Get-BicepVersion
 
 #### Examples
 
-#### 1. Compare installed version with latest release
+##### 1. Compare installed version with latest release
 
 ```powershell
 Get-BicepVersion
@@ -169,13 +169,13 @@ Installs Bicep CLI and overrides warning messages about module installation conf
 
 #### Examples
 
-#### 1. Install Bicep CLI
+##### 1. Install Bicep CLI
 
 ```powershell
 Install-BicepCLI
 ```
 
-#### 2. Install Bicep CLI using force
+##### 2. Install Bicep CLI using force
 
 ```powershell
 Install-BicepCLI -Force
@@ -191,7 +191,7 @@ Update-BicepCLI
 
 #### Examples
 
-#### 1. Update Bicep CLI
+##### 1. Update Bicep CLI
 
 ```powershell
 Update-BicepCLI
