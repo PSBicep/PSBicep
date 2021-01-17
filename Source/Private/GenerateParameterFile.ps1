@@ -15,10 +15,10 @@ function GenerateParameterFile {
         $ParameterObject = $ArmTemplate.Parameters.$ParameterName
         if ($null -eq $ParameterObject.defaultValue) {                               
             if ($ParameterObject.type -eq 'Array') {
-                $defaultValue = '[]'
+                $defaultValue = @()
             }
             elseif ($ParameterObject.type -eq 'Object') {
-                $defaultValue = '{}'
+                $defaultValue = @{}
             }
             else {
                 $defaultValue = ""
@@ -34,5 +34,5 @@ function GenerateParameterFile {
         }                       
     }
     $parameterBase['parameters'] = $parameters
-    $parameterBase | ConvertTo-Json -Depth 100 | Out-File "$($file.DirectoryName)\$filename.parameters.json"
+    ConvertTo-Json -InputObject $parameterBase -Depth 100 | Out-File "$($file.DirectoryName)\$filename.parameters.json"
 }
