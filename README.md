@@ -16,6 +16,8 @@ Bicep PowerShell Module is published to [PowerShell Gallery](https://www.powersh
 Install-Module -Name Bicep
 ```
 
+>**Note:** The cmdlets `Invoke-BicepBuild`, `ConvertTo-Bicep` and `Get-BicepVersion` all requires Bicep CLI to be installed on your device. After intalling the Bicep PowerShell Module you can install the latest release of Bicep CLI using the cmdlet `Install-BicepCLI`. In future versions I plan to remove that requirement and replace it with `Bicep Core`.
+
 ## Cmdlets
 
 ### Invoke-BicepBuild
@@ -197,6 +199,10 @@ Update-BicepCLI
 Update-BicepCLI
 ```
 
+## Bug report and feature requests
+
+If you find a bug or have an idea for a new feature create an issue in the repo. This is also the place where you can see any planned features.
+
 ## Contribution
 
-No contribution guidelines have been written yet, but contributions are welcome. Check the project board if any cards don't have an assignee and are up for grabs. Create issues for feature requests.
+If you like the Bicep PowerShell module and want to contribute you are very much welcome to do so. Please create an issue before you start working with a brand new feature to make sure that it’s not already in the works or that the idea has been dismissed already.
