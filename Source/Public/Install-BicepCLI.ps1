@@ -28,7 +28,21 @@ function Install-BicepCLI {
         $installDir.Attributes += 'Hidden'
         # Fetch the latest Bicep CLI binary
         Write-Host "Downloading binaries"
-        (New-Object Net.WebClient).DownloadFile("https://github.com/Azure/bicep/releases/latest/download/bicep-win-x64.exe", "$installPath\bicep.exe")
+        $DownloadFileName = 'bicep-win-x64.exe'
+        $TargetFileName = "$installPath\bicep.exe"
+        $GithubLatestAPIPath = 'https://api.github.com/repos/Azure/bicep/releases/latest'
+
+        # Fetch data about latest Bicep release from Github API
+        $LatestBicepRelease = Invoke-RestMethod -Uri $GithubLatestAPIPath
+        $RequestedGithubAsset = $LatestBicepRelease.assets | Where-Object -Property Name -eq $DownloadFileName
+        #Download and show progress.
+        (New-Object Net.WebClient).DownloadFileAsync($RequestedGithubAsset.browser_download_url, $TargetFileName)
+        do {
+            $PercentComplete = [math]::Round((Get-Item $TargetFileName).Length / $RequestedGithubAsset.size * 100)
+            Write-Progress -Activity 'Downloading Bicep' -PercentComplete $PercentComplete
+            start-sleep 1
+        } while ((Get-Item $TargetFileName).Length -lt $RequestedGithubAsset.size)
+
         # Add bicep to your PATH
         Write-Host "Installing Bicep CLI"
         $currentPath = (Get-Item -path "HKCU:\Environment" ).GetValue('Path', '', 'DoNotExpandEnvironmentNames')
