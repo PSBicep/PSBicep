@@ -1,5 +1,5 @@
 function TestBicep {
-    $bicep = (bicep --version)
+    $bicep = (Get-Command Bicep -ErrorAction SilentlyContinue)
     if ($bicep) {
         $true
     }
