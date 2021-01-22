@@ -25,6 +25,10 @@ function Uninstall-BicepCLI {
                 # Bicep is installed using installer. Try using it to uninstall
                 $UninstallerPath = ($FileContents | Where-Object -Property Name -eq $UninstallerFileName).FullName
                 & $UninstallerPath /VERYSILENT
+                do {
+                    $UninstallProcess = Get-Process -Name $UninstallerFileName.Replace('.exe','') -ErrorAction SilentlyContinue
+                    Start-Sleep -Seconds 1
+                } until ($null -eq $UninstallProcess)
             }
             else {
                 # Bicep is running in standalone exe mode. Remove manualy
