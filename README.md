@@ -7,6 +7,7 @@ Commands implemented:
 - Get-BicepVersion
 - Install-BicepCLI
 - Update-BicepCLI
+- Uninstall-BicepCLI
 
 ## Installation
 
@@ -197,6 +198,33 @@ Update-BicepCLI
 
 ```powershell
 Update-BicepCLI
+```
+### Uninstall-BicepCLI
+
+`Uninstall-BicepCLI` is a command to remove Bicep CLI from a device.
+
+```powershell
+Uninstall-BicepCLI
+    [-Force]
+```
+
+#### Parameters
+
+**`-Force`**
+Tries to uninstall Bicep CLI even if the PowerShell session isn't elevated.
+
+#### Examples
+
+##### 1. Uninstall Bicep CLI from a non-elevated PowerShell Session
+
+```powershell
+Uninstall-BicepCLI -Force
+```
+
+##### 2. Uninstall Bicep CLI from an elevated PowerShell Session
+
+```powershell
+Uninstall-BicepCLI
 ```
 
 ## Bug report and feature requests
