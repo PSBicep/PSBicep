@@ -2,7 +2,7 @@ function CompareBicepVersion {
     $installedVersion = InstalledBicepVersion
     $latestVersion = LatestBicepVersion
 
-    if ($installedVersion = $latestVersion) {
+    if ($installedVersion -eq $latestVersion) {
         $true
     }
     else {
