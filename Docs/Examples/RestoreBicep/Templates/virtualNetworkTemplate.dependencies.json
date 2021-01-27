@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "nsg",
+    "Version": "2020-08-01-1",
+    "Type": "RelativePath",
+    "Source": "../ResourceModules/Network"
+  },
+  {
+    "Name": "routeTables",
+    "Version": "2020-08-01-1",
+    "Type": "RelativePath",
+    "Source": "../ResourceModules/Network"
+  },
+  {
+    "Name": "virtualNetwork",
+    "Version": "2020-08-01-1",
+    "Type": "RelativePath",
+    "Source": "../ResourceModules/Network"
+  }
+]

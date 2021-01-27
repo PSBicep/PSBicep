@@ -64,7 +64,7 @@ RequiredAssemblies = @(
 )
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
-# ScriptsToProcess = @()
+ScriptsToProcess = @('Classes\BicepRestoreParametersBase.ps1','Classes\BicepRestoreParametersRelativePath.ps1')
 
 # Type files (.ps1xml) to be loaded when importing this module
 # TypesToProcess = @()
@@ -76,7 +76,20 @@ RequiredAssemblies = @(
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
+<<<<<<< HEAD
 FunctionsToExport = @('Build-Bicep', 'ConvertTo-Bicep', 'Get-BicepVersion', 'Install-BicepCLI', 'Update-BicepCLI', 'Uninstall-BicepCLI')
+=======
+FunctionsToExport = @(
+    'Add-BicepDependency',
+    'ConvertTo-Bicep',
+    'Get-BicepVersion',
+    'Install-BicepCLI',
+    'Invoke-BicepBuild',
+    'Restore-Bicep',
+    'Uninstall-BicepCLI',
+    'Update-BicepCLI'
+)
+>>>>>>> 3919c98... Added draft for Restore-Bicep
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
