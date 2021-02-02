@@ -1,0 +1,8 @@
+{
+    "template": "virtualNetworkTemplate.bicep",
+    "parameterFile": "virtualNetworkTemplate.parameters.json",
+    "overrides": {
+        "subnets": "modules/*subnets*.json",
+        "roles": "modules/*role.json"
+    }
+}
