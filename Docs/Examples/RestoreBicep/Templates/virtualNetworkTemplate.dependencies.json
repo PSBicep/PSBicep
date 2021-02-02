@@ -1,20 +1,32 @@
-[
-  {
-    "Name": "nsg",
-    "Version": "2020-08-01-1",
-    "Type": "RelativePath",
-    "Source": "../ResourceModules/Network"
-  },
-  {
-    "Name": "routeTables",
-    "Version": "2020-08-01-1",
-    "Type": "RelativePath",
-    "Source": "../ResourceModules/Network"
-  },
-  {
-    "Name": "virtualNetwork",
-    "Version": "2020-08-01-1",
-    "Type": "RelativePath",
-    "Source": "../ResourceModules/Network"
-  }
-]
+{
+  "providers": [
+    {
+      "name": "First",
+      "Type": "RelativePath",
+      "Path": "../RestoreBicep/ResourceModules"
+    },
+    {
+      "name": "AdvaniaSE",
+      "Type": "GitHub",
+      "Repository": "AdvaniaSE/BicepModules",
+    }
+  ],
+  "dependencies": [
+    {
+      "Name": "nsg",
+      "Provider": "First",
+      "Source": "Network/2020-08-01/nsg-1.bicep"
+    },
+    {
+      "Name": "routeTables",
+      "Provider": "AdvaniaSE",
+      "Version": "3919c9858036d252e0e65deaac333abf7472f928",
+      "Source": "ResourceModules/Network/routeTables.bicep"
+    },
+    {
+      "Name": "virtualNetwork",
+      "Provider": "First",
+      "Source": "ResourceModules/Network/virtualNetwork.bicep"
+    }
+  ]  
+}

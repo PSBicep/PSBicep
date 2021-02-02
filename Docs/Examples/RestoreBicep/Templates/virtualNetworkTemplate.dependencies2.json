@@ -1,0 +1,64 @@
+{
+  "repositories": [
+    {
+      "name": "Resources",
+      "type": "RelativePath",
+      "repository": "../RestoreBicep/ResourceModules"
+    },
+    {
+      "name": "SupportFiles",
+      "type": "RelativePath",
+      "repository": "../SupportFiles"
+    },
+    {
+      "name": "AdvaniaSE",
+      "type": "GitHub",
+      "repository": "AdvaniaSE/BicepModules/ResourceModules"
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "nsg.bicep",
+      "repository": "Resources",
+      "Source": "Microsoft.Network/2020-08-01/nsg-01.bicep"
+    },
+    {
+      "name": "virtualNetworkTemplate.bicep",
+      "repository": "AdvaniaSE",
+      "Source": "Microsoft.Network/2020-08-01/virtualNetworkTemplate-01.bicep"
+    },
+    {
+      "name": "virtualNetworkTemplate.depend.json",
+      "repository": "AdvaniaSE",
+      "Source": "Microsoft.Network/2020-08-01/virtualNetworkTemplate-01.depend.json"
+    },
+    {
+      "name": "routeTables.bicep",
+      "repository": "AdvaniaSE",
+      "Source": "Microsoft.Network/2020-08-01/routeTables-01.bicep"
+    },
+    {
+      "name": "apim_service_contributor_role.json",
+      "repository": "SupportFiles",
+      "Source": "Authorization/roleDefinitions/apim_service_contributor-1.json"
+    },
+    {
+      "name": "virtualNetwork.bicep",
+      "repository": "First",
+      "Source": "Microsoft.Network/2020-08-01/virtualNetwork-01.bicep"
+    }
+  ]
+}
+
+Add-BicepDependencyRepository -Type "RelativePath" -Path "../ResourceModules" -Name "First"
+Find-BicepDependency -DependencyFile "" [-Repository 'First'] -ResourceProvider 'Microsoft.Network' -Name 'routeTables' -AllVersions -ApiVersion '2020-08-01'
+Add-BicepDependency -DependencyFile "" -Repository "First" -Source "Microsoft.Network/2020-08-01/virtualNetwork-01.bicep"
+Add-BicepDependency -DependencyFile "" -Repository "First" -ResourceProvider 'Microsoft.Network' -Name 'routeTables' -ApiVersion '2020-08-01'
+Add-BicepDependency -DependencyFile "" -Dependency [dependencyObject]
+Get-BicepDependency -DependencyFile "" [-ResourceProvider ""] [-Name ""]
+
+Add-BicepDependencyRepository -Type "RelativePath" -Path "../ResourceModules" -Name "Resources"
+Find-BicepDependency -DependencyFile "NetworkTemplate.depend.json" -ResourceProvider 'Microsoft.Network' | Add-BicepDependency -DependencyFile "NetworkTemplate.depend.json"
+
+New-BicepSolution -DeploymentFile MyTemplate.deploy.json -TemplateFile MyTemplate.bicep -ParameterFile 'MyTemplate.parameters.json' -Override @{'Subnets'='modules/*subnets*.json'}
+Deploy-BicepSolution -DeploymenteFile 'MyTemplate.deploy.json'
