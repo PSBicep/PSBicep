@@ -77,14 +77,4 @@ Describe "Module $ModuleName" {
         }
     }
 
-    # Only run test cases for parameter validation functions if we have any to run
-    if ($ParameterValidationTestCases.count -gt 0) {
-        Context 'Validate parameter validation functions' {
-            It "Validate parameter validation function '<Function>' has not been exported" -TestCases $ParameterValidationTestCases {
-                param ( $Function,  $ExportedFunctions)
-                $ExportedFunctions | Should -Not -Contain $Function -Because 'the file is not in the Public folder'
-            }
-        }
-    }
-
 }
