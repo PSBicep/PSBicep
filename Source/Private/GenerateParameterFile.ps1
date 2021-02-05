@@ -1,18 +1,28 @@
 function GenerateParameterFile {
-   [CmdletBinding()]
-   param (
-        [object]$File
-   )    
-    $fileName = $file.Name -replace ".bicep", ""
-    $armTemplate = Get-Content "$($file.DirectoryName)\$filename.json" -Raw | ConvertFrom-Json
+    [CmdletBinding(DefaultParameterSetName='FromFile')]
+    param (
+        [Parameter(ParameterSetName = 'FromFile')]
+        [object]$File,
+        [parameter(ParameterSetName = 'FromContent')]
+        [string]$Content
+    )
+
+    if ($PSCmdlet.ParameterSetName -eq 'FromFile') {
+        $fileName = $file.Name -replace ".bicep", ""
+        $ARMTemplate = Get-Content "$($file.DirectoryName)\$filename.json" -Raw | ConvertFrom-Json
+    }
+    elseif ($PSCmdlet.ParameterSetName -eq 'FromContent') {
+        $ARMTemplate = $Content | ConvertFrom-Json
+    }
+    
     $parameterBase = [ordered]@{
         '$schema'        = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#'
         'contentVersion' = '1.0.0.0'
     }
-    $parameterNames = $armTemplate.Parameters.psobject.Properties.Name
+    $parameterNames = $ARMTemplate.Parameters.psobject.Properties.Name
     $parameters = [ordered]@{}
     foreach ($parameterName in $parameterNames) {
-        $ParameterObject = $ArmTemplate.Parameters.$ParameterName
+        $ParameterObject = $ARMTemplate.Parameters.$ParameterName
         if ($null -eq $ParameterObject.defaultValue) {                               
             if ($ParameterObject.type -eq 'Array') {
                 $defaultValue = @()
@@ -26,7 +36,8 @@ function GenerateParameterFile {
         }
         elseif ($ParameterObject.defaultValue -like "*()*") {
             $defaultValue = ""
-        } else {
+        }
+        else {
             $defaultValue = $ParameterObject.defaultValue
         }
         $parameters[$parameterName] = @{                                
