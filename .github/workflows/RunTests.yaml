@@ -15,5 +15,6 @@ jobs:
       shell: powershell
     - name: Run Pester tests and build module
       run: | 
-        Write-Host 'HELLO!'
+        Write-Host 'Invoking Pester'
+        Invoke-Pester -CI
       shell: powershell
