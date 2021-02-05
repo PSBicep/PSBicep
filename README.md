@@ -16,7 +16,7 @@ Bicep PowerShell Module is published to [PowerShell Gallery](https://www.powersh
 ```powershell
 Install-Module -Name Bicep
 ```
-
+ 
 >**Note:** The cmdlets `Invoke-BicepBuild`, `ConvertTo-Bicep` and `Get-BicepVersion` all requires Bicep CLI to be installed on your device. After intalling the Bicep PowerShell Module you can install the latest release of Bicep CLI using the cmdlet `Install-BicepCLI`. In future versions I plan to remove that requirement and replace it with `Bicep Core`.
 
 ## Cmdlets
