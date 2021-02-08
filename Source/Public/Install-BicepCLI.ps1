@@ -15,6 +15,7 @@
     Go to module repository https://github.com/StefanIvemo/BicepPowerShell for detailed info, reporting issues and to submit contributions.
 #>
 function Install-BicepCLI {
+    [CmdLetBinding()]
     param(
         [switch]$Force
     )
@@ -22,14 +23,9 @@ function Install-BicepCLI {
         $BicepInstalled=TestBicep
     }
     if ($Force.IsPresent -or $BicepInstalled -eq $false) {
-        # Create the install folder
-        $installPath = "$env:USERPROFILE\.bicep"
-        $installDir = New-Item -ItemType Directory -Path $installPath -Force
-        $installDir.Attributes += 'Hidden'
-        # Fetch the latest Bicep CLI binary
-        Write-Host "Downloading binaries"
-        $DownloadFileName = 'bicep-win-x64.exe'
-        $TargetFileName = "$installPath\bicep.exe"
+        # Fetch the latest Bicep CLI installer
+        $DownloadFileName = 'bicep-setup-win-x64.exe'
+        $TargetFileName = Join-Path -Path $env:TEMP -ChildPath $DownloadFileName
         $GithubLatestAPIPath = 'https://api.github.com/repos/Azure/bicep/releases/latest'
 
         # Fetch data about latest Bicep release from Github API
@@ -37,24 +33,36 @@ function Install-BicepCLI {
         $RequestedGithubAsset = $LatestBicepRelease.assets | Where-Object -Property Name -eq $DownloadFileName
         #Download and show progress.
         (New-Object Net.WebClient).DownloadFileAsync($RequestedGithubAsset.browser_download_url, $TargetFileName)
+        Write-Verbose "Downloading $($RequestedGithubAsset.browser_download_url) to location $TargetFileName"
         do {
             $PercentComplete = [math]::Round((Get-Item $TargetFileName).Length / $RequestedGithubAsset.size * 100)
             Write-Progress -Activity 'Downloading Bicep' -PercentComplete $PercentComplete
             start-sleep 1
         } while ((Get-Item $TargetFileName).Length -lt $RequestedGithubAsset.size)
 
-        # Add bicep to your PATH
-        Write-Host "Installing Bicep CLI"
-        $currentPath = (Get-Item -path "HKCU:\Environment" ).GetValue('Path', '', 'DoNotExpandEnvironmentNames')
-        if (-not $currentPath.Contains("%USERPROFILE%\.bicep")) { setx PATH ($currentPath + ";%USERPROFILE%\.bicep") }
-        if (-not $env:path.Contains($installPath)) { $env:path += ";$installPath" }
+        # Run the installer in silent mode
+        Write-Verbose "Running installer $TargetFileName /VERYSILENT"
+        & $TargetFileName /VERYSILENT
+        $i = 0
+        do {
+            $i++
+            Write-Progress -Activity 'Installing Bicep CLI' -CurrentOperation "$i - Running $DownloadFileName" 
+            Start-Sleep -Seconds 1
+        } while (Get-Process $DownloadFileName.Replace('.exe','') -ErrorAction SilentlyContinue)   
+
+        # Since bicep installer updates the $env:PATH we reload it in order to verify installation.
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+        
         # Verify you can now access the 'bicep' command.
         if (TestBicep){
-            $bicep=(bicep --version)
-            Write-Host "$bicep successfully installed!"
+            $bicep = InstalledBicepVersion
+            Write-Host "Bicep version $bicep successfully installed!"
         } else {
             Write-Error "Error installing Bicep CLI"
         }
+
+        # Remove the downloaded installer.
+        Remove-Item $TargetFileName -ErrorAction SilentlyContinue -Force
     }
     else {
         $versionCheck = CompareBicepVersion
