@@ -44,7 +44,7 @@ function Install-BicepCLI {
 
         # Run the installer in silent mode
         Write-Verbose "Running installer $TargetFileName /VERYSILENT"
-        & $TargetFileName /VERYSILENT
+        Start-Process $TargetFileName -ArgumentList '/VERYSILENT' -Wait
         $i = 0
         do {
             $i++
