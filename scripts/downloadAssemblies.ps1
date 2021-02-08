@@ -27,7 +27,6 @@ try {
     Write-Verbose -Message 'Extracting sources'
     Expand-Archive -Path './bicepSource.zip' -Force
     Push-Location -Path './bicepSource/Azure-bicep-*/src' -StackName 'downloadAssemblies'
-    # dotnet publish './Bicep.Core' -c 'Release' --no-self-contained --nologo --verbosity 'minimal'
     dotnet publish './Bicep.Decompiler' -c 'Release' --no-self-contained --nologo --verbosity 'minimal'
     $FilesToInclude = @(
         'Azure.Bicep.Types.dll',
