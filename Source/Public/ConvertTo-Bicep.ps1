@@ -25,14 +25,18 @@ function ConvertTo-Bicep {
     param(
         [string]$Path = $pwd.path,
         
-        [string]$OutputDirectory = $pwd.path,
+        [string]$OutputDirectory,
 
         [switch]$AsString
     )
 
     begin {
-        if (-not (Test-Path $OutputDirectory)) {
-            New-Item $OutputDirectory -Force -ItemType Directory
+        Write-Warning -Message 'Decompilation is a best-effort process, as there is no guaranteed mapping from ARM JSON to Bicep.
+You may need to fix warnings and errors in the generated bicep file(s), or decompilation may fail entirely if an accurate conversion is not possible.
+If you would like to report any issues or inaccurate conversions, please see https://github.com/Azure/bicep/issues.'
+        
+        if ($PSBoundParameters.ContainsKey('OutputDirectory') -and (-not (Test-Path $OutputDirectory))) {
+            $null = New-Item $OutputDirectory -Force -ItemType Directory
         }
         
         $FileResolver = [Bicep.Core.FileSystem.FileResolver]::new()
@@ -50,8 +54,14 @@ function ConvertTo-Bicep {
                         Write-Output $BicepObject.Item2[$BicepFile]
                     }
                     else {
-                        $FileName = Split-Path -Path $BicepFile -Leaf
-                        $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
+                        $FileName = Split-Path -Path $BicepFile.AbsolutePath -Leaf
+                        if($PSBoundParameters.ContainsKey('OutputDirectory')) {
+                            $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
+                        }
+                        else {
+                            $FolderPath = Split-Path -Path $BicepFile.AbsolutePath -Parent
+                            $FilePath = Join-Path -Path $FolderPath -ChildPath $FileName
+                        }
                         $null = Out-File -InputObject $BicepObject.Item2[$BicepFile] -FilePath $FilePath -Encoding utf8
                     }
                 }
