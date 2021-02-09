@@ -17,13 +17,16 @@ function ParseBicep {
         New-Alias -Name 'Write-Info' -Value 'Write-Host' -Option Private
         foreach ($Key in $CompilationResults.Keys) {
             $DiagnosticResult = $CompilationResults[$Key]
-
-            $Level = $DiagnosticResult.Level.ToString()
-            $Code = $DiagnosticResult.Code.ToString()
-            $Message = $DiagnosticResult.Message.ToString()
-            $OutputString = "'$Path : $Level ${Code}: $Message'"
-
-            Invoke-Expression "Write-$($DiagnosticResult.Level) $OutputString"
+            if ($DiagnosticResult.GetCount($false) -gt 0) {
+                foreach ($Diagnostic in $DiagnosticResult) {
+                    $Level = $Diagnostic.Level.ToString()
+                    $Code = $Diagnostic.Code.ToString()
+                    $Message = $Diagnostic.Message.ToString()
+                    $OutputString = "'$Path : $Level ${Code}: $Message'"
+        
+                    Invoke-Expression "Write-$($Diagnostic.Level) $OutputString"
+                }
+            }
         }
         Remove-Alias -Name 'Write-Info'
 
