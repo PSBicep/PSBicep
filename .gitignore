@@ -1,4 +1,6 @@
-/tmp
 .vscode
+tmp/
+bin/
+/Source/Assets
 coverage.xml
 testResults.xml
