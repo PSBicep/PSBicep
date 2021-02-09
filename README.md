@@ -2,7 +2,7 @@
 This is the repo for the Bicep PowerShell Module. The module is created as a wrapper for the [Bicep CLI](https://github.com/Azure/bicep). It started with a simple function to enable compilation of all bicep files in a folder, but I came up with additional use cases and the Bicep Module was born.
 
 Commands implemented:
-- Invoke-BicepBuild
+- Build-Bicep
 - ConvertTo-Bicep
 - Get-BicepVersion
 - Install-BicepCLI
@@ -16,20 +16,20 @@ Bicep PowerShell Module is published to [PowerShell Gallery](https://www.powersh
 ```powershell
 Install-Module -Name Bicep
 ```
- 
->**Note:** The cmdlets `Invoke-BicepBuild`, `ConvertTo-Bicep` and `Get-BicepVersion` all requires Bicep CLI to be installed on your device. After intalling the Bicep PowerShell Module you can install the latest release of Bicep CLI using the cmdlet `Install-BicepCLI`. In future versions I plan to remove that requirement and replace it with `Bicep Core`.
+
+>**Note:** The cmdlets `Build-Bicep`, `ConvertTo-Bicep` and `Get-BicepVersion` all requires Bicep CLI to be installed on your device. After intalling the Bicep PowerShell Module you can install the latest release of Bicep CLI using the cmdlet `Install-BicepCLI`. In future versions I plan to remove that requirement and replace it with `Bicep Core`.
 
 ## Cmdlets
 
-### Invoke-BicepBuild
+### Build-Bicep
 
-`Invoke-BicepBuild` is equivalent to `bicep build` but with some extra features.
+`Build-Bicep` is equivalent to `bicep build` but with some extra features.
 
 - Compile all files in a folder
 - Generate ARM Template Parameter files
 
 ```powershell
-Invoke-BicepBuild
+Build-Bicep
     [-Path <string>]
     [-ExcludeFile <String>]
     [-GenerateParameterFile]
@@ -51,43 +51,43 @@ Use this switch to generate ARM Template parameter files for the `.bicep` file(s
 ##### 1. Compile single bicep file in working directory
 
 ```powershell
-Invoke-BicepBuild vnet.bicep
+Build-Bicep vnet.bicep
 ```
 
 ##### 2. Compile single bicep file in different directory
 
 ```powershell
-Invoke-BicepBuild 'c:\bicep\modules\vnet.bicep'
+Build-Bicep 'c:\bicep\modules\vnet.bicep'
 ```
 
 ##### 3. Compile all .bicep files in working directory
 
 ```powershell
-Invoke-BicepBuild
+Build-Bicep
 ```
 
 ##### 4. Compile all .bicep files in different directory
 
 ```powershell
-Invoke-BicepBuild -Path 'c:\bicep\modules\'
+Build-Bicep -Path 'c:\bicep\modules\'
 ```
 
 Or:
 
 ```powershell
-Invoke-BicepBuild 'c:\bicep\modules\'
+Build-Bicep 'c:\bicep\modules\'
 ```
 
 ##### 5. Compile all .bicep files in working directory except firewall.bicep
 
 ```powershell
-Invoke-BicepBuild -Path 'c:\bicep\modules\' -ExcludeFile firewall.bicep
+Build-Bicep -Path 'c:\bicep\modules\' -ExcludeFile firewall.bicep
 ```
 
 ##### 6. Compile all .bicep files in working directory and generate ARM Template parameter files
 
 ```powershell
-Invoke-BicepBuild -Path 'c:\bicep\modules\' -GenerateParameterFile
+Build-Bicep -Path 'c:\bicep\modules\' -GenerateParameterFile
 ```
 
 ### ConvertTo-Bicep
@@ -133,7 +133,7 @@ ConvertTo-Bicep -Path 'c:\armtemplates\'
 Or:
 
 ```powershell
-Invoke-BicepBuild 'c:\armtemplates\'
+Build-Bicep 'c:\armtemplates\'
 ```
 
 #### Get-BicepVersion

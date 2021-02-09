@@ -1,4 +1,4 @@
 function LatestBicepVersion {
-    $latestVersion = Invoke-WebRequest -URI "https://api.github.com/repos/Azure/Bicep/releases/latest" | convertfrom-json
+    $latestVersion = Invoke-RestMethod -URI "https://api.github.com/repos/Azure/Bicep/releases/latest" 
     $latestVersion.tag_name -replace '[v]', ''
 }
