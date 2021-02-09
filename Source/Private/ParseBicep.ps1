@@ -10,23 +10,26 @@ function ParseBicep {
         $WorkSpace = [Bicep.Core.Workspaces.Workspace]::new()
         $PathHelper = [Bicep.Core.FileSystem.PathHelper]::FilePathToFileUrl($Path)
         $ResourceTypeProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::new()
-        $syntaxTreeGrouping = [Bicep.Core.Syntax.SyntaxTreeGroupingBuilder]::Build($FileResolver, $WorkSpace, $PathHelper)
-        $compilation = [Bicep.Core.Semantics.Compilation]::new($ResourceTypeProvider, $syntaxTreeGrouping)
-        $compilationResults, $diagnostics = $compilation.GetAllDiagnosticsBySyntaxTree()
+        $SyntaxTreeGrouping = [Bicep.Core.Syntax.SyntaxTreeGroupingBuilder]::Build($FileResolver, $WorkSpace, $PathHelper)
+        $Compilation = [Bicep.Core.Semantics.Compilation]::new($ResourceTypeProvider, $SyntaxTreeGrouping)
+        $CompilationResults = $Compilation.GetAllDiagnosticsBySyntaxTree()
         
-        $success = $true
-        foreach ($diagnostic in $diagnostics) {
-            $success = $success -and ($diagnostic.Level -ne [Bicep.Core.Diagnostics.DiagnosticLevel]::Error)
-        }
+        New-Alias -Name 'Write-Info' -Value 'Write-Host' -Option Private
+        foreach ($Key in $CompilationResults.Keys) {
+            $DiagnosticResult = $CompilationResults[$Key]
 
-        if (-not $success) { 
-            # TODO: Better error handling
-            throw 'FAILURE'
-        }
+            $Level = $DiagnosticResult.Level.ToString()
+            $Code = $DiagnosticResult.Code.ToString()
+            $Message = $DiagnosticResult.Message.ToString()
+            $OutputString = "'$Path : $Level ${Code}: $Message'"
 
-        $emitter = [Bicep.Core.Emit.TemplateEmitter]::new($compilation.GetEntrypointSemanticModel())
+            Invoke-Expression "Write-$($DiagnosticResult.Level) $OutputString"
+        }
+        Remove-Alias -Name 'Write-Info'
+
+        $Emitter = [Bicep.Core.Emit.TemplateEmitter]::new($Compilation.GetEntrypointSemanticModel())
         $Stream = [System.IO.MemoryStream]::new()
-        $EmitStatus = $emitter.Emit($Stream)
+        $EmitStatus = $Emitter.Emit($Stream)
         if ($EmitStatus.Status -ne [Bicep.Core.Emit.EmitStatus]::Succeeded) {
             # TODO: Better error handling
             throw 'Failed to emit to stream'
