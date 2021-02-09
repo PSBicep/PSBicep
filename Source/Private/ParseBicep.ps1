@@ -24,7 +24,7 @@ function ParseBicep {
                     $Message = $Diagnostic.Message.ToString()
                     $OutputString = "'$Path : $Level ${Code}: $Message'"
         
-                    Invoke-Expression "Write-$($Diagnostic.Level) $OutputString"
+                    & "Write-$($Diagnostic.Level)" $OutputString
                 }
             }
         }
