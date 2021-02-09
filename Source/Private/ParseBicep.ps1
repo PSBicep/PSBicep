@@ -1,3 +1,17 @@
+function WriteBicepDiagnostic {
+    [CmdletBinding()]
+    param (
+        [Bicep.Core.Diagnostics.Diagnostic]$Diagnostic
+    )
+
+    $Level = $Diagnostic.Level.ToString()
+    $Code = $Diagnostic.Code.ToString()
+    $Message = $Diagnostic.Message.ToString()
+    $OutputString = "'$Path : $Level ${Code}: $Message'"
+
+    & "Write-$($Diagnostic.Level)" $OutputString
+}
+
 function ParseBicep {
     [CmdletBinding()]
     param (
@@ -19,24 +33,20 @@ function ParseBicep {
             $DiagnosticResult = $CompilationResults[$Key]
             if ($DiagnosticResult.GetCount($false) -gt 0) {
                 foreach ($Diagnostic in $DiagnosticResult) {
-                    $Level = $Diagnostic.Level.ToString()
-                    $Code = $Diagnostic.Code.ToString()
-                    $Message = $Diagnostic.Message.ToString()
-                    $OutputString = "'$Path : $Level ${Code}: $Message'"
-        
-                    & "Write-$($Diagnostic.Level)" $OutputString
+                    WriteBicepDiagnostic $Diagnostic
                 }
             }
         }
-        Remove-Alias -Name 'Write-Info'
 
         $Emitter = [Bicep.Core.Emit.TemplateEmitter]::new($Compilation.GetEntrypointSemanticModel())
         $Stream = [System.IO.MemoryStream]::new()
-        $EmitStatus = $Emitter.Emit($Stream)
-        if ($EmitStatus.Status -ne [Bicep.Core.Emit.EmitStatus]::Succeeded) {
-            # TODO: Better error handling
-            throw 'Failed to emit to stream'
+        $EmitResult = $Emitter.Emit($Stream)
+        foreach ($Diagnostic in $EmitResult.Diagnostics) {
+            if ($EmitResult.Status -ne [Bicep.Core.Emit.EmitStatus]::Succeeded) {
+                WriteBicepDiagnostic $Diagnostic
+            }
         }
+        Remove-Alias -Name 'Write-Info'
 
         $Stream.Position = 0
         $Reader = [System.IO.StreamReader]::new($Stream)
