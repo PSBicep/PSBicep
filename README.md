@@ -1,236 +1,40 @@
 # Bicep - PowerShell Module
-This is the repo for the Bicep PowerShell Module. The module is created as a wrapper for the [Bicep CLI](https://github.com/Azure/bicep). It started with a simple function to enable compilation of all bicep files in a folder, but I came up with additional use cases and the Bicep Module was born.
+
+This is the repo for the Bicep PowerShell Module. The module is created using the [Bicep CLI](https://github.com/Azure/bicep) assemblies. It started with a simple function to enable compilation of all bicep files in a folder, but I came up with additional use cases and the Bicep Module was born.
 
 Commands implemented:
-- Build-Bicep
-- ConvertTo-Bicep
-- Get-BicepVersion
-- Install-BicepCLI
-- Update-BicepCLI
-- Uninstall-BicepCLI
+
+- [Build-Bicep](./Docs/Build-Bicep.md)
+- [ConvertTo-Bicep](./Docs/ConvertTo-Bicep.md)
+- [Get-BicepVersion](./Docs/Get-BicepVersion.md)
+- [Install-BicepCLI](./Docs/Install-BicepCLI.md)
+- [Update-BicepCLI](./Docs/Update-BicepCLI.md)
+- [Uninstall-BicepCLI](./Docs/Uninstall-BicepCLI.md)
+
+>**Note:** Starting with version `1.3.0` of the Bicep PowerShell module the cmdlets `Build-Bicep` and `ConvertTo-Bicep` use the assemblies from the official [Bicep](https://github.com/Azure/bicep) repository instead of wrapping the Bicep CLI. The module currently runs on the assemblies from Bicep `version 0.2.328`. When new Bicep versions are released there will be some delay before the PowerShell module gets tested updated with the latest assemblies. If new functionality is added to Bicep CLI before the PowerShell module supports it, use `Install-BicepCLI` to install the latest Bicep CLI version and use the CLI while waiting for an updated PowerShell module.
 
 ## Installation
 
-Bicep PowerShell Module is published to [PowerShell Gallery](https://www.powershellgallery.com/packages/Bicep/1.1.0).
+The Bicep PowerShell Module is published to [PowerShell Gallery](https://www.powershellgallery.com/packages/Bicep/).
 
 ```powershell
 Install-Module -Name Bicep
 ```
 
->**Note:** The cmdlets `Build-Bicep`, `ConvertTo-Bicep` and `Get-BicepVersion` all requires Bicep CLI to be installed on your device. After intalling the Bicep PowerShell Module you can install the latest release of Bicep CLI using the cmdlet `Install-BicepCLI`. In future versions I plan to remove that requirement and replace it with `Bicep Core`.
-
-## Cmdlets
-
-### Build-Bicep
-
-`Build-Bicep` is equivalent to `bicep build` but with some extra features.
-
-- Compile all files in a folder
-- Generate ARM Template Parameter files
-
-```powershell
-Build-Bicep
-    [-Path <string>]
-    [-ExcludeFile <String>]
-    [-GenerateParameterFile]
-```
-
-#### Parameters
-
-**`-Path`**
-Specifies the path to the `.bicep` file(s) to compile.
-
-**`-ExcludeFile`**
-Specifies files to exclude from compilation. Enter a full path or file name.
-
-**`-GenerateParameterFile`**
-Use this switch to generate ARM Template parameter files for the `.bicep` file(s) compiled. The ARM Template parameter file will be named `<filename>.parameters.json`.
-
-#### Examples
-
-##### 1. Compile single bicep file in working directory
-
-```powershell
-Build-Bicep vnet.bicep
-```
-
-##### 2. Compile single bicep file in different directory
-
-```powershell
-Build-Bicep 'c:\bicep\modules\vnet.bicep'
-```
-
-##### 3. Compile all .bicep files in working directory
-
-```powershell
-Build-Bicep
-```
-
-##### 4. Compile all .bicep files in different directory
-
-```powershell
-Build-Bicep -Path 'c:\bicep\modules\'
-```
-
-Or:
-
-```powershell
-Build-Bicep 'c:\bicep\modules\'
-```
-
-##### 5. Compile all .bicep files in working directory except firewall.bicep
-
-```powershell
-Build-Bicep -Path 'c:\bicep\modules\' -ExcludeFile firewall.bicep
-```
-
-##### 6. Compile all .bicep files in working directory and generate ARM Template parameter files
-
-```powershell
-Build-Bicep -Path 'c:\bicep\modules\' -GenerateParameterFile
-```
-
-### ConvertTo-Bicep
-
-`ConvertTo-Bicep` is equivalent to `bicep decompile` but with the possibility to decompile all `.bicep` files in a directory.
-
-```powershell
-ConvertTo-Bicep
-    [-Path <string>]
-```
-
-#### Parameters
-
-**`-Path`**
-Specifies the path to the `.bicep` file(s) to decompile.
-
-#### Examples
-
-##### 1. Decompile single .json file in working directory
-
-```powershell
-ConvertTo-Bicep vnet.json
-```
-
-##### 2. Decompile single .json file in different directory
-
-```powershell
-ConvertTo-Bicep 'c:\armtemplates\vnet.json'
-```
-
-##### 3. Decompile all .json files in working directory
-
-```powershell
-ConvertTo-Bicep
-```
-
-##### 4. Decompile all .json files in different directory
-
-```powershell
-ConvertTo-Bicep -Path 'c:\armtemplates\'
-```
-
-Or:
-
-```powershell
-Build-Bicep 'c:\armtemplates\'
-```
-
-#### Get-BicepVersion
-
-`Get-BicepVersion` is a command to compare the installed version of Bicep CLI with the latest release available in the Azure/Bicep repo.
-
-```powershell
-Get-BicepVersion
-```
-
-#### Examples
-
-##### 1. Compare installed version with latest release
-
-```powershell
-Get-BicepVersion
-
-InstalledVersion LatestVersion
----------------- -------------
-0.2.212          0.2.212
-```
-
-### Install-BicepCLI
-
-`Install-BicepCLI` is a command to install the latest Bicep CLI release available from the Azure/Bicep repo.
-
-```powershell
-Install-BicepCLI
-    [-Force]
-```
-
-#### Parameters
-
-**`-Force`**
-Installs Bicep CLI and overrides warning messages about module installation conflicts.
-
-#### Examples
-
-##### 1. Install Bicep CLI
-
-```powershell
-Install-BicepCLI
-```
-
-##### 2. Install Bicep CLI using force
-
-```powershell
-Install-BicepCLI -Force
-```
-
-### Update-BicepCLI
-
-`Update-BicepCLI` is a command to update Bicep CLI to the latest realease available from the Azure/Bicep repo.
-
-```powershell
-Update-BicepCLI
-```
-
-#### Examples
-
-##### 1. Update Bicep CLI
-
-```powershell
-Update-BicepCLI
-```
-### Uninstall-BicepCLI
-
-`Uninstall-BicepCLI` is a command to remove Bicep CLI from a device.
-
-```powershell
-Uninstall-BicepCLI
-    [-Force]
-```
-
-#### Parameters
-
-**`-Force`**
-Tries to uninstall Bicep CLI even if the PowerShell session isn't elevated.
-
-#### Examples
-
-##### 1. Uninstall Bicep CLI from a non-elevated PowerShell Session
-
-```powershell
-Uninstall-BicepCLI -Force
-```
-
-##### 2. Uninstall Bicep CLI from an elevated PowerShell Session
-
-```powershell
-Uninstall-BicepCLI
-```
-
 ## Bug report and feature requests
 
-If you find a bug or have an idea for a new feature create an issue in the repo. This is also the place where you can see any planned features.
+If you find a bug or have an idea for a new feature create an issue in the repo. This is also the place where you can see any planned features along with the projects tab.
 
 ## Contribution
 
-If you like the Bicep PowerShell module and want to contribute you are very much welcome to do so. Please create an issue before you start working with a brand new feature to make sure that it’s not already in the works or that the idea has been dismissed already.
+If you like the Bicep PowerShell module and want to contribute you are very much welcome to do so. Please create an issue before you start working with a brand new feature to make sure that it’s not already in the works or that the idea has been dismissed already. There is also a number of issues up for grabs, if there is no one assigned to the issue, comment and let us know you've started working on it.
+
+## Maintainers
+
+This project is currently maintained by the following coders:
+
+- [StefanIvemo](https://github.com/StefanIvemo)
+- [SimonWahlin](https://github.com/SimonWahlin)
+- [bjompen](https://github.com/bjompen)
+- [JohnRoos](https://github.com/JohnRoos)
+- [PalmEmanuel](https://github.com/PalmEmanuel)
