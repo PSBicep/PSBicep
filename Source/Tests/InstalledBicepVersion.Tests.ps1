@@ -6,21 +6,25 @@ catch {
     Throw "Unable to import Bicep module. $_"
 }
 
+
+
 InModuleScope Bicep { 
     Describe 'InstalledBicepVersion' {
         Context 'Bicep CLI installed' {
             BeforeAll {
-                Mock TestBicep -ModuleName Bicep {
-                    $true
+                # We cannot properly mock regular commands like bicep.exe
+                # Instead, we use a function which kind of works like a mock, with very limited functionality
+                function bicep {
+                    'Bicep CLI version 0.12.987 (a13b032755)'
                 }
 
-                Mock bicep {
-                    'Bicep CLI version 0.2.328 (a13b032755)'
+                Mock TestBicep -ModuleName Bicep {
+                    $true
                 }
             }
 
             It 'Returns correctly parsed version' {
-                InstalledBicepVersion | Should -Be '0.2.328'
+                InstalledBicepVersion | Should -Be '0.12.987'
             }
         }
 
