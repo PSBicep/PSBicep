@@ -4,6 +4,7 @@
 
 - Compile all files in a folder
 - Generate ARM Template Parameter files
+- Output ARM Template directly as string without writing to file
 
 ```powershell
 Build-Bicep

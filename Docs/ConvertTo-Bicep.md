@@ -1,6 +1,9 @@
 # ConvertTo-Bicep
 
-`ConvertTo-Bicep` is equivalent to `bicep decompile` but with the possibility to decompile all `.bicep` files in a directory.
+`ConvertTo-Bicep` is equivalent to `bicep decompile` but with some extra features.
+
+- Decompile all `.bicep` files in a directory
+- Output ARM Template directly as string without writing to file
 
 ```powershell
 ConvertTo-Bicep
