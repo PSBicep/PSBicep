@@ -4,7 +4,7 @@ function WriteBicepDiagnostic {
         [Bicep.Core.Diagnostics.Diagnostic]$Diagnostic
     )
         
-    New-Alias -Name 'Write-Info' -Value 'Write-Host' -Option Private
+    New-Alias -Name 'Write-Info' -Value 'Write-Host' -Option Private -WhatIf:$false -Confirm:$false
 
     $Level = $Diagnostic.Level.ToString()
     $Code = $Diagnostic.Code.ToString()
