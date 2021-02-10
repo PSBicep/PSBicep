@@ -1,5 +1,6 @@
 function GenerateParameterFile {
-    [CmdletBinding(DefaultParameterSetName='FromFile')]
+    [CmdletBinding(DefaultParameterSetName='FromFile',
+                   SupportsShouldProcess)]
     param (
         [Parameter(ParameterSetName = 'FromFile')]
         [object]$File,
@@ -45,5 +46,5 @@ function GenerateParameterFile {
         }                       
     }
     $parameterBase['parameters'] = $parameters
-    ConvertTo-Json -InputObject $parameterBase -Depth 100 | Out-File "$($file.DirectoryName)\$filename.parameters.json"
+    ConvertTo-Json -InputObject $parameterBase -Depth 100 | Out-File "$($file.DirectoryName)\$filename.parameters.json" -WhatIf:$WhatIfPreference
 }
