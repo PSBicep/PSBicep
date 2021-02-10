@@ -38,7 +38,8 @@
     Go to module repository https://github.com/StefanIvemo/BicepPowerShell for detailed info, reporting issues and to submit contributions.
 #>
 function Build-Bicep {
-    [CmdletBinding(DefaultParameterSetName = 'Default')]
+    [CmdletBinding(DefaultParameterSetName = 'Default',
+                   SupportsShouldProcess)]
     [Alias('Invoke-BicepBuild')]
     param (
         [Parameter(ParameterSetName = 'Default',Position=1)]
@@ -63,7 +64,7 @@ function Build-Bicep {
 
     begin {
         if ($PSBoundParameters.ContainsKey('OutputDirectory') -and (-not (Test-Path $OutputDirectory))) {
-            $null = New-Item $OutputDirectory -Force -ItemType Directory
+            $null = New-Item $OutputDirectory -Force -ItemType Directory -WhatIf:$WhatIfPreference
         }
     }
 
@@ -83,9 +84,9 @@ function Build-Bicep {
                         else {
                             $OutputFilePath = $file.FullName -replace '\.bicep','.json'
                         }
-                        $null = Out-File -Path $OutputFilePath -InputObject $ARMTemplate -Encoding utf8
+                        $null = Out-File -Path $OutputFilePath -InputObject $ARMTemplate -Encoding utf8 -WhatIf:$WhatIfPreference
                         if ($GenerateParameterFile.IsPresent) {
-                            GenerateParameterFile -Content $ARMTemplate
+                            GenerateParameterFile -Content $ARMTemplate -WhatIf:$WhatIfPreference
                         }
                     }
                 }
