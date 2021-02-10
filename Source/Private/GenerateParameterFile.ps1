@@ -1,10 +1,20 @@
 function GenerateParameterFile {
-    [CmdletBinding(DefaultParameterSetName='FromFile')]
+    [CmdletBinding(DefaultParameterSetName='FromFile',
+                   SupportsShouldProcess)]
     param (
-        [Parameter(ParameterSetName = 'FromFile')]
+        [Parameter(Mandatory,
+                   ParameterSetName = 'FromFile')]
         [object]$File,
-        [parameter(ParameterSetName = 'FromContent')]
-        [string]$Content
+
+        [Parameter(Mandatory,
+                   ParameterSetName = 'FromContent')]
+        [ValidateNotNullOrEmpty()]
+        [string]$Content,
+
+        [Parameter(Mandatory,
+                   ParameterSetName = 'FromContent')]
+        [ValidateNotNullOrEmpty()]
+        [string]$DestinationPath
     )
 
     if ($PSCmdlet.ParameterSetName -eq 'FromFile') {
@@ -45,5 +55,17 @@ function GenerateParameterFile {
         }                       
     }
     $parameterBase['parameters'] = $parameters
-    ConvertTo-Json -InputObject $parameterBase -Depth 100 | Out-File "$($file.DirectoryName)\$filename.parameters.json"
+    $ConvertedToJson = ConvertTo-Json -InputObject $parameterBase -Depth 100
+    
+    switch ($PSCmdlet.ParameterSetName) {
+        'FromFile' {
+            Out-File -InputObject $ConvertedToJson -FilePath "$($file.DirectoryName)\$filename.parameters.json" -WhatIf:$WhatIfPreference
+        }
+        'FromContent' {
+            Out-File -InputObject $ConvertedToJson -FilePath $DestinationPath -WhatIf:$WhatIfPreference
+        }
+        Default {
+            Write-Error "Unable to generate parameter file. Unknown parameter set: $($PSCmdlet.ParameterSetName)"
+        }
+    }
 }

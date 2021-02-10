@@ -1,5 +1,6 @@
 function Build-Bicep {
-    [CmdletBinding(DefaultParameterSetName = 'Default')]
+    [CmdletBinding(DefaultParameterSetName = 'Default',
+                   SupportsShouldProcess)]
     [Alias('Invoke-BicepBuild')]
     param (
         [Parameter(ParameterSetName = 'Default',Position=1)]
@@ -24,7 +25,7 @@ function Build-Bicep {
 
     begin {
         if ($PSBoundParameters.ContainsKey('OutputDirectory') -and (-not (Test-Path $OutputDirectory))) {
-            $null = New-Item $OutputDirectory -Force -ItemType Directory
+            $null = New-Item $OutputDirectory -Force -ItemType Directory -WhatIf:$WhatIfPreference
         }
     }
 
@@ -40,13 +41,15 @@ function Build-Bicep {
                     else {        
                         if($PSBoundParameters.ContainsKey('OutputDirectory')) {
                             $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.json' -f $file.BaseName)
+                            $ParameterFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $file.BaseName)
                         }
                         else {
                             $OutputFilePath = $file.FullName -replace '\.bicep','.json'
+                            $ParameterFilePath = $file.FullName -replace '\.bicep','.parameters.json'
                         }
-                        $null = Out-File -Path $OutputFilePath -InputObject $ARMTemplate -Encoding utf8
+                        $null = Out-File -Path $OutputFilePath -InputObject $ARMTemplate -Encoding utf8 -WhatIf:$WhatIfPreference
                         if ($GenerateParameterFile.IsPresent) {
-                            GenerateParameterFile -Content $ARMTemplate
+                            GenerateParameterFile -Content $ARMTemplate -DestinationPath $ParameterFilePath -WhatIf:$WhatIfPreference
                         }
                     }
                 }
