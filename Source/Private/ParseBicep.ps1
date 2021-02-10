@@ -1,16 +1,4 @@
-function WriteBicepDiagnostic {
-    [CmdletBinding()]
-    param (
-        [Bicep.Core.Diagnostics.Diagnostic]$Diagnostic
-    )
 
-    $Level = $Diagnostic.Level.ToString()
-    $Code = $Diagnostic.Code.ToString()
-    $Message = $Diagnostic.Message.ToString()
-    $OutputString = "'$Path : $Level ${Code}: $Message'"
-
-    & "Write-$($Diagnostic.Level)" $OutputString
-}
 
 function ParseBicep {
     [CmdletBinding()]
@@ -27,8 +15,7 @@ function ParseBicep {
         $SyntaxTreeGrouping = [Bicep.Core.Syntax.SyntaxTreeGroupingBuilder]::Build($FileResolver, $WorkSpace, $PathHelper)
         $Compilation = [Bicep.Core.Semantics.Compilation]::new($ResourceTypeProvider, $SyntaxTreeGrouping)
         $CompilationResults = $Compilation.GetAllDiagnosticsBySyntaxTree()
-        
-        New-Alias -Name 'Write-Info' -Value 'Write-Host' -Option Private
+
         foreach ($Key in $CompilationResults.Keys) {
             $DiagnosticResult = $CompilationResults[$Key]
             if ($DiagnosticResult.GetCount($false) -gt 0) {
@@ -46,7 +33,6 @@ function ParseBicep {
                 WriteBicepDiagnostic $Diagnostic
             }
         }
-        Remove-Alias -Name 'Write-Info'
 
         $Stream.Position = 0
         $Reader = [System.IO.StreamReader]::new($Stream)
