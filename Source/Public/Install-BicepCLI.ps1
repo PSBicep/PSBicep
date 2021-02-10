@@ -1,21 +1,3 @@
-<#
-.SYNOPSIS
-    Install Bicep CLI
-.DESCRIPTION
-    Install-BicepCLI is a command to to install the latest Bicep CLI realease available from the Azure/Bicep repo.
-.PARAMETER Force
-    This switch will force Bicep to be installed, even if another installation is already in place.
-.EXAMPLE
-    Install-BicepCLI
-    This command will download and install the Bicep CLI.
-    If Bicep CLI is already installed it will check your installed version and compare it to the latest available version.
-.EXAMPLE
-    Install-BicepCLI -Force
-    This command will download and install the Bicep CLI.
-    If Bicep CLI is already installed it will reinstall the latest Bicep CLI.
-.NOTES
-    Go to module repository https://github.com/StefanIvemo/BicepPowerShell for detailed info, reporting issues and to submit contributions.
-#>
 function Install-BicepCLI {
     [CmdLetBinding()]
     param(
