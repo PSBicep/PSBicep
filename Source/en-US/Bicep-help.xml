@@ -241,7 +241,7 @@
     </command:details>
     <maml:description>
       <maml:para>ConvertTo-Bicep is equivalent to 'bicep decompile' but with some additional features.</maml:para>
-      <maml:para>-Decompile all ARM templates in a directory -Output the compiled Bicep as a string -Specify output directory</maml:para>
+      <maml:para>-Decompile all ARM templates in a directory -Specify output directory</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -270,17 +270,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>AsString</maml:name>
-          <maml:description>
-            <maml:para>The -AsString switch prints all output as a string instead of corresponding files.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -308,18 +297,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>AsString</maml:name>
-        <maml:description>
-          <maml:para>The -AsString switch prints all output as a string instead of corresponding files.</maml:para>
-        </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes />
     <command:returnValues />
@@ -346,13 +323,6 @@
       <command:example>
         <maml:title>-- Example 3: Decompile single json file in working directory --</maml:title>
         <dev:code>ConvertTo-Bicep -Path vnet.json -OutputDirectory 'c:\bicep\modules\'</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-- Example 4: Decompile an ARM template and output as string --</maml:title>
-        <dev:code>ConvertTo-Bicep -Path 'c:\armtemplates\vnet.json' - AsString</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
