@@ -80,13 +80,15 @@ function Build-Bicep {
                     else {        
                         if($PSBoundParameters.ContainsKey('OutputDirectory')) {
                             $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.json' -f $file.BaseName)
+                            $ParameterFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $file.BaseName)
                         }
                         else {
                             $OutputFilePath = $file.FullName -replace '\.bicep','.json'
+                            $ParameterFilePath = $file.FullName -replace '\.bicep','.parameters.json'
                         }
                         $null = Out-File -Path $OutputFilePath -InputObject $ARMTemplate -Encoding utf8 -WhatIf:$WhatIfPreference
                         if ($GenerateParameterFile.IsPresent) {
-                            GenerateParameterFile -Content $ARMTemplate -WhatIf:$WhatIfPreference
+                            GenerateParameterFile -Content $ARMTemplate -DestinationPath $ParameterFilePath -WhatIf:$WhatIfPreference
                         }
                     }
                 }
