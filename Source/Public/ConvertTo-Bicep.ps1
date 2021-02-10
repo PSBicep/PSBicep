@@ -5,11 +5,15 @@
     ConvertTo-Bicep is equivalent to 'bicep decompile' but with the possibility to decompile all .bicep files in a directory.
 .PARAMETER Path
     Specfies the path to the directory or file that should be decompiled
+.PARAMETER OutputDirectory
+    Specfies the path to the directory where the compiled files should be outputted
+.PARAMETER AsString
+    The -AsString prints all output as a string instead of corresponding files. 
 .EXAMPLE
-    ConvertTo-Bicep vnet.json
+    ConvertTo-Bicep -Path vnet.json
     Decompile single json file in working directory
 .EXAMPLE
-    ConvertTo-Bicep 'c:\armtemplates\vnet.json'
+    ConvertTo-Bicep -Path 'c:\armtemplates\vnet.json'
     Decompile single json file in provided directory
 .EXAMPLE
     ConvertTo-Bicep
