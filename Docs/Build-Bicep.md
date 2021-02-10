@@ -1,79 +1,153 @@
+---
+external help file: Bicep-help.xml
+Module Name: Bicep
+online version:
+schema: 2.0.0
+---
+
 # Build-Bicep
 
-`Build-Bicep` is equivalent to `bicep build` but with some extra features.
+## SYNOPSIS
+Builds one or more .bicep files.
 
-- Compile all files in a folder
-- Generate ARM Template Parameter files
-- Output ARM Template directly as string without writing to file
+## SYNTAX
 
+### Default (Default)
 ```powershell
-Build-Bicep
-    [-Path <string>]
-    [-OutputDirectory <string>]
-    [-ExcludeFile <String>]
-    [-GenerateParameterFile]
-    [-AsString]
+Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-GenerateParameterFile]
+ [<CommonParameters>]
 ```
 
->NOTE: In previous versions of the module the `Invoke-BicepBuild` was used to compile bicep files. Since version `1.3.0` we have changed it to `Build-Bicep` instead but `Invoke-BicepBuild` remains as an alias.
+### AsString
+```powershell
+Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-AsString]
+ [<CommonParameters>]
+```
 
-## Parameters
+## DESCRIPTION
+**Build-Bicep** is equivalent to the Bicep CLI command 'bicep build' but with some additional features.
 
-**`-Path`**
-Specifies the path to the `.bicep` file(s) to compile.
+-Compile all files in a directory
+-Generate ARM Template Parameter files
+-Output ARM Template directly as string without writing to file
 
-**`-OutputDirectory`**
-Specifies the path where the compiled ARM Template `.json` file(s) should be outputted.
+## EXAMPLES
 
-**`-ExcludeFile`**
-Specifies files to exclude from compilation. Enter a full path or file name.
-
-**`-GenerateParameterFile`**
-Use this switch to generate ARM Template parameter files for the `.bicep` file(s) compiled. The ARM Template parameter file will be named `<filename>.parameters.json`.
-
-**`-AsString`**
-Prints all output as a string instead of corresponding files.
-
-## Examples
-
-### 1. Compile single bicep file in working directory
-
+### Example 1: Compile single bicep file in working directory
 ```powershell
 Build-Bicep -Path vnet.bicep
 ```
 
-### 2. Compile single bicep file in different directory
-
+### Example 2: Compile single bicep file and specify the output directory
 ```powershell
-Build-Bicep -Path 'c:\bicep\modules\vnet.bicep'
+Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' - -OutputDirectory 'c:\armtemplates\vnet.bicep'
 ```
 
-### 3. Compile all .bicep files in working directory
-
+### Example 3: Compile all .bicep files in a directory
 ```powershell
-Build-Bicep
+Build-Bicep -Path 'c:\bicep\modules\'
 ```
 
-### 4. Compile all .bicep files and specify output folder
-
+### Example 4: Compile all .bicep files in the working directory except vnet.bicep
 ```powershell
-Build-Bicep -Path 'c:\bicep\modules\' OutputDirectory 'c:\ARMTemplates\'
+Build-Bicep -Path 'c:\bicep\modules\' -ExcludeFile vnet.bicep
 ```
 
-### 5. Compile all .bicep files in working directory except firewall.bicep
-
+### Example 5: Compile a .bicep file and output as string
 ```powershell
-Build-Bicep -Path 'c:\bicep\modules\' -ExcludeFile firewall.bicep
+Build-Bicep -Path '.\vnet.bicep' -AsString
 ```
 
-### 6. Compile all .bicep files in working directory and generate ARM Template parameter files
-
+### Example 6: Compile a .bicep files in the working directory and generate a parameter files
 ```powershell
-Build-Bicep -Path 'c:\bicep\modules\' -GenerateParameterFile
+Build-Bicep -Path '.\vnet.bicep' -GenerateParameterFile
 ```
 
-### 7. Compile single bicep file in working directory and output as a string
+## PARAMETERS
 
-```powershell
-Build-Bicep -Path vnet.bicep -AsString
+### -Path
+Specfies the path to the directory or file that should be compiled
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: $pwd.path
+Accept pipeline input: False
+Accept wildcard characters: False
 ```
+
+### -OutputDirectory
+Specfies the target directory where the compiled files should be created
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeFile
+Specifies a .bicep file to exclude from compilation
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -GenerateParameterFile
+The -GenerateParameterFile switch generates a ARM Template parameter file for the compiled template
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Default
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AsString
+The -AsString prints all output as a string instead of corresponding files.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: AsString
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+Go to module repository https://github.com/StefanIvemo/BicepPowerShell for detailed info, reporting issues and to submit contributions.
+
+## RELATED LINKS

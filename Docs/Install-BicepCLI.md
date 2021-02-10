@@ -1,27 +1,61 @@
+---
+external help file: Bicep-help.xml
+Module Name: Bicep
+online version:
+schema: 2.0.0
+---
+
 # Install-BicepCLI
 
-`Install-BicepCLI` is a command to install the latest Bicep CLI release available from the Azure/Bicep repo.
+## SYNOPSIS
+Install Bicep CLI
+
+## SYNTAX
 
 ```powershell
-Install-BicepCLI
-    [-Force]
+Install-BicepCLI [-Force] [<CommonParameters>]
 ```
 
-## Parameters
+## DESCRIPTION
+Install-BicepCLI is a command to to install the latest Bicep CLI realease available from the Azure/Bicep repo.
 
-**`-Force`**
-Installs Bicep CLI and overrides warning messages about module installation conflicts.
+## EXAMPLES
 
-## Examples
-
-### 1. Install Bicep CLI
-
+### Example 1: Install the latest Bicep CLI Version
 ```powershell
 Install-BicepCLI
 ```
 
-### 2. Install Bicep CLI using force
-
+### Example 2: Install the latest Bicep CLI Version using the force switch
 ```powershell
 Install-BicepCLI -Force
 ```
+
+## PARAMETERS
+
+### -Force
+This switch will force Bicep to be installed, even if another installation is already in place.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+Go to module repository https://github.com/StefanIvemo/BicepPowerShell for detailed info, reporting issues and to submit contributions.
+
+## RELATED LINKS

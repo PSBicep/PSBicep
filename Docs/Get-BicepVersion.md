@@ -1,19 +1,38 @@
+---
+external help file: Bicep-help.xml
+Module Name: Bicep
+online version:
+schema: 2.0.0
+---
+
 # Get-BicepVersion
 
-`Get-BicepVersion` is a command to compare the installed version of Bicep CLI with the latest release available in the Azure/Bicep repo.
+## SYNOPSIS
+View the installed version and the latest available version of Bicep CLI.
+
+## SYNTAX
 
 ```powershell
 Get-BicepVersion
 ```
 
-## Examples
+## DESCRIPTION
+Get-BicepVersion is a command to compare the installed version of Bicep CLI with the latest release available in the Azure/Bicep repo.
 
-### 1. Compare installed version with latest release
+## EXAMPLES
 
+### Example 1: Compare installed version with latest release
 ```powershell
 Get-BicepVersion
-
-InstalledVersion LatestVersion
----------------- -------------
-0.2.212          0.2.328
 ```
+
+## PARAMETERS
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+Go to module repository https://github.com/StefanIvemo/BicepPowerShell for detailed info, reporting issues and to submit contributions.
+
+## RELATED LINKS
