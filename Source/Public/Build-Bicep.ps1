@@ -5,15 +5,19 @@
     Build-Bicep is equivalent to bicep build but with the possibility to compile all .bicep files in a directory.
 .PARAMETER Path
     Specfies the path to the directory or file that should be compiled
+.PARAMETER OutputDirectory
+    Specfies the path to the directory where the compiled files should be outputted
 .PARAMETER ExcludeFile
     Specifies a .bicep file to exclude from compilation
 .PARAMETER GenerateParameterFile
     The -GenerateParameterFile switch generates a ARM Template paramter file for the compiled template
+.PARAMETER AsString
+    The -AsString prints all output as a string instead of corresponding files. 
 .EXAMPLE
-    Build-Bicep vnet.bicep
+    Build-Bicep -Path vnet.bicep
     Compile single bicep file in working directory
 .EXAMPLE
-    Build-Bicep 'c:\bicep\modules\vnet.bicep'
+    Build-Bicep -Path 'c:\bicep\modules\vnet.bicep'
     Compile single bicep file in different directory
 .EXAMPLE
     Build-Bicep
