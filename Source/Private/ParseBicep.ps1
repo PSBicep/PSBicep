@@ -1,3 +1,5 @@
+
+
 function ParseBicep {
     [CmdletBinding()]
     param (
@@ -10,26 +12,26 @@ function ParseBicep {
         $WorkSpace = [Bicep.Core.Workspaces.Workspace]::new()
         $PathHelper = [Bicep.Core.FileSystem.PathHelper]::FilePathToFileUrl($Path)
         $ResourceTypeProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::new()
-        $syntaxTreeGrouping = [Bicep.Core.Syntax.SyntaxTreeGroupingBuilder]::Build($FileResolver, $WorkSpace, $PathHelper)
-        $compilation = [Bicep.Core.Semantics.Compilation]::new($ResourceTypeProvider, $syntaxTreeGrouping)
-        $compilationResults, $diagnostics = $compilation.GetAllDiagnosticsBySyntaxTree()
-        
-        $success = $true
-        foreach ($diagnostic in $diagnostics) {
-            $success = $success -and ($diagnostic.Level -ne [Bicep.Core.Diagnostics.DiagnosticLevel]::Error)
+        $SyntaxTreeGrouping = [Bicep.Core.Syntax.SyntaxTreeGroupingBuilder]::Build($FileResolver, $WorkSpace, $PathHelper)
+        $Compilation = [Bicep.Core.Semantics.Compilation]::new($ResourceTypeProvider, $SyntaxTreeGrouping)
+        $CompilationResults = $Compilation.GetAllDiagnosticsBySyntaxTree()
+
+        foreach ($Key in $CompilationResults.Keys) {
+            $DiagnosticResult = $CompilationResults[$Key]
+            if ($DiagnosticResult.GetCount($false) -gt 0) {
+                foreach ($Diagnostic in $DiagnosticResult) {
+                    WriteBicepDiagnostic $Diagnostic
+                }
+            }
         }
 
-        if (-not $success) { 
-            # TODO: Better error handling
-            throw 'FAILURE'
-        }
-
-        $emitter = [Bicep.Core.Emit.TemplateEmitter]::new($compilation.GetEntrypointSemanticModel())
+        $Emitter = [Bicep.Core.Emit.TemplateEmitter]::new($Compilation.GetEntrypointSemanticModel())
         $Stream = [System.IO.MemoryStream]::new()
-        $EmitStatus = $emitter.Emit($Stream)
-        if ($EmitStatus.Status -ne [Bicep.Core.Emit.EmitStatus]::Succeeded) {
-            # TODO: Better error handling
-            throw 'Failed to emit to stream'
+        $EmitResult = $Emitter.Emit($Stream)
+        foreach ($Diagnostic in $EmitResult.Diagnostics) {
+            if ($EmitResult.Status -ne [Bicep.Core.Emit.EmitStatus]::Succeeded) {
+                WriteBicepDiagnostic $Diagnostic
+            }
         }
 
         $Stream.Position = 0
