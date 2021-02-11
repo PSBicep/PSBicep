@@ -4,12 +4,12 @@ This is the repo for the Bicep PowerShell Module. The module is created using th
 
 Commands implemented:
 
-- [Build-Bicep](./Docs/Build-Bicep.md)
-- [ConvertTo-Bicep](./Docs/ConvertTo-Bicep.md)
-- [Get-BicepVersion](./Docs/Get-BicepVersion.md)
-- [Install-BicepCLI](./Docs/Install-BicepCLI.md)
-- [Update-BicepCLI](./Docs/Update-BicepCLI.md)
-- [Uninstall-BicepCLI](./Docs/Uninstall-BicepCLI.md)
+- [Build-Bicep](./Docs/Help/Build-Bicep.md)
+- [ConvertTo-Bicep](./Docs/Help/ConvertTo-Bicep.md)
+- [Get-BicepVersion](./Docs/Help/Get-BicepVersion.md)
+- [Install-BicepCLI](./Docs/Help/Install-BicepCLI.md)
+- [Update-BicepCLI](./Docs/Help/Update-BicepCLI.md)
+- [Uninstall-BicepCLI](./Docs/Help/Uninstall-BicepCLI.md)
 
 >**Note:** Starting with version `1.3.0` of the Bicep PowerShell module the cmdlets `Build-Bicep` and `ConvertTo-Bicep` use the assemblies from the official [Bicep](https://github.com/Azure/bicep) repository instead of wrapping the Bicep CLI. The module currently runs on the assemblies from Bicep `version 0.2.328`. When new Bicep versions are released there will be some delay before the PowerShell module gets tested updated with the latest assemblies. If new functionality is added to Bicep CLI before the PowerShell module supports it, use `Install-BicepCLI` to install the latest Bicep CLI version and use the CLI while waiting for an updated PowerShell module.
 

@@ -1,3 +1,5 @@
+
+
 function ParseBicep {
     [CmdletBinding()]
     param (
@@ -42,7 +44,7 @@ function ParseBicep {
             $String = $Reader.ReadToEnd()
             $Reader.Close()
             $Reader.Dispose()
-            
+
             Write-Output $String
         }
     }
