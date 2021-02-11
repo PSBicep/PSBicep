@@ -1,5 +1,3 @@
-
-
 function ParseBicep {
     [CmdletBinding()]
     param (

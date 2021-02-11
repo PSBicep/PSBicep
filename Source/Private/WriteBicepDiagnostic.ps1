@@ -1,7 +1,6 @@
 function WriteBicepDiagnostic {
     [CmdletBinding()]
     param (
-<<<<<<< HEAD
         [Bicep.Core.Diagnostics.Diagnostic]$Diagnostic,
 
         [Bicep.Core.Syntax.SyntaxTree]$SyntaxTree
@@ -33,19 +32,4 @@ function WriteBicepDiagnostic {
     }
 
     return ($Diagnostic.Level -eq [Bicep.Core.Diagnostics.DiagnosticLevel]::Error)
-=======
-        [Bicep.Core.Diagnostics.Diagnostic]$Diagnostic
-    )
-        
-    New-Alias -Name 'Write-Info' -Value 'Write-Host' -Option Private -WhatIf:$false -Confirm:$false
-
-    $Level = $Diagnostic.Level.ToString()
-    $Code = $Diagnostic.Code.ToString()
-    $Message = $Diagnostic.Message.ToString()
-    $OutputString = "'$Path : $Level ${Code}: $Message'"
-
-    & "Write-$($Diagnostic.Level)" $OutputString
-
-    Remove-Alias -Name 'Write-Info'
->>>>>>> e462783dcd30f382baa0191b3b4a95ad490188a7
 }
