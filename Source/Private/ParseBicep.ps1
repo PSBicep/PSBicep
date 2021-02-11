@@ -31,19 +31,15 @@ function ParseBicep {
             $Emitter = [Bicep.Core.Emit.TemplateEmitter]::new($Compilation.GetEntrypointSemanticModel())
             $Stream = [System.IO.MemoryStream]::new()
             $EmitResult = $Emitter.Emit($Stream)
-            foreach ($Diagnostic in $EmitResult.Diagnostics) {
-                if ($EmitResult.Status -ne [Bicep.Core.Emit.EmitStatus]::Succeeded) {
-                    WriteBicepDiagnostic $Diagnostic
-                }
+            if ($EmitResult.Status -eq [Bicep.Core.Emit.EmitStatus]::Succeeded) {
+                $Stream.Position = 0
+                $Reader = [System.IO.StreamReader]::new($Stream)
+                $String = $Reader.ReadToEnd()
+                $Reader.Close()
+                $Reader.Dispose()
+    
+                Write-Output $String
             }
-
-            $Stream.Position = 0
-            $Reader = [System.IO.StreamReader]::new($Stream)
-            $String = $Reader.ReadToEnd()
-            $Reader.Close()
-            $Reader.Dispose()
-
-            Write-Output $String
         }
     }
 }
