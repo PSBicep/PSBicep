@@ -31,7 +31,7 @@ function ParseBicep {
             $Emitter = [Bicep.Core.Emit.TemplateEmitter]::new($Compilation.GetEntrypointSemanticModel())
             $Stream = [System.IO.MemoryStream]::new()
             $EmitResult = $Emitter.Emit($Stream)
-            if ($EmitResult.Status -eq [Bicep.Core.Emit.EmitStatus]::Succeeded) {
+            if ($EmitResult.Status -ne [Bicep.Core.Emit.EmitStatus]::Failed) {
                 $Stream.Position = 0
                 $Reader = [System.IO.StreamReader]::new($Stream)
                 $String = $Reader.ReadToEnd()
