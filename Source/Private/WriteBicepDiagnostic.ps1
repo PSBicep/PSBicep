@@ -51,7 +51,6 @@ function WriteBicepDiagnostic {
             }
         }
     }
-    
-    Write-Information @Params -InformationAction 'Continue'
-    return ($Diagnostic.Level -ne [Bicep.Core.Diagnostics.DiagnosticLevel]::Error)
+
+    return $Params
 }

@@ -14,38 +14,40 @@ function ParseBicep {
         $Compilation = [Bicep.Core.Semantics.Compilation]::new($ResourceTypeProvider, $SyntaxTreeGrouping)
         $CompilationResults = $Compilation.GetAllDiagnosticsBySyntaxTree()
 
-        $Success = $true
-        foreach ($SyntaxTree in $CompilationResults.Keys) {
+        $DiagnosticParams = foreach ($SyntaxTree in $CompilationResults.Keys) {
             $DiagnosticResult = $CompilationResults[$SyntaxTree]
             if ($DiagnosticResult.GetCount($false) -gt 0) {
                 foreach ($Diagnostic in $DiagnosticResult) {
-                    $Success = (WriteBicepDiagnostic -Diagnostic $Diagnostic -SyntaxTree $SyntaxTree) -and $Success
+                    $Params = WriteBicepDiagnostic -Diagnostic $Diagnostic -SyntaxTree $SyntaxTree
+                    Write-Information @Params -InformationAction 'Continue'
+                    Write-Output $Params
                 }
             }
         }
-
-        if ($Success) {
-            $Emitter = [Bicep.Core.Emit.TemplateEmitter]::new($Compilation.GetEntrypointSemanticModel())
-            $Stream = [System.IO.MemoryStream]::new()
-            $EmitResult = $Emitter.Emit($Stream)
-            if ($EmitResult.Status -ne [Bicep.Core.Emit.EmitStatus]::Failed) {
-                $Stream.Position = 0
-                $Reader = [System.IO.StreamReader]::new($Stream)
-                $String = $Reader.ReadToEnd()
-                $Reader.Close()
-                $Reader.Dispose()
-    
-                Write-Output $String
-            }
-        }
-        else {
+        
+        if ($DiagnosticParams.Tag -eq 'Error') {
             $ErrorParams = @{
-                Message           = "Failed to build bicep file: $Path" 
+                Message           = "Buildning file $Path returned with errors. See Information stream for details"
                 Category          = 'InvalidResult' 
                 RecommendedAction = 'Check for errors in the Information stream.'
                 TargetObject      = $Path
             }
             Write-Error @ErrorParams
+            return
         }
+
+        $Emitter = [Bicep.Core.Emit.TemplateEmitter]::new($Compilation.GetEntrypointSemanticModel())
+        $Stream = [System.IO.MemoryStream]::new()
+        $EmitResult = $Emitter.Emit($Stream)
+        if ($EmitResult.Status -ne [Bicep.Core.Emit.EmitStatus]::Failed) {
+            $Stream.Position = 0
+            $Reader = [System.IO.StreamReader]::new($Stream)
+            $String = $Reader.ReadToEnd()
+            $Reader.Close()
+            $Reader.Dispose()
+    
+            Write-Output $String
+        }
+
     }
 }
