@@ -19,10 +19,7 @@ function ParseBicep {
             $DiagnosticResult = $CompilationResults[$SyntaxTree]
             if ($DiagnosticResult.GetCount($false) -gt 0) {
                 foreach ($Diagnostic in $DiagnosticResult) {
-                    # If any diagnostic is an error
-                    if ((WriteBicepDiagnostic -Diagnostic $Diagnostic -SyntaxTree $SyntaxTree) -eq $false) {
-                        $Success = $false
-                    }
+                    $Success = (WriteBicepDiagnostic -Diagnostic $Diagnostic -SyntaxTree $SyntaxTree) -and $Success
                 }
             }
         }
@@ -40,6 +37,15 @@ function ParseBicep {
     
                 Write-Output $String
             }
+        }
+        else {
+            $ErrorParams = @{
+                Message           = "Failed to build bicep file: $Path" 
+                Category          = 'InvalidResult' 
+                RecommendedAction = 'Check for errors in the Information stream.'
+                TargetObject      = $Path
+            }
+            Write-Error @ErrorParams
         }
     }
 }

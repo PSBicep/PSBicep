@@ -35,10 +35,10 @@ function Build-Bicep {
             foreach ($file in $files) {
                 if ($file.Name -notin $ExcludeFile) {
                     $ARMTemplate = ParseBicep -Path $file.FullName
-                    if ($AsString.IsPresent) {
+                    if (-not [string]::IsNullOrWhiteSpace($ARMTemplate) -and $AsString.IsPresent) {
                         Write-Output $ARMTemplate
                     }
-                    else {        
+                    elseif (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {        
                         if($PSBoundParameters.ContainsKey('OutputDirectory')) {
                             $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.json' -f $file.BaseName)
                             $ParameterFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $file.BaseName)

@@ -21,15 +21,37 @@ function WriteBicepDiagnostic {
 
     switch ($Diagnostic.Level) {
         'Info' {
-            Write-Host "ERROR: $OutputString"
+            $Params = @{
+                MessageData = [System.Management.Automation.HostInformationMessage]@{
+                    Message         = $OutputString
+                    ForegroundColor = $Host.PrivateData.VerboseForegroundColor
+                    BackgroundColor = $Host.PrivateData.VerboseBackgroundColor
+                }
+                Tag         = 'Information'
+            }
         }
         'Warning' {
-            Write-Warning $OutputString
+            $Params = @{
+                MessageData = [System.Management.Automation.HostInformationMessage]@{
+                    Message         = $OutputString
+                    ForegroundColor = $Host.PrivateData.WarningForegroundColor
+                    BackgroundColor = $Host.PrivateData.WarningBackgroundColor
+                }
+                Tag         = 'Warning'
+            }
         }
         'Error' {
-            WriteErrorStream $OutputString
+            $Params = @{
+                MessageData = [System.Management.Automation.HostInformationMessage]@{
+                    Message         = $OutputString
+                    ForegroundColor = $Host.PrivateData.ErrorForegroundColor
+                    BackgroundColor = $Host.PrivateData.ErrorBackgroundColor
+                }
+                Tag         = 'Error'
+            }
         }
     }
-
-    return ($Diagnostic.Level -eq [Bicep.Core.Diagnostics.DiagnosticLevel]::Error)
+    
+    Write-Information @Params -InformationAction 'Continue'
+    return ($Diagnostic.Level -ne [Bicep.Core.Diagnostics.DiagnosticLevel]::Error)
 }
