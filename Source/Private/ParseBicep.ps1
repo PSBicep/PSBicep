@@ -1,5 +1,3 @@
-
-
 function ParseBicep {
     [CmdletBinding()]
     param (
@@ -16,29 +14,32 @@ function ParseBicep {
         $Compilation = [Bicep.Core.Semantics.Compilation]::new($ResourceTypeProvider, $SyntaxTreeGrouping)
         $CompilationResults = $Compilation.GetAllDiagnosticsBySyntaxTree()
 
-        foreach ($Key in $CompilationResults.Keys) {
-            $DiagnosticResult = $CompilationResults[$Key]
+        $Success = $true
+        foreach ($SyntaxTree in $CompilationResults.Keys) {
+            $DiagnosticResult = $CompilationResults[$SyntaxTree]
             if ($DiagnosticResult.GetCount($false) -gt 0) {
                 foreach ($Diagnostic in $DiagnosticResult) {
-                    WriteBicepDiagnostic $Diagnostic
+                    # If any diagnostic is an error
+                    if ((WriteBicepDiagnostic -Diagnostic $Diagnostic -SyntaxTree $SyntaxTree) -eq $false) {
+                        $Success = $false
+                    }
                 }
             }
         }
 
-        $Emitter = [Bicep.Core.Emit.TemplateEmitter]::new($Compilation.GetEntrypointSemanticModel())
-        $Stream = [System.IO.MemoryStream]::new()
-        $EmitResult = $Emitter.Emit($Stream)
-        foreach ($Diagnostic in $EmitResult.Diagnostics) {
-            if ($EmitResult.Status -ne [Bicep.Core.Emit.EmitStatus]::Succeeded) {
-                WriteBicepDiagnostic $Diagnostic
+        if ($Success) {
+            $Emitter = [Bicep.Core.Emit.TemplateEmitter]::new($Compilation.GetEntrypointSemanticModel())
+            $Stream = [System.IO.MemoryStream]::new()
+            $EmitResult = $Emitter.Emit($Stream)
+            if ($EmitResult.Status -ne [Bicep.Core.Emit.EmitStatus]::Failed) {
+                $Stream.Position = 0
+                $Reader = [System.IO.StreamReader]::new($Stream)
+                $String = $Reader.ReadToEnd()
+                $Reader.Close()
+                $Reader.Dispose()
+    
+                Write-Output $String
             }
         }
-
-        $Stream.Position = 0
-        $Reader = [System.IO.StreamReader]::new($Stream)
-        $String = $Reader.ReadToEnd()
-        $Reader.Close()
-        $Reader.Dispose()
-        Write-Output $String
     }
 }
