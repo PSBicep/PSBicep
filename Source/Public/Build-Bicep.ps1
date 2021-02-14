@@ -27,6 +27,13 @@ function Build-Bicep {
         if ($PSBoundParameters.ContainsKey('OutputDirectory') -and (-not (Test-Path $OutputDirectory))) {
             $null = New-Item $OutputDirectory -Force -ItemType Directory -WhatIf:$WhatIfPreference
         }
+
+        if($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
+            $DLLPath = [Bicep.Core.Workspaces.Workspace].Assembly.Location
+            $DllFile = Get-Item -Path $DLLPath
+            $FullVersion = $DllFile.VersionInfo.ProductVersion.Split('+')[0]
+            Write-Verbose -Message "Using Bicep version: $FullVersion"
+        }
     }
 
     process {
