@@ -41,6 +41,7 @@ If you would like to report any issues or inaccurate conversions, please see htt
                             $FilePath = Join-Path -Path $FolderPath -ChildPath $FileName
                         }
                         $null = Out-File -InputObject $BicepObject.Item2[$BicepFile] -FilePath $FilePath -Encoding utf8
+                        $null = Build-Bicep -Path $FilePath -AsString
                     }
                 }
             }
