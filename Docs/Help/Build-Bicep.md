@@ -27,9 +27,12 @@ Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <Stri
 ## DESCRIPTION
 **Build-Bicep** is equivalent to the Bicep CLI command 'bicep build' but with some additional features.
 
--Compile all files in a directory
--Generate ARM Template Parameter files
--Output ARM Template directly as string without writing to file
+- Compile all files in a directory  
+- Generate ARM Template Parameter files  
+- Output ARM Template directly as string without writing to file  
+  
+Any error or warning from bicep will be written to the information stream.
+To save output in a variable, use stream redirection. See example below.
 
 ## EXAMPLES
 
@@ -63,6 +66,16 @@ Build-Bicep -Path '.\vnet.bicep' -AsString
 Build-Bicep -Path '.\vnet.bicep' -GenerateParameterFile
 ```
 
+### Example 7: Compile a .bicep files in the working directory and store diagnostic messages from bicep in a variable.
+```powershell
+$Diagnostics = Build-Bicep -Path '.\vnet.bicep' 6>&1
+# Messages are tagged and can be sorted.
+$Diagnostics | Where-Object Tags -eq 'Error'
+$Diagnostics | Where-Object Tags -eq 'Warning'
+```
+
+Stores all Errors and Warnings from bicep in variable $Diagnostics.
+Then outputs first all Erros then all Warnings.
 ## PARAMETERS
 
 ### -Path
