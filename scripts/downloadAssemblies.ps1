@@ -19,10 +19,10 @@ try {
     
     $null = New-Item -Path './tmp' -ItemType Directory -ErrorAction Ignore
     Push-Location -Path './tmp' -StackName 'downloadAssemblies'
-    Write-Verbose -Message 'Cloning Bicep sources'
-    git clone 'https://github.com/Azure/bicep.git' *>$null
+    Write-Verbose -Message "Cloning Bicep sources using tag: $AssemblyVersion" -Verbose
+    git clone 'https://github.com/Azure/bicep.git'
     Push-Location -Path './bicep' -StackName 'downloadAssemblies'
-    git checkout tags/$AssemblyVersion *>$null
+    git checkout tags/$AssemblyVersion
     Push-Location -Path './src' -StackName 'downloadAssemblies'
     dotnet publish './Bicep.Cli' -c 'Release' --no-self-contained --nologo --verbosity 'minimal'
     $FilesToInclude = @(
