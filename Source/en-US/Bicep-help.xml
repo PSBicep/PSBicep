@@ -11,7 +11,11 @@
     </command:details>
     <maml:description>
       <maml:para>Build-Bicep is equivalent to the Bicep CLI command 'bicep build' but with some additional features.</maml:para>
-      <maml:para>-Compile all files in a directory -Generate ARM Template Parameter files -Output ARM Template directly as string without writing to file</maml:para>
+      <maml:para>- Compile all files in a directory
+- Generate ARM Template Parameter files
+- Output ARM Template directly as string without writing to file
+
+Any error or warning from bicep will be written to the information stream. To save output in a variable, use stream redirection. See example below.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -227,6 +231,16 @@
           <maml:para></maml:para>
         </dev:remarks>
       </command:example>
+      <command:example>
+        <maml:title>Example 7: Compile a .bicep files in the working directory and store diagnostic messages from bicep in a variable.</maml:title>
+        <dev:code>$Diagnostics = Build-Bicep -Path '.\vnet.bicep' 6&gt;&amp;1
+# Messages are tagged and can be sorted.
+$Diagnostics | Where-Object Tags -eq 'Error'
+$Diagnostics | Where-Object Tags -eq 'Warning'</dev:code>
+        <dev:remarks>
+          <maml:para>Stores all Errors and Warnings from bicep in variable $Diagnostics. Then outputs first all Erros then all Warnings.</maml:para>
+        </dev:remarks>
+      </command:example>
     </command:examples>
     <command:relatedLinks />
   </command:command>
@@ -270,6 +284,17 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>AsString</maml:name>
+          <maml:description>
+            <maml:para>The -AsString prints all output as a string instead of corresponding files.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -297,6 +322,18 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>AsString</maml:name>
+        <maml:description>
+          <maml:para>The -AsString prints all output as a string instead of corresponding files.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
     </command:parameters>
     <command:inputTypes />
     <command:returnValues />
@@ -323,6 +360,13 @@
       <command:example>
         <maml:title>-- Example 3: Decompile single json file in working directory --</maml:title>
         <dev:code>ConvertTo-Bicep -Path vnet.json -OutputDirectory 'c:\bicep\modules\'</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>- Example 4: Decompile single json file and output as a string -</maml:title>
+        <dev:code>ConvertTo-Bicep -Path vnet.json -AsString</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
