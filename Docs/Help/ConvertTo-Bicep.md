@@ -19,7 +19,7 @@ ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [<CommonParamet
 
 ### AsString
 ```powershell
-ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>]  [-AsString]
+ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] -AsString
  [<CommonParameters>]
 ```
 
