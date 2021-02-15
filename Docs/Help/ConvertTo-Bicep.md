@@ -12,8 +12,15 @@ Decompile ARM templates to .bicep files
 
 ## SYNTAX
 
+### Default (Default)
 ```powershell
 ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [<CommonParameters>]
+```
+
+### AsString
+```powershell
+ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>]  [-AsString]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -37,6 +44,11 @@ ConvertTo-Bicep -Path 'c:\armtemplates\'
 ### Example 3: Decompile single json file in working directory
 ```powershell
 ConvertTo-Bicep -Path vnet.json -OutputDirectory 'c:\bicep\modules\'
+```
+
+### Example 4: Decompile single json file and output as a string
+```powershell
+ConvertTo-Bicep -Path vnet.json -AsString
 ```
 
 ## PARAMETERS
@@ -67,6 +79,21 @@ Aliases:
 Required: False
 Position: 2
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AsString
+The -AsString prints all output as a string instead of corresponding files.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: AsString
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
