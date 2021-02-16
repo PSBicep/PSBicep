@@ -35,6 +35,9 @@ try {
     )
     $Files = Get-Item -Path '.\Bicep.Cli\bin\Release\net5.0\publish\*' -Include $FilesToInclude
     $Files | Copy-Item -Destination $AssetsFolder.Path -Force
+
+    $BicepTypesPath = Join-Path -Path $AssetsFolder.Path -ChildPath 'BicepTypes.json'
+    Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/Azure/bicep-types-az/main/generated/index.json' -OutFile $BicepTypesPath
 }
 finally {
     while(Get-Location -Stack -StackName 'downloadAssemblies' -ErrorAction 'Ignore') {
