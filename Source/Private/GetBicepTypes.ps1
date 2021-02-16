@@ -6,7 +6,7 @@ function GetBicepTypes {
     )
     
     if (-not [string]::IsNullOrEmpty($Path)) {
-        Write-Verbose "Importing Bicep Types from file"
+        Write-Verbose "Importing Bicep Types"
         $types = Get-Content -Path $Path | ConvertFrom-Json -AsHashtable
         $types = $types.Types
 
