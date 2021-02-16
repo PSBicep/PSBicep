@@ -1,5 +1,5 @@
 function Get-BicepApiReference {
-    [CmdletBinding(DefaultParameterSetName = 'ResourceProvider')]
+    [CmdletBinding(DefaultParameterSetName = 'TypeString')]
     param(
         [Parameter(Mandatory, 
                    Position = 0,
@@ -77,10 +77,10 @@ function Get-BicepApiReference {
         })]
         [string]$ApiVersion,
 
-        [Parameter(ParameterSetName = 'TypeString')]
-        [ValidateScript({
-            $_ -like '*/*' -and $_ -like '*@*'
-        })]
+        [Parameter(ParameterSetName = 'TypeString',
+                   Position = 0)]
+        [ValidateScript({ $_ -like '*/*' -and $_ -like '*@*' },
+                          ErrorMessage = "Type must contain '/' and '@'.")]
         [string]$Type,
 
         [Parameter(ParameterSetName = 'ResourceProvider')]
@@ -95,18 +95,18 @@ function Get-BicepApiReference {
         switch ($PSCmdlet.ParameterSetName) {
             'ResourceProvider' { 
                 if ($PSBoundParameters.ContainsKey('ApiVersion')) {
-                    #Get specified API Verion
+                    # Specified API Verion
                     $url = "$BaseUrl/$ResourceProvider/$ApiVersion/$Resource"
                 }
                 else {
-                    #Get latest API Version
+                    # Latest API Version
                     $url = "$BaseUrl/$ResourceProvider/$Resource"
                 }
              }
             'TypeString' {
                 # Type should look like this: Microsoft.Aad/domainServicess@2017-01-01
                 # We want to split here:                   ^               ^
-                # lets not use regex. regex kills kittens
+                # Lets not use regex. regex kills kittens
                 $TypeResourceProvider = ($type -split "/")[0]
                 $TypeResource = (($type -split "/")[1] -split '@')[0]
                 $TypeApiVersion = ($type -split "@")[1]
@@ -115,7 +115,8 @@ function Get-BicepApiReference {
             }
         }
         
-        
+        # Check if there is any valid page on the generated Url
+        # We don't want to send users to broken urls.
         try {
             $null = Invoke-WebRequest -Uri $url -ErrorAction Stop
             $DocsFound = $true
@@ -124,6 +125,7 @@ function Get-BicepApiReference {
             $DocsFound = $false
         }
 
+        # Now we know if its working or not. Open page or provide error message.
         if ($DocsFound -or $Force.IsPresent) {
             Start-Process $url
         }
