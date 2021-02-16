@@ -3,9 +3,13 @@ function Install-BicepCLI {
     param(
         [switch]$Force
     )
-    if (-not $Force.IsPresent) {
-        $BicepInstalled=TestBicep
+    
+    $BicepInstalled=TestBicep
+    
+    if ($Force.IsPresent -and $BicepInstalled -eq $true) {
+        Write-Warning 'You are running multiple installations of Bicep CLI. You can correct this by running Update-BicepCLI.'
     }
+
     if ($Force.IsPresent -or $BicepInstalled -eq $false) {
         # Fetch the latest Bicep CLI installer
         $DownloadFileName = 'bicep-setup-win-x64.exe'
