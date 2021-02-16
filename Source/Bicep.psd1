@@ -12,7 +12,7 @@
 RootModule = 'Bicep.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.2.1'
+ModuleVersion = '1.3.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -54,7 +54,14 @@ Description = 'A module to run Bicep CLI using PowerShell'
 # RequiredModules = @()
 
 # Assemblies that must be loaded prior to importing this module
-# RequiredAssemblies = @()
+RequiredAssemblies = @(
+    'Assets\Azure.Bicep.Types.dll',
+    'Assets\Azure.Bicep.Types.Az.dll',
+    'Assets\Azure.Deployments.Core.dll',
+    'Assets\Azure.Deployments.Expression.dll',
+    'Assets\Bicep.Core.dll',
+    'Assets\Bicep.Decompiler.dll'
+)
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
 # ScriptsToProcess = @()
@@ -69,7 +76,7 @@ Description = 'A module to run Bicep CLI using PowerShell'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Invoke-BicepBuild', 'ConvertTo-Bicep', 'Get-BicepVersion', 'Install-BicepCLI', 'Update-BicepCLI', 'Uninstall-BicepCLI')
+FunctionsToExport = @('Build-Bicep', 'ConvertTo-Bicep', 'Get-BicepVersion', 'Install-BicepCLI', 'Update-BicepCLI', 'Uninstall-BicepCLI')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -78,7 +85,7 @@ CmdletsToExport = @()
 VariablesToExport = ''
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = @()
+AliasesToExport = @('Invoke-BicepBuild')
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
