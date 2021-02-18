@@ -12,12 +12,28 @@ function GetBicepTypes {
 
         $allResourceProviders = [System.Collections.ArrayList]::new()
         
-        foreach ($type in $types.Keys) {        
-            $ResourceProviders = [PSCustomObject]@{
-                ResourceProvider = ($type -split "/")[0]
-                Resource = (($type -split "/")[1] -split '@')[0]
-                ApiVersion = ($type -split "@")[1]
+        foreach ($type in $types.Keys) {
+            # Type looks like this:  Microsoft.Aad/domainServicess@2017-01-01
+            # We want to split here:              ^               ^
+            # Or like this:          Microsoft.ApiManagement/service/certificates@2019-12-01
+            # Then we split here:                           ^       ^            ^
+            
+            # First check if we have three parts before the @
+            # In that case the last one should be the child
+            if (($type -split '/' ).count -eq 3) {
+                $child = ( ($type -split '@') -split '/' )[2]
+            }  
+            else {
+                $child = $null
             }
+
+            $ResourceProviders = [PSCustomObject]@{
+                ResourceProvider = ( ($type -split '@') -split '/' )[0]
+                Resource         = ( ($type -split '@') -split '/' )[1]
+                Child            = $child
+                ApiVersion       = ( $type -split '@' )[1]
+            }
+            
             $null = $allResourceProviders.Add($ResourceProviders)
         }
         $Global:BicepResourceProviders = $allResourceProviders

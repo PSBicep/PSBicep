@@ -2,7 +2,6 @@ function Get-BicepApiReference {
     [CmdletBinding(DefaultParameterSetName = 'TypeString')]
     param(
         [Parameter(Mandatory, 
-                   Position = 0,
                    ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({ $Global:BicepResourceProviders.ResourceProvider -contains $_ }, 
@@ -22,7 +21,6 @@ function Get-BicepApiReference {
         [string]$ResourceProvider,
 
         [Parameter(Mandatory, 
-                   Position = 1,
                    ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({ $Global:BicepResourceProviders.Resource -contains $_ }, 
@@ -43,14 +41,40 @@ function Get-BicepApiReference {
                 } | Select-Object -ExpandProperty Resource | Sort-Object
             }
             else {
-                $Global:BicepResourceProviders.Resource | Sort-Object -Unique
+                $Global:BicepResourceProviders.Resource | Where-Object { $_ -like "$wordToComplete*" } | Sort-Object -Unique
             }
 
         })]
         [string]$Resource,
         
-        [Parameter(Position = 2,
-                   ParameterSetName = 'ResourceProvider')]
+        [Parameter(ParameterSetName = 'ResourceProvider')]
+        [ValidateNotNullOrEmpty()]
+        [ValidateScript({ $Global:BicepResourceProviders.Child -contains $_ }, 
+                          ErrorMessage = "Child '{0}' was not found.")]
+        [ArgumentCompleter({
+            param ( 
+                $commandName,
+                $parameterName,
+                $wordToComplete,
+                $commandAst,
+                $BoundParameters
+            )
+
+            if ($BoundParameters.ContainsKey('ResourceProvider') -and $BoundParameters.ContainsKey('Resource')) {
+                $Global:BicepResourceProviders | Where-Object {
+                    $_.ResourceProvider -eq $BoundParameters.ResourceProvider -and 
+                    $_.Resource -eq $BoundParameters.Resource -and 
+                    $BoundParameters.Child -like "$wordToComplete*"
+                } | Select-Object -ExpandProperty Child | Sort-Object
+            }
+            else {
+                $Global:BicepResourceProviders.Child | Where-Object { $_ -like "$wordToComplete*" } | Sort-Object -Unique -Descending
+            }
+
+        })]
+        [string]$Child,
+
+        [Parameter(ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({ $Global:BicepResourceProviders.ApiVersion -contains $_ }, 
                           ErrorMessage = "ApiVersion '{0}' was not found.")]
@@ -68,10 +92,18 @@ function Get-BicepApiReference {
                     $_.ResourceProvider -eq $BoundParameters.ResourceProvider -and 
                     $_.Resource -eq $BoundParameters.Resource -and 
                     $BoundParameters.ApiVersion -like "$wordToComplete*"
-                } | Select-Object -ExpandProperty ApiVersion | Sort-Object
+                } | Select-Object -ExpandProperty ApiVersion | Sort-Object -Descending
+            }
+            elseif ($BoundParameters.ContainsKey('ResourceProvider') -and $BoundParameters.ContainsKey('Resource') -and $BoundParameters.ContainsKey('Child')) {
+                $Global:BicepResourceProviders | Where-Object {
+                    $_.ResourceProvider -eq $BoundParameters.ResourceProvider -and 
+                    $_.Resource -eq $BoundParameters.Resource -and
+                    $_.Child -eq $BoundParameters.Child -and 
+                    $BoundParameters.ApiVersion -like "$wordToComplete*"
+                } | Select-Object -ExpandProperty ApiVersion | Sort-Object -Descending
             }
             else {
-                $Global:BicepResourceProviders.Resource | Sort-Object -Unique
+                $Global:BicepResourceProviders.ApiVersion | Where-Object { $_ -like "$wordToComplete*" } | Sort-Object -Unique -Descending
             }
 
         })]
@@ -93,25 +125,49 @@ function Get-BicepApiReference {
         $baseUrl = "https://docs.microsoft.com/en-us/azure/templates"
 
         switch ($PSCmdlet.ParameterSetName) {
-            'ResourceProvider' { 
+            
+            'ResourceProvider' {
+                $url = "$BaseUrl/$ResourceProvider" 
+                
+                # if ApiVersion is provided, we use that. Otherwise we skip version and go for latest
                 if ($PSBoundParameters.ContainsKey('ApiVersion')) {
-                    # Specified API Verion
-                    $url = "$BaseUrl/$ResourceProvider/$ApiVersion/$Resource"
+                    $url += "/$ApiVersion"
                 }
-                else {
-                    # Latest API Version
-                    $url = "$BaseUrl/$ResourceProvider/$Resource"
+
+                $url += "/$Resource"
+
+                # Child is optional, so we only add it if provided
+                if ($PSBoundParameters.ContainsKey('Child')) {
+                    $url += "/$Child"
                 }
+
              }
             'TypeString' {
-                # Type should look like this: Microsoft.Aad/domainServicess@2017-01-01
-                # We want to split here:                   ^               ^
+                # Type looks like this:   Microsoft.Aad/domainServicess@2017-01-01
+                # Then we split here:                  ^               ^
+                # Or it looks like this:  Microsoft.ApiManagement/service/certificates@2019-12-01
+                # Then we split here:                            ^       ^            ^
                 # Lets not use regex. regex kills kittens
-                $TypeResourceProvider = ($type -split "/")[0]
-                $TypeResource = (($type -split "/")[1] -split '@')[0]
-                $TypeApiVersion = ($type -split "@")[1]
+
+                # First check if we have three parts before the @
+                # In that case the last one should be the child
+                if (($type -split '/' ).count -eq 3) {
+                    $TypeChild = ( ($type -split '@') -split '/' )[2]
+                }  
+                else {
+                    $TypeChild = $null
+                }
+
+                $TypeResourceProvider = ( ($type -split '@') -split '/' )[0]
+                $TypeResource = ( ($type -split '@') -split '/' )[1]
+                $TypeApiVersion = ( $type -split '@' )[1]
                
-                $url = "$BaseUrl/$TypeResourceProvider/$TypeApiVersion/$TypeResource"
+                if ([string]::IsNullOrEmpty($TypeChild)) {
+                    $url = "$BaseUrl/$TypeResourceProvider/$TypeApiVersion/$TypeResource"
+                }
+                else {
+                    $url = "$BaseUrl/$TypeResourceProvider/$TypeApiVersion/$TypeResource/$TypeChild"
+                }
             }
         }
         
@@ -135,4 +191,3 @@ function Get-BicepApiReference {
     }
 
 }
-
