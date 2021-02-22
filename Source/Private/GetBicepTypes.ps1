@@ -32,6 +32,7 @@ function GetBicepTypes {
                 Resource         = ( ($type -split '@') -split '/' )[1]
                 Child            = $child
                 ApiVersion       = ( $type -split '@' )[1]
+                FullName         = $type
             }
             
             $null = $allResourceProviders.Add($ResourceProviders)

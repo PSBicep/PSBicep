@@ -113,8 +113,20 @@ function Get-BicepApiReference {
                    Position = 0)]
         [ValidateScript({ $_ -like '*/*' -and $_ -like '*@*' },
                           ErrorMessage = "Type must contain '/' and '@'.")]
-        [string]$Type,
+        [ArgumentCompleter({
+            param ( 
+                $commandName,
+                $parameterName,
+                $wordToComplete,
+                $commandAst,
+                $BoundParameters
+            )
 
+            $Global:BicepResourceProviders.FullName | Where-Object { $_ -like "$wordToComplete*" } | Sort-Object -Unique -Descending
+
+        })]
+        [string]$Type,
+        
         [Parameter(ParameterSetName = 'ResourceProvider')]
         [Parameter(ParameterSetName = 'TypeString')]
         [Alias('Please')]
