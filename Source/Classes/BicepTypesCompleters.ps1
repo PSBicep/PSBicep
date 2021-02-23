@@ -51,7 +51,9 @@ class BicepResourceProviderCompleter : System.Management.Automation.IArgumentCom
             $CompletionText = $Resource
             $ListItemText   = $Resource
             $ResultType     = [System.Management.Automation.CompletionResultType]::ParameterValue
-            $ToolTip        = '{0}/{1}' -f $fakeBoundParameters.ResourceProvider, $Resource
+            
+            $ToolTip = '{0}/{1}' -f $fakeBoundParameters.ResourceProvider, $Resource
+            $ToolTip = $ToolTip.TrimEnd('/')
   
             $obj = [System.Management.Automation.CompletionResult]::new($CompletionText, $ListItemText, $ResultType, $Tooltip)
             $list.add($obj)
@@ -88,7 +90,9 @@ class BicepResourceProviderCompleter : System.Management.Automation.IArgumentCom
             $CompletionText = $Child
             $ListItemText   = $Child
             $ResultType     = [System.Management.Automation.CompletionResultType]::ParameterValue
-            $ToolTip        = '{0}/{1}/{2}' -f $fakeBoundParameters.ResourceProvider, $fakeBoundParameters.Resource, $Child
+            
+            $ToolTip = '{0}/{1}/{2}' -f $fakeBoundParameters.ResourceProvider, $fakeBoundParameters.Resource, $Child
+            $ToolTip = $ToolTip.TrimEnd('/')
   
             $obj = [System.Management.Automation.CompletionResult]::new($CompletionText, $ListItemText, $ResultType, $Tooltip)
             $list.add($obj)
@@ -133,8 +137,10 @@ class BicepResourceProviderCompleter : System.Management.Automation.IArgumentCom
             $CompletionText = $ApiVersion
             $ListItemText   = $ApiVersion
             $ResultType     = [System.Management.Automation.CompletionResultType]::ParameterValue
-            $ToolTip        = '{0}/{1}/{2}@{3}' -f $fakeBoundParameters.ResourceProvider, $fakeBoundParameters.Resource, $fakeBoundParameters.Child, $ApiVersion
-  
+            
+            $ToolTip = '{0}/{1}/{2}' -f $fakeBoundParameters.ResourceProvider, $fakeBoundParameters.Resource, $fakeBoundParameters.Child
+            $ToolTip = $ToolTip.TrimEnd('/') + "@$ApiVersion"
+            
             $obj = [System.Management.Automation.CompletionResult]::new($CompletionText, $ListItemText, $ResultType, $Tooltip)
             $list.add($obj)
         }
@@ -161,7 +167,7 @@ class BicepResourceProviderCompleter : System.Management.Automation.IArgumentCom
             $CompletionText = $Type
             $ListItemText   = $Type
             $ResultType     = [System.Management.Automation.CompletionResultType]::ParameterValue
-            $ToolTip        = "Type: $Type"
+            $ToolTip        = $Type
   
             $obj = [System.Management.Automation.CompletionResult]::new($CompletionText, $ListItemText, $ResultType, $Tooltip)
             $list.add($obj)
