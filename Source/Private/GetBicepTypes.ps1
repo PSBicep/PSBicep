@@ -37,9 +37,9 @@ function GetBicepTypes {
             
             $null = $allResourceProviders.Add($ResourceProviders)
         }
-        $Global:BicepResourceProviders = $allResourceProviders
+        $Script:BicepResourceProviders = $allResourceProviders
     }
 
-    Write-Output -InputObject $Global:BicepResourceProviders
+    Write-Output -InputObject $Script:BicepResourceProviders
 }
 
