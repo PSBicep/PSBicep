@@ -1,3 +1,9 @@
+# import classes
+foreach ($function in (Get-ChildItem "$PSScriptRoot\Classes\*.ps1"))
+{
+	$ExecutionContext.InvokeCommand.InvokeScript($false, ([scriptblock]::Create([io.file]::ReadAllText($function))), $null, $null)
+}
+
 # import private functions
 foreach ($function in (Get-ChildItem "$PSScriptRoot\Private\*.ps1"))
 {
