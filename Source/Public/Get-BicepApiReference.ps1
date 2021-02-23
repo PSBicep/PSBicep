@@ -4,127 +4,38 @@ function Get-BicepApiReference {
         [Parameter(Mandatory, 
                    ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({ $Global:BicepResourceProviders.ResourceProvider -contains $_ }, 
+        [ValidateScript({ (GetBicepTypes).ResourceProvider -contains $_ }, 
                           ErrorMessage = "ResourceProvider '{0}' was not found.")]
-        [ArgumentCompleter({
-            param ( 
-                $commandName,
-                $parameterName,
-                $wordToComplete,
-                $commandAst,
-                $BoundParameters
-            )
-
-            $Global:BicepResourceProviders.ResourceProvider | Where-Object { $_ -like "$wordToComplete*" } | Sort-Object
-        
-        })]
+        [ArgumentCompleter([BicepResourceProviderCompleter])]
         [string]$ResourceProvider,
 
         [Parameter(Mandatory, 
                    ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({ $Global:BicepResourceProviders.Resource -contains $_ }, 
+        [ValidateScript({ (GetBicepTypes).Resource -contains $_ }, 
                           ErrorMessage = "Resource '{0}' was not found.")]
-        [ArgumentCompleter({
-            param ( 
-                $commandName,
-                $parameterName,
-                $wordToComplete,
-                $commandAst,
-                $BoundParameters
-            )
-
-            if ($BoundParameters.ContainsKey('ResourceProvider')) {
-                $Global:BicepResourceProviders | Where-Object {
-                    $_.ResourceProvider -eq $BoundParameters.ResourceProvider -and 
-                    $_.Resource -like "$wordToComplete*"
-                } | Select-Object -ExpandProperty Resource | Sort-Object
-            }
-            else {
-                $Global:BicepResourceProviders.Resource | Where-Object { $_ -like "$wordToComplete*" } | Sort-Object -Unique
-            }
-
-        })]
+        [ArgumentCompleter([BicepResourceCompleter])]
         [string]$Resource,
         
         [Parameter(ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({ $Global:BicepResourceProviders.Child -contains $_ }, 
+        [ValidateScript({ (GetBicepTypes).Child -contains $_ }, 
                           ErrorMessage = "Child '{0}' was not found.")]
-        [ArgumentCompleter({
-            param ( 
-                $commandName,
-                $parameterName,
-                $wordToComplete,
-                $commandAst,
-                $BoundParameters
-            )
-
-            if ($BoundParameters.ContainsKey('ResourceProvider') -and $BoundParameters.ContainsKey('Resource')) {
-                $Global:BicepResourceProviders | Where-Object {
-                    $_.ResourceProvider -eq $BoundParameters.ResourceProvider -and 
-                    $_.Resource -eq $BoundParameters.Resource -and 
-                    $BoundParameters.Child -like "$wordToComplete*"
-                } | Select-Object -ExpandProperty Child | Sort-Object
-            }
-            else {
-                $Global:BicepResourceProviders.Child | Where-Object { $_ -like "$wordToComplete*" } | Sort-Object -Unique -Descending
-            }
-
-        })]
+        [ArgumentCompleter([BicepResourceChildCompleter])]
         [string]$Child,
 
         [Parameter(ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({ $Global:BicepResourceProviders.ApiVersion -contains $_ }, 
+        [ValidateScript({ (GetBicepTypes).ApiVersion -contains $_ }, 
                           ErrorMessage = "ApiVersion '{0}' was not found.")]
-        [ArgumentCompleter({
-            param ( 
-                $commandName,
-                $parameterName,
-                $wordToComplete,
-                $commandAst,
-                $BoundParameters
-            )
-
-            if ($BoundParameters.ContainsKey('ResourceProvider') -and $BoundParameters.ContainsKey('Resource')) {
-                $Global:BicepResourceProviders | Where-Object {
-                    $_.ResourceProvider -eq $BoundParameters.ResourceProvider -and 
-                    $_.Resource -eq $BoundParameters.Resource -and 
-                    $BoundParameters.ApiVersion -like "$wordToComplete*"
-                } | Select-Object -ExpandProperty ApiVersion | Sort-Object -Descending
-            }
-            elseif ($BoundParameters.ContainsKey('ResourceProvider') -and $BoundParameters.ContainsKey('Resource') -and $BoundParameters.ContainsKey('Child')) {
-                $Global:BicepResourceProviders | Where-Object {
-                    $_.ResourceProvider -eq $BoundParameters.ResourceProvider -and 
-                    $_.Resource -eq $BoundParameters.Resource -and
-                    $_.Child -eq $BoundParameters.Child -and 
-                    $BoundParameters.ApiVersion -like "$wordToComplete*"
-                } | Select-Object -ExpandProperty ApiVersion | Sort-Object -Descending
-            }
-            else {
-                $Global:BicepResourceProviders.ApiVersion | Where-Object { $_ -like "$wordToComplete*" } | Sort-Object -Unique -Descending
-            }
-
-        })]
+        [ArgumentCompleter([BicepResourceApiVersionCompleter])]
         [string]$ApiVersion,
 
         [Parameter(ParameterSetName = 'TypeString',
                    Position = 0)]
         [ValidateScript({ $_ -like '*/*' -and $_ -like '*@*' },
                           ErrorMessage = "Type must contain '/' and '@'.")]
-        [ArgumentCompleter({
-            param ( 
-                $commandName,
-                $parameterName,
-                $wordToComplete,
-                $commandAst,
-                $BoundParameters
-            )
-
-            $Global:BicepResourceProviders.FullName | Where-Object { $_ -like "$wordToComplete*" } | Sort-Object -Unique -Descending
-
-        })]
+        [ArgumentCompleter([BicepTypeCompleter])]
         [string]$Type,
         
         [Parameter(ParameterSetName = 'ResourceProvider')]
