@@ -7,7 +7,7 @@ class BicepVersionCompleter : System.Management.Automation.IArgumentCompleter{
         [Collections.IDictionary] $fakeBoundParameters
     )
     {
-        [array]$BicepVersions = (ListBicepVersions) | Where-Object { $_ -like "$wordToComplete*" } | Sort-Object -Unique
+        [array]$BicepVersions = (ListBicepVersions) | Where-Object { $_ -like "$wordToComplete*" }
         
         $list = [System.Collections.Generic.List[System.Management.Automation.CompletionResult]]::new()
         
