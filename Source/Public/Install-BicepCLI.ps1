@@ -1,11 +1,20 @@
 function Install-BicepCLI {
     [CmdLetBinding()]
     param(
-        [switch]$Force
+        [string]$Version,
+        [switch]$Force        
     )
     
-    $BicepInstalled=TestBicep
+    $BicepInstalled = TestBicep
     
+    $BaseURL = 'https://api.github.com/repos/Azure/bicep/releases'
+    if ($PSBoundParameters.ContainsKey('Version')) {
+        $BicepRelease = ('{0}/tags/{1}' -f $BaseURL, $Version)  
+    }
+    else {
+        $BicepRelease = ('{0}/latest' -f $BaseURL)
+    }
+        
     if ($Force.IsPresent -and $BicepInstalled -eq $true) {
         Write-Warning 'You are running multiple installations of Bicep CLI. You can correct this by running Update-BicepCLI.'
     }
@@ -14,11 +23,10 @@ function Install-BicepCLI {
         # Fetch the latest Bicep CLI installer
         $DownloadFileName = 'bicep-setup-win-x64.exe'
         $TargetFileName = Join-Path -Path $env:TEMP -ChildPath $DownloadFileName
-        $GithubLatestAPIPath = 'https://api.github.com/repos/Azure/bicep/releases/latest'
 
         # Fetch data about latest Bicep release from Github API
-        $LatestBicepRelease = Invoke-RestMethod -Uri $GithubLatestAPIPath
-        $RequestedGithubAsset = $LatestBicepRelease.assets | Where-Object -Property Name -eq $DownloadFileName
+        $GetBicepRelease = Invoke-RestMethod -Uri $BicepRelease
+        $RequestedGithubAsset = $GetBicepRelease.assets | Where-Object -Property Name -eq $DownloadFileName
         #Download and show progress.
         (New-Object Net.WebClient).DownloadFileAsync($RequestedGithubAsset.browser_download_url, $TargetFileName)
         Write-Verbose "Downloading $($RequestedGithubAsset.browser_download_url) to location $TargetFileName"
@@ -36,16 +44,17 @@ function Install-BicepCLI {
             $i++
             Write-Progress -Activity 'Installing Bicep CLI' -CurrentOperation "$i - Running $DownloadFileName" 
             Start-Sleep -Seconds 1
-        } while (Get-Process $DownloadFileName.Replace('.exe','') -ErrorAction SilentlyContinue)   
+        } while (Get-Process $DownloadFileName.Replace('.exe', '') -ErrorAction SilentlyContinue)   
 
         # Since bicep installer updates the $env:PATH we reload it in order to verify installation.
-        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
         
         # Verify you can now access the 'bicep' command.
-        if (TestBicep){
+        if (TestBicep) {
             $bicep = InstalledBicepVersion
             Write-Host "Bicep version $bicep successfully installed!"
-        } else {
+        }
+        else {
             Write-Error "Error installing Bicep CLI"
         }
 
