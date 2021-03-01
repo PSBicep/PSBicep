@@ -1,6 +1,9 @@
 function Install-BicepCLI {
     [CmdLetBinding()]
     param(
+        [ValidateScript( { (ListBicepVersions).Contains($_) }, 
+            ErrorMessage = "Bicep Version '{0}' was not found.")]
+        [ArgumentCompleter([BicepVersionCompleter])]
         [string]$Version,
         [switch]$Force        
     )
