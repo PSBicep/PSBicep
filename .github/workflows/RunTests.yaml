@@ -21,9 +21,9 @@ jobs:
       run: ./scripts/downloadAssemblies.ps1
     - name: Import required modules
       run: Install-Module -Name Pester -Force
-      shell: powershell
+      shell: pwsh
     - name: Run Pester tests and build module
       run: | 
         Write-Host 'Invoking Pester'
         Invoke-Pester -CI
-      shell: powershell
+      shell: pwsh

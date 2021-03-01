@@ -76,7 +76,15 @@ RequiredAssemblies = @(
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Build-Bicep', 'ConvertTo-Bicep', 'Get-BicepVersion', 'Install-BicepCLI', 'Update-BicepCLI', 'Uninstall-BicepCLI')
+FunctionsToExport = @(
+    'Build-Bicep', 
+    'ConvertTo-Bicep', 
+    'Get-BicepVersion', 
+    'Install-BicepCLI', 
+    'Update-BicepCLI', 
+    'Uninstall-BicepCLI', 
+    'Get-BicepApiReference'
+)
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
