@@ -40,9 +40,12 @@ function ParseBicep {
             Write-Error @ErrorParams
             return
         }
+        $DLLPath = [Bicep.Core.Workspaces.Workspace].Assembly.Location
+        $DllFile = Get-Item -Path $DLLPath
+        $FullVersion = $DllFile.VersionInfo.FileVersion
 
         if ($Success) {
-            $Emitter = [Bicep.Core.Emit.TemplateEmitter]::new($Compilation.GetEntrypointSemanticModel())
+            $Emitter = [Bicep.Core.Emit.TemplateEmitter]::new($Compilation.GetEntrypointSemanticModel(), $FullVersion)
             $Stream = [System.IO.MemoryStream]::new()
             $EmitResult = $Emitter.Emit($Stream)
             if ($EmitResult.Status -ne [Bicep.Core.Emit.EmitStatus]::Failed) {
