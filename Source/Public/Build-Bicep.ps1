@@ -1,14 +1,14 @@
 function Build-Bicep {
     [CmdletBinding(DefaultParameterSetName = 'Default',
-                   SupportsShouldProcess)]
+        SupportsShouldProcess)]
     [Alias('Invoke-BicepBuild')]
     param (
-        [Parameter(ParameterSetName = 'Default',Position=1)]
-        [Parameter(ParameterSetName = 'AsString',Position=1)]
+        [Parameter(ParameterSetName = 'Default', Position = 1)]
+        [Parameter(ParameterSetName = 'AsString', Position = 1)]
         [string]$Path = $pwd.path,
 
-        [Parameter(ParameterSetName = 'Default',Position=2)]
-        [Parameter(ParameterSetName = 'AsString',Position=2)]
+        [Parameter(ParameterSetName = 'Default', Position = 2)]
+        [Parameter(ParameterSetName = 'AsString', Position = 2)]
         [ValidateNotNullOrEmpty()]
         [string]$OutputDirectory,
 
@@ -28,7 +28,7 @@ function Build-Bicep {
             $null = New-Item $OutputDirectory -Force -ItemType Directory -WhatIf:$WhatIfPreference
         }
 
-        if($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
+        if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
             $DLLPath = [Bicep.Core.Workspaces.Workspace].Assembly.Location
             $DllFile = Get-Item -Path $DLLPath
             $FullVersion = $DllFile.VersionInfo.ProductVersion.Split('+')[0]
@@ -42,25 +42,27 @@ function Build-Bicep {
             foreach ($file in $files) {
                 if ($file.Name -notin $ExcludeFile) {
                     $ARMTemplate = ParseBicep -Path $file.FullName
-                    $BicepModuleVersion = (Get-Module -Name Bicep).Version | Sort-Object -Descending | Select-Object -First 1
-                    $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
-                    $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $BicepModuleVersion)"
-                    $ARMTemplate = ConvertTo-Json -InputObject $ARMTemplateObject -Depth 100
-                    if (-not [string]::IsNullOrWhiteSpace($ARMTemplate) -and $AsString.IsPresent) {
-                        Write-Output $ARMTemplate
-                    }
-                    elseif (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {        
-                        if($PSBoundParameters.ContainsKey('OutputDirectory')) {
-                            $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.json' -f $file.BaseName)
-                            $ParameterFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $file.BaseName)
+                    if (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {
+                        $BicepModuleVersion = (Get-Module -Name Bicep).Version | Sort-Object -Descending | Select-Object -First 1
+                        $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
+                        $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $BicepModuleVersion)"
+                        $ARMTemplate = ConvertTo-Json -InputObject $ARMTemplateObject -Depth 100
+                        if ($AsString.IsPresent) {
+                            Write-Output $ARMTemplate
                         }
-                        else {
-                            $OutputFilePath = $file.FullName -replace '\.bicep','.json'
-                            $ParameterFilePath = $file.FullName -replace '\.bicep','.parameters.json'
-                        }
-                        $null = Out-File -Path $OutputFilePath -InputObject $ARMTemplate -Encoding utf8 -WhatIf:$WhatIfPreference
-                        if ($GenerateParameterFile.IsPresent) {
-                            GenerateParameterFile -Content $ARMTemplate -DestinationPath $ParameterFilePath -WhatIf:$WhatIfPreference
+                        else {        
+                            if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
+                                $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.json' -f $file.BaseName)
+                                $ParameterFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $file.BaseName)
+                            }
+                            else {
+                                $OutputFilePath = $file.FullName -replace '\.bicep', '.json'
+                                $ParameterFilePath = $file.FullName -replace '\.bicep', '.parameters.json'
+                            }
+                            $null = Out-File -Path $OutputFilePath -InputObject $ARMTemplate -Encoding utf8 -WhatIf:$WhatIfPreference
+                            if ($GenerateParameterFile.IsPresent) {
+                                GenerateParameterFile -Content $ARMTemplate -DestinationPath $ParameterFilePath -WhatIf:$WhatIfPreference
+                            }
                         }
                     }
                 }
