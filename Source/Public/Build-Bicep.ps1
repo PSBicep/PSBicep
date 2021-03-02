@@ -42,6 +42,10 @@ function Build-Bicep {
             foreach ($file in $files) {
                 if ($file.Name -notin $ExcludeFile) {
                     $ARMTemplate = ParseBicep -Path $file.FullName
+                    $BicepModuleVersion = (Get-Module -Name Bicep).Version | Sort-Object -Descending | Select-Object -First 1
+                    $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
+                    $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $BicepModuleVersion)"
+                    $ARMTemplate = ConvertTo-Json -InputObject $ARMTemplateObject -Depth 100
                     if (-not [string]::IsNullOrWhiteSpace($ARMTemplate) -and $AsString.IsPresent) {
                         Write-Output $ARMTemplate
                     }
