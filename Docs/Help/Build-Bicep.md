@@ -75,7 +75,7 @@ $Diagnostics | Where-Object Tags -eq 'Warning'
 ```
 
 Stores all Errors and Warnings from bicep in variable $Diagnostics.
-Then outputs first all Erros then all Warnings.
+Then outputs first all Errors then all Warnings.
 ## PARAMETERS
 
 ### -Path
