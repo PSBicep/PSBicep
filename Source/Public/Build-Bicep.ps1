@@ -72,6 +72,4 @@ function Build-Bicep {
             Write-Host "No bicep files located in path $Path"
         }
     }
-
 }
-
