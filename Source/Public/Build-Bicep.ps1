@@ -5,22 +5,26 @@ function Build-Bicep {
     param (
         [Parameter(ParameterSetName = 'Default', Position = 1)]
         [Parameter(ParameterSetName = 'AsString', Position = 1)]
+        [Parameter(ParameterSetName = 'AsHashtable', Position = 1)]
         [string]$Path = $pwd.path,
 
         [Parameter(ParameterSetName = 'Default', Position = 2)]
-        [Parameter(ParameterSetName = 'AsString', Position = 2)]
         [ValidateNotNullOrEmpty()]
         [string]$OutputDirectory,
 
         [Parameter(ParameterSetName = 'Default')]
         [Parameter(ParameterSetName = 'AsString')]
+        [Parameter(ParameterSetName = 'AsHashtable')]
         [string[]]$ExcludeFile,
 
         [Parameter(ParameterSetName = 'Default')]
         [switch]$GenerateParameterFile,
 
         [Parameter(ParameterSetName = 'AsString')]
-        [switch]$AsString
+        [switch]$AsString,
+
+        [Parameter(ParameterSetName = 'AsHashtable')]
+        [switch]$AsHashtable
     )
 
     begin {
@@ -49,6 +53,8 @@ function Build-Bicep {
                         $ARMTemplate = ConvertTo-Json -InputObject $ARMTemplateObject -Depth 100
                         if ($AsString.IsPresent) {
                             Write-Output $ARMTemplate
+                        } elseif ($AsHashtable.IsPresent) {
+                            $ARMTemplate | ConvertFrom-Json -AsHashtable
                         }
                         else {        
                             if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
