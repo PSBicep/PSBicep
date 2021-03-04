@@ -12,7 +12,7 @@
 RootModule = 'Bicep.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.4.1'
+ModuleVersion = '1.4.2'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core')
@@ -30,8 +30,7 @@ Author = 'Stefan Ivemo'
 Copyright = '(c) Stefan Ivemo. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = @'
-A module to run Bicep using PowerShell. The module is a community project built using the Bicep assemblies to provide you with an enhanced Bicep experience directly from PowerShell without having Bicep CLI installed. 
+Description = 'A module to run Bicep using PowerShell. The module is a community project built using the Bicep assemblies to provide you with an enhanced Bicep experience directly from PowerShell without having Bicep CLI installed. 
 
 The module also provides the additional features:
 - Specify output folder when building* and decompiling Bicep/ARM templates
@@ -41,11 +40,10 @@ The module also provides the additional features:
 - Install/Update/Uninstall Bicep CLI
 
 For more information about Bicep, please visit the official Bicep GitHub Repository:
-https://github.com/Azure/bicep
-'@
+https://github.com/Azure/bicep'
 
 # Minimum version of the PowerShell engine required by this module
-# PowerShellVersion = ''
+PowerShellVersion = '7.0'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
