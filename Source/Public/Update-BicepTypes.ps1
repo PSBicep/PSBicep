@@ -14,22 +14,25 @@ function Update-BicepTypes {
     Write-Verbose "Fetching types from GitHub: $BicepTypesUrl"
     
     try {
-        $BicepTypes = Invoke-WebRequest -Uri $BicepTypesUrl -Verbose:$false
+        $BicepTypes = Invoke-RestMethod -Uri $BicepTypesUrl -Verbose:$false
     }
     catch {
         Throw "Unable to get new Bicep types from GitHub. $_"
     }
 
-    Write-Verbose "Validating result"
+    Write-Verbose "Filtering content"
 
-    if ([string]::IsNullOrWhiteSpace($BicepTypes.Content)) {
-        Throw "Unable to update Bicep types. Fetched page does not have any content."
+    try {
+        $TypesOnly = ConvertTo-Json -InputObject $BicepTypes.types.psobject.Properties.name -Compress 
+    }
+    catch {
+        Throw "Unable to filter content. Index file might have changed. $_"
     }
 
     Write-Verbose "Saving to disk"
     
     try {
-        Out-File -FilePath $BicepTypesPath -InputObject $BicepTypes.Content -WhatIf:$WhatIfPreference
+        Out-File -FilePath $BicepTypesPath -InputObject $TypesOnly -WhatIf:$WhatIfPreference
     }
     catch {
         Throw "Failed to save new Bicep types. $_"
