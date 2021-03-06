@@ -36,8 +36,11 @@ try {
     $Files = Get-Item -Path '.\Bicep.Cli\bin\Release\net5.0\publish\*' -Include $FilesToInclude
     $Files | Copy-Item -Destination $AssetsFolder.Path -Force
 
+    # Download Bicep types
     $BicepTypesPath = Join-Path -Path $AssetsFolder.Path -ChildPath 'BicepTypes.json'
-    Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/Azure/bicep-types-az/main/generated/index.json' -OutFile $BicepTypesPath
+    $BicepTypesFull = Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/Azure/bicep-types-az/main/generated/index.json'
+    $BicepTypesFiltered = ConvertTo-Json -InputObject $BicepTypesFull.types.psobject.Properties.name -Compress 
+    Out-File -FilePath $BicepTypesPath -InputObject $BicepTypesFiltered -WhatIf:$WhatIfPreference
 }
 finally {
     while(Get-Location -Stack -StackName 'downloadAssemblies' -ErrorAction 'Ignore') {
