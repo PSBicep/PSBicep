@@ -18,48 +18,48 @@ function GenerateParameterFile {
     )
 
     if ($PSCmdlet.ParameterSetName -eq 'FromFile') {
-        $fileName = $file.Name -replace ".bicep", ""
-        $ARMTemplate = Get-Content "$($file.DirectoryName)\$filename.json" -Raw | ConvertFrom-Json
+        $FileName = $File.Name -replace ".bicep", ""
+        $ARMTemplate = Get-Content "$($File.DirectoryName)\$Filename.json" -Raw | ConvertFrom-Json
     }
     elseif ($PSCmdlet.ParameterSetName -eq 'FromContent') {
         $ARMTemplate = $Content | ConvertFrom-Json
     }
     
-    $parameterBase = [ordered]@{
+    $ParameterBase = [ordered]@{
         '$schema'        = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#'
         'contentVersion' = '1.0.0.0'
     }
-    $parameterNames = $ARMTemplate.Parameters.psobject.Properties.Name
-    $parameters = [ordered]@{}
+    $ParameterNames = $ARMTemplate.Parameters.psobject.Properties.Name
+    $Parameters = [ordered]@{}
     foreach ($parameterName in $parameterNames) {
         $ParameterObject = $ARMTemplate.Parameters.$ParameterName
         if ($null -eq $ParameterObject.defaultValue) {                               
             if ($ParameterObject.type -eq 'Array') {
-                $defaultValue = @()
+                $DefaultValue = @()
             }
             elseif ($ParameterObject.type -eq 'Object') {
-                $defaultValue = @{}
+                $DefaultValue = @{}
             }
             else {
-                $defaultValue = ""
+                $DefaultValue = ""
             }
         }
         elseif ($ParameterObject.defaultValue -like "*()*") {
-            $defaultValue = ""
+            $DefaultValue = ""
         }
         else {
-            $defaultValue = $ParameterObject.defaultValue
+            $DefaultValue = $ParameterObject.defaultValue
         }
-        $parameters[$parameterName] = @{                                
+        $Parameters[$ParameterName] = @{                                
             value = $defaultValue
         }                       
     }
-    $parameterBase['parameters'] = $parameters
-    $ConvertedToJson = ConvertTo-Json -InputObject $parameterBase -Depth 100
+    $ParameterBase['parameters'] = $Parameters
+    $ConvertedToJson = ConvertTo-Json -InputObject $ParameterBase -Depth 100
     
     switch ($PSCmdlet.ParameterSetName) {
         'FromFile' {
-            Out-File -InputObject $ConvertedToJson -FilePath "$($file.DirectoryName)\$filename.parameters.json" -WhatIf:$WhatIfPreference
+            Out-File -InputObject $ConvertedToJson -FilePath "$($File.DirectoryName)\$Filename.parameters.json" -WhatIf:$WhatIfPreference
         }
         'FromContent' {
             Out-File -InputObject $ConvertedToJson -FilePath $DestinationPath -WhatIf:$WhatIfPreference
