@@ -78,4 +78,6 @@ if ($prLabel -eq 'bugFix' -or $prLabel -eq 'newFeature' -or $prLabel -eq 'update
         $updateRelease = Invoke-RestMethod -Method Patch -Headers $Header -Body $requestBody -URI  "https://api.github.com/repos/StefanIvemo/ActionsTest/releases/$releaseId" -Verbose
         Write-Verbose "Updated release draft with $PR"
     }
-} 
+} else {
+    Write-Host "No PR label found, or PR Label ignored"
+}
