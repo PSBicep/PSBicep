@@ -13,15 +13,21 @@ Builds one or more .bicep files.
 ## SYNTAX
 
 ### Default (Default)
-```powershell
+```
 Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-GenerateParameterFile]
- [<CommonParameters>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### AsHashtable
+```
+Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### AsString
-```powershell
-Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-AsString]
- [<CommonParameters>]
+```
+Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-AsString] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -29,7 +35,7 @@ Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <Stri
 
 - Compile all files in a directory  
 - Generate ARM Template Parameter files  
-- Output ARM Template directly as string without writing to file  
+- Output ARM Template directly as string or hashtable without writing to file  
   
 Any error or warning from bicep will be written to the information stream.
 To save output in a variable, use stream redirection. See example below.
@@ -75,7 +81,15 @@ $Diagnostics | Where-Object Tags -eq 'Warning'
 ```
 
 Stores all Errors and Warnings from bicep in variable $Diagnostics.
-Then outputs first all Erros then all Warnings.
+Then outputs first all Errors then all Warnings.
+
+### Example 8: Compile a .bicep file as hashtable and pass it to New-AzResourceGroupDeployment
+```powershell
+$Template=Build-Bicep -Path '.\vnet.bicep' -AsHashtable
+New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Template
+```
+
+
 ## PARAMETERS
 
 ### -Path
@@ -149,6 +163,51 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AsHashtable
+The -AsHashtable prints all output as a hashtable instead of corresponding files.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: AsHashtable
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs. The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

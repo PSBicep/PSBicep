@@ -8,11 +8,10 @@ function GetBicepTypes {
     if (-not [string]::IsNullOrEmpty($Path)) {
         Write-Verbose "Importing Bicep Types"
         $types = Get-Content -Path $Path | ConvertFrom-Json -AsHashtable
-        $types = $types.Types
 
         $allResourceProviders = [System.Collections.ArrayList]::new()
         
-        foreach ($type in $types.Keys) {
+        foreach ($type in $types) {
             # Type looks like this:  Microsoft.Aad/domainServicess@2017-01-01
             # We want to split here:              ^               ^
             # Or like this:          Microsoft.ApiManagement/service/certificates@2019-12-01

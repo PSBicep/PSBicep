@@ -12,10 +12,10 @@
 RootModule = 'Bicep.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.3.0'
+ModuleVersion = '1.4.2'
 
 # Supported PSEditions
-# CompatiblePSEditions = @()
+CompatiblePSEditions = @('Core')
 
 # ID used to uniquely identify this module
 GUID = 'dfce7d56-54cc-46df-8be8-2518093e803f'
@@ -30,10 +30,20 @@ Author = 'Stefan Ivemo'
 Copyright = '(c) Stefan Ivemo. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'A module to run Bicep CLI using PowerShell'
+Description = 'A module to run Bicep using PowerShell. The module is a community project built using the Bicep assemblies to provide you with an enhanced Bicep experience directly from PowerShell without having Bicep CLI installed. 
+
+The module also provides the additional features:
+- Specify output folder when building* and decompiling Bicep/ARM templates
+- Generate ARM template parameter files directly from a Bicep file
+- Quickly open the API reference docs by referencing the Bicep types
+- Get the result from a build as a string or hashtable instead of writing to a file
+- Install/Update/Uninstall Bicep CLI
+
+For more information about Bicep, please visit the official Bicep GitHub Repository:
+https://github.com/Azure/bicep'
 
 # Minimum version of the PowerShell engine required by this module
-# PowerShellVersion = ''
+PowerShellVersion = '7.0'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
@@ -83,7 +93,8 @@ FunctionsToExport = @(
     'Install-BicepCLI', 
     'Update-BicepCLI', 
     'Uninstall-BicepCLI', 
-    'Get-BicepApiReference'
+    'Get-BicepApiReference',
+    'Update-BicepTypes'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -119,7 +130,7 @@ PrivateData = @{
         ProjectUri = 'https://github.com/StefanIvemo/BicepPowerShell'
 
         # A URL to an icon representing this module.
-        # IconUri = ''
+        IconUri = 'https://raw.githubusercontent.com/StefanIvemo/BicepPowerShell/main/logo/BicePS.png'
 
         # ReleaseNotes of this module
         ReleaseNotes = 'https://github.com/StefanIvemo/BicepPowerShell/releases'
@@ -144,4 +155,3 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
-
