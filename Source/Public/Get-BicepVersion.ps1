@@ -1,9 +1,9 @@
 function Get-BicepVersion {
-    param(
+    param (
         [switch]$All
+
     )
-    
-    if ($All) {
+    if ($All.IsPresent) {
         ListBicepVersions
     }
     else {

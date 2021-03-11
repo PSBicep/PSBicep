@@ -1,13 +1,14 @@
 try {
-    $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Bicep.psd1"
+    #$ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
+    #Import-Module -FullyQualifiedName "$ScriptDirectory\..\Bicep.psd1"
+    Import-Module .\Bicep.psd1
 }
 catch {
     Throw "Unable to import Bicep module. $_"
 }
 
 InModuleScope Bicep {
-    Describe 'LatestBicepVersion' {
+    Describe 'ListBicepVersions' {
         
         Context 'When it works' {
             
@@ -20,7 +21,7 @@ InModuleScope Bicep {
             }
 
             It 'Returns correct version' {
-                LatestBicepVersion | Should -Be '1.2.3'
+                ListBicepVersions -Latest | Should -Be '1.2.3'
             }
         }
 
@@ -33,7 +34,7 @@ InModuleScope Bicep {
             }
 
             It 'Throws error if unable to get version file from GitHub' {
-                { LatestBicepVersion -ErrorAction Stop } | Should -Throw "Could not get latest version from GitHub.*"
+                { ListBicepVersions -Latest -ErrorAction Stop } | Should -Throw "Could not get latest version from GitHub.*"
             }
 
         }

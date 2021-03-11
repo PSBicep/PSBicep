@@ -12,7 +12,7 @@ function Install-BicepCLI {
     
     $BaseURL = 'https://api.github.com/repos/Azure/bicep/releases'
     if ($PSBoundParameters.ContainsKey('Version')) {
-        $BicepRelease = ('{0}/tags/{1}' -f $BaseURL, $Version)  
+        $BicepRelease = ('{0}/tags/v{1}' -f $BaseURL, $Version)  
     }
     else {
         $BicepRelease = ('{0}/latest' -f $BaseURL)
