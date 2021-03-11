@@ -1,7 +1,6 @@
 try {
-    #$ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-    #Import-Module -FullyQualifiedName "$ScriptDirectory\..\Bicep.psd1"
-    Import-Module .\Bicep.psd1
+    $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
+    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Bicep.psd1"
 }
 catch {
     Throw "Unable to import Bicep module. $_"
