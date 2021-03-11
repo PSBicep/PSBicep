@@ -11,7 +11,7 @@ $header = @{
 }
 
 #Get all releases including drafts
-$getReleases = Invoke-RestMethod -Method Get -Headers $header -URI  "https://api.github.com/repos/StefanIvemo/ActionsTest/releases"
+$getReleases = Invoke-RestMethod -Method Get -Headers $header -URI  "https://api.github.com/repos/StefanIvemo/BicepPowerShell/releases"
 
 #Check if a release draft exists
 foreach ($release in $getReleases) {
@@ -29,7 +29,7 @@ $releaseMessage = $Rest
 
 #Get PR details from commit
 $prNumber = ($PR -split "#")[1]
-$getPullRequest = Invoke-RestMethod -Method Get -URI  "https://api.github.com/repos/StefanIvemo/ActionsTest/pulls/$prNumber"
+$getPullRequest = Invoke-RestMethod -Method Get -URI  "https://api.github.com/repos/StefanIvemo/BicepPowerShell/pulls/$prNumber"
 $prLabel = $getPullRequest.labels.name
 Write-Verbose "Found Pull Request"
 Write-Verbose "PR Number: $($getPullRequest.number)" 
@@ -71,11 +71,11 @@ if ($prLabel -eq 'bugFix' -or $prLabel -eq 'newFeature' -or $prLabel -eq 'update
     $requestBody = ConvertTo-Json $body -Depth 10
     
     if (!$releaseId) {
-        $createRelease = Invoke-RestMethod -Method Post -Headers $Header -Body $requestBody -URI  "https://api.github.com/repos/StefanIvemo/ActionsTest/releases" -Verbose
+        $createRelease = Invoke-RestMethod -Method Post -Headers $Header -Body $requestBody -URI  "https://api.github.com/repos/StefanIvemo/BicepPowerShell/releases" -Verbose
         Write-Verbose "New releasedraft created"
     }
     else {
-        $updateRelease = Invoke-RestMethod -Method Patch -Headers $Header -Body $requestBody -URI  "https://api.github.com/repos/StefanIvemo/ActionsTest/releases/$releaseId" -Verbose
+        $updateRelease = Invoke-RestMethod -Method Patch -Headers $Header -Body $requestBody -URI  "https://api.github.com/repos/StefanIvemo/BicepPowerShell/releases/$releaseId" -Verbose
         Write-Verbose "Updated release draft with $PR"
     }
 } else {
