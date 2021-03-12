@@ -1,6 +1,6 @@
 function CompareBicepVersion {
     $installedVersion = InstalledBicepVersion
-    $latestVersion = LatestBicepVersion
+    $latestVersion = ListBicepVersions -Latest
 
     if ($installedVersion -eq $latestVersion) {
         $true

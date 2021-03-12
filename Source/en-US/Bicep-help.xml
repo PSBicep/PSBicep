@@ -813,11 +813,23 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Install-BicepCLI is a command to to install the latest Bicep CLI realease available from the Azure/Bicep repo.</maml:para>
+      <maml:para>Install-BicepCLI is a command to to install the Bicep CLI from the Azure/Bicep repo.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Install-BicepCLI</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Version</maml:name>
+          <maml:description>
+            <maml:para>This parameter specifies which version of Bicep CLI to install.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Force</maml:name>
           <maml:description>
@@ -832,6 +844,18 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Version</maml:name>
+        <maml:description>
+          <maml:para>This parameter specifies which version of Bicep CLI to install.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Force</maml:name>
         <maml:description>
@@ -861,8 +885,8 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>Example 2: Install the latest Bicep CLI Version using the force switch</maml:title>
-        <dev:code>Install-BicepCLI -Force</dev:code>
+        <maml:title>------- Example 2: Install a specific Bicep CLI Version -------</maml:title>
+        <dev:code>Install-BicepCLI -Version '0.2.328'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>

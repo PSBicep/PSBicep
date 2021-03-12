@@ -9,7 +9,7 @@ function Update-BicepCLI {
         Write-Host "You are already running the latest version of Bicep CLI."
     }
     else {
-        Uninstall-BicepCLI -Force
+        Uninstall-BicepCLI -Force -ErrorAction SilentlyContinue
         Install-BicepCLI -Force
     }     
 }

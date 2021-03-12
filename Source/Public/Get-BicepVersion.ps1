@@ -1,9 +1,18 @@
 function Get-BicepVersion {
-    $installedVersion = InstalledBicepVersion
-    $latestVersion = LatestBicepVersion
+    param (
+        [switch]$All
 
-    [pscustomobject]@{
-        InstalledVersion = $installedVersion
-        LatestVersion    = $latestVersion
-    } 
+    )
+    if ($All.IsPresent) {
+        ListBicepVersions
+    }
+    else {
+        $installedVersion = InstalledBicepVersion
+        $latestVersion = ListBicepVersions -Latest
+    
+        [pscustomobject]@{
+            InstalledVersion = $installedVersion
+            LatestVersion    = $latestVersion
+        } 
+    }
 }
