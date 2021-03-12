@@ -9,7 +9,11 @@ catch {
 InModuleScope Bicep { 
     Describe 'CompareBicepVersion' {
         BeforeAll {
-            Mock LatestBicepVersion -ModuleName Bicep {
+            Mock ListBicepVersions -ModuleName Bicep {
+                throw "should not happen"
+            }
+
+            Mock ListBicepVersions -ModuleName Bicep -ParameterFilter { $Latest.IsPresent }  {
                 return '0.3.1'
             }
         }
