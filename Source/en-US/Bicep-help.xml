@@ -886,7 +886,7 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
       </command:example>
       <command:example>
         <maml:title>------- Example 2: Install a specific Bicep CLI Version -------</maml:title>
-        <dev:code>Install-BicepCLI -Version 'v0.2.328'</dev:code>
+        <dev:code>Install-BicepCLI -Version '0.2.328'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
