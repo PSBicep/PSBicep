@@ -24,7 +24,7 @@ InModuleScope Bicep {
             }
 
             It 'Returns correctly parsed version' {
-                InstalledBicepVersion | Should -Be 'v0.12.987'
+                InstalledBicepVersion | Should -Be '0.12.987'
             }
         }
 
