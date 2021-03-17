@@ -46,8 +46,14 @@ $mergedCommit = [ordered]@{
     mergedDate    = $getPullRequest.merged_at
 }
 
-#Only process PRs with labels assigned
-if ($prLabel -eq 'bugFix' -or $prLabel -eq 'newFeature' -or $prLabel -eq 'updatedDocs') {
+$prLabels=@(
+    'bugFix'
+    'newFeature'
+    'updatedDocs'
+    'enhancement'
+)
+#Only process PRs with correct labels assigned
+if ($prLabel -in $prLabels) {
     if (-not [string]::IsNullOrWhiteSpace($releaseBody)) {
         Write-Verbose "Updating release draft body"
         $releaseBody = $releaseBody | ConvertFrom-Json -AsHashtable -Depth 10
