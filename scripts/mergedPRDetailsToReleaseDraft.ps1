@@ -5,13 +5,15 @@ param (
     [string]$Token
 )
 
+$BaseURL = "https://api.github.com/repos/StefanIvemo/BicepPowerShell"
+
 $header = @{
     "authorization" = "token $Token"
     "Accept"        = "application/vnd.github.v3+json"
 }
 
 #Get all releases including drafts
-$getReleases = Invoke-RestMethod -Method Get -Headers $header -URI  "https://api.github.com/repos/StefanIvemo/BicepPowerShell/releases"
+$getReleases = Invoke-RestMethod -Method Get -Headers $header -URI  ('{0}/releases' -f $BaseURL)
 
 #Check if a release draft exists
 foreach ($release in $getReleases) {
@@ -29,7 +31,7 @@ $releaseMessage = $Rest
 
 #Get PR details from commit
 $prNumber = ($PR -split "#")[1]
-$getPullRequest = Invoke-RestMethod -Method Get -URI  "https://api.github.com/repos/StefanIvemo/BicepPowerShell/pulls/$prNumber"
+$getPullRequest = Invoke-RestMethod -Method Get -URI  ('{0}/pulls/{1}' -f $BaseURL, $prNumber)
 $prLabel = $getPullRequest.labels.name
 Write-Verbose "Found Pull Request"
 Write-Verbose "PR Number: $($getPullRequest.number)" 
@@ -71,11 +73,11 @@ if ($prLabel -eq 'bugFix' -or $prLabel -eq 'newFeature' -or $prLabel -eq 'update
     $requestBody = ConvertTo-Json $body -Depth 10
     
     if (!$releaseId) {
-        $createRelease = Invoke-RestMethod -Method Post -Headers $Header -Body $requestBody -URI  "https://api.github.com/repos/StefanIvemo/BicepPowerShell/releases" -Verbose
+        $createRelease = Invoke-RestMethod -Method Post -Headers $Header -Body $requestBody -URI  ('{0}/releases' -f $BaseURL) -Verbose
         Write-Verbose "New releasedraft created"
     }
     else {
-        $updateRelease = Invoke-RestMethod -Method Patch -Headers $Header -Body $requestBody -URI  "https://api.github.com/repos/StefanIvemo/BicepPowerShell/releases/$releaseId" -Verbose
+        $updateRelease = Invoke-RestMethod -Method Patch -Headers $Header -Body $requestBody -URI  ('{0}/releases/{1}' -f $BaseURL, $releaseId) -Verbose
         Write-Verbose "Updated release draft with $PR"
     }
 } else {
