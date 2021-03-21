@@ -8,7 +8,7 @@ Commands implemented:
 - [Build-Bicep](./Docs/Help/Build-Bicep.md)
 - [ConvertTo-Bicep](./Docs/Help/ConvertTo-Bicep.md)
 - [Get-BicepVersion](./Docs/Help/Get-BicepVersion.md)
-- [Get-BicepApiReference](./Docs/Help/Get-BicepApiReference.md) 
+- [Get-BicepApiReference](./Docs/Help/Get-BicepApiReference.md)
 - [Install-BicepCLI](./Docs/Help/Install-BicepCLI.md)
 - [Update-BicepCLI](./Docs/Help/Update-BicepCLI.md)
 - [Uninstall-BicepCLI](./Docs/Help/Uninstall-BicepCLI.md)
@@ -43,6 +43,6 @@ This project is currently maintained by the following coders:
 
 <!-- References -->
 [BicepIcon]: logo/BicePS_40px.png
-[Bicep]: https://img.shields.io/badge/Bicep-v1.4.2-blue
+[Bicep]: https://img.shields.io/badge/Bicep-v1.4.3-blue
 [BicepDownloads]: https://img.shields.io/powershellgallery/dt/Bicep
 [BicepGallery]: https://www.powershellgallery.com/packages/Bicep/
