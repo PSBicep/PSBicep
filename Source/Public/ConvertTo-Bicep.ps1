@@ -22,7 +22,7 @@ If you would like to report any issues or inaccurate conversions, please see htt
     }
 
     process {
-        $files = Get-Childitem -Path $Path *.json -File
+        $files = Get-Childitem -Path $Path -Filter '*.json' -File
         if ($files) {
             foreach ($file in $files) {
                 $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $file.FullName)
@@ -32,18 +32,26 @@ If you would like to report any issues or inaccurate conversions, please see htt
                         Write-Output $BicepObject.Item2[$BicepFile]
                     }
                     else {
-                        $FileName = Split-Path -Path $BicepFile.AbsolutePath -Leaf
-                        if($PSBoundParameters.ContainsKey('OutputDirectory')) {
+                        if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
+                            $FileName = Split-Path -Path $BicepFile.AbsolutePath -Leaf
                             $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
                         }
                         else {
-                            $FolderPath = Split-Path -Path $BicepFile.AbsolutePath -Parent
-                            $FilePath = Join-Path -Path $FolderPath -ChildPath $FileName
+                            $FilePath = $BicepFile.AbsolutePath
                         }
                         $null = Out-File -InputObject $BicepObject.Item2[$BicepFile] -FilePath $FilePath -Encoding utf8
-                        $null = Build-Bicep -Path $FilePath -AsString
                     }
                 }
+
+                if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
+                    $FileName = Split-Path -Path $BicepObject.Item1.AbsolutePath -Leaf
+                    $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
+                }
+                else {
+                    $FilePath = $BicepObject.Item1.AbsolutePath
+                }
+                $null = Build-Bicep -Path $FilePath -AsString
+                
             }
         }
         else {
