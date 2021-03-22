@@ -1,0 +1,21 @@
+# This workflow adds info about each merged PR to release draft
+env:
+  COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+  GITHUB_TOKEN: ${{ secrets.RELEASE_SECRET }}
+
+name: Add_PR_to_ReleaseDraft
+
+on:
+  push:
+    branches: [ main ]
+  
+jobs:
+  build:
+    
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create_Update_release_draft  
+      shell: pwsh
+      run: ./scripts/mergedPRDetailsToReleaseDraft -CommitMessage "$env:COMMIT_MESSAGE" -Token "$env:GITHUB_TOKEN" -Verbose
