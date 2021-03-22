@@ -10,7 +10,7 @@ if(-not(Get-Command 'dotnet')) {
 
 try {
     if($PSScriptRoot) {
-        Push-Location $PSScriptRoot -StackName 'downloadAssemblies'
+        Push-Location $PSScriptRoot -StackName 'downloadDependencies'
     }
     Remove-Item -Path './tmp' -Recurse -Force -ErrorAction 'Ignore'
     $null = New-Item -Path '../Source/Assets' -ItemType Directory -ErrorAction Ignore
@@ -18,12 +18,12 @@ try {
     $AssemblyVersion = Get-Content -Path '../Source/assemblyversion.txt' -ErrorAction 'Stop'
     
     $null = New-Item -Path './tmp' -ItemType Directory -ErrorAction Ignore
-    Push-Location -Path './tmp' -StackName 'downloadAssemblies'
+    Push-Location -Path './tmp' -StackName 'downloadDependencies'
     Write-Verbose -Message "Cloning Bicep sources using tag: $AssemblyVersion" -Verbose
     git clone 'https://github.com/Azure/bicep.git'
-    Push-Location -Path './bicep' -StackName 'downloadAssemblies'
+    Push-Location -Path './bicep' -StackName 'downloadDependencies'
     git checkout tags/$AssemblyVersion
-    Push-Location -Path './src' -StackName 'downloadAssemblies'
+    Push-Location -Path './src' -StackName 'downloadDependencies'
     dotnet publish './Bicep.Cli' -c 'Release' --no-self-contained --nologo --verbosity 'minimal'
     $FilesToInclude = @(
         'Azure.Bicep.Types.dll',
@@ -43,8 +43,8 @@ try {
     Out-File -FilePath $BicepTypesPath -InputObject $BicepTypesFiltered -WhatIf:$WhatIfPreference
 }
 finally {
-    while(Get-Location -Stack -StackName 'downloadAssemblies' -ErrorAction 'Ignore') {
-        Pop-Location -StackName 'downloadAssemblies'
+    while(Get-Location -Stack -StackName 'downloadDependencies' -ErrorAction 'Ignore') {
+        Pop-Location -StackName 'downloadDependencies'
     }
 }
 
