@@ -46,6 +46,7 @@ function Get-BicepApiReference {
 
     process {
         $baseUrl = "https://docs.microsoft.com/en-us/azure/templates"
+        $suffix = '?tabs=bicep'
 
         switch ($PSCmdlet.ParameterSetName) {
             
@@ -64,6 +65,7 @@ function Get-BicepApiReference {
                     $url += "/$Child"
                 }
 
+                $url += $suffix
              }
             'TypeString' {
                 if ($PSBoundParameters.ContainsKey('Type')) {
@@ -92,6 +94,8 @@ function Get-BicepApiReference {
                     else {
                         $url = "$BaseUrl/$TypeResourceProvider/$TypeApiVersion/$TypeResource/$TypeChild"
                     }
+
+                    $url += $suffix
                 }
                 else {
                     # If Type is not provided, open the template start page
