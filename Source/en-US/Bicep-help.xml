@@ -813,11 +813,23 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Install-BicepCLI is a command to to install the latest Bicep CLI realease available from the Azure/Bicep repo.</maml:para>
+      <maml:para>Install-BicepCLI is a command to to install the Bicep CLI from the Azure/Bicep repo.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Install-BicepCLI</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Version</maml:name>
+          <maml:description>
+            <maml:para>This parameter specifies which version of Bicep CLI to install.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Force</maml:name>
           <maml:description>
@@ -832,6 +844,18 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Version</maml:name>
+        <maml:description>
+          <maml:para>This parameter specifies which version of Bicep CLI to install.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Force</maml:name>
         <maml:description>
@@ -861,8 +885,8 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>Example 2: Install the latest Bicep CLI Version using the force switch</maml:title>
-        <dev:code>Install-BicepCLI -Force</dev:code>
+        <maml:title>------- Example 2: Install a specific Bicep CLI Version -------</maml:title>
+        <dev:code>Install-BicepCLI -Version '0.2.328'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -980,6 +1004,60 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
 Update Bicep CLI</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Update-BicepTypes</command:name>
+      <command:verb>Update</command:verb>
+      <command:noun>BicepTypes</command:noun>
+      <maml:description>
+        <maml:para>Update Bicep Types data</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Update-BicepTypes is a command to update the Bicep Types data used by command Get-BicepApiReference</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Update-BicepTypes</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------- Example 1: Update Bicep types data --------------</maml:title>
+        <dev:code>Update-BicepTypes</dev:code>
+        <dev:remarks>
+          <maml:para>This command fetches the latest types information and saves it to the modules Asset folder.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

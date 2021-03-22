@@ -10,7 +10,7 @@ function Uninstall-BicepCLI {
         $IsAdmin = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
         if (-not $IsAdmin -and -not $Force) {
-            Write-Error 'Some Bicep parts might not be properly uninstalled unless you run elevated. Use the -Force switch to try anyway.'
+            Write-Error 'Some Bicep parts might not be properly uninstalled unless you run elevated. Use the -Force switch to try anyway. Any Bicep version installed by Azure CLI to %USERPROFILE%\.Azure\bin will not be uninstalled.'
         }
         if (-not $IsAdmin -and $Force) {
             Write-Host 'You are not running elevated. We may not be able to remove all parts.'

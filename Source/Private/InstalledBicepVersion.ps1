@@ -1,6 +1,7 @@
 function InstalledBicepVersion {   
     if (TestBicep) {
-        ((bicep --version) -split "\s+")[3]
+        $Version=((bicep --version) -split "\s+")[3]
+        "$Version"
     } else {
         "Not installed"
     }  
