@@ -39,9 +39,12 @@ function Install-BicepCLI {
             start-sleep 1
         } while ((Get-Item $TargetFileName).Length -lt $RequestedGithubAsset.size)
 
+        # Wait for a bit to make sure we don't run into file locks
+        Start-Sleep -Seconds 2
+
         # Run the installer in silent mode
         Write-Verbose "Running installer $TargetFileName /VERYSILENT"
-        Start-Process $TargetFileName -ArgumentList '/VERYSILENT' -Wait
+        Start-Process $TargetFileName -ArgumentList '/VERYSILENT' -Wait -ErrorAction Stop
         $i = 0
         do {
             $i++

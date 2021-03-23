@@ -46,6 +46,7 @@ function Get-BicepApiReference {
 
     process {
         $baseUrl = "https://docs.microsoft.com/en-us/azure/templates"
+        $suffix = '?tabs=bicep'
 
         switch ($PSCmdlet.ParameterSetName) {
             
@@ -64,32 +65,41 @@ function Get-BicepApiReference {
                     $url += "/$Child"
                 }
 
+                $url += $suffix
              }
             'TypeString' {
-                # Type looks like this:   Microsoft.Aad/domainServicess@2017-01-01
-                # Then we split here:                  ^               ^
-                # Or it looks like this:  Microsoft.ApiManagement/service/certificates@2019-12-01
-                # Then we split here:                            ^       ^            ^
-                # Lets not use regex. regex kills kittens
+                if ($PSBoundParameters.ContainsKey('Type')) {
+                    # Type looks like this:   Microsoft.Aad/domainServicess@2017-01-01
+                    # Then we split here:                  ^               ^
+                    # Or it looks like this:  Microsoft.ApiManagement/service/certificates@2019-12-01
+                    # Then we split here:                            ^       ^            ^
+                    # Lets not use regex. regex kills kittens
 
-                # First check if we have three parts before the @
-                # In that case the last one should be the child
-                if (($type -split '/' ).count -eq 3) {
-                    $TypeChild = ( ($type -split '@') -split '/' )[2]
-                }  
-                else {
-                    $TypeChild = $null
-                }
+                    # First check if we have three parts before the @
+                    # In that case the last one should be the child
+                    if (($type -split '/' ).count -eq 3) {
+                        $TypeChild = ( ($type -split '@') -split '/' )[2]
+                    }  
+                    else {
+                        $TypeChild = $null
+                    }
 
-                $TypeResourceProvider = ( ($type -split '@') -split '/' )[0]
-                $TypeResource = ( ($type -split '@') -split '/' )[1]
-                $TypeApiVersion = ( $type -split '@' )[1]
-               
-                if ([string]::IsNullOrEmpty($TypeChild)) {
-                    $url = "$BaseUrl/$TypeResourceProvider/$TypeApiVersion/$TypeResource"
+                    $TypeResourceProvider = ( ($type -split '@') -split '/' )[0]
+                    $TypeResource = ( ($type -split '@') -split '/' )[1]
+                    $TypeApiVersion = ( $type -split '@' )[1]
+                
+                    if ([string]::IsNullOrEmpty($TypeChild)) {
+                        $url = "$BaseUrl/$TypeResourceProvider/$TypeApiVersion/$TypeResource"
+                    }
+                    else {
+                        $url = "$BaseUrl/$TypeResourceProvider/$TypeApiVersion/$TypeResource/$TypeChild"
+                    }
+
+                    $url += $suffix
                 }
                 else {
-                    $url = "$BaseUrl/$TypeResourceProvider/$TypeApiVersion/$TypeResource/$TypeChild"
+                    # If Type is not provided, open the template start page
+                    $url = $BaseUrl
                 }
             }
         }
