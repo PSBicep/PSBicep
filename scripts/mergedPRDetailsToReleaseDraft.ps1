@@ -64,7 +64,8 @@ if ($prLabel -in $prLabels) {
         $releaseBody = @{
             newFeature  = @()
             bugFix      = @()
-            updatedDocs = @()  
+            updatedDocs = @()
+            enhancement = @()  
         }
         $releaseBody[$prLabel] += $mergedCommit   
     }
