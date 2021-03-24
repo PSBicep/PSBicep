@@ -18,7 +18,7 @@ jobs:
     - name: Download required assemblies
       if: steps.assetscache.outputs.cache-hit != 'true'
       shell: pwsh
-      run: ./scripts/downloadAssemblies.ps1
+      run: ./scripts/downloadDependencies.ps1
     - name: Import required modules
       run: Install-Module -Name Pester -Force
       shell: pwsh
