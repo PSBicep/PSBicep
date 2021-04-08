@@ -5,9 +5,10 @@ function Convert-JsonToBicep {
             ParameterSetName = 'String')]
         [ValidateNotNullOrEmpty()]
         [ValidateScript( { 
-                try { $_ | Convertfrom-Json }
-                catch { throw 'The string is not a valid json' }
-            })]
+            try { $_ | Convertfrom-Json }
+            catch { $false }
+          },
+          ErrorMessage = 'The string is not a valid json')]
         [string]$String
     )
 
