@@ -28,16 +28,16 @@ function Convert-JsonToBicep {
         $templateBase['variables'] = $variables
         $tempTemplate = ConvertTo-Json -InputObject $templateBase -Depth 100
         Out-File -InputObject $tempTemplate -FilePath "$($env:TEMP)\tempfile.json"
-        $files = Get-ChildItem -Path "$($env:TEMP)\tempfile.json"
+        $file = Get-ChildItem -Path "$($env:TEMP)\tempfile.json"
         
-        if ($files) {
-            $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $files.FullName)
+        if ($file) {
+            $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $file.FullName)
             foreach ($BicepFile in $BicepObject.Item2.Keys) {                 
                 $bicepData = $BicepObject.Item2[$BicepFile]
             }       
             $bicepOutput = $bicepData.Replace("var temp = ", "")
             Write-Host $bicepOutput                        
         }        
-        Remove-Item $files
+        Remove-Item $file
     }
 }
