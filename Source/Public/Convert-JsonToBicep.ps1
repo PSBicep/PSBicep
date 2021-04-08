@@ -4,7 +4,10 @@ function Convert-JsonToBicep {
         [Parameter(Mandatory, 
             ParameterSetName = 'String')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({$_ | Convertfrom-Json})]
+        [ValidateScript( { 
+                try { $_ | Convertfrom-Json }
+                catch { throw 'The string is not a valid json' }
+            })]
         [string]$String
     )
 
@@ -27,15 +30,13 @@ function Convert-JsonToBicep {
         $files = Get-ChildItem -Path "$($env:TEMP)\tempfile.json"
         
         if ($files) {
-            foreach ($file in $files) {
-                $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $file.FullName)
-                
-                foreach ($BicepFile in $BicepObject.Item2.Keys) {                 
-                    $bicepData = $BicepObject.Item2[$BicepFile]
-                }       
-                $bicepOutput = $bicepData.Replace("var temp = ", "")
-                Write-Host $bicepOutput                            
-            }
-        }
+            $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $files.FullName)
+            foreach ($BicepFile in $BicepObject.Item2.Keys) {                 
+                $bicepData = $BicepObject.Item2[$BicepFile]
+            }       
+            $bicepOutput = $bicepData.Replace("var temp = ", "")
+            Write-Host $bicepOutput                        
+        }        
+        Remove-Item $files
     }
 }
