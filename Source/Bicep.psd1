@@ -33,10 +33,10 @@ Copyright = '(c) Stefan Ivemo. All rights reserved.'
 Description = 'A module to run Bicep using PowerShell. The module is a community project built using the Bicep assemblies to provide you with an enhanced Bicep experience directly from PowerShell without having Bicep CLI installed. 
 
 The module also provides the additional features:
-- Specify output folder when building* and decompiling Bicep/ARM templates
 - Generate ARM template parameter files directly from a Bicep file
 - Quickly open the API reference docs by referencing the Bicep types
 - Get the result from a build as a string or hashtable instead of writing to a file
+- Convert JSON objects to Bicep Language
 - Install/Update/Uninstall Bicep CLI
 
 For more information about Bicep, please visit the official Bicep GitHub Repository:
