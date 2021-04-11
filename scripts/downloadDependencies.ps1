@@ -24,6 +24,16 @@ try {
     Push-Location -Path './bicep' -StackName 'downloadDependencies'
     git checkout tags/$AssemblyVersion
     Push-Location -Path './src' -StackName 'downloadDependencies'
+    # HACK to revert to old Newtonsoft.Json until we have implemented a real fix
+        $ProjFiles = Get-ChildItem -Path '.\*\*.csproj' | Select-String -SimpleMatch -Pattern '<PackageReference Include="Newtonsoft.Json" Version="'
+        
+        foreach($File in $ProjFiles) {
+            $Content = Get-Content -Path $File.Path
+            $Content[$File.LineNumber-1] = $Content[$File.LineNumber-1] -replace '(\s+<PackageReference Include="Newtonsoft\.Json" Version=)"[^"]+"\s*/>', '$1"12.0.3" />'
+            Set-Content -Path $File.Path -Value $Content
+        }
+        
+    # end HACK
     dotnet publish './Bicep.Cli' -c 'Release' --no-self-contained --nologo --verbosity 'minimal'
     $FilesToInclude = @(
         'Azure.Bicep.Types.dll',
@@ -31,7 +41,8 @@ try {
         'Azure.Deployments.Core.dll',
         'Azure.Deployments.Expression.dll', 
         'Bicep.Core.dll',
-        'Bicep.Decompiler.dll'
+        'Bicep.Decompiler.dll',
+        'Newtonsoft.Json.dll'
     )
     $Files = Get-Item -Path '.\Bicep.Cli\bin\Release\net5.0\publish\*' -Include $FilesToInclude
     $Files | Copy-Item -Destination $AssetsFolder.Path -Force
