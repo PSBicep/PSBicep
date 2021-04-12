@@ -62,7 +62,7 @@ This example converts a JSON array to Bicep Language
 Get-Content -Path <path to .json file> -Raw | Convert-JsonToBicep
 ```
 
-This exampe converts a JSON file to Bicep Language
+This example converts a JSON file to Bicep Language
 
 ## PARAMETERS
 
