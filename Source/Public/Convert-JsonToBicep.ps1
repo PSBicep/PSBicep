@@ -19,7 +19,7 @@ function Convert-JsonToBicep {
 
     process {
         $inputObject = $String | ConvertFrom-Json
-        $hashTable = ConvertToHashtable -InputObject $InputObject -Ordered
+        $hashTable = ConvertToHashtable -InputObject $inputObject -Ordered
         $variables = [ordered]@{}
         $templateBase = [ordered]@{
             '$schema'        = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
