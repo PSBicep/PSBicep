@@ -27,11 +27,15 @@ function Build-Bicep {
         [switch]$AsHashtable
     )
 
+    
+
     begin {
+        if (-not $Script:ModuleVersionChecked) {
+            testModuleVersion
+        }
         if ($PSBoundParameters.ContainsKey('OutputDirectory') -and (-not (Test-Path $OutputDirectory))) {
             $null = New-Item $OutputDirectory -Force -ItemType Directory -WhatIf:$WhatIfPreference
         }
-
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
             $DLLPath = [Bicep.Core.Workspaces.Workspace].Assembly.Location
             $DllFile = Get-Item -Path $DLLPath
@@ -53,7 +57,8 @@ function Build-Bicep {
                         $ARMTemplate = ConvertTo-Json -InputObject $ARMTemplateObject -Depth 100
                         if ($AsString.IsPresent) {
                             Write-Output $ARMTemplate
-                        } elseif ($AsHashtable.IsPresent) {
+                        }
+                        elseif ($AsHashtable.IsPresent) {
                             $ARMTemplate | ConvertFrom-Json -AsHashtable
                         }
                         else {        
