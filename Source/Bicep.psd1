@@ -12,7 +12,7 @@
 RootModule = 'Bicep.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.4.3'
+ModuleVersion = '1.4.4'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core')
@@ -37,6 +37,7 @@ The module also provides the additional features:
 - Generate ARM template parameter files directly from a Bicep file
 - Quickly open the API reference docs by referencing the Bicep types
 - Get the result from a build as a string or hashtable instead of writing to a file
+- Convert JSON objects to Bicep Language
 - Install/Update/Uninstall Bicep CLI
 
 For more information about Bicep, please visit the official Bicep GitHub Repository:
