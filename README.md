@@ -31,7 +31,7 @@ If you find a bug or have an idea for a new feature create an issue in the repo.
 
 ## Contribution
 
-If you like the Bicep PowerShell module and want to contribute you are very much welcome to do so. Please create an issue before you start working with a brand new feature to make sure that it’s not already in the works or that the idea has been dismissed already. There is also a number of issues up for grabs, if there is no one assigned to the issue, comment and let us know you've started working on it.
+If you like the Bicep PowerShell module and want to contribute you are very much welcome to do so. Please read our [Contribution Guide](CONTRIBUTING.MD) before you start!
 
 ## Maintainers
 
