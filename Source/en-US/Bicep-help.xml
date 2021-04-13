@@ -509,6 +509,13 @@ Convert-JsonToBicep -String $json</dev:code>
           <maml:para>This example converts a JSON array to Bicep Language</maml:para>
         </dev:remarks>
       </command:example>
+      <command:example>
+        <maml:title>----- Example 3: Read a file and convert to Bicep Language -----</maml:title>
+        <dev:code>Get-Content -Path &lt;path to .json file&gt; -Raw | Convert-JsonToBicep</dev:code>
+        <dev:remarks>
+          <maml:para>This example converts a JSON file to Bicep Language</maml:para>
+        </dev:remarks>
+      </command:example>
     </command:examples>
     <command:relatedLinks />
   </command:command>
