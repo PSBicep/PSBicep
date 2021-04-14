@@ -15,7 +15,7 @@ To update Bicep on your system see instructions on https://github.com/Azure/bice
     if ($versionCheck) {
         Write-Host "You are already running the latest version of Bicep CLI."
     }
-    elseif ($isWindows) {
+    else {
         Uninstall-BicepCLI -Force -ErrorAction SilentlyContinue
         Install-BicepCLI -Force
     }
