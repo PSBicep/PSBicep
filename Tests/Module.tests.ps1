@@ -7,12 +7,12 @@
 $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
 
 # actual exported functions
-$ExportedFunctions = (Get-Module -FullyQualifiedName "$ScriptDirectory\..\Bicep.psd1" -ListAvailable -Refresh).ExportedFunctions.Keys
-$ModuleName = (Get-ChildItem -Path "$ScriptDirectory\..\Bicep.psm1").BaseName
+$ExportedFunctions = (Get-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Source\Bicep.psd1" -ListAvailable -Refresh).ExportedFunctions.Keys
+$ModuleName = (Get-ChildItem -Path "$ScriptDirectory\..\Source\Bicep.psm1").BaseName
 
 # Create test cases for public functions
-if (Test-Path -Path "$ScriptDirectory\..\Public" -PathType Container) {
-    $PublicFiles = Get-Childitem "$ScriptDirectory\..\Public\*.ps1"
+if (Test-Path -Path "$ScriptDirectory\..\Source\Public" -PathType Container) {
+    $PublicFiles = Get-Childitem "$ScriptDirectory\..\Source\Public\*.ps1"
     $PublicFunctions = $PublicFiles.Name -replace '\.ps1$'
 
     $PublicTestCases = @()
@@ -25,8 +25,8 @@ if (Test-Path -Path "$ScriptDirectory\..\Public" -PathType Container) {
 }
 
 # Create test cases for private functions
-if (Test-Path -Path "$ScriptDirectory\..\Private" -PathType Container) {
-    $PrivateFiles = Get-Childitem "$ScriptDirectory\..\Private\*.ps1"
+if (Test-Path -Path "$ScriptDirectory\..\Source\Private" -PathType Container) {
+    $PrivateFiles = Get-Childitem "$ScriptDirectory\..\Source\Private\*.ps1"
     $PrivateFunctions = $PrivateFiles.Name -replace '\.ps1$'
 
     $PrivateTestCases = @()
@@ -42,7 +42,7 @@ if (Test-Path -Path "$ScriptDirectory\..\Private" -PathType Container) {
 BeforeAll {
     try {
         $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-        Import-Module -FullyQualifiedName "$ScriptDirectory\..\Bicep.psd1" -Force
+        Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1" -Force
     }
     catch {
         Throw "Unable to import module $ModuleName. $_"
