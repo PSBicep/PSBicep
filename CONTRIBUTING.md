@@ -65,7 +65,7 @@ Import-Module platyPS
 
 ```powershell
 # you should have module imported in the session
-Import-Module .\Source\Bicep.psd1
+Import-Module .\Bicep.psd1
 New-MarkdownHelp -Module Bicep -OutputFolder .\Docs\Help
 ```
 
@@ -81,8 +81,8 @@ New-ExternalHelp .\Docs\Help -OutputPath .\Source\en-US\ -Force
 
 ```powershell
 # re-import your module with latest changes
-Import-Module MyAwesomeModule -Force
-Update-MarkdownHelp .\docs
+Import-Module .\Bicep.psd1 -Force
+Update-MarkdownHelp .\Docs\Help
 ```
 
 ### Tests
