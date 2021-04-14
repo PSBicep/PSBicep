@@ -7,7 +7,7 @@
 $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
 
 # actual exported functions
-$ExportedFunctions = (Get-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Source\Bicep.psd1" -ListAvailable -Refresh).ExportedFunctions.Keys
+$ExportedFunctions = (Get-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1" -ListAvailable -Refresh).ExportedFunctions.Keys
 $ModuleName = (Get-ChildItem -Path "$ScriptDirectory\..\Source\Bicep.psm1").BaseName
 
 # Create test cases for public functions
