@@ -6,7 +6,7 @@ function Update-BicepCLI {
     if (!($IsWindows)) {
         Write-Error -Message "This cmdlet is only supported for Windows systems. `
 To update Bicep on your system see instructions on https://github.com/Azure/bicep"
-        Write-Host "Compare your Bicep version with latest version by running Get-BicepVersion"
+        Write-Host "`nCompare your Bicep version with latest version by running Get-BicepVersion`n"
         break
     }
 
