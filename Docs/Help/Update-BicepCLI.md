@@ -8,7 +8,7 @@ schema: 2.0.0
 # Update-BicepCLI
 
 ## SYNOPSIS
-Update Bicep CLI
+Update Bicep CLI (Windows only)
 
 ## SYNTAX
 

@@ -8,8 +8,7 @@ schema: 2.0.0
 # Install-BicepCLI
 
 ## SYNOPSIS
-
-Install Bicep CLI
+Install Bicep CLI (Windows only)
 
 ## SYNTAX
 
