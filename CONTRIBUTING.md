@@ -10,7 +10,6 @@ You are more than welcome to contribute to the Bicep PowerShell module, whether 
 - Run the script `.\scripts\downloadDependencies.ps1` to download the required dependencies (Bicep Assemblies (DLLs) and Bicep Types information) to the Assets (`Source/Assets`) folder.
 - If you haven't already, you will need the [PlatyPs](https://github.com/PowerShell/platyPS) PowerShell Module to generate command help and docs.
 
-
 ## Developing
 
 ### Structure
