@@ -4,7 +4,7 @@ You are more than welcome to contribute to the Bicep PowerShell module, whether 
 
 ## Getting Started
 
-- Fork this repo (see [this forking guide](https://guides.github.com/ activities/forking/) for more information).
+- Fork this repo (see [this forking guide](https://guides.github.com/activities/forking/) for more information).
 - Checkout the repo locally with `git clone git@github.com:{your_username}/BicepPowerShell.git`.
 - You will need dotnet core sdk 5.0.100 installed locally to be able to download the required assemblies.
 - Run the script `.\scripts\downloadDependencies.ps1` to download the required dependencies (Bicep Assemblies (DLLs) and Bicep Types information) to the Assets (`Source/Assets`) folder.
