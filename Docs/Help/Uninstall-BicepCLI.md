@@ -8,7 +8,7 @@ schema: 2.0.0
 # Uninstall-BicepCLI
 
 ## SYNOPSIS
-Uninstall Bicep CLI
+Uninstall Bicep CLI (Windows only)
 
 ## SYNTAX
 
