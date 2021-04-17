@@ -509,6 +509,13 @@ Convert-JsonToBicep -String $json</dev:code>
           <maml:para>This example converts a JSON array to Bicep Language</maml:para>
         </dev:remarks>
       </command:example>
+      <command:example>
+        <maml:title>----- Example 3: Read a file and convert to Bicep Language -----</maml:title>
+        <dev:code>Get-Content -Path &lt;path to .json file&gt; -Raw | Convert-JsonToBicep</dev:code>
+        <dev:remarks>
+          <maml:para>This example converts a JSON file to Bicep Language</maml:para>
+        </dev:remarks>
+      </command:example>
     </command:examples>
     <command:relatedLinks />
   </command:command>
@@ -917,7 +924,7 @@ Convert-JsonToBicep -String $json</dev:code>
       <command:verb>Install</command:verb>
       <command:noun>BicepCLI</command:noun>
       <maml:description>
-        <maml:para>Install Bicep CLI</maml:para>
+        <maml:para>Install Bicep CLI (Windows only)</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -1008,7 +1015,7 @@ Convert-JsonToBicep -String $json</dev:code>
       <command:verb>Uninstall</command:verb>
       <command:noun>BicepCLI</command:noun>
       <maml:description>
-        <maml:para>Uninstall Bicep CLI</maml:para>
+        <maml:para>Uninstall Bicep CLI (Windows only)</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -1086,7 +1093,7 @@ Convert-JsonToBicep -String $json</dev:code>
       <command:verb>Update</command:verb>
       <command:noun>BicepCLI</command:noun>
       <maml:description>
-        <maml:para>Update Bicep CLI</maml:para>
+        <maml:para>Update Bicep CLI (Windows only)</maml:para>
       </maml:description>
     </command:details>
     <maml:description>

@@ -3,7 +3,14 @@ function Uninstall-BicepCLI {
     param (
         [switch]$Force
     )
-    
+
+    if (!($IsWindows)) {
+        Write-Error -Message "This cmdlet is only supported for Windows systems. `
+To uninstall Bicep on your system see instructions on https://github.com/Azure/bicep"
+        Write-Host "`nList the available module cmdlets by running 'Get-Help -Name Bicep'`n"
+        break
+    }
+
     if (TestBicep) {
         # Test if we are running as administrators.
         $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
@@ -15,10 +22,10 @@ function Uninstall-BicepCLI {
         if (-not $IsAdmin -and $Force) {
             Write-Host 'You are not running elevated. We may not be able to remove all parts.'
         }
-        if ($IsAdmin -or $Force) {    
+        if ($IsAdmin -or $Force) {
             $UninstallerFileName = 'unins000.exe'
             $BicepExeName = 'bicep.exe'
-            $BicepInstalls = $env:Path -split ';' | Where-Object { $_ -like "*\.bicep" -or $_ -like "*\Bicep CLI" } 
+            $BicepInstalls = $env:Path -split ';' | Where-Object { $_ -like "*\.bicep" -or $_ -like "*\Bicep CLI" }
 
             foreach ($Install in $BicepInstalls) {
                 $FileContents = Get-ChildItem $Install
@@ -48,7 +55,7 @@ function Uninstall-BicepCLI {
             else {
                 Write-Host "Successfully removed bicep."
             }
-        
+
         }
     }
     else {

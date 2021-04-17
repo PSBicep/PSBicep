@@ -20,13 +20,14 @@ function Convert-JsonToBicep {
     }
 
     process {
-        $jsonObject = ConvertFrom-Json -InputObject $String -AsHashtable -Depth 100
+        $inputObject = $String | ConvertFrom-Json
+        $hashTable = ConvertToHashtable -InputObject $inputObject -Ordered
         $variables = [ordered]@{}
         $templateBase = [ordered]@{
             '$schema'        = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
             'contentVersion' = '1.0.0.0'
         }
-        $variables['temp'] = $jsonObject
+        $variables['temp'] = $hashTable
         $templateBase['variables'] = $variables
         $tempTemplate = ConvertTo-Json -InputObject $templateBase -Depth 100
         Out-File -InputObject $tempTemplate -FilePath "$tempPath\tempfile.json"
