@@ -49,7 +49,7 @@ Build-Bicep -Path vnet.bicep
 
 ### Example 2: Compile single bicep file and specify the output directory
 ```powershell
-Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' - -OutputDirectory 'c:\armtemplates\vnet.bicep'
+Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputDirectory 'c:\armtemplates\vnet.bicep'
 ```
 
 ### Example 3: Compile all .bicep files in a directory
