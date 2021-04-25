@@ -62,13 +62,13 @@ function Build-Bicep {
                             $ARMTemplate | ConvertFrom-Json -AsHashtable
                         }
                         else {        
-                            if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
-                                $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.json' -f $file.BaseName)
-                                $ParameterFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $file.BaseName)
-                            }
-                            elseif ($PSBoundParameters.ContainsKey('OutputDirectory') -and ((Split-Path -Path $OutputDirectory -Leaf).Contains('.json')) -or ((Split-Path -Path $OutputDirectory -Leaf).Contains('.bicep'))) {
+                            if ($PSBoundParameters.ContainsKey('OutputDirectory') -and ((Split-Path -Path $OutputDirectory -Leaf).Contains('.json')) -or ((Split-Path -Path $OutputDirectory -Leaf).Contains('.bicep'))) {
                                 $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.json' -f (Split-Path -Path $OutputDirectory -Leaf).Split(".")[0])
                                 $ParameterFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f (Split-Path -Path $OutputDirectory -Leaf).Split(".")[0])
+                            }
+                            elseif ($PSBoundParameters.ContainsKey('OutputDirectory')) {
+                                $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.json' -f $file.BaseName)
+                                $ParameterFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $file.BaseName)
                             }
                             else {
                                 $OutputFilePath = $file.FullName -replace '\.bicep', '.json'
