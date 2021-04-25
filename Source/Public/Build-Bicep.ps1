@@ -66,6 +66,10 @@ function Build-Bicep {
                                 $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.json' -f $file.BaseName)
                                 $ParameterFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $file.BaseName)
                             }
+                            elseif ($PSBoundParameters.ContainsKey('OutputDirectory') -and ((Split-Path -Path $OutputDirectory -Leaf).Contains('.json')) -or ((Split-Path -Path $OutputDirectory -Leaf).Contains('.bicep'))) {
+                                $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.json' -f (Split-Path -Path $OutputDirectory -Leaf).Split(".")[0])
+                                $ParameterFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f (Split-Path -Path $OutputDirectory -Leaf).Split(".")[0])
+                            }
                             else {
                                 $OutputFilePath = $file.FullName -replace '\.bicep', '.json'
                                 $ParameterFilePath = $file.FullName -replace '\.bicep', '.parameters.json'
