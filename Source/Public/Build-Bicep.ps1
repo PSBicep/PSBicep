@@ -12,6 +12,18 @@ function Build-Bicep {
         [ValidateNotNullOrEmpty()]
         [string]$OutputDirectory,
 
+        [Parameter(ParameterSetName = 'Default', Position = 2)]
+        [ValidateNotNullOrEmpty()]
+        [ValidateScript(
+            {
+                (Split-path -path $_ -leaf) -match ".json"
+            }
+            , ErrorMessage = 'OutputPath needs to be a .JSON-file, e.g. "C:\Output\template.json"')]
+        [string]$OutputPath,
+
+        #Skapa ingen underfolder utan bara .json-filen.
+        #Får bara skicka in en .bicep-fil. "ValidateScript"
+
         [Parameter(ParameterSetName = 'Default')]
         [Parameter(ParameterSetName = 'AsString')]
         [Parameter(ParameterSetName = 'AsHashtable')]
@@ -35,6 +47,9 @@ function Build-Bicep {
         }
         if ($PSBoundParameters.ContainsKey('OutputDirectory') -and (-not (Test-Path $OutputDirectory))) {
             $null = New-Item $OutputDirectory -Force -ItemType Directory -WhatIf:$WhatIfPreference
+        }
+        if ($PSBoundParameters.ContainsKey('OutputPath') -and (-not (Test-Path $OutputPath))) {
+            $null = New-Item (Split-Path -Path $OutputPath) -Force -ItemType Directory -WhatIf:$WhatIfPreference
         }
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
             $DLLPath = [Bicep.Core.Workspaces.Workspace].Assembly.Location
@@ -62,9 +77,9 @@ function Build-Bicep {
                             $ARMTemplate | ConvertFrom-Json -AsHashtable
                         }
                         else {        
-                            if ($PSBoundParameters.ContainsKey('OutputDirectory') -and ((Split-Path -Path $OutputDirectory -Leaf).Contains('.json')) -or ((Split-Path -Path $OutputDirectory -Leaf).Contains('.bicep'))) {
-                                $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.json' -f (Split-Path -Path $OutputDirectory -Leaf).Split(".")[0])
-                                $ParameterFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f (Split-Path -Path $OutputDirectory -Leaf).Split(".")[0])
+                            if ($PSBoundParameters.ContainsKey('OutputPath')) {
+                                $OutputFilePath = $OutputPath
+                                $ParameterFilePath = Join-Path -Path (Split-Path -Path $OutputPath) -ChildPath ('{0}.parameters.json' -f (Split-Path -Path $OutputPath -Leaf).Split(".")[0])
                             }
                             elseif ($PSBoundParameters.ContainsKey('OutputDirectory')) {
                                 $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.json' -f $file.BaseName)
