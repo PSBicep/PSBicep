@@ -39,8 +39,6 @@ function Build-Bicep {
         [switch]$AsHashtable
     )
 
-    
-
     begin {
         if (-not $Script:ModuleVersionChecked) {
             testModuleVersion
