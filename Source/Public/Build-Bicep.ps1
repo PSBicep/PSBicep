@@ -21,9 +21,6 @@ function Build-Bicep {
             , ErrorMessage = 'OutputPath needs to be a .JSON-file, e.g. "C:\Output\template.json"')]
         [string]$OutputPath,
 
-        #Skapa ingen underfolder utan bara .json-filen.
-        #Får bara skicka in en .bicep-fil. "ValidateScript"
-
         [Parameter(ParameterSetName = 'Default')]
         [Parameter(ParameterSetName = 'AsString')]
         [Parameter(ParameterSetName = 'AsHashtable')]
