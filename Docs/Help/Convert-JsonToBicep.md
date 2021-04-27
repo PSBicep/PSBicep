@@ -12,7 +12,7 @@ Convert a JSON string to Bicep
 
 ## SYNTAX
 
-```
+```powershell
 Convert-JsonToBicep -String <String> [<CommonParameters>]
 ```
 
