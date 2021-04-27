@@ -16,7 +16,7 @@ function Build-Bicep {
         [ValidateNotNullOrEmpty()]
         [ValidateScript(
             {
-                (Split-path -path $_ -leaf) -match ".json"
+                (Split-path -path $_ -leaf) -match ".json$"
             }
             , ErrorMessage = 'OutputPath needs to be a .JSON-file, e.g. "C:\Output\template.json"')]
         [string]$OutputPath,
