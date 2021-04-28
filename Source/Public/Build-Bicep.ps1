@@ -24,7 +24,9 @@ function Build-Bicep {
         [switch]$AsString,
 
         [Parameter(ParameterSetName = 'AsHashtable')]
-        [switch]$AsHashtable
+        [switch]$AsHashtable,
+
+        [switch]$IgnoreWarnings
     )
 
     
@@ -49,7 +51,11 @@ function Build-Bicep {
         if ($files) {
             foreach ($file in $files) {
                 if ($file.Name -notin $ExcludeFile) {
-                    $ARMTemplate = ParseBicep -Path $file.FullName
+                    if ($IgnoreWarnings.IsPresent) {
+                        $ARMTemplate = ParseBicep -Path $file.FullName -IgnoreWarnings
+                    } else {
+                        $ARMTemplate = ParseBicep -Path $file.FullName
+                    }
                     if (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {
                         $BicepModuleVersion = (Get-Module -Name Bicep).Version | Sort-Object -Descending | Select-Object -First 1
                         $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
