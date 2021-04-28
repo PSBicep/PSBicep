@@ -1,4 +1,5 @@
 function Get-BicepVersion {
+    [CmdletBinding(HelpUri = 'https://github.com/StefanIvemo/BicepPowerShell/blob/v1.4.5/Docs/Help/Get-BicepVersion.md')]
     param (
         [switch]$All
 

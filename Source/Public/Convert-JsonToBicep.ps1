@@ -1,5 +1,5 @@
 function Convert-JsonToBicep {
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/StefanIvemo/BicepPowerShell/blob/v1.4.5/Docs/Help/Convert-JsonToBicep.md')]
     param(
         [Parameter(Mandatory,
             ValueFromPipeline = $true,

@@ -1,5 +1,5 @@
 function Uninstall-BicepCLI {
-    [CmdLetBinding()]
+    [CmdLetBinding(HelpUri = 'https://github.com/StefanIvemo/BicepPowerShell/blob/v1.4.5/Docs/Help/Uninstall-BicepCLI.md')]
     param (
         [switch]$Force
     )

@@ -1,5 +1,5 @@
 function Install-BicepCLI {
-    [CmdLetBinding()]
+    [CmdLetBinding(HelpUri = 'https://github.com/StefanIvemo/BicepPowerShell/blob/v1.4.5/Docs/Help/Install-BicepCLI.md')]
     param(
         [ValidateScript( { (ListBicepVersions).Contains($_) },
             ErrorMessage = "Bicep Version '{0}' was not found.")]

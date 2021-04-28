@@ -1,5 +1,6 @@
 function Update-BicepTypes {
-    [CmdletBinding(SupportsShouldProcess)]
+    [CmdletBinding(SupportsShouldProcess,
+    HelpUri = 'https://github.com/StefanIvemo/BicepPowerShell/blob/v1.4.5/Docs/Help/Update-BicepTypes.md')]
     param ()
 
     $ModulePath = (Get-Module Bicep).Path

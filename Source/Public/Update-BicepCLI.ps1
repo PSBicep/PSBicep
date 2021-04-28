@@ -1,5 +1,5 @@
 function Update-BicepCLI {
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/StefanIvemo/BicepPowerShell/blob/v1.4.5/Docs/Help/Update-BicepCLI.md')]
     param (
     )
 

@@ -1,5 +1,5 @@
 function ConvertTo-Bicep {
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/StefanIvemo/BicepPowerShell/blob/v1.4.5/Docs/Help/ConvertTo-Bicep.md')]
     param(
         [string]$Path = $pwd.path,
         

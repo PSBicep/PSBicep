@@ -1,126 +1,61 @@
-function Get-BicepApiReference {
-    [CmdletBinding(DefaultParameterSetName = 'TypeString')]
+function ConvertTo-Bicep {
+    [CmdletBinding(HelpUri = 'https://github.com/StefanIvemo/BicepPowerShell/blob/v1.4.5/Docs/Help/ConvertTo-Bicep.md')]
     param(
-        [Parameter(Mandatory, 
-                   ParameterSetName = 'ResourceProvider')]
-        [ValidateNotNullOrEmpty()]
-        [ValidateScript({ (GetBicepTypes).ResourceProvider -contains $_ }, 
-                          ErrorMessage = "ResourceProvider '{0}' was not found.")]
-        [ArgumentCompleter([BicepResourceProviderCompleter])]
-        [string]$ResourceProvider,
-
-        [Parameter(Mandatory, 
-                   ParameterSetName = 'ResourceProvider')]
-        [ValidateNotNullOrEmpty()]
-        [ValidateScript({ (GetBicepTypes).Resource -contains $_ }, 
-                          ErrorMessage = "Resource '{0}' was not found.")]
-        [ArgumentCompleter([BicepResourceCompleter])]
-        [string]$Resource,
+        [string]$Path = $pwd.path,
         
-        [Parameter(ParameterSetName = 'ResourceProvider')]
-        [ValidateNotNullOrEmpty()]
-        [ValidateScript({ (GetBicepTypes).Child -contains $_ }, 
-                          ErrorMessage = "Child '{0}' was not found.")]
-        [ArgumentCompleter([BicepResourceChildCompleter])]
-        [string]$Child,
+        [string]$OutputDirectory,
 
-        [Parameter(ParameterSetName = 'ResourceProvider')]
-        [ValidateNotNullOrEmpty()]
-        [ValidateScript({ (GetBicepTypes).ApiVersion -contains $_ }, 
-                          ErrorMessage = "ApiVersion '{0}' was not found.")]
-        [ArgumentCompleter([BicepResourceApiVersionCompleter])]
-        [string]$ApiVersion,
-
-        [Parameter(ParameterSetName = 'TypeString',
-                   Position = 0)]
-        [ValidateScript({ $_ -like '*/*' -and $_ -like '*@*' },
-                          ErrorMessage = "Type must contain '/' and '@'.")]
-        [ArgumentCompleter([BicepTypeCompleter])]
-        [string]$Type,
-        
-        [Parameter(ParameterSetName = 'ResourceProvider')]
-        [Parameter(ParameterSetName = 'TypeString')]
-        [Alias('Please')]
-        [switch]$Force
+        [switch]$AsString
     )
 
-    process {
-        $baseUrl = "https://docs.microsoft.com/en-us/azure/templates"
-        $suffix = '?tabs=bicep'
-
-        switch ($PSCmdlet.ParameterSetName) {
-            
-            'ResourceProvider' {
-                $url = "$BaseUrl/$ResourceProvider" 
-                
-                # if ApiVersion is provided, we use that. Otherwise we skip version and go for latest
-                if ($PSBoundParameters.ContainsKey('ApiVersion')) {
-                    $url += "/$ApiVersion"
-                }
-
-                $url += "/$Resource"
-
-                # Child is optional, so we only add it if provided
-                if ($PSBoundParameters.ContainsKey('Child')) {
-                    $url += "/$Child"
-                }
-
-                $url += $suffix
-             }
-            'TypeString' {
-                if ($PSBoundParameters.ContainsKey('Type')) {
-                    # Type looks like this:   Microsoft.Aad/domainServicess@2017-01-01
-                    # Then we split here:                  ^               ^
-                    # Or it looks like this:  Microsoft.ApiManagement/service/certificates@2019-12-01
-                    # Then we split here:                            ^       ^            ^
-                    # Lets not use regex. regex kills kittens
-
-                    # First check if we have three parts before the @
-                    # In that case the last one should be the child
-                    if (($type -split '/' ).count -eq 3) {
-                        $TypeChild = ( ($type -split '@') -split '/' )[2]
-                    }  
-                    else {
-                        $TypeChild = $null
-                    }
-
-                    $TypeResourceProvider = ( ($type -split '@') -split '/' )[0]
-                    $TypeResource = ( ($type -split '@') -split '/' )[1]
-                    $TypeApiVersion = ( $type -split '@' )[1]
-                
-                    if ([string]::IsNullOrEmpty($TypeChild)) {
-                        $url = "$BaseUrl/$TypeResourceProvider/$TypeApiVersion/$TypeResource"
-                    }
-                    else {
-                        $url = "$BaseUrl/$TypeResourceProvider/$TypeApiVersion/$TypeResource/$TypeChild"
-                    }
-
-                    $url += $suffix
-                }
-                else {
-                    # If Type is not provided, open the template start page
-                    $url = $BaseUrl
-                }
-            }
+    begin {
+        Write-Warning -Message 'Decompilation is a best-effort process, as there is no guaranteed mapping from ARM JSON to Bicep.
+You may need to fix warnings and errors in the generated bicep file(s), or decompilation may fail entirely if an accurate conversion is not possible.
+If you would like to report any issues or inaccurate conversions, please see https://github.com/Azure/bicep/issues.'
+        
+        if ($PSBoundParameters.ContainsKey('OutputDirectory') -and (-not (Test-Path $OutputDirectory))) {
+            $null = New-Item $OutputDirectory -Force -ItemType Directory
         }
         
-        # Check if there is any valid page on the generated Url
-        # We don't want to send users to broken urls.
-        try {
-            $null = Invoke-WebRequest -Uri $url -ErrorAction Stop
-            $DocsFound = $true
-        }
-        catch {
-            $DocsFound = $false
-        }
-
-        # Now we know if its working or not. Open page or provide error message.
-        if ($DocsFound -or $Force.IsPresent) {
-            Start-Process $url
-        }
-        else {
-            Write-Error "No documentation found. This usually means that no documentation has been written. If you would like to try anyway, use the -Force parameter. Url: $url"      
-        }
+        $FileResolver = [Bicep.Core.FileSystem.FileResolver]::new()
+        $ResourceProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::new()
     }
 
+    process {
+        $files = Get-Childitem -Path $Path -Filter '*.json' -File
+        if ($files) {
+            foreach ($file in $files) {
+                $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $file.FullName)
+                
+                foreach ($BicepFile in $BicepObject.Item2.Keys) {
+                    if ($AsString.IsPresent) {
+                        Write-Output $BicepObject.Item2[$BicepFile]
+                    }
+                    else {
+                        if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
+                            $FileName = Split-Path -Path $BicepFile.AbsolutePath -Leaf
+                            $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
+                        }
+                        else {
+                            $FilePath = $BicepFile.AbsolutePath
+                        }
+                        $null = Out-File -InputObject $BicepObject.Item2[$BicepFile] -FilePath $FilePath -Encoding utf8
+                    }
+                }
+
+                if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
+                    $FileName = Split-Path -Path $BicepObject.Item1.AbsolutePath -Leaf
+                    $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
+                }
+                else {
+                    $FilePath = $BicepObject.Item1.AbsolutePath
+                }
+                $null = Build-Bicep -Path $FilePath -AsString
+                
+            }
+        }
+        else {
+            Write-Host "No bicep files located in path $Path"
+        }
+    }
 }

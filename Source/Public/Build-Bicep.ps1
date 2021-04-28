@@ -1,6 +1,7 @@
 function Build-Bicep {
     [CmdletBinding(DefaultParameterSetName = 'Default',
-        SupportsShouldProcess)]
+        SupportsShouldProcess,
+        HelpUri = 'https://github.com/StefanIvemo/BicepPowerShell/blob/v1.4.5/Docs/Help/Build-Bicep.md')]
     [Alias('Invoke-BicepBuild')]
     param (
         [Parameter(ParameterSetName = 'Default', Position = 1)]
