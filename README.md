@@ -42,6 +42,7 @@ This project is currently maintained by the following coders:
 - [bjompen](https://github.com/bjompen)
 - [JohnRoos](https://github.com/JohnRoos)
 - [PalmEmanuel](https://github.com/PalmEmanuel)
+- [emilguden](https://github.com/emilguden)
 
 <!-- References -->
 [BicepIcon]: logo/BicePS_40px.png
