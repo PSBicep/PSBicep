@@ -22,11 +22,10 @@ function ParseBicep {
                 foreach ($Diagnostic in $DiagnosticResult) {
                     
                     $Params = WriteBicepDiagnostic -Diagnostic $Diagnostic -SyntaxTree $SyntaxTree
-                    if ($IgnoreWarnings.IsPresent) {} else {
+                    if ( -not $IgnoreWarnings.IsPresent) {
                         Write-Information @Params -InformationAction 'Continue'
-                        Write-Output $Params
-                    }
-
+                    }                    
+                    Write-Output $Params
                     if ($Diagnostic.Level -eq [Bicep.Core.Diagnostics.DiagnosticLevel]::Error) {
                         $Success = $false
                     }
