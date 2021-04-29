@@ -19,16 +19,16 @@ function ParseBicep {
         $DiagnosticParams = foreach ($SyntaxTree in $CompilationResults.Keys) {
             $DiagnosticResult = $CompilationResults[$SyntaxTree]
             if ($DiagnosticResult.GetCount($false) -gt 0) {
-                foreach ($Diagnostic in $DiagnosticResult) {
+                if ( -not $IgnoreWarnings.IsPresent) {
+                    foreach ($Diagnostic in $DiagnosticResult) {
                     
-                    $Params = WriteBicepDiagnostic -Diagnostic $Diagnostic -SyntaxTree $SyntaxTree
-                    if ( -not $IgnoreWarnings.IsPresent) {
+                        $Params = WriteBicepDiagnostic -Diagnostic $Diagnostic -SyntaxTree $SyntaxTree
                         Write-Information @Params -InformationAction 'Continue'
+                        Write-Output $Params
+                        if ($Diagnostic.Level -eq [Bicep.Core.Diagnostics.DiagnosticLevel]::Error) {
+                            $Success = $false
+                        }
                     }                    
-                    Write-Output $Params
-                    if ($Diagnostic.Level -eq [Bicep.Core.Diagnostics.DiagnosticLevel]::Error) {
-                        $Success = $false
-                    }
                 }
             }
         }
