@@ -14,7 +14,7 @@ function Convert-BicepParamsToDecoratorStyle {
     }
 
     process {
-        $armHashTable = Build-Bicep -Path $Path -AsHashtable -IgnoreWarnings
+        $armHashTable = Build-Bicep -Path $Path -AsHashtable -IgnoreDiagnostics
         $paramHashTable = $armHashTable.parameters
 
         $parameters = [ordered]@{}

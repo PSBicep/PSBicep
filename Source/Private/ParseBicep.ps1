@@ -3,7 +3,7 @@ function ParseBicep {
     param (
         [ValidateNotNullOrEmpty()]
         $Path,
-        [switch]$IgnoreWarnings
+        [switch]$IgnoreDiagnostics
     )
 
     process {
@@ -19,7 +19,7 @@ function ParseBicep {
         $DiagnosticParams = foreach ($SyntaxTree in $CompilationResults.Keys) {
             $DiagnosticResult = $CompilationResults[$SyntaxTree]
             if ($DiagnosticResult.GetCount($false) -gt 0) {
-                if ( -not $IgnoreWarnings.IsPresent) {
+                if ( -not $IgnoreDiagnostics.IsPresent) {
                     foreach ($Diagnostic in $DiagnosticResult) {
                     
                         $Params = WriteBicepDiagnostic -Diagnostic $Diagnostic -SyntaxTree $SyntaxTree

@@ -26,7 +26,7 @@ function Build-Bicep {
         [Parameter(ParameterSetName = 'AsHashtable')]
         [switch]$AsHashtable,
 
-        [switch]$IgnoreWarnings
+        [switch]$IgnoreDiagnostics
     )
 
     
@@ -51,8 +51,8 @@ function Build-Bicep {
         if ($files) {
             foreach ($file in $files) {
                 if ($file.Name -notin $ExcludeFile) {
-                    if ($IgnoreWarnings.IsPresent) {
-                        $ARMTemplate = ParseBicep -Path $file.FullName -IgnoreWarnings
+                    if ($IgnoreDiagnostics.IsPresent) {
+                        $ARMTemplate = ParseBicep -Path $file.FullName -IgnoreDiagnostics
                     } else {
                         $ARMTemplate = ParseBicep -Path $file.FullName
                     }
