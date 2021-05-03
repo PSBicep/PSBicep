@@ -15,8 +15,11 @@ function Convert-BicepParamsToDecoratorStyle {
 
     process {
         $armHashTable = Build-Bicep -Path $Path -AsHashtable -IgnoreDiagnostics
+        if (!$armHashTable) {
+            Write-Error "Invalid bicep file provided as input. Fix all build errors and try again."
+        }
         $paramHashTable = $armHashTable.parameters
-
+        
         $parameters = [ordered]@{}
         $templateBase = [ordered]@{
             '$schema'        = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
@@ -33,8 +36,7 @@ function Convert-BicepParamsToDecoratorStyle {
             foreach ($BicepFile in $BicepObject.Item2.Keys) {
                 $bicepData = $BicepObject.Item2[$BicepFile]
             }
-            $bicepOutput = $bicepData.Replace("var temp = ", "")
-            Write-Host $bicepOutput
+            Write-Host $bicepData
         }
         Remove-Item $file
     }
