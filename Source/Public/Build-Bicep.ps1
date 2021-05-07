@@ -50,7 +50,7 @@ function Build-Bicep {
             $null = New-Item (Split-Path -Path $OutputPath) -Force -ItemType Directory -WhatIf:$WhatIfPreference
         }
         if ($PSBoundParameters.ContainsKey('OutputPath') -and ((Split-path -path $Path -leaf) -notmatch "\.bicep$")) { 
-            Write-Error 'If -Path and -OutputPath parameters are used, only one .bicep file can be used as input to -Path. E.g. -Path "C:\Output\template.bicep" -OutputPath "C:\Output\newtemplate.json"'
+            Write-Error 'If -Path and -OutputPath parameters are used, only one .bicep file can be used as input to -Path. E.g. -Path "C:\Output\template.bicep" -OutputPath "C:\Output\newtemplate.json".'
             Break
         }
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
