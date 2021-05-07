@@ -350,7 +350,11 @@ Any error or warning from bicep will be written to the information stream. To sa
       </command:example>
       <command:example>
         <maml:title>Example 2: Compile single bicep file and specify the output directory</maml:title>
-        <dev:code>Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputDirectory 'c:\armtemplates\vnet.bicep'</dev:code>
+        <dev:code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputDirectory 'c:\armtemplates\'
+=======
+Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputDirectory 'c:\armtemplates\vnet.bicep'
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; upstream/main</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
