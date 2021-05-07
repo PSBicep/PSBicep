@@ -39,7 +39,13 @@ function Convert-BicepParamsToDecoratorStyle {
                 $bicepData = $BicepObject.Item2[$BicepFile]
             }
             if ($ToClipboard.IsPresent) {
-                Set-Clipboard $bicepData
+                if (!$IsWindows) {
+                    $xclip = (Get-Command xclip -ErrorAction SilentlyContinue)
+                    if (!$xclip) {
+                        Write-Error "xclip is required to save parameters to clipboard." -ErrorAction Stop
+                    }
+                }
+                Set-Clipboard -Value $bicepData
                 Write-Host "Decorator style params saved to clipboard"
             }
             else {
