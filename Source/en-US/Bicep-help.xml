@@ -459,6 +459,17 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ToClipboard</maml:name>
+          <maml:description>
+            <maml:para>Saves the converted params to the clipboard.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -473,6 +484,18 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>ToClipboard</maml:name>
+        <maml:description>
+          <maml:para>Saves the converted params to the clipboard.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
@@ -506,6 +529,13 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
         <dev:code>Convert-BicepParamsToDecoratorStyle -Path .\VirtualHubVPNGateway.bicep</dev:code>
         <dev:remarks>
           <maml:para>This example takes a bicep file as input and converts all parameters to decorator style parameters and outputs the result.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: Convert parameters from one bicep file to decorator style parameters and save to clipboard</maml:title>
+        <dev:code>Convert-BicepParamsToDecoratorStyle -Path .\VirtualHubVPNGateway.bicep -ToClipboard</dev:code>
+        <dev:remarks>
+          <maml:para>This example takes a bicep file as input and converts all parameters to decorator style parameters saves the result to the clipboard.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

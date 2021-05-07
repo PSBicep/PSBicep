@@ -4,7 +4,9 @@ function Convert-BicepParamsToDecoratorStyle {
         [Parameter(Mandatory,
             ParameterSetName = 'Default')]
         [ValidateNotNullOrEmpty()]
-        [string]$Path
+        [string]$Path,
+        [Parameter(ParameterSetName = 'Default')]
+        [switch]$ToClipboard
     )
 
     begin {
@@ -36,7 +38,13 @@ function Convert-BicepParamsToDecoratorStyle {
             foreach ($BicepFile in $BicepObject.Item2.Keys) {
                 $bicepData = $BicepObject.Item2[$BicepFile]
             }
-            Write-Host $bicepData
+            if ($ToClipboard.IsPresent) {
+                Set-Clipboard $bicepData
+                Write-Host "Decorator style params saved to clipboard"
+            }
+            else {
+                Write-Host $bicepData
+            }
         }
         Remove-Item $file
     }
