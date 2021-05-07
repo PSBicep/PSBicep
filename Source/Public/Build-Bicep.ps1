@@ -6,14 +6,14 @@ function Build-Bicep {
         [Parameter(ParameterSetName = 'Default', Position = 1)]
         [Parameter(ParameterSetName = 'AsString', Position = 1)]
         [Parameter(ParameterSetName = 'AsHashtable', Position = 1)]
-        [Parameter(ParameterSetName = 'CouldBeDefaultButItsNot', Position = 1)]
+        [Parameter(ParameterSetName = 'OutputPath', Position = 1)]
         [string]$Path = $pwd.path,
 
         [Parameter(ParameterSetName = 'Default', Position = 2)]
         [ValidateNotNullOrEmpty()]
         [string]$OutputDirectory,
 
-        [Parameter(ParameterSetName = 'CouldBeDefaultButItsNot', Position = 2)]
+        [Parameter(ParameterSetName = 'OutputPath', Position = 2)]
         [ValidateNotNullOrEmpty()]
         [ValidateScript(
             {
@@ -25,11 +25,11 @@ function Build-Bicep {
         [Parameter(ParameterSetName = 'Default')]
         [Parameter(ParameterSetName = 'AsString')]
         [Parameter(ParameterSetName = 'AsHashtable')]
-        [Parameter(ParameterSetName = 'CouldBeDefaultButItsNot')]
+        [Parameter(ParameterSetName = 'OutputPath')]
         [string[]]$ExcludeFile,
 
         [Parameter(ParameterSetName = 'Default')]
-        [Parameter(ParameterSetName = 'CouldBeDefaultButItsNot')]
+        [Parameter(ParameterSetName = 'OutputPath')]
         [switch]$GenerateParameterFile,
 
         [Parameter(ParameterSetName = 'AsString')]
@@ -50,7 +50,7 @@ function Build-Bicep {
             $null = New-Item (Split-Path -Path $OutputPath) -Force -ItemType Directory -WhatIf:$WhatIfPreference
         }
         if ($PSBoundParameters.ContainsKey('OutputPath') -and ((Split-path -path $Path -leaf) -notmatch "\.bicep$")) { 
-            Write-Error 'If -Path and -OutputPath is used, only one .bicep file can be used, e.g. -Path "C:\Output\template.bicep" -OutputPath "C:\Output\newtemplate.json"'
+            Write-Error 'If -Path and -OutputPath parameters are used, only one .bicep file can be used as input to -Path. E.g. -Path "C:\Output\template.bicep" -OutputPath "C:\Output\newtemplate.json"'
             Break
         }
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
