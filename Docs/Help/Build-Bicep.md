@@ -17,7 +17,7 @@ Builds one or more .bicep files.
 Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-GenerateParameterFile]
  [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
-### CouldBeDefaultButItsNot
+### OutputPath
 ```Powershell
 Build-Bicep [[-Path] <string>] [[-OutputPath] <string>] [-ExcludeFile <string[]>] [-GenerateParameterFile] [-WhatIf] [-Confirm] [<CommonParameters>]   
 ```
@@ -52,11 +52,7 @@ Build-Bicep -Path vnet.bicep
 
 ### Example 2: Compile single bicep file and specify the output directory
 ```powershell
-<<<<<<< HEAD
-Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputDirectory 'c:\armtemplates\'
-=======
 Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputDirectory 'c:\armtemplates\vnet.bicep'
->>>>>>> upstream/main
 ```
 
 ### Example 3: Compile all .bicep files in a directory
