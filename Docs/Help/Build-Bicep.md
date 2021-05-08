@@ -13,19 +13,22 @@ Builds one or more .bicep files.
 ## SYNTAX
 
 ### Default (Default)
-```
+```Powershell
 Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-GenerateParameterFile]
  [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
-
-### AsHashtable
+### OutputPath
+```Powershell
+Build-Bicep [[-Path] <string>] [[-OutputPath] <string>] [-ExcludeFile <string[]>] [-GenerateParameterFile] [-WhatIf] [-Confirm] [<CommonParameters>]   
 ```
+### AsHashtable
+```Powershell
 Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
 
 ### AsString
-```
+```Powershell
 Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-AsString] [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
@@ -87,6 +90,10 @@ Then outputs first all Errors then all Warnings.
 ```powershell
 $Template=Build-Bicep -Path '.\vnet.bicep' -AsHashtable
 New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Template
+```
+### Example 9: Compiles single bicep file and saves the output as the specified file path.
+```powershell
+Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputPath 'c:\armtemplates\newvnet.json'
 ```
 
 

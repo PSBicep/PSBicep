@@ -350,7 +350,11 @@ Any error or warning from bicep will be written to the information stream. To sa
       </command:example>
       <command:example>
         <maml:title>Example 2: Compile single bicep file and specify the output directory</maml:title>
-        <dev:code>Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputDirectory 'c:\armtemplates\vnet.bicep'</dev:code>
+        <dev:code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputDirectory 'c:\armtemplates\'
+=======
+Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputDirectory 'c:\armtemplates\vnet.bicep'
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; upstream/main</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -397,6 +401,13 @@ $Diagnostics | Where-Object Tags -eq 'Warning'</dev:code>
         <maml:title>Example 8: Compile a .bicep file as hashtable and pass it to New-AzResourceGroupDeployment</maml:title>
         <dev:code>$Template=Build-Bicep -Path '.\vnet.bicep' -AsHashtable
 New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Template</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 9: Compiles single bicep file and saves the output as the specified file path.</maml:title>
+        <dev:code>Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputPath 'c:\armtemplates\newvnet.json'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
