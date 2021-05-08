@@ -20,7 +20,7 @@ jobs:
       shell: pwsh
       run: ./scripts/downloadDependencies.ps1
     - name: Import required modules
-      run: Install-Module -Name Pester -Force
+      run: Install-Module -Name Pester -RequiredVersion 5.1.1 -Force
       shell: pwsh
     - name: Run Pester tests and build module
       run: | 
