@@ -16,6 +16,11 @@ function Convert-BicepParamsToDecoratorStyle {
     }
 
     process {
+        if (!($IsWindows)) {
+            Write-Error -Message "The -ToClipboard switch is only supported on Windows systems."
+            break
+        }
+        
         $armHashTable = Build-Bicep -Path $Path -AsHashtable -IgnoreDiagnostics
         if (!$armHashTable) {
             Write-Error "Invalid bicep file provided as input. Fix all build errors and try again."
@@ -38,13 +43,7 @@ function Convert-BicepParamsToDecoratorStyle {
             foreach ($BicepFile in $BicepObject.Item2.Keys) {
                 $bicepData = $BicepObject.Item2[$BicepFile]
             }
-            if ($ToClipboard.IsPresent) {
-                if (!$IsWindows) {
-                    $xclip = (Get-Command xclip -ErrorAction SilentlyContinue)
-                    if (!$xclip) {
-                        Write-Error "xclip is required to save parameters to clipboard." -ErrorAction Stop
-                    }
-                }
+            if ($ToClipboard.IsPresent) {                
                 Set-Clipboard -Value $bicepData
                 Write-Host "Decorator style params saved to clipboard"
             }

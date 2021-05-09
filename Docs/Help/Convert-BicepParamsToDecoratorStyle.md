@@ -52,7 +52,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ToClipboard
+### -ToClipboard  (Windows only)
 Saves the converted params to the clipboard.
 
 ```yaml
