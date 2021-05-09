@@ -16,7 +16,7 @@ function Convert-BicepParamsToDecoratorStyle {
     }
 
     process {
-        if (!($IsWindows)) {
+        if ((!$IsWindows) -and $ToClipboard.IsPresent) {
             Write-Error -Message "The -ToClipboard switch is only supported on Windows systems."
             break
         }
