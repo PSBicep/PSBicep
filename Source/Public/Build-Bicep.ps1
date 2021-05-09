@@ -6,18 +6,30 @@ function Build-Bicep {
         [Parameter(ParameterSetName = 'Default', Position = 1)]
         [Parameter(ParameterSetName = 'AsString', Position = 1)]
         [Parameter(ParameterSetName = 'AsHashtable', Position = 1)]
+        [Parameter(ParameterSetName = 'OutputPath', Position = 1)]
         [string]$Path = $pwd.path,
 
         [Parameter(ParameterSetName = 'Default', Position = 2)]
         [ValidateNotNullOrEmpty()]
         [string]$OutputDirectory,
 
+        [Parameter(ParameterSetName = 'OutputPath', Position = 2)]
+        [ValidateNotNullOrEmpty()]
+        [ValidateScript(
+            {
+                (Split-path -path $_ -leaf) -match "\.json$"
+            }
+            , ErrorMessage = 'OutputPath needs to be a .JSON-file, e.g. "C:\Output\template.json"')]
+        [string]$OutputPath,
+
         [Parameter(ParameterSetName = 'Default')]
         [Parameter(ParameterSetName = 'AsString')]
         [Parameter(ParameterSetName = 'AsHashtable')]
+        [Parameter(ParameterSetName = 'OutputPath')]
         [string[]]$ExcludeFile,
 
         [Parameter(ParameterSetName = 'Default')]
+        [Parameter(ParameterSetName = 'OutputPath')]
         [switch]$GenerateParameterFile,
 
         [Parameter(ParameterSetName = 'AsString')]
@@ -29,14 +41,19 @@ function Build-Bicep {
         [switch]$IgnoreDiagnostics
     )
 
-    
-
     begin {
         if (-not $Script:ModuleVersionChecked) {
             testModuleVersion
         }
         if ($PSBoundParameters.ContainsKey('OutputDirectory') -and (-not (Test-Path $OutputDirectory))) {
             $null = New-Item $OutputDirectory -Force -ItemType Directory -WhatIf:$WhatIfPreference
+        }
+        if ($PSBoundParameters.ContainsKey('OutputPath') -and (-not (Test-Path $OutputPath))) {
+            $null = New-Item (Split-Path -Path $OutputPath) -Force -ItemType Directory -WhatIf:$WhatIfPreference
+        }
+        if ($PSBoundParameters.ContainsKey('OutputPath') -and ((Split-path -path $Path -leaf) -notmatch "\.bicep$")) { 
+            Write-Error 'If -Path and -OutputPath parameters are used, only one .bicep file can be used as input to -Path. E.g. -Path "C:\Output\template.bicep" -OutputPath "C:\Output\newtemplate.json".'
+            Break
         }
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
             $DLLPath = [Bicep.Core.Workspaces.Workspace].Assembly.Location
@@ -68,7 +85,11 @@ function Build-Bicep {
                             $ARMTemplate | ConvertFrom-Json -AsHashtable
                         }
                         else {        
-                            if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
+                            if ($PSBoundParameters.ContainsKey('OutputPath')) {
+                                $OutputFilePath = $OutputPath
+                                $ParameterFilePath = Join-Path -Path (Split-Path -Path $OutputPath) -ChildPath ('{0}.parameters.json' -f (Split-Path -Path $OutputPath -Leaf).Split(".")[0])
+                            }
+                            elseif ($PSBoundParameters.ContainsKey('OutputDirectory')) {
                                 $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.json' -f $file.BaseName)
                                 $ParameterFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $file.BaseName)
                             }

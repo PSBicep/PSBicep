@@ -423,7 +423,14 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>Example 8: Compile a .bicep and ignore all build warnings and errors</maml:title>
+        <maml:title>Example 9: Compiles single bicep file and saves the output as the specified file path.</maml:title>
+        <dev:code>Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputPath 'c:\armtemplates\newvnet.json'</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 10: Compile a .bicep and ignore all build warnings and errors</maml:title>
         <dev:code>Build-Bicep -Path '.\vnet.bicep' -IgnoreDiagnostics</dev:code>
         <dev:remarks>
           <maml:para></maml:para>

@@ -13,22 +13,28 @@ Builds one or more .bicep files.
 ## SYNTAX
 
 ### Default (Default)
-```
+```Powershell
 Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-GenerateParameterFile]
  [-IgnoreDiagnostics] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
-### AsHashtable
-```
-Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-IgnoreDiagnostics] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+### OutputPath
+```Powershell
+Build-Bicep [[-Path] <string>] [[-OutputPath] <string>] [-ExcludeFile <string[]>] [-IgnoreDiagnostics] [-GenerateParameterFile] [-WhatIf] [-Confirm] [<CommonParameters>]   
 ```
 
 ### AsString
-```
+```Powershell
 Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString] [-IgnoreDiagnostics] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
+
+### AsHashtable
+```Powershell
+Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-IgnoreDiagnostics] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
+```
+
 
 ## DESCRIPTION
 **Build-Bicep** is equivalent to the Bicep CLI command 'bicep build' but with some additional features.
@@ -89,11 +95,15 @@ $Template=Build-Bicep -Path '.\vnet.bicep' -AsHashtable
 New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Template
 ```
 
-### Example 8: Compile a .bicep and ignore all build warnings and errors
+### Example 9: Compiles single bicep file and saves the output as the specified file path.
+```powershell
+Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputPath 'c:\armtemplates\newvnet.json'
+```
+
+### Example 10: Compile a .bicep and ignore all build warnings and errors
 ```powershell
 Build-Bicep -Path '.\vnet.bicep' -IgnoreDiagnostics
 ```
-
 
 ## PARAMETERS
 
