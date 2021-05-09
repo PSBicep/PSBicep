@@ -467,7 +467,7 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>ToClipboard</maml:name>
+          <maml:name>ToClipboard  (Windows only)</maml:name>
           <maml:description>
             <maml:para>Saves the converted params to the clipboard.</maml:para>
           </maml:description>
@@ -493,7 +493,7 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>ToClipboard</maml:name>
+        <maml:name>ToClipboard  (Windows only)</maml:name>
         <maml:description>
           <maml:para>Saves the converted params to the clipboard.</maml:para>
         </maml:description>
