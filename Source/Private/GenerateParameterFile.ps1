@@ -40,6 +40,9 @@ function GenerateParameterFile {
             elseif ($ParameterObject.type -eq 'Object') {
                 $defaultValue = @{}
             }
+            elseif ($ParameterObject.type -eq 'int') {
+                $defaultValue = 0
+            }
             else {
                 $defaultValue = ""
             }
