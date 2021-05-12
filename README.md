@@ -16,6 +16,8 @@ Commands implemented:
 - [Convert-JsonToBicep](./Docs/Help/Convert-JsonToBicep.md)
 - [New-BicepParameterFile](./Docs/Help/New-BicepParameterFile.md)
 
+>**Note:** Starting with version `1.3.0` of the Bicep PowerShell module the cmdlets `Build-Bicep` and `ConvertTo-Bicep` uses the assemblies from the official [Bicep](https://github.com/Azure/bicep) repository instead of wrapping the Bicep CLI. When new Bicep versions are released there will be a slight delay before the PowerShell module gets tested updated with the latest assemblies. If new functionality is added to Bicep CLI before the PowerShell module supports it, use `Install-BicepCLI` to install the latest Bicep CLI version and use the CLI while waiting for an updated PowerShell module.
+
 ## Installation
 
 The Bicep PowerShell Module is published to [PowerShell Gallery](https://www.powershellgallery.com/packages/Bicep/).
