@@ -59,10 +59,11 @@ Any error or warning from bicep will be written to the information stream. To sa
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>GenerateParameterFile</maml:name>
           <maml:description>
-            <maml:para>The -GenerateParameterFile switch generates a ARM Template parameter file for the compiled template</maml:para>
+            <maml:para>The -GenerateParameterFile parameter generates a ARM Template parameter file for the compiled template</maml:para>
           </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
-            <maml:name>SwitchParameter</maml:name>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
@@ -104,10 +105,56 @@ Any error or warning from bicep will be written to the information stream. To sa
           </dev:type>
           <dev:defaultValue>$pwd.path</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>OutputDirectory</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ExcludeFile</maml:name>
           <maml:description>
-            <maml:para>Specfies the target directory where the compiled files should be created</maml:para>
+            <maml:para>Specifies a .bicep file to exclude from compilation</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>GenerateParameterFile</maml:name>
+          <maml:description>
+            <maml:para>The -GenerateParameterFile parameter generates a ARM Template parameter file for the compiled template</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
+          <maml:description>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
+          <maml:description>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>OutputPath</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill OutputPath Description }}</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -115,6 +162,21 @@ Any error or warning from bicep will be written to the information stream. To sa
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Build-Bicep</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>Specfies the path to the directory or file that should be compiled</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>$pwd.path</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ExcludeFile</maml:name>
@@ -175,18 +237,6 @@ Any error or warning from bicep will be written to the information stream. To sa
             <maml:uri />
           </dev:type>
           <dev:defaultValue>$pwd.path</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>OutputDirectory</maml:name>
-          <maml:description>
-            <maml:para>Specfies the target directory where the compiled files should be created</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ExcludeFile</maml:name>
@@ -275,11 +325,11 @@ Any error or warning from bicep will be written to the information stream. To sa
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>GenerateParameterFile</maml:name>
         <maml:description>
-          <maml:para>The -GenerateParameterFile switch generates a ARM Template parameter file for the compiled template</maml:para>
+          <maml:para>The -GenerateParameterFile parameter generates a ARM Template parameter file for the compiled template</maml:para>
         </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
-          <maml:name>SwitchParameter</maml:name>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
@@ -332,6 +382,18 @@ Any error or warning from bicep will be written to the information stream. To sa
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>OutputPath</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill OutputPath Description }}</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
     </command:parameters>
     <command:inputTypes />
     <command:returnValues />
@@ -377,8 +439,8 @@ Any error or warning from bicep will be written to the information stream. To sa
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>Example 6: Compile a .bicep files in the working directory and generate a parameter files</maml:title>
-        <dev:code>Build-Bicep -Path '.\vnet.bicep' -GenerateParameterFile</dev:code>
+        <maml:title>Example 6: Compile a .bicep files in the working directory and generate a parameter file with all parameters</maml:title>
+        <dev:code>Build-Bicep -Path '.\vnet.bicep' -GenerateParameterFile All</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -1077,6 +1139,18 @@ Convert-JsonToBicep -String $json</dev:code>
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Type</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill Type Description }}</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -1128,6 +1202,18 @@ Convert-JsonToBicep -String $json</dev:code>
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Type</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill Type Description }}</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -1156,15 +1242,22 @@ Convert-JsonToBicep -String $json</dev:code>
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-BicepParameterFile -Path 'AzureFirewall.bicep'</dev:code>
+        <maml:title>Example 1: Generate an ARM Template parameter file for a bicep file</maml:title>
+        <dev:code>New-BicepParameterFile -Path 'AzureFirewall.bicep'</dev:code>
         <dev:remarks>
           <maml:para>Creates a parameter file called AzureFirewall.parameters.json in the same directory as the bicep file.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-BicepParameterFile -Path 'AzureFirewall.bicep' -OutputDirectory 'd:\myfolder\'</dev:code>
+        <maml:title>Example 2: Generate an ARM Template parameter file for a bicep file with only required parameters</maml:title>
+        <dev:code>New-BicepParameterFile -Path 'AzureFirewall.bicep' -Type Required</dev:code>
+        <dev:remarks>
+          <maml:para>Creates a parameter file called AzureFirewall.parameters.json in the same directory as the bicep file.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 3: Creates a parameter file in the specified directory</maml:title>
+        <dev:code>New-BicepParameterFile -Path 'AzureFirewall.bicep' -OutputDirectory 'd:\myfolder\'</dev:code>
         <dev:remarks>
           <maml:para>Creates a parameter file in the specified directory.</maml:para>
         </dev:remarks>

@@ -30,7 +30,8 @@ function Build-Bicep {
 
         [Parameter(ParameterSetName = 'Default')]
         [Parameter(ParameterSetName = 'OutputPath')]
-        [switch]$GenerateParameterFile,
+        [ValidateSet("All", "Required", ErrorMessage="Allowed values for GenerateParameterFile are All or Required")]
+        [string]$GenerateParameterFile,
 
         [Parameter(ParameterSetName = 'AsString')]
         [switch]$AsString,
@@ -92,8 +93,8 @@ function Build-Bicep {
                                 $ParameterFilePath = $file.FullName -replace '\.bicep', '.parameters.json'
                             }
                             $null = Out-File -Path $OutputFilePath -InputObject $ARMTemplate -Encoding utf8 -WhatIf:$WhatIfPreference
-                            if ($GenerateParameterFile.IsPresent) {
-                                GenerateParameterFile -Content $ARMTemplate -DestinationPath $ParameterFilePath -WhatIf:$WhatIfPreference
+                            if ($GenerateParameterFile) {
+                                GenerateParameterFile -Content $ARMTemplate -DestinationPath $ParameterFilePath -Type $GenerateParameterFile -WhatIf:$WhatIfPreference
                             }
                         }
                     }

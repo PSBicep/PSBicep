@@ -13,24 +13,26 @@ Builds one or more .bicep files.
 ## SYNTAX
 
 ### Default (Default)
-```Powershell
-Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-GenerateParameterFile]
- [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
+Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>]
+ [-GenerateParameterFile <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
 ### OutputPath
-```Powershell
-Build-Bicep [[-Path] <string>] [[-OutputPath] <string>] [-ExcludeFile <string[]>] [-GenerateParameterFile] [-WhatIf] [-Confirm] [<CommonParameters>]   
 ```
+Build-Bicep [[-Path] <String>] [-OutputPath <String>] [-ExcludeFile <String[]>]
+ [-GenerateParameterFile <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
 ### AsHashtable
-```Powershell
-Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+```
+Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### AsString
-```Powershell
-Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-AsString] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+```
+Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -70,9 +72,9 @@ Build-Bicep -Path 'c:\bicep\modules\' -ExcludeFile vnet.bicep
 Build-Bicep -Path '.\vnet.bicep' -AsString
 ```
 
-### Example 6: Compile a .bicep files in the working directory and generate a parameter files
+### Example 6: Compile a .bicep files in the working directory and generate a parameter file with all parameters
 ```powershell
-Build-Bicep -Path '.\vnet.bicep' -GenerateParameterFile
+Build-Bicep -Path '.\vnet.bicep' -GenerateParameterFile All
 ```
 
 ### Example 7: Compile a .bicep files in the working directory and store diagnostic messages from bicep in a variable.
@@ -91,11 +93,11 @@ Then outputs first all Errors then all Warnings.
 $Template=Build-Bicep -Path '.\vnet.bicep' -AsHashtable
 New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Template
 ```
+
 ### Example 9: Compiles single bicep file and saves the output as the specified file path.
 ```powershell
 Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputPath 'c:\armtemplates\newvnet.json'
 ```
-
 
 ## PARAMETERS
 
@@ -119,7 +121,7 @@ Specfies the target directory where the compiled files should be created
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Default
 Aliases:
 
 Required: False
@@ -145,11 +147,11 @@ Accept wildcard characters: False
 ```
 
 ### -GenerateParameterFile
-The -GenerateParameterFile switch generates a ARM Template parameter file for the compiled template
+The -GenerateParameterFile parameter generates a ARM Template parameter file for the compiled template
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Default
+Type: String
+Parameter Sets: Default, OutputPath
 Aliases:
 
 Required: False
@@ -211,6 +213,21 @@ Shows what would happen if the cmdlet runs. The cmdlet is not run.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OutputPath
+{{ Fill OutputPath Description }}
+
+```yaml
+Type: String
+Parameter Sets: OutputPath
+Aliases:
 
 Required: False
 Position: Named
