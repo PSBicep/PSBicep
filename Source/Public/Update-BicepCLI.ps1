@@ -3,6 +3,10 @@ function Update-BicepCLI {
     param (
     )
 
+    if (-not $Script:ModuleVersionChecked) {
+        TestModuleVersion
+    }
+    
     if (!($IsWindows)) {
         Write-Error -Message "This cmdlet is only supported for Windows systems. `
 To update Bicep on your system see instructions on https://github.com/Azure/bicep"
