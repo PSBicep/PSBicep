@@ -14,8 +14,8 @@ Creates an ARM Template parameter file based on a bicep file.
 ## SYNTAX
 
 ```
-New-BicepParameterFile [-Path] <String> [-Type <String>] [[-OutputDirectory] <String>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+New-BicepParameterFile [-Path] <String> [-Parameters <String>] [[-OutputDirectory] <String>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -32,14 +32,13 @@ New-BicepParameterFile -Path 'AzureFirewall.bicep'
 
 Creates a parameter file called AzureFirewall.parameters.json in the same directory as the bicep file.
 
-### Example 2: Generate an ARM Template parameter file for a bicep file with only required parameters
+### Example 2: Generate an ARM Template parameter file for a bicep file with all parameters from the bicep file
 
 ```powershell
-New-BicepParameterFile -Path 'AzureFirewall.bicep' -Type Required
+New-BicepParameterFile -Path 'AzureFirewall.bicep' -Parameters All
 ```
 
 Creates a parameter file called AzureFirewall.parameters.json in the same directory as the bicep file.
-
 
 ### Example 3: Creates a parameter file in the specified directory
 
@@ -116,8 +115,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Type
-{{ Fill Type Description }}
+### -Parameters
+Specify which parameters should be exported to the parameter file.
 
 ```yaml
 Type: String

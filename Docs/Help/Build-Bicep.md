@@ -15,13 +15,13 @@ Builds one or more .bicep files.
 ### Default (Default)
 ```
 Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>]
- [-GenerateParameterFile <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-GenerateAllParametersFile] [-GenerateRequiredParametersFile] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### OutputPath
 ```
-Build-Bicep [[-Path] <String>] [-OutputPath <String>] [-ExcludeFile <String[]>]
- [-GenerateParameterFile <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Build-Bicep [[-Path] <String>] [-OutputPath <String>] [-ExcludeFile <String[]>] [-GenerateAllParametersFile]
+ [-GenerateRequiredParametersFile] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### AsHashtable
@@ -74,7 +74,7 @@ Build-Bicep -Path '.\vnet.bicep' -AsString
 
 ### Example 6: Compile a .bicep files in the working directory and generate a parameter file with all parameters
 ```powershell
-Build-Bicep -Path '.\vnet.bicep' -GenerateParameterFile All
+Build-Bicep -Path '.\vnet.bicep' -GenerateAllParametersFile
 ```
 
 ### Example 7: Compile a .bicep files in the working directory and store diagnostic messages from bicep in a variable.
@@ -146,21 +146,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -GenerateParameterFile
-The -GenerateParameterFile parameter generates a ARM Template parameter file for the compiled template
-
-```yaml
-Type: String
-Parameter Sets: Default, OutputPath
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -AsString
 The -AsString prints all output as a string instead of corresponding files.
 
@@ -227,6 +212,36 @@ Accept wildcard characters: False
 ```yaml
 Type: String
 Parameter Sets: OutputPath
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -GenerateAllParametersFile
+Generate an ARM template parameter file with all parameters from the bicep file.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Default, OutputPath
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -GenerateRequiredParametersFile
+Generate an ARM template parameter file with the required parameters from the bicep file.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Default, OutputPath
 Aliases:
 
 Required: False

@@ -18,7 +18,7 @@ function GenerateParameterFile {
 
         [Parameter(ParameterSetName = 'FromFile')]
         [Parameter(ParameterSetName = 'FromContent')]
-        [string]$Type
+        [string]$Parameters
     )
 
     if ($PSCmdlet.ParameterSetName -eq 'FromFile') {
@@ -34,10 +34,10 @@ function GenerateParameterFile {
         'contentVersion' = '1.0.0.0'
     }
     $parameterNames = $ARMTemplate.Parameters.psobject.Properties.Name
-    $parameters = [ordered]@{}
+    $parameterHash = [ordered]@{}
     foreach ($parameterName in $parameterNames) {
         $ParameterObject = $ARMTemplate.Parameters.$ParameterName
-        if (($Type -eq "Required" -and $null -eq $ParameterObject.defaultValue) -or ($Type -eq "All")) {
+        if (($Parameters -eq "Required" -and $null -eq $ParameterObject.defaultValue) -or ($Parameters -eq "All")) {
         if ($null -eq $ParameterObject.defaultValue) {                               
             if ($ParameterObject.type -eq 'Array') {
                 $defaultValue = @()
@@ -58,12 +58,12 @@ function GenerateParameterFile {
         else {
             $defaultValue = $ParameterObject.defaultValue
         }
-            $parameters[$parameterName] = @{                                
+            $parameterHash[$parameterName] = @{                                
                 value = $defaultValue
             }
         }                       
     }
-    $parameterBase['parameters'] = $parameters
+    $parameterBase['parameters'] = $parameterHash
     $ConvertedToJson = ConvertTo-Json -InputObject $parameterBase -Depth 100
     
     switch ($PSCmdlet.ParameterSetName) {
