@@ -82,7 +82,7 @@ function Build-Bicep {
                             Write-Output $ARMTemplate
                         }
                         elseif ($AsHashtable.IsPresent) {
-                            $ARMTemplate | ConvertFrom-Json -AsHashtable
+                            $ARMTemplateObject | ConvertToHashtable -Ordered
                         }
                         else {        
                             if ($PSBoundParameters.ContainsKey('OutputPath')) {
