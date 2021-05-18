@@ -9,6 +9,9 @@ function ConvertTo-Bicep {
     )
 
     begin {
+        if (-not $Script:ModuleVersionChecked) {
+            TestModuleVersion
+        }
         Write-Warning -Message 'Decompilation is a best-effort process, as there is no guaranteed mapping from ARM JSON to Bicep.
 You may need to fix warnings and errors in the generated bicep file(s), or decompilation may fail entirely if an accurate conversion is not possible.
 If you would like to report any issues or inaccurate conversions, please see https://github.com/Azure/bicep/issues.'
@@ -18,7 +21,7 @@ If you would like to report any issues or inaccurate conversions, please see htt
         }
         
         $FileResolver = [Bicep.Core.FileSystem.FileResolver]::new()
-        $ResourceProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::new()
+        $ResourceProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::CreateWithAzTypes()
     }
 
     process {
