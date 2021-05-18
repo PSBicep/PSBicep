@@ -13,26 +13,28 @@ Builds one or more .bicep files.
 ## SYNTAX
 
 ### Default (Default)
-```
+```powershell
 Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>]
- [-GenerateAllParametersFile] [-GenerateRequiredParametersFile] [-WhatIf] [-Confirm] [<CommonParameters>]
-```
-
-### OutputPath
-```
-Build-Bicep [[-Path] <String>] [-OutputPath <String>] [-ExcludeFile <String[]>] [-GenerateAllParametersFile]
- [-GenerateRequiredParametersFile] [-WhatIf] [-Confirm] [<CommonParameters>]
-```
-
-### AsHashtable
-```
-Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-WhatIf] [-Confirm]
+ [-GenerateAllParametersFile] [-GenerateRequiredParametersFile] [-IgnoreDiagnostics] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
-### AsString
+### OutputPath
+```powershell
+Build-Bicep [[-Path] <String>] [[-OutputPath] <String>] [-ExcludeFile <String[]>] [-GenerateAllParametersFile]
+ [-GenerateRequiredParametersFile] [-IgnoreDiagnostics] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
-Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString] [-WhatIf] [-Confirm] [<CommonParameters>]
+
+### AsHashtable
+```powershell
+Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-IgnoreDiagnostics] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
+```
+
+### AsString
+```powershell
+Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString] [-IgnoreDiagnostics] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -99,44 +101,19 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
 Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputPath 'c:\armtemplates\newvnet.json'
 ```
 
+### Example 10: Compile a .bicep and ignore all build warnings and errors
+```powershell
+Build-Bicep -Path '.\vnet.bicep' -IgnoreDiagnostics
+```
+
 ## PARAMETERS
 
-### -Path
-Specfies the path to the directory or file that should be compiled
+### -AsHashtable
+The -AsHashtable prints all output as a hashtable instead of corresponding files.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: $pwd.path
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OutputDirectory
-Specfies the target directory where the compiled files should be created
-
-```yaml
-Type: String
-Parameter Sets: Default
-Aliases:
-
-Required: False
-Position: 3
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ExcludeFile
-Specifies a .bicep file to exclude from compilation
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
+Type: SwitchParameter
+Parameter Sets: AsHashtable
 Aliases:
 
 Required: False
@@ -161,21 +138,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -AsHashtable
-The -AsHashtable prints all output as a hashtable instead of corresponding files.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: AsHashtable
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Confirm
 Prompts you for confirmation before running the cmdlet.
 
@@ -191,27 +153,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -WhatIf
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
+### -ExcludeFile
+Specifies a .bicep file to exclude from compilation
 
 ```yaml
-Type: SwitchParameter
+Type: String[]
 Parameter Sets: (All)
-Aliases: wi
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OutputPath
-Specify the filename of the generated ARM template.
-
-```yaml
-Type: String
-Parameter Sets: OutputPath
 Aliases:
 
 Required: False
@@ -243,6 +190,81 @@ Generate an ARM template parameter file with the required parameters from the bi
 Type: SwitchParameter
 Parameter Sets: Default, OutputPath
 Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IgnoreDiagnostics
+Ignores all build warnings and errors.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OutputDirectory
+Specfies the target directory where the compiled files should be created
+
+```yaml
+Type: String
+Parameter Sets: Default
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OutputPath
+Specify the filename of the generated ARM template.
+
+```yaml
+Type: String
+Parameter Sets: OutputPath
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Path
+Specfies the path to the directory or file that should be compiled
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: $pwd.path
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs. The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
 
 Required: False
 Position: Named
