@@ -10,7 +10,7 @@ function ParseBicep {
         $FileResolver = [Bicep.Core.FileSystem.FileResolver]::new()
         $WorkSpace = [Bicep.Core.Workspaces.Workspace]::new()
         $PathHelper = [Bicep.Core.FileSystem.PathHelper]::FilePathToFileUrl($Path)
-        $ResourceTypeProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::new()
+        $ResourceTypeProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::CreateWithAzTypes()
         $SyntaxTreeGrouping = [Bicep.Core.Syntax.SyntaxTreeGroupingBuilder]::Build($FileResolver, $WorkSpace, $PathHelper)
         $Compilation = [Bicep.Core.Semantics.Compilation]::new($ResourceTypeProvider, $SyntaxTreeGrouping)
         $CompilationResults = $Compilation.GetAllDiagnosticsBySyntaxTree()
