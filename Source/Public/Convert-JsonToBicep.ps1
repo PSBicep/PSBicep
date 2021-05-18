@@ -18,7 +18,7 @@ function Convert-JsonToBicep {
             TestModuleVersion
         }
         $FileResolver = [Bicep.Core.FileSystem.FileResolver]::new()
-        $ResourceProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::new()
+        $ResourceProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::CreateWithAzTypes()
         $tempPath = [System.Io.Path]::GetTempPath()
     }
 

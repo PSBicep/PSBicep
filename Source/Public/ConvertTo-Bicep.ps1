@@ -21,7 +21,7 @@ If you would like to report any issues or inaccurate conversions, please see htt
         }
         
         $FileResolver = [Bicep.Core.FileSystem.FileResolver]::new()
-        $ResourceProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::new()
+        $ResourceProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::CreateWithAzTypes()
     }
 
     process {
