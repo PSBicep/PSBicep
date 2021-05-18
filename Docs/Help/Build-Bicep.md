@@ -207,7 +207,7 @@ Accept wildcard characters: False
 ```
 
 ### -OutputPath
-{{ Fill OutputPath Description }}
+Specify the filename of the generated ARM template.
 
 ```yaml
 Type: String
