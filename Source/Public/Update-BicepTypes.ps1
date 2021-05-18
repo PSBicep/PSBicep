@@ -2,6 +2,10 @@ function Update-BicepTypes {
     [CmdletBinding(SupportsShouldProcess)]
     param ()
 
+    if (-not $Script:ModuleVersionChecked) {
+        TestModuleVersion
+    }
+
     $ModulePath = (Get-Module Bicep).Path
     $ModuleFolder = Split-Path -Path $ModulePath
 
