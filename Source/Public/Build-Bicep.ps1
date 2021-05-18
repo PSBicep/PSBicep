@@ -30,13 +30,19 @@ function Build-Bicep {
 
         [Parameter(ParameterSetName = 'Default')]
         [Parameter(ParameterSetName = 'OutputPath')]
-        [switch]$GenerateParameterFile,
+        [switch]$GenerateAllParametersFile,
+
+        [Parameter(ParameterSetName = 'Default')]
+        [Parameter(ParameterSetName = 'OutputPath')]
+        [switch]$GenerateRequiredParametersFile,
 
         [Parameter(ParameterSetName = 'AsString')]
         [switch]$AsString,
 
         [Parameter(ParameterSetName = 'AsHashtable')]
-        [switch]$AsHashtable
+        [switch]$AsHashtable,
+
+        [switch]$IgnoreDiagnostics
     )
 
     begin {
@@ -66,7 +72,11 @@ function Build-Bicep {
         if ($files) {
             foreach ($file in $files) {
                 if ($file.Name -notin $ExcludeFile) {
-                    $ARMTemplate = ParseBicep -Path $file.FullName
+                    if ($IgnoreDiagnostics.IsPresent) {
+                        $ARMTemplate = ParseBicep -Path $file.FullName -IgnoreDiagnostics
+                    } else {
+                        $ARMTemplate = ParseBicep -Path $file.FullName
+                    }
                     if (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {
                         $BicepModuleVersion = (Get-Module -Name Bicep).Version | Sort-Object -Descending | Select-Object -First 1
                         $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
@@ -76,7 +86,7 @@ function Build-Bicep {
                             Write-Output $ARMTemplate
                         }
                         elseif ($AsHashtable.IsPresent) {
-                            $ARMTemplate | ConvertFrom-Json -AsHashtable
+                            $ARMTemplateObject | ConvertToHashtable -Ordered
                         }
                         else {        
                             if ($PSBoundParameters.ContainsKey('OutputPath')) {
@@ -92,8 +102,19 @@ function Build-Bicep {
                                 $ParameterFilePath = $file.FullName -replace '\.bicep', '.parameters.json'
                             }
                             $null = Out-File -Path $OutputFilePath -InputObject $ARMTemplate -Encoding utf8 -WhatIf:$WhatIfPreference
-                            if ($GenerateParameterFile.IsPresent) {
-                                GenerateParameterFile -Content $ARMTemplate -DestinationPath $ParameterFilePath -WhatIf:$WhatIfPreference
+                            if ($GenerateRequiredParametersFile.IsPresent -and $GenerateAllParametersFile.IsPresent) {
+                                $parameterType = 'All'                                    
+                                Write-Warning "Both -GenerateAllParametersFile and -GenerateRequiredParametersFile is present. A parameter file with all parameters will be generated."
+                            }
+                            elseif ($GenerateRequiredParametersFile.IsPresent) {
+                                $parameterType = 'Required'
+                            }
+                            elseif ($GenerateAllParametersFile.IsPresent) {
+                                $parameterType = 'All'
+                            }
+
+                            if ($GenerateAllParametersFile.IsPresent -or $GenerateRequiredParametersFile.IsPresent) {                                
+                                GenerateParameterFile -Content $ARMTemplate -DestinationPath $ParameterFilePath -Parameters $parameterType -WhatIf:$WhatIfPreference
                             }
                         }
                     }

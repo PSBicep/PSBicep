@@ -6,6 +6,11 @@ function New-BicepParameterFile {
 
         [Parameter(Position = 2)]
         [ValidateNotNullOrEmpty()]
+        [ValidateSet("All", "Required")]
+        [string]$Parameters,        
+
+        [Parameter(Position = 3)]
+        [ValidateNotNullOrEmpty()]
         [string]$OutputDirectory
     )
 
@@ -37,8 +42,10 @@ function New-BicepParameterFile {
             else {
                 $OutputFilePath = $File.FullName -replace '\.bicep','.parameters.json'
             }
-
-            GenerateParameterFile -Content $ARMTemplate -DestinationPath $OutputFilePath -WhatIf:$WhatIfPreference
+            if (!$PSBoundParameters.ContainsKey('Parameters')){
+                $Parameters='Required'
+            }
+             GenerateParameterFile -Content $ARMTemplate -Parameters $Parameters -DestinationPath $OutputFilePath -WhatIf:$WhatIfPreference
         }
         else {
             Write-Error "No bicep file named $Path was found!"
