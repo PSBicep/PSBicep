@@ -30,7 +30,7 @@ function Convert-JsonToBicep {
             '$schema'        = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
             'contentVersion' = '1.0.0.0'
         }
-        $variables['temp'] = $hashTable
+        $variables['temp'] = $hashTable.SyncRoot
         $templateBase['variables'] = $variables
         $tempTemplate = ConvertTo-Json -InputObject $templateBase -Depth 100
         Out-File -InputObject $tempTemplate -FilePath "$tempPath\tempfile.json"
