@@ -43,7 +43,7 @@ function Build-Bicep {
 
     begin {
         if (-not $Script:ModuleVersionChecked) {
-            testModuleVersion
+            TestModuleVersion
         }
         if ($PSBoundParameters.ContainsKey('OutputDirectory') -and (-not (Test-Path $OutputDirectory))) {
             $null = New-Item $OutputDirectory -Force -ItemType Directory -WhatIf:$WhatIfPreference

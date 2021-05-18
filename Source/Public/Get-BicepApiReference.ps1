@@ -43,7 +43,12 @@ function Get-BicepApiReference {
         [Alias('Please')]
         [switch]$Force
     )
-
+    begin {
+        if (-not $Script:ModuleVersionChecked) {
+            TestModuleVersion
+        }
+    }
+    
     process {
         $baseUrl = "https://docs.microsoft.com/en-us/azure/templates"
         $suffix = '?tabs=bicep'
