@@ -15,23 +15,26 @@ Builds one or more .bicep files.
 ### Default (Default)
 ```Powershell
 Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-GenerateParameterFile]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-IgnoreDiagnostics] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
+
 ### OutputPath
 ```Powershell
-Build-Bicep [[-Path] <string>] [[-OutputPath] <string>] [-ExcludeFile <string[]>] [-GenerateParameterFile] [-WhatIf] [-Confirm] [<CommonParameters>]   
-```
-### AsHashtable
-```Powershell
-Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Build-Bicep [[-Path] <string>] [[-OutputPath] <string>] [-ExcludeFile <string[]>] [-IgnoreDiagnostics] [-GenerateParameterFile] [-WhatIf] [-Confirm] [<CommonParameters>]   
 ```
 
 ### AsString
 ```Powershell
-Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-AsString] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString] [-IgnoreDiagnostics] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
+
+### AsHashtable
+```Powershell
+Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-IgnoreDiagnostics] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
+```
+
 
 ## DESCRIPTION
 **Build-Bicep** is equivalent to the Bicep CLI command 'bicep build' but with some additional features.
@@ -91,11 +94,16 @@ Then outputs first all Errors then all Warnings.
 $Template=Build-Bicep -Path '.\vnet.bicep' -AsHashtable
 New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Template
 ```
+
 ### Example 9: Compiles single bicep file and saves the output as the specified file path.
 ```powershell
 Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputPath 'c:\armtemplates\newvnet.json'
 ```
 
+### Example 10: Compile a .bicep and ignore all build warnings and errors
+```powershell
+Build-Bicep -Path '.\vnet.bicep' -IgnoreDiagnostics
+```
 
 ## PARAMETERS
 
@@ -119,7 +127,7 @@ Specfies the target directory where the compiled files should be created
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Default
 Aliases:
 
 Required: False
@@ -211,6 +219,21 @@ Shows what would happen if the cmdlet runs. The cmdlet is not run.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IgnoreDiagnostics
+Ignores all build warnings and errors.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
 
 Required: False
 Position: Named

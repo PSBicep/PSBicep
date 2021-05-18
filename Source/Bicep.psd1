@@ -97,6 +97,7 @@ FunctionsToExport = @(
     'Get-BicepApiReference',
     'Update-BicepTypes',
     'Convert-JsonToBicep',
+    'Convert-BicepParamsToDecoratorStyle',
     'New-BicepParameterFile'
 )
 
