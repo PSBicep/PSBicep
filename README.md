@@ -50,6 +50,6 @@ This project is currently maintained by the following coders:
 
 <!-- References -->
 [BicepIcon]: logo/BicePS_40px.png
-[Bicep]: https://img.shields.io/badge/Bicep-v1.4.6-blue
+[Bicep]: https://img.shields.io/badge/Bicep-v1.4.7-blue
 [BicepDownloads]: https://img.shields.io/powershellgallery/dt/Bicep
 [BicepGallery]: https://www.powershellgallery.com/packages/Bicep/
