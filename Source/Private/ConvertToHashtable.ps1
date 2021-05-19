@@ -7,16 +7,16 @@ function ConvertToHashtable {
         $Ordered
     )
     process {
-
+ 
         # If InputObject is string or valuetype, don't recurse, just return the value.
-        if(
+        if (
             $null -eq $InputObject -or 
             $InputObject.GetType().FullName -eq 'System.String' -or 
             $InputObject.GetType().IsValueType
         ) {
             return $InputObject
         }
-
+ 
         # Else,  create a hashtable and loop over properties.
         if ($Ordered.IsPresent) {
             $HashTable = [ordered]@{}
@@ -32,8 +32,16 @@ function ConvertToHashtable {
             ) {
                 $HashTable.Add($Prop.Name, $Prop.Value)
             }
-            else{
-                $Value = $Prop.Value | ConvertToHashtable -Ordered:$Ordered
+            else {
+                if ($Prop.TypeNameOfValue -eq 'System.Object[]' -and !$Prop.Value) {
+                    $Value = @()
+                }
+                elseif ($Prop.TypeNameOfValue -eq 'System.Object[]' -and $Prop.Value) {
+                    $Value = @($Prop.Value)
+                }
+                else {
+                    $Value = $Prop.Value | ConvertToHashtable -Ordered:$Ordered
+                }
                 $HashTable.Add($Prop.Name, $Value)
             }
         }
