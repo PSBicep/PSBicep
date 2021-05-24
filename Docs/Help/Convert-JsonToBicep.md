@@ -57,12 +57,20 @@ Convert-JsonToBicep -String $json
 
 This example converts a JSON array to Bicep Language
 
-### Example 3: Read a file and convert to Bicep Language
+### Example 3: Read a file and convert it to Bicep Language
 ```powershell
 Get-Content -Path <path to .json file> -Raw | Convert-JsonToBicep
 ```
 
 This example converts a JSON file to Bicep Language
+
+### Example 4: Read a file, convert it to Bicep Language and save the output to the Clipboard
+```powershell
+Get-Content -Path <path to .json file> -Raw | Convert-JsonToBicep -ToClipboard
+```
+
+This example reads a file, converts it to Bicep Language and then saves the output to the Clipboard
+
 
 ## PARAMETERS
 

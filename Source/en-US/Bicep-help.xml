@@ -783,10 +783,17 @@ Convert-JsonToBicep -String $json</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>----- Example 3: Read a file and convert to Bicep Language -----</maml:title>
+        <maml:title>--- Example 3: Read a file and convert it to Bicep Language ---</maml:title>
         <dev:code>Get-Content -Path &lt;path to .json file&gt; -Raw | Convert-JsonToBicep</dev:code>
         <dev:remarks>
           <maml:para>This example converts a JSON file to Bicep Language</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 4: Read a file, convert it to Bicep Language and save the output to the Clipboard</maml:title>
+        <dev:code>Get-Content -Path &lt;path to .json file&gt; -Raw | Convert-JsonToBicep -ToClipboard</dev:code>
+        <dev:remarks>
+          <maml:para>This example reads a file, converts it to Bicep Language and then saves the output to the Clipboard</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
