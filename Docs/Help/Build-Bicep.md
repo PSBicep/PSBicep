@@ -13,26 +13,26 @@ Builds one or more .bicep files.
 ## SYNTAX
 
 ### Default (Default)
-```powershell
+```
 Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>]
  [-GenerateAllParametersFile] [-GenerateRequiredParametersFile] [-IgnoreDiagnostics] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
 ### OutputPath
-```powershell
+```
 Build-Bicep [[-Path] <String>] [[-OutputPath] <String>] [-ExcludeFile <String[]>] [-GenerateAllParametersFile]
  [-GenerateRequiredParametersFile] [-IgnoreDiagnostics] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### AsHashtable
-```powershell
+```
 Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-IgnoreDiagnostics] [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
 
 ### AsString
-```powershell
+```
 Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString] [-IgnoreDiagnostics] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```

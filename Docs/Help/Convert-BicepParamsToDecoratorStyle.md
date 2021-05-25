@@ -52,8 +52,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ToClipboard  (Windows only)
-Saves the converted params to the clipboard.
+### -ToClipboard
+{{ Fill ToClipboard Description }}
 
 ```yaml
 Type: SwitchParameter

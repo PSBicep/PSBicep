@@ -12,7 +12,7 @@ Update Bicep CLI (Windows only)
 
 ## SYNTAX
 
-```powershell
+```
 Update-BicepCLI [<CommonParameters>]
 ```
 

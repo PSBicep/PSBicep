@@ -1,6 +1,6 @@
 ---
-external help file: Bicep-help.xml
-Module Name: Bicep
+external help file:
+Module Name:
 online version:
 schema: 2.0.0
 ---
@@ -12,8 +12,8 @@ Convert a JSON string to Bicep
 
 ## SYNTAX
 
-```powershell
-Convert-JsonToBicep -String <String> [<CommonParameters>]
+```
+Convert-JsonToBicep -String <String> [-ToClipboard] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -71,7 +71,6 @@ Get-Content -Path <path to .json file> -Raw | Convert-JsonToBicep -ToClipboard
 
 This example reads a file, converts it to Bicep Language and then saves the output to the Clipboard
 
-
 ## PARAMETERS
 
 ### -String
@@ -83,6 +82,21 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -ToClipboard
+{{ Fill ToClipboard Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

@@ -12,15 +12,8 @@ Decompile ARM templates to .bicep files
 
 ## SYNTAX
 
-### Default (Default)
-```powershell
-ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [<CommonParameters>]
 ```
-
-### AsString
-```powershell
-ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] -AsString
- [<CommonParameters>]
+ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-AsString] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -88,7 +81,7 @@ The -AsString prints all output as a string instead of corresponding files.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: AsString
+Parameter Sets: (All)
 Aliases:
 
 Required: False
