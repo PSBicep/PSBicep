@@ -1,6 +1,6 @@
 ---
-external help file:
-Module Name:
+external help file: Bicep-help.xml
+Module Name: Bicep
 online version:
 schema: 2.0.0
 ---
