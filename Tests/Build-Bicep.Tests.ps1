@@ -12,19 +12,22 @@ InModuleScope Bicep {
         
         Context 'When it works' {            
             BeforeAll {
-                $armTemaplate = Build-Bicep -Path .\supportFiles\workingBicep.bicep -AsString
+                $armTemplate = Build-Bicep -Path .\supportFiles\workingBicep.bicep -AsString
             }
             It 'Build a bicep file' {
-                $armTemaplate | Should -Not -BeNullOrEmpty
+                $armTemplate | Should -Not -BeNullOrEmpty
             }
         }
-        Context 'When it does not work' {
-            BeforeAll {                
-                $armTemaplate = Build-Bicep -Path .\supportFiles\brokenBicep.bicep -AsString                
+        Context 'When it does not work' { 
+            It 'Does not generate ARM template' {
+                Build-Bicep -Path .\supportFiles\brokenBicep.bicep -AsString -IgnoreDiagnostics | Should -BeNullOrEmpty
             }
-            It 'Throws error if unable to get version file from GitHub' {
-                $armTemaplate | Should -BeNullOrEmpty
+
+            It 'Diagnostics' {
+                Build-Bicep -Path .\supportFiles\brokenBicep.bicep -AsString 6>&1 -ErrorAction SilentlyContinue | Should -BeLike '*Error BCP018: Expected the "}" character at this location.'
             }
+
+            
         }
     }
 }
