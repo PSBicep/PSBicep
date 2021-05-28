@@ -1,7 +1,6 @@
 try {
     $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
     Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1"
-    Write-Host "fis $ScriptDirectory"
 }
 catch {
     Throw "Unable to import Bicep module. $_"
