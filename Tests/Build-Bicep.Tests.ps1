@@ -9,24 +9,25 @@ catch {
 InModuleScope Bicep {
     BeforeAll {
         $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
+        Copy-Item "$ScriptDirectory\supportFiles\*.bicep" -Destination TestDrive:\
     }
     Describe 'Build-Bicep' {
         
         Context 'When it works' {            
             It 'Build a bicep file AsString' {
-                Build-Bicep -Path "$ScriptDirectory\supportFiles\workingBicep.bicep" -AsString | Should -Not -BeNullOrEmpty
+                Build-Bicep -Path 'TestDrive:\workingBicep.bicep' -AsString | Should -Not -BeNullOrEmpty
             }
             It 'Build a bicep file AsHashtable' {
-                Build-Bicep -Path "$ScriptDirectory\supportFiles\workingBicep.bicep" -AsHashtable | Should -Not -BeNullOrEmpty
+                Build-Bicep -Path 'TestDrive:\workingBicep.bicep' -AsHashtable | Should -Not -BeNullOrEmpty
             }
             It 'Build a bicep file' {
-                $file="$ScriptDirectory\supportFiles\workingBicep.bicep"
+                $file='TestDrive:\workingBicep.bicep'
                 Build-Bicep -Path $file
                 $templateFile = $file -replace '\.bicep', '.json'
                 Get-Content -Path $templateFile -Raw | Should -Not -BeNullOrEmpty
             }
             It 'Build a bicep file and generate parameters' {
-                $file="$ScriptDirectory\supportFiles\workingBicep.bicep"
+                $file='TestDrive:\workingBicep.bicep'
                 Build-Bicep -Path $file -GenerateAllParametersFile
                 $parameterFile = $file -replace '\.bicep', '.parameters.json'
                 Get-Content -Path $parameterFile -Raw | Should -Not -BeNullOrEmpty
@@ -35,11 +36,11 @@ InModuleScope Bicep {
         }
         Context 'When it does not work' { 
             It 'Does not generate ARM template' {
-                Build-Bicep -Path "$ScriptDirectory\supportFiles\brokenBicep.bicep" -AsString -IgnoreDiagnostics | Should -BeNullOrEmpty
+                Build-Bicep -Path 'TestDrive:\brokenBicep.bicep' -AsString -IgnoreDiagnostics | Should -BeNullOrEmpty
             }
 
             It 'Diagnostics' {
-                Build-Bicep -Path "$ScriptDirectory\supportFiles\brokenBicep.bicep" -AsString 6>&1 -ErrorAction SilentlyContinue | Should -BeLike '*Error BCP018: Expected the "}" character at this location.'
+                Build-Bicep -Path 'TestDrive:\brokenBicep.bicep' -AsString 6>&1 -ErrorAction SilentlyContinue | Should -BeLike '*Error BCP018: Expected the "}" character at this location.'
             }
 
             
