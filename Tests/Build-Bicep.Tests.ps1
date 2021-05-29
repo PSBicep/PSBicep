@@ -13,12 +13,25 @@ InModuleScope Bicep {
     Describe 'Build-Bicep' {
         
         Context 'When it works' {            
-            BeforeAll {
-                $armTemplate = Build-Bicep -Path "$ScriptDirectory\supportFiles\workingBicep.bicep" -AsString
+            It 'Build a bicep file AsString' {
+                Build-Bicep -Path "$ScriptDirectory\supportFiles\workingBicep.bicep" -AsString | Should -Not -BeNullOrEmpty
+            }
+            It 'Build a bicep file AsHashtable' {
+                Build-Bicep -Path "$ScriptDirectory\supportFiles\workingBicep.bicep" -AsHashtable | Should -Not -BeNullOrEmpty
             }
             It 'Build a bicep file' {
-                $armTemplate | Should -Not -BeNullOrEmpty
+                $file="$ScriptDirectory\supportFiles\workingBicep.bicep"
+                Build-Bicep -Path $file
+                $templateFile = $file -replace '\.bicep', '.json'
+                Get-Content -Path $templateFile -Raw | Should -Not -BeNullOrEmpty
             }
+            It 'Build a bicep file and generate parameters' {
+                $file="$ScriptDirectory\supportFiles\workingBicep.bicep"
+                Build-Bicep -Path $file -GenerateAllParametersFile
+                $parameterFile = $file -replace '\.bicep', '.parameters.json'
+                Get-Content -Path $parameterFile -Raw | Should -Not -BeNullOrEmpty
+            }
+
         }
         Context 'When it does not work' { 
             It 'Does not generate ARM template' {
