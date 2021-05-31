@@ -12,13 +12,13 @@ Get ARM Template reference docs for provided resource type.
 
 ## SYNTAX
 
-### TypeString (Default)
-```
+### Type (Default)
+```powershell
 Get-BicepApiReference [[-Type] <String>] [-Force] [<CommonParameters>]
 ```
 
 ### ResourceProvider
-```
+```powershell
 Get-BicepApiReference -ResourceProvider <String> -Resource <String> [-Child <String>] [-ApiVersion <String>]
  [-Force] [<CommonParameters>]
 ```
@@ -55,6 +55,7 @@ Get-BicepApiReference -ResourceProvider Microsoft.Compute -Resource virtualMachi
 ```
 
 This will open the documentation for the `Microsoft.Compute` resource provider, resource `virtualMachines/extensions`
+
 
 ## PARAMETERS
 
