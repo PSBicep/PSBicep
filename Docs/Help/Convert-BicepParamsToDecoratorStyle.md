@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Convert-BicepParamsToDecoratorStyle
+# Convert-BicepParamsToDecoratorStyle (Decomissioned)
 
 ## SYNOPSIS
 Convert Bicep parameters from v0.1-0.2 style to decorator style.
