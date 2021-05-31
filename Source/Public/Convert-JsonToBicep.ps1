@@ -1,8 +1,7 @@
 function Convert-JsonToBicep {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory,
-            ValueFromPipeline = $true,
+        [Parameter(ValueFromPipeline = $true,
             ParameterSetName = 'String')]
         [ValidateNotNullOrEmpty()]
         [ValidateScript( {
@@ -10,7 +9,15 @@ function Convert-JsonToBicep {
                 catch { $false }
             },
             ErrorMessage = 'The string is not a valid json')]
-        [string]$String
+        [string]$String,
+        [Parameter(ParameterSetName = 'Path')]
+        [ValidateNotNullOrEmpty()]
+        [ValidateScript( {
+                try { Get-Content -Path $_ | Convertfrom-Json }
+                catch { $false }
+            },
+            ErrorMessage = 'The file does not contain a valid json')]
+        [string]$Path
     )
 
     begin {
@@ -23,7 +30,14 @@ function Convert-JsonToBicep {
     }
 
     process {
-        $inputObject = $String | ConvertFrom-Json
+
+        if($String) {
+            $inputObject = $String | ConvertFrom-Json
+        }
+        else {
+            $inputObject = Get-Content -Path $Path | ConvertFrom-Json
+        }
+        
         $hashTable = ConvertToHashtable -InputObject $inputObject -Ordered
         $variables = [ordered]@{}
         $templateBase = [ordered]@{
