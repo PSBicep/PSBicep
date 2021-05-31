@@ -8,12 +8,18 @@ schema: 2.0.0
 # Convert-JsonToBicep
 
 ## SYNOPSIS
-Convert a JSON string to Bicep
+Convert a JSON string or file to Bicep
 
 ## SYNTAX
 
+### String
+```powershell
+Convert-JsonToBicep [-String <String>] [<CommonParameters>]
 ```
-Convert-JsonToBicep -String <String> [<CommonParameters>]
+
+### Path
+```powershell
+Convert-JsonToBicep [-Path <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -78,13 +84,28 @@ Specifies the JSON string to convert to Bicep Language
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: String
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Path
+Specifies the JSON file to convert to Bicep Language
+
+```yaml
+Type: String
+Parameter Sets: Path
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
