@@ -36,22 +36,22 @@ If you would like to report any issues or inaccurate conversions, please see htt
                     }
                     else {
                         if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
-                            $FileName = Split-Path -Path $BicepFile.AbsolutePath -Leaf
+                            $FileName = Split-Path -Path $BicepFile.LocalPath -Leaf
                             $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
                         }
                         else {
-                            $FilePath = $BicepFile.AbsolutePath
+                            $FilePath = $BicepFile.LocalPath
                         }
                         $null = Out-File -InputObject $BicepObject.Item2[$BicepFile] -FilePath $FilePath -Encoding utf8
                     }
                 }
 
                 if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
-                    $FileName = Split-Path -Path $BicepObject.Item1.AbsolutePath -Leaf
+                    $FileName = Split-Path -Path $BicepObject.Item1.LocalPath -Leaf
                     $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
                 }
                 else {
-                    $FilePath = $BicepObject.Item1.AbsolutePath
+                    $FilePath = $BicepObject.Item1.LocalPath
                 }
                 $null = Build-Bicep -Path $FilePath -AsString
                 
