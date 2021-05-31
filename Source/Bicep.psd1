@@ -68,12 +68,17 @@ PowerShellVersion = '7.0'
 
 # Assemblies that must be loaded prior to importing this module
 RequiredAssemblies = @(
-    'Assets\Azure.Bicep.Types.dll',
     'Assets\Azure.Bicep.Types.Az.dll',
+    'Assets\Azure.Bicep.Types.dll',
     'Assets\Azure.Deployments.Core.dll',
     'Assets\Azure.Deployments.Expression.dll',
     'Assets\Bicep.Core.dll',
-    'Assets\Bicep.Decompiler.dll'
+    'Assets\Bicep.Decompiler.dll',
+    'Assets\Microsoft.Extensions.Configuration.Abstractions.dll',
+    'Assets\Microsoft.Extensions.Configuration.Binder.dll',
+    'Assets\Microsoft.Extensions.Configuration.dll',
+    'Assets\Microsoft.Extensions.Configuration.Json.dll',
+    'Assets\Microsoft.Extensions.Primitives.dll'
 )
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.

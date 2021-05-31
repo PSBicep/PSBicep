@@ -36,13 +36,18 @@ try {
     # end HACK
     dotnet publish './Bicep.Cli' -c 'Release' --no-self-contained --nologo --verbosity 'minimal'
     $FilesToInclude = @(
-        'Azure.Bicep.Types.dll',
         'Azure.Bicep.Types.Az.dll',
+        'Azure.Bicep.Types.dll',
         'Azure.Deployments.Core.dll',
-        'Azure.Deployments.Expression.dll', 
+        'Azure.Deployments.Expression.dll',
         'Bicep.Core.dll',
         'Bicep.Decompiler.dll',
-        'Newtonsoft.Json.dll'
+        'BicepTypes.json',
+        'Microsoft.Extensions.Configuration.Abstractions.dll',
+        'Microsoft.Extensions.Configuration.Binder.dll',
+        'Microsoft.Extensions.Configuration.dll',
+        'Microsoft.Extensions.Configuration.Json.dll',
+        'Microsoft.Extensions.Primitives.dll'
     )
     $Files = Get-Item -Path '.\Bicep.Cli\bin\Release\net5.0\publish\*' -Include $FilesToInclude
     $Files | Copy-Item -Destination $AssetsFolder.Path -Force
