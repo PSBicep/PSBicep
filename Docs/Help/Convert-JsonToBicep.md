@@ -12,7 +12,7 @@ Convert a JSON string to Bicep
 
 ## SYNTAX
 
-```powershell
+```
 Convert-JsonToBicep -String <String> [<CommonParameters>]
 ```
 
@@ -64,6 +64,13 @@ Get-Content -Path <path to .json file> -Raw | Convert-JsonToBicep
 
 This example converts a JSON file to Bicep Language
 
+### Example 4: Converts a JSON-file to bicep
+```powershell
+Convert-JsonToBicep -path <path to .json-file>
+```
+
+This example converts a JSON file to Bicep Language
+
 ## PARAMETERS
 
 ### -String
@@ -77,7 +84,7 @@ Aliases:
 Required: True
 Position: Named
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
