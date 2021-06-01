@@ -11,6 +11,14 @@ function Convert-JsonToBicep {
             },
             ErrorMessage = 'The string is not a valid json')]
         [string]$String,
+        [Parameter(ParameterSetName = 'Path')]
+        [ValidateNotNullOrEmpty()]
+        [ValidateScript( {
+                try { Get-Content -Path $_ | Convertfrom-Json }
+                catch { $false }
+            },
+            ErrorMessage = 'The file does not contain a valid json')]
+        [string]$Path,
         [switch]$ToClipboard
     )
 
@@ -24,11 +32,19 @@ function Convert-JsonToBicep {
     }
 
     process {
+
+        if($String) {
+            $inputObject = $String | ConvertFrom-Json
+        }
+        else {
+            $inputObject = Get-Content -Path $Path | ConvertFrom-Json
+        }
+
         if ((!$IsWindows) -and $ToClipboard.IsPresent) {
             Write-Error -Message "The -ToClipboard switch is only supported on Windows systems."
             break
         }
-        $inputObject = $String | ConvertFrom-Json
+
         $hashTable = ConvertToHashtable -InputObject $inputObject -Ordered
         $variables = [ordered]@{}
         $templateBase = [ordered]@{
