@@ -42,7 +42,6 @@ try {
         'Azure.Deployments.Expression.dll',
         'Bicep.Core.dll',
         'Bicep.Decompiler.dll',
-        'BicepTypes.json',
         'Microsoft.Extensions.Configuration.Abstractions.dll',
         'Microsoft.Extensions.Configuration.Binder.dll',
         'Microsoft.Extensions.Configuration.dll',
