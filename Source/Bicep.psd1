@@ -78,7 +78,7 @@ RequiredAssemblies = @(
     'Assets\Microsoft.Extensions.Configuration.Binder.dll',
     'Assets\Microsoft.Extensions.Configuration.dll',
     'Assets\Microsoft.Extensions.Configuration.Json.dll',
-    'Assets\Microsoft.Extensions.Primitives.dll'
+    'Assets\Microsoft.Extensions.Primitives.dll',
     'Assets\Microsoft.Extensions.FileProviders.Abstractions.dll',
     'Assets\Microsoft.Extensions.Configuration.FileExtensions.dll',
     'Assets\Microsoft.Extensions.FileProviders.Physical.dll'
