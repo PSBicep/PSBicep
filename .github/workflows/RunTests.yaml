@@ -14,7 +14,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: Source/Assets
-        key: ${{ hashFiles('Source/assemblyversion.txt') }}
+        key: ${{ hashFiles('Source/assemblyversion.txt','scripts\downloadDependencies.ps1') }}
     - name: Download required assemblies
       if: steps.assetscache.outputs.cache-hit != 'true'
       shell: pwsh
