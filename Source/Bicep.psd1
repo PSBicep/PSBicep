@@ -79,6 +79,9 @@ RequiredAssemblies = @(
     'Assets\Microsoft.Extensions.Configuration.dll',
     'Assets\Microsoft.Extensions.Configuration.Json.dll',
     'Assets\Microsoft.Extensions.Primitives.dll'
+    'Assets\Microsoft.Extensions.FileProviders.Abstractions.dll',
+    'Assets\Microsoft.Extensions.Configuration.FileExtensions.dll',
+    'Assets\Microsoft.Extensions.FileProviders.Physical.dll'
 )
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
