@@ -7,8 +7,13 @@ function TestModuleVersion {
           
         $InstalledModuleVersion = (Get-Module -Name Bicep).Version | Sort-Object -Descending | Select-Object -First 1
         
-        if ($LatestBicepVersion -ne $InstalledModuleVersion.ToString()) {
-            Write-Host "A new version of the Bicep module ($LatestBicepVersion) is available. Update the module using 'Update-Module -Name Bicep'" -ForegroundColor 'DarkYellow'
+        if($LatestBicepVersion -as [version]) {
+            if([version]$LatestBicepVersion -gt $InstalledModuleVersion) {
+                Write-Host "A new version of the Bicep module ($LatestBicepVersion) is available. Update the module using 'Update-Module -Name Bicep'" -ForegroundColor 'DarkYellow'
+            }
+        }
+        else {
+            Write-Host "Failed to compare Bicep module version. Latest version is $LatestBicepVersion. Update the module using 'Update-Module -Name Bicep'" -ForegroundColor 'DarkYellow'
         }
     }
     catch {
