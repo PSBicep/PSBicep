@@ -25,21 +25,21 @@ Describe 'Get-BicepVersion' {
         }
     }
     
-    InModuleScope Bicep {   
         Context 'First executed command after import' {
-            BeforeAll {
-                Mock TestModuleVersion -ModuleName Bicep  {
-                    $Script:ModuleVersionChecked = $true
+            It 'Checks for new version the first time only' {
+                InModuleScope Bicep {
+                    Mock TestModuleVersion {
+                        $Script:ModuleVersionChecked = $true
+                    }
+
+                    $Script:ModuleVersionChecked = $false
+                    
+                    $null = Get-BicepVersion
+                    $null = Get-BicepVersion    
+                    Should -Invoke TestModuleVersion -ModuleName Bicep -Times 1 -Exactly
                 }
             }
-
-            It 'Checks for new version the first time only' {
-                $null = Get-BicepVersion
-                $null = Get-BicepVersion
-                Should -Invoke TestModuleVersion -Times 1 -Exactly
-            }
         }
-    }
 
     Context 'Verify -All switch' {
         It 'Invokes ListBicepVersions with -Latest when -All is not used' {
