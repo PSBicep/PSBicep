@@ -26,7 +26,6 @@ jobs:
       run: .\Tests\TestRunner.ps1
       shell: pwsh
     - name: Publish test results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: testResults.xml
