@@ -23,7 +23,5 @@ jobs:
       run: Install-Module -Name Pester -Force
       shell: pwsh
     - name: Run Pester tests and build module
-      run: | 
-        Write-Host 'Invoking Pester'
-        Invoke-Pester -CI
+      run: .\Tests\TestRunner.ps1
       shell: pwsh
