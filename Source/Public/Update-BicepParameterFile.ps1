@@ -1,9 +1,11 @@
 function Update-BicepParameterFile {
     [CmdletBinding()]
     param (
+        [ValidateNotNullOrEmpty()]
         [Parameter(Mandatory, Position = 1)]
         [string]$Path,
 
+        [ValidateNotNullOrEmpty()]
         [Parameter(Position = 2)]
         [string]$BicepFile
     )
@@ -25,26 +27,27 @@ function Update-BicepParameterFile {
         
         $FileName = $ParamFile.BaseName.Replace('.parameters', '')
         
-        if (!$BicepFile) {
-            $BicepFilePath = (Get-Item * | Where-Object { $_.Name -like "$FileName.bicep" }).FullName
-            if (!$BicepFilePath) {
-                Write-Error "Cant find BicepFile Named $FileName in current Directory."
+        if (-not $PSBoundParameters.ContainsKey('BicepFile')) {
+            $BicepFilePath = (Get-ChildItem $ParamFile.DirectoryName -Filter *.bicep | Where-Object { $_.BaseName -eq $FileName }).FullName
+
+            if (-not $BicepFilePath) {
+                Write-Error "Cant find BicepFile Named $FileName in directory: $($ParamFile.DirectoryName)"
                 Break
             }
         }
         else {
-            if (!(Test-Path $BicepFile)) {
+            if (-not (Test-Path $BicepFile)) {
                 Write-Error "Cant find BicepFile at specified Path $BicepFile."
                 Break
             }
             $BicepFilePath = $BicepFile
         }
-        
-        $BicepFileName = (Get-Item -Path $BicepFilePath).BaseName.Replace('.bicep', '')
+
+        $BicepFileName = (Get-Item -Path $BicepFilePath).BaseName
         New-BicepParameterFile -Path $BicepFilePath -OutputDirectory $tempPath -Parameters All 
 
-        $NewParametersFilePath = "$tempPath\$BicepFileName.parameters.json"
-        
+        $NewParametersFilePath = $tempPath+"$BicepFileName.parameters.json"
+
         try {
             $NewParametersFile = Get-Content -Path $NewParametersFilePath -ErrorAction Stop | ConvertFrom-Json -Depth 100 | ConvertToHashtable -Ordered
         }
@@ -54,17 +57,16 @@ function Update-BicepParameterFile {
         }
         
         $OldParametersFile = Get-Content -Path $Path | ConvertFrom-Json -Depth 100 | ConvertToHashtable -Ordered
-        $UpdatedParametersFile = $NewParametersFile
 
-        foreach ($Obj in $($NewParametersFile.parameters.Keys)) {
-            foreach ($Param in $($OldParametersFile.parameters.Keys)) {
-                if ($Obj -eq $Param) {
-                    $UpdatedParametersFile.parameters[$Obj] = $OldParametersFile.parameters[$Obj]
-                }
+        $ParameterArray = @()
+        $NewParametersFile.parameters.Keys.ForEach({ $ParameterArray += $PSItem })
+        
+        foreach ($item in $ParameterArray) {
+            if ($OldParametersFile.parameters.Contains($item)) {
+                $NewParametersFile.parameters[$item] = $OldParametersFile.parameters[$item]
             }
         }
-        
-        $UpdatedParametersFile | ConvertTo-Json -Depth 100 | Out-File -Path $Path -Force
+        $NewParametersFile | ConvertTo-Json -Depth 100 | Out-File -Path $Path -Force
         
     }
     end {
