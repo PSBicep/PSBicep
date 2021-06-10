@@ -8,12 +8,18 @@ schema: 2.0.0
 # Convert-JsonToBicep
 
 ## SYNOPSIS
-Convert a JSON string to Bicep
+Convert a JSON string or file to Bicep
 
 ## SYNTAX
 
+### String
 ```powershell
-Convert-JsonToBicep -String <String> [<CommonParameters>]
+Convert-JsonToBicep -String <String> [-ToClipboard] [<CommonParameters>]
+```
+
+### Path
+```powershell
+Convert-JsonToBicep [-Path <String>] [-ToClipboard] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -64,17 +70,61 @@ Get-Content -Path <path to .json file> -Raw | Convert-JsonToBicep
 
 This example converts a JSON file to Bicep Language
 
+### Example 4: Converts a JSON-file to bicep
+```powershell
+Convert-JsonToBicep -path <path to .json-file>
+```
+
+This example converts a JSON file to Bicep Language
+
+### Example 5: Converts a JSON-file to bicep and saves it to the Clipboard
+```powershell
+Convert-JsonToBicep -path <path to .json-file> -ToClipboard
+```
+
+This example converts a JSON file to Bicep Language and saves it to the Clipboard
+
 ## PARAMETERS
+
+### -Path
+Specifies the JSON file to convert to Bicep Language
+
+```yaml
+Type: String
+Parameter Sets: Path
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -String
 Specifies the JSON string to convert to Bicep Language
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: String
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -ToClipboard (Windows Only)
+Converts a JSON-file to bicep and saves it to the Clipboard
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

@@ -10,7 +10,16 @@ function Convert-JsonToBicep {
                 catch { $false }
             },
             ErrorMessage = 'The string is not a valid json')]
-        [string]$String
+        [string]$String,
+        [Parameter(ParameterSetName = 'Path')]
+        [ValidateNotNullOrEmpty()]
+        [ValidateScript( {
+                try { Get-Content -Path $_ | Convertfrom-Json }
+                catch { $false }
+            },
+            ErrorMessage = 'The file does not contain a valid json')]
+        [string]$Path,
+        [switch]$ToClipboard
     )
 
     begin {
@@ -23,7 +32,19 @@ function Convert-JsonToBicep {
     }
 
     process {
-        $inputObject = $String | ConvertFrom-Json
+
+        if($String) {
+            $inputObject = $String | ConvertFrom-Json
+        }
+        else {
+            $inputObject = Get-Content -Path $Path | ConvertFrom-Json
+        }
+
+        if ((!$IsWindows) -and $ToClipboard.IsPresent) {
+            Write-Error -Message "The -ToClipboard switch is only supported on Windows systems."
+            break
+        }
+
         $hashTable = ConvertToHashtable -InputObject $inputObject -Ordered
         $variables = [ordered]@{}
         $templateBase = [ordered]@{
@@ -42,7 +63,13 @@ function Convert-JsonToBicep {
                 $bicepData = $BicepObject.Item2[$BicepFile]
             }
             $bicepOutput = $bicepData.Replace("var temp = ", "")
-            Write-Host $bicepOutput
+            if ($ToClipboard.IsPresent) {                
+                Set-Clipboard -Value $bicepOutput
+                Write-Host "Bicep object saved to clipboard"
+            }
+            else {
+                Write-Host $bicepOutput
+            }
         }
         Remove-Item $file
     }

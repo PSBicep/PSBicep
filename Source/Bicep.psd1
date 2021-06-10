@@ -12,7 +12,7 @@
 RootModule = 'Bicep.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.4.7'
+ModuleVersion = '1.5.0'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core')
@@ -68,12 +68,20 @@ PowerShellVersion = '7.0'
 
 # Assemblies that must be loaded prior to importing this module
 RequiredAssemblies = @(
-    'Assets\Azure.Bicep.Types.dll',
     'Assets\Azure.Bicep.Types.Az.dll',
+    'Assets\Azure.Bicep.Types.dll',
     'Assets\Azure.Deployments.Core.dll',
     'Assets\Azure.Deployments.Expression.dll',
     'Assets\Bicep.Core.dll',
-    'Assets\Bicep.Decompiler.dll'
+    'Assets\Bicep.Decompiler.dll',
+    'Assets\Microsoft.Extensions.Configuration.Abstractions.dll',
+    'Assets\Microsoft.Extensions.Configuration.Binder.dll',
+    'Assets\Microsoft.Extensions.Configuration.dll',
+    'Assets\Microsoft.Extensions.Configuration.Json.dll',
+    'Assets\Microsoft.Extensions.Primitives.dll',
+    'Assets\Microsoft.Extensions.FileProviders.Abstractions.dll',
+    'Assets\Microsoft.Extensions.Configuration.FileExtensions.dll',
+    'Assets\Microsoft.Extensions.FileProviders.Physical.dll'
 )
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
