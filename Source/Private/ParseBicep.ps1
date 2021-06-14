@@ -35,7 +35,7 @@ function ParseBicep {
         
         if ($DiagnosticParams.Tag -eq 'Error') {
             $ErrorParams = @{
-                Message           = "Buildning file $Path returned with errors. See Information stream for details"
+                Message           = "Building file $Path returned with errors. See Information stream for details"
                 Category          = 'InvalidResult' 
                 RecommendedAction = 'Check for errors in the Information stream.'
                 TargetObject      = $Path

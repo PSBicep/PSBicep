@@ -127,5 +127,4 @@ function Get-BicepApiReference {
             Write-Error "No documentation found. This usually means that no documentation has been written. If you would like to try anyway, use the -Force parameter. Url: $url"      
         }
     }
-
 }
