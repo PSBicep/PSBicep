@@ -706,7 +706,7 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>ToClipboard</maml:name>
+          <maml:name>ToClipboard (Windows Only)</maml:name>
           <maml:description>
             <maml:para>Converts a JSON-file to bicep and saves it to the Clipboard</maml:para>
           </maml:description>
@@ -732,7 +732,7 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>ToClipboard</maml:name>
+          <maml:name>ToClipboard (Windows Only)</maml:name>
           <maml:description>
             <maml:para>Converts a JSON-file to bicep and saves it to the Clipboard</maml:para>
           </maml:description>
@@ -770,7 +770,7 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>ToClipboard</maml:name>
+        <maml:name>ToClipboard (Windows Only)</maml:name>
         <maml:description>
           <maml:para>Converts a JSON-file to bicep and saves it to the Clipboard</maml:para>
         </maml:description>
@@ -1547,6 +1547,175 @@ Convert-JsonToBicep -String $json</dev:code>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Test-BicepFile</command:name>
+      <command:verb>Test</command:verb>
+      <command:noun>BicepFile</command:noun>
+      <maml:description>
+        <maml:para>Tests if a bicep file is valid.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Tests if a bicep file is valid. Returns true/false by default, but can be made to return JSON output.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Test-BicepFile</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="PSPath">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>Path to a bicep file to test.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>OutputType</maml:name>
+          <maml:description>
+            <maml:para>Set format for output. Simple will only return true or false.</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">Simple</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Json</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>Simple</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>AcceptDiagnosticLevel</maml:name>
+          <maml:description>
+            <maml:para>Set the highest level of diagnostic output that will be accepted for the test to pass. Setting Warning here will make a bicep file with errors fail the test while a bicep files with warnings will be tested valid.</maml:para>
+            <maml:para>Settings this to Error will accept anything. Since this is not a wanted scenario the command will throw an error.</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">Off</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Info</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Warning</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Error</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">DiagnosticLevel</command:parameterValue>
+          <dev:type>
+            <maml:name>DiagnosticLevel</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>Info</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>IgnoreDiagnosticOutput</maml:name>
+          <maml:description>
+            <maml:para>Will run silently, not outputing any diagnostic information  to the information stream.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>AcceptDiagnosticLevel</maml:name>
+        <maml:description>
+          <maml:para>Set the highest level of diagnostic output that will be accepted for the test to pass. Setting Warning here will make a bicep file with errors fail the test while a bicep files with warnings will be tested valid.</maml:para>
+          <maml:para>Settings this to Error will accept anything. Since this is not a wanted scenario the command will throw an error.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">DiagnosticLevel</command:parameterValue>
+        <dev:type>
+          <maml:name>DiagnosticLevel</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>Info</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>IgnoreDiagnosticOutput</maml:name>
+        <maml:description>
+          <maml:para>Will run silently, not outputing any diagnostic information  to the information stream.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>OutputType</maml:name>
+        <maml:description>
+          <maml:para>Set format for output. Simple will only return true or false.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>Simple</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="PSPath">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>Path to a bicep file to test.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Test-BicepFile -Path 'MyBicep.bicep'</dev:code>
+        <dev:remarks>
+          <maml:para>Returns true if the bicep file has no errors or warnings.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Test-BicepFile -Path 'MyBicep.bicep' -AcceptDiagnosticLevel 'Warning'</dev:code>
+        <dev:remarks>
+          <maml:para>Returns true if the bicep file has no errors.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Uninstall-BicepCLI</command:name>
       <command:verb>Uninstall</command:verb>
       <command:noun>BicepCLI</command:noun>
@@ -1655,6 +1824,116 @@ Convert-JsonToBicep -String $json</dev:code>
 Update Bicep CLI</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Update-BicepParameterFile</command:name>
+      <command:verb>Update</command:verb>
+      <command:noun>BicepParameterFile</command:noun>
+      <maml:description>
+        <maml:para>Updates existing ARM Template parameter file based on a bicep file.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Updates a parameter file with new parameters, without removing existing values. Also removes parameters from the parameter file if they have been removed from the bicep file.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Update-BicepParameterFile</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>Path to the parameters.json file that needs updating.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>BicepFile</maml:name>
+          <maml:description>
+            <maml:para>Path to the bicep file which the parameter file should be updated from.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>BicepFile</maml:name>
+        <maml:description>
+          <maml:para>Path to the bicep file which the parameter file should be updated from.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>Path to the parameters.json file that needs updating.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Update-BicepParameterFile -Path .\vnet.parameters.json</dev:code>
+        <dev:remarks>
+          <maml:para>Update a parameter file vnet.parameters.json, without specifying the name of the bicep file. It will look for a bicep file in the same directory with a name based on the parameterfile. In this case vnet.bicep.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Update-BicepParameterFile -Path .\vnet.parameters.json -BicepFile .\bicepfiles\virtualnetwork.bicep</dev:code>
+        <dev:remarks>
+          <maml:para>Update a parameter file vnet.parameters.json, specifying the location of the bicep file.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

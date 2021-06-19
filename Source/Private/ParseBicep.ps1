@@ -16,9 +16,10 @@ function ParseBicep {
         $CompilationResults = $Compilation.GetAllDiagnosticsBySyntaxTree()
 
         $Success = $true
+        $OnlyIfCheap = $false
         $DiagnosticParams = foreach ($SyntaxTree in $CompilationResults.Keys) {
             $DiagnosticResult = $CompilationResults[$SyntaxTree]
-            if ($DiagnosticResult.GetCount($false) -gt 0) {
+            if ($DiagnosticResult.GetCount($OnlyIfCheap) -gt 0) {
                 if ( -not $IgnoreDiagnostics.IsPresent) {
                     foreach ($Diagnostic in $DiagnosticResult) {
                     

@@ -50,6 +50,19 @@ function WriteBicepDiagnostic {
                 Tag         = 'Error'
             }
         }
+        'Off' {
+            $Params = @{
+                MessageData = [System.Management.Automation.HostInformationMessage]@{
+                    Message         = $OutputString
+                    ForegroundColor = $Host.PrivateData.VerboseForegroundColor
+                    BackgroundColor = $Host.PrivateData.VerboseBackgroundColor
+                }
+                Tag         = 'Off'
+            }
+        }
+        default {
+            Write-Warning "Unhandled diagnostic level: $_"
+        }
     }
 
     return $Params
