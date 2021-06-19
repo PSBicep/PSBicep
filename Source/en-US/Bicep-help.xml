@@ -1701,14 +1701,14 @@ Convert-JsonToBicep -String $json</dev:code>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Test-BicepFile -Path 'MyBicep.bicep'</dev:code>
         <dev:remarks>
-          <maml:para>Returns true of the bicep file has no errors or warnings.</maml:para>
+          <maml:para>Returns true if the bicep file has no errors or warnings.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Test-BicepFile -Path 'MyBicep.bicep' -AcceptDiagnosticLevel 'Warning'</dev:code>
         <dev:remarks>
-          <maml:para>Returns true of the bicep file has no errors.</maml:para>
+          <maml:para>Returns true if the bicep file has no errors.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

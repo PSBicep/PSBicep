@@ -28,14 +28,14 @@ be made to return JSON output.
 PS C:\> Test-BicepFile -Path 'MyBicep.bicep'
 ```
 
-Returns true of the bicep file has no errors or warnings.
+Returns true if the bicep file has no errors or warnings.
 
 ### Example 2
 ```powershell
 PS C:\> Test-BicepFile -Path 'MyBicep.bicep' -AcceptDiagnosticLevel 'Warning'
 ```
 
-Returns true of the bicep file has no errors.
+Returns true if the bicep file has no errors.
 
 ## PARAMETERS
 
