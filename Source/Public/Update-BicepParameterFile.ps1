@@ -2,12 +2,19 @@ function Update-BicepParameterFile {
     [CmdletBinding()]
     param (
         [ValidateNotNullOrEmpty()]
+        [ValidatePattern('\.json$', ErrorMessage = 'Path must be a parameters file with a .json extension.')]
         [Parameter(Mandatory, Position = 1)]
         [string]$Path,
 
         [ValidateNotNullOrEmpty()]
+        [ValidatePattern('\.bicep$', ErrorMessage = 'BicepFile must have a .bicep extension.')]
         [Parameter(Position = 2)]
-        [string]$BicepFile
+        [string]$BicepFile,
+
+        [ValidateNotNullOrEmpty()]
+        [Parameter(Position = 3)]
+        [ValidateSet('All', 'Required')]
+        [string]$Parameters = 'Required'
     )
 
     begin {
@@ -44,7 +51,7 @@ function Update-BicepParameterFile {
         }
 
         $BicepFileName = (Get-Item -Path $BicepFilePath).BaseName
-        New-BicepParameterFile -Path $BicepFilePath -OutputDirectory $tempPath -Parameters All 
+        New-BicepParameterFile -Path $BicepFilePath -OutputDirectory $tempPath -Parameters $Parameters
 
         $NewParametersFilePath = $tempPath+"$BicepFileName.parameters.json"
 
