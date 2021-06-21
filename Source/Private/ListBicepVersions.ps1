@@ -14,7 +14,6 @@ function ListBicepVersions {
         catch {
             Write-Error -Message "Could not get latest version from GitHub. $_" -Category ObjectNotFound
         }
-
     }
     else {
         try {
