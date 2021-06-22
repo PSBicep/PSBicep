@@ -14,7 +14,7 @@ function Update-BicepParameterFile {
         [ValidateNotNullOrEmpty()]
         [Parameter(Position = 3)]
         [ValidateSet('All', 'Required')]
-        [string]$Parameters = 'Required'
+        [string]$Parameters = 'All'
     )
 
     begin {
