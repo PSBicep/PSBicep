@@ -29,24 +29,25 @@ If you would like to report any issues or inaccurate conversions, please see htt
         if ($files) {
             foreach ($file in $files) {
                 $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $file.FullName)
-                
                 foreach ($BicepFile in $BicepObject.Item2.Keys) {
                     if ($AsString.IsPresent) {
                         Write-Output $BicepObject.Item2[$BicepFile]
+                        $TempFolder = New-Item -Path ([system.io.path]::GetTempPath()) -Name (New-Guid).Guid -ItemType 'Directory'
+                        $OutputDirectory = $TempFolder.FullName
+                    }
+
+                    if (-not [string]::IsNullOrEmpty($OutputDirectory)) {
+                        $FileName = Split-Path -Path $BicepFile.LocalPath -Leaf
+                        $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
                     }
                     else {
-                        if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
-                            $FileName = Split-Path -Path $BicepFile.LocalPath -Leaf
-                            $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
-                        }
-                        else {
-                            $FilePath = $BicepFile.LocalPath
-                        }
-                        $null = Out-File -InputObject $BicepObject.Item2[$BicepFile] -FilePath $FilePath -Encoding utf8
+                        $FilePath = $BicepFile.LocalPath
                     }
+                    
+                    $null = Out-File -InputObject $BicepObject.Item2[$BicepFile] -FilePath $FilePath -Encoding utf8
                 }
 
-                if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
+                if (-not [string]::IsNullOrEmpty($OutputDirectory)) {
                     $FileName = Split-Path -Path $BicepObject.Item1.LocalPath -Leaf
                     $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
                 }
@@ -54,7 +55,10 @@ If you would like to report any issues or inaccurate conversions, please see htt
                     $FilePath = $BicepObject.Item1.LocalPath
                 }
                 $null = Build-Bicep -Path $FilePath -AsString
-                
+
+                if($null -ne $TempFolder) {
+                    Remove-Item -Path $TempFolder -Recurse -Force
+                }
             }
         }
         else {
