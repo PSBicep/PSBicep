@@ -80,14 +80,14 @@ function Update-BicepParameterFile {
         }
         
         
-        # Generate a new temporary Bicep Parameter File if -Parameters is set to Required
+        # Generate a new temporary Bicep Parameter File if -Parameters parameter is set to Required
         if ($Parameters -eq 'Required') {
             $BicepFileName = (Get-Item -Path $BicepFilePath).BaseName
             New-BicepParameterFile -Path $BicepFilePath -OutputDirectory $tempPath -Parameters $Parameters
         }
         $NewParametersFilePath = $tempPath + "$BicepFileName.parameters.json"
         
-        # Convert the new paramter file to an ordered hashtable
+        # Convert the new parameter file to an ordered hashtable
         try {
             $NewParametersFile = Get-Content -Path $NewParametersFilePath -ErrorAction Stop | ConvertFrom-Json -Depth 100 | ConvertToHashtable -Ordered
         }
@@ -96,7 +96,6 @@ function Update-BicepParameterFile {
             Break
         }
         
-        # Create an array with the new parameters
         $ParameterArray = @()
         $NewParametersFile.parameters.Keys.ForEach( { $ParameterArray += $PSItem })
         
