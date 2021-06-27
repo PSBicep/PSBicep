@@ -54,7 +54,7 @@ function Update-BicepParameterFile {
         # Import the old paramter file and convert it to an ordered hashtable
         $oldParametersFile = Get-Content -Path $Path | ConvertFrom-Json -Depth 100 | ConvertToHashtable -Ordered
 
-        # Generate a temporary Bicep Parameter File with all paramters
+        # Generate a temporary Bicep Parameter File with all parameters
         $BicepFileName = (Get-Item -Path $BicepFilePath).BaseName
         New-BicepParameterFile -Path $BicepFilePath -OutputDirectory $tempPath -Parameters All
 
@@ -99,7 +99,7 @@ function Update-BicepParameterFile {
         $ParameterArray = @()
         $NewParametersFile.parameters.Keys.ForEach( { $ParameterArray += $PSItem })
         
-        # Iterate over the new paramters and add any missing to the old parameters array
+        # Iterate over the new parameters and add any missing to the old parameters array
         foreach ($item in $ParameterArray) {
             if (!$oldParametersFile.parameters.Contains($item)) {
                 $oldParametersFile.parameters[$item] = @{                                
