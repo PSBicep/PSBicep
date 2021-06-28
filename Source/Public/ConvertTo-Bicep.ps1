@@ -20,40 +20,41 @@ If you would like to report any issues or inaccurate conversions, please see htt
             $null = New-Item $OutputDirectory -Force -ItemType Directory
         }
         
-        $FileResolver = [Bicep.Core.FileSystem.FileResolver]::new()
-        $ResourceProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::CreateWithAzTypes()
+        # $FileResolver = [Bicep.Core.FileSystem.FileResolver]::new()
+        # $ResourceProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::CreateWithAzTypes()
     }
 
     process {
         $files = Get-Childitem -Path $Path -Filter '*.json' -File
         if ($files) {
             foreach ($file in $files) {
-                $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $file.FullName)
-                foreach ($BicepFile in $BicepObject.Item2.Keys) {
+                # $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $file.FullName)
+                $BicepObject = ConvertTo-BicepNetFile -Path $file.FullName
+                foreach ($BicepFile in $BicepObject.Keys) {
                     if ($AsString.IsPresent) {
-                        Write-Output $BicepObject.Item2[$BicepFile]
+                        Write-Output $BicepObject[$BicepFile]
                         $TempFolder = New-Item -Path ([system.io.path]::GetTempPath()) -Name (New-Guid).Guid -ItemType 'Directory'
                         $OutputDirectory = $TempFolder.FullName
                     }
 
                     if (-not [string]::IsNullOrEmpty($OutputDirectory)) {
-                        $FileName = Split-Path -Path $BicepFile.LocalPath -Leaf
+                        $FileName = Split-Path -Path $BicepFile -Leaf
                         $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
                     }
                     else {
-                        $FilePath = $BicepFile.LocalPath
+                        $FilePath = $BicepFile
                     }
                     
-                    $null = Out-File -InputObject $BicepObject.Item2[$BicepFile] -FilePath $FilePath -Encoding utf8
+                    $null = Out-File -InputObject $BicepObject[$BicepFile] -FilePath $FilePath -Encoding utf8
                 }
 
-                if (-not [string]::IsNullOrEmpty($OutputDirectory)) {
-                    $FileName = Split-Path -Path $BicepObject.Item1.LocalPath -Leaf
-                    $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
-                }
-                else {
-                    $FilePath = $BicepObject.Item1.LocalPath
-                }
+                # if (-not [string]::IsNullOrEmpty($OutputDirectory)) {
+                #     $FileName = Split-Path -Path $BicepObject.Item1.LocalPath -Leaf
+                #     $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
+                # }
+                # else {
+                #     $FilePath = $BicepObject.Item1.LocalPath
+                # }
                 $null = Build-Bicep -Path $FilePath -AsString
 
                 if($null -ne $TempFolder) {
