@@ -1,3 +1,4 @@
+# TODO This won't work with BicepNet, has to be rewritten.
 function Test-BicepFile {
     [CmdletBinding()]
     param (
@@ -20,8 +21,8 @@ function Test-BicepFile {
 
         # Level of diagnostic that will fail the test
         [Parameter()]
-        [Bicep.Core.Diagnostics.DiagnosticLevel]
-        $AcceptDiagnosticLevel = [Bicep.Core.Diagnostics.DiagnosticLevel]::Info,
+        [BicepDiagnosticLevel]
+        $AcceptDiagnosticLevel = [BicepDiagnosticLevel]::Info,
 
 
         # Write diagnostic output to screen
@@ -36,13 +37,11 @@ function Test-BicepFile {
         }
 
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $DLLPath = [Bicep.Core.Workspaces.Workspace].Assembly.Location
-            $DllFile = Get-Item -Path $DLLPath
-            $FullVersion = $DllFile.VersionInfo.ProductVersion.Split('+')[0]
+            $FullVersion = Get-BicepNetVersion -Verbose:$false
             Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
 
-        if ($AcceptDiagnosticLevel -eq [Bicep.Core.Diagnostics.DiagnosticLevel]::Error) {
+        if ($AcceptDiagnosticLevel -eq [BicepDiagnosticLevel]::Error) {
             throw 'Accepting diagnostic level Error results in test never failing.'
         }
     }
@@ -69,7 +68,7 @@ function Test-BicepFile {
         $DiagnosticGroups = $DiagnosticOutput | Group-Object -Property { $_.Tags[0] }
         $HighestDiagLevel = $null
         foreach ($DiagGroup in $DiagnosticGroups) {
-            $Level = [int][Bicep.Core.Diagnostics.DiagnosticLevel]$DiagGroup.Name
+            $Level = [int][BicepDiagnosticLevel]$DiagGroup.Name
             if ($Level -gt $HighestDiagLevel) {
                 $HighestDiagLevel = $Level
             }

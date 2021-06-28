@@ -20,15 +20,12 @@ If you would like to report any issues or inaccurate conversions, please see htt
             $null = New-Item $OutputDirectory -Force -ItemType Directory
         }
         
-        # $FileResolver = [Bicep.Core.FileSystem.FileResolver]::new()
-        # $ResourceProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::CreateWithAzTypes()
     }
 
     process {
         $files = Get-Childitem -Path $Path -Filter '*.json' -File
         if ($files) {
             foreach ($file in $files) {
-                # $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $file.FullName)
                 $BicepObject = ConvertTo-BicepNetFile -Path $file.FullName
                 foreach ($BicepFile in $BicepObject.Keys) {
                     if ($AsString.IsPresent) {
