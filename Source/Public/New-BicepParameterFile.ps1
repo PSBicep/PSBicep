@@ -34,7 +34,7 @@ function New-BicepParameterFile {
         $File = Get-Item -Path $Path
         
         if ($File) {
-            $ARMTemplate = ParseBicep -Path $File.FullName
+            $ARMTemplate = ParseBicep -Path $File.FullName -IgnoreDiagnostics
 
             if($PSBoundParameters.ContainsKey('OutputDirectory')) {
                 $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $File.BaseName)
