@@ -71,10 +71,10 @@ function Update-BicepParameterFile {
 
         # Remove any deleted parameters from old parameter file
         $oldParameterArray = @()
-        $oldParametersFile.parameters.Keys.ForEach( { $oldParameterArray += $PSItem })
+        $oldParametersFile.parameters.Keys.ForEach( { $oldParameterArray += $_ })
         
         foreach ($item in $oldParameterArray) {
-            if (!$allParametersFile.parameters.Contains($item)) {
+            if (-not $allParametersFile.parameters.Contains($item)) {
                 $oldParametersFile.parameters.Remove($item)
             }
         }
@@ -97,11 +97,11 @@ function Update-BicepParameterFile {
         }
         
         $ParameterArray = @()
-        $NewParametersFile.parameters.Keys.ForEach( { $ParameterArray += $PSItem })
+        $NewParametersFile.parameters.Keys.ForEach( { $ParameterArray += $_ })
         
         # Iterate over the new parameters and add any missing to the old parameters array
         foreach ($item in $ParameterArray) {
-            if (!$oldParametersFile.parameters.Contains($item)) {
+            if (-not $oldParametersFile.parameters.Contains($item)) {
                 $oldParametersFile.parameters[$item] = @{                                
                     value = $NewParametersFile.parameters.$item.value
                 }
