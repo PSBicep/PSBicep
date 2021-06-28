@@ -51,7 +51,7 @@ function Update-BicepParameterFile {
             $BicepFilePath = $BicepFile
         }
         
-        # Import the old paramter file and convert it to an ordered hashtable
+        # Import the old parameter file and convert it to an ordered hashtable
         $oldParametersFile = Get-Content -Path $Path | ConvertFrom-Json -Depth 100 | ConvertToHashtable -Ordered
 
         # Generate a temporary Bicep Parameter File with all parameters
