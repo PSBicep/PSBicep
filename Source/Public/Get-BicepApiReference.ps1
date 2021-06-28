@@ -2,41 +2,44 @@ function Get-BicepApiReference {
     [CmdletBinding(DefaultParameterSetName = 'TypeString')]
     param(
         [Parameter(Mandatory, 
-                   ParameterSetName = 'ResourceProvider')]
+            ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({ (GetBicepTypes).ResourceProvider -contains $_ }, 
-                          ErrorMessage = "ResourceProvider '{0}' was not found.")]
+        [ValidateScript( { (GetBicepTypes).ResourceProvider -contains $_ }, 
+            ErrorMessage = "ResourceProvider '{0}' was not found.")]
         [ArgumentCompleter([BicepResourceProviderCompleter])]
         [string]$ResourceProvider,
 
         [Parameter(Mandatory, 
-                   ParameterSetName = 'ResourceProvider')]
+            ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({ (GetBicepTypes).Resource -contains $_ }, 
-                          ErrorMessage = "Resource '{0}' was not found.")]
+        [ValidateScript( { (GetBicepTypes).Resource -contains $_ }, 
+            ErrorMessage = "Resource '{0}' was not found.")]
         [ArgumentCompleter([BicepResourceCompleter])]
         [string]$Resource,
         
         [Parameter(ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({ (GetBicepTypes).Child -contains $_ }, 
-                          ErrorMessage = "Child '{0}' was not found.")]
+        [ValidateScript( { (GetBicepTypes).Child -contains $_ }, 
+            ErrorMessage = "Child '{0}' was not found.")]
         [ArgumentCompleter([BicepResourceChildCompleter])]
         [string]$Child,
 
         [Parameter(ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({ (GetBicepTypes).ApiVersion -contains $_ }, 
-                          ErrorMessage = "ApiVersion '{0}' was not found.")]
+        [ValidateScript( { (GetBicepTypes).ApiVersion -contains $_ }, 
+            ErrorMessage = "ApiVersion '{0}' was not found.")]
         [ArgumentCompleter([BicepResourceApiVersionCompleter])]
         [string]$ApiVersion,
 
         [Parameter(ParameterSetName = 'TypeString',
-                   Position = 0)]
-        [ValidateScript({ $_ -like '*/*' -and $_ -like '*@*' },
-                          ErrorMessage = "Type must contain '/' and '@'.")]
+            Position = 0)]
+        [ValidateScript( { $_ -like '*/*' -and $_ -like '*@*' },
+            ErrorMessage = "Type must contain '/' and '@'.")]
         [ArgumentCompleter([BicepTypeCompleter])]
         [string]$Type,
+
+        [Parameter(ParameterSetName = 'TypeString')]
+        [switch]$Latest,
         
         [Parameter(ParameterSetName = 'ResourceProvider')]
         [Parameter(ParameterSetName = 'TypeString')]
@@ -71,7 +74,7 @@ function Get-BicepApiReference {
                 }
 
                 $url += $suffix
-             }
+            }
             'TypeString' {
                 if ($PSBoundParameters.ContainsKey('Type')) {
                     # Type looks like this:   Microsoft.Aad/domainServicess@2017-01-01
@@ -93,8 +96,14 @@ function Get-BicepApiReference {
                     $TypeResource = ( ($type -split '@') -split '/' )[1]
                     $TypeApiVersion = ( $type -split '@' )[1]
                 
-                    if ([string]::IsNullOrEmpty($TypeChild)) {
+                    if ([string]::IsNullOrEmpty($TypeChild) -and ($Latest.IsPresent)) {
+                        $url = "$BaseUrl/$TypeResourceProvider/$TypeResource"
+                    }
+                    elseif ([string]::IsNullOrEmpty($TypeChild)) {
                         $url = "$BaseUrl/$TypeResourceProvider/$TypeApiVersion/$TypeResource"
+                    }
+                    elseif ($Latest.IsPresent) {
+                        $url = "$BaseUrl/$TypeResourceProvider/$TypeResource/$TypeChild"
                     }
                     else {
                         $url = "$BaseUrl/$TypeResourceProvider/$TypeApiVersion/$TypeResource/$TypeChild"
@@ -124,7 +133,7 @@ function Get-BicepApiReference {
             Start-Process $url
         }
         else {
-            Write-Error "No documentation found. This usually means that no documentation has been written. If you would like to try anyway, use the -Force parameter. Url: $url"      
+            Write-Error "No documentation found. This usually means that no documentation has been written. Use the -Latest parameter to open the latest available API Version. Or if you would like to try anyway, use the -Force parameter. Url: $url"      
         }
     }
 }
