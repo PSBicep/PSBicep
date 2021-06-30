@@ -1,9 +1,6 @@
-try {
+BeforeAll {
     $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1"
-}
-catch {
-    Throw "Unable to import Bicep module. $_"
+    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1" -ErrorAction Stop
 }
 
 Describe 'Get-BicepVersion' {
@@ -28,7 +25,7 @@ Describe 'Get-BicepVersion' {
         Context 'First executed command after import' {
             It 'Checks for new version the first time only' {
                 InModuleScope Bicep {
-                    Mock TestModuleVersion {
+                    Mock TestModuleVersion -ModuleName Bicep {
                         $Script:ModuleVersionChecked = $true
                     }
 

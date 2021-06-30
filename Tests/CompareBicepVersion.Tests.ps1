@@ -1,55 +1,56 @@
-try {
+BeforeAll {
     $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1"
+    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1" -ErrorAction Stop
 }
-catch {
-    Throw "Unable to import Bicep module. $_"
-}
+ 
+Describe 'CompareBicepVersion' {
+    BeforeAll {
+        Mock ListBicepVersions -ModuleName Bicep {
+            throw "should not happen"
+        }
 
-InModuleScope Bicep { 
-    Describe 'CompareBicepVersion' {
+        Mock ListBicepVersions -ModuleName Bicep -ParameterFilter { $Latest.IsPresent }  {
+            return '0.3.1'
+        }
+    }
+
+    Context 'Latest Bicep CLI installed' {
         BeforeAll {
-            Mock ListBicepVersions -ModuleName Bicep {
-                throw "should not happen"
-            }
-
-            Mock ListBicepVersions -ModuleName Bicep -ParameterFilter { $Latest.IsPresent }  {
+            Mock InstalledBicepVersion -ModuleName Bicep {
                 return '0.3.1'
             }
         }
 
-        Context 'Latest Bicep CLI installed' {
-            BeforeAll {
-                Mock InstalledBicepVersion -ModuleName Bicep {
-                    return '0.3.1'
-                }
-            }
-
-            It 'If latest version is installed it should return $true' {
+        It 'If latest version is installed it should return $true' {
+            InModuleScope Bicep {
                 CompareBicepVersion | Should -Be $true
             }
         }
-        
-        Context 'Old Bicep CLI installed' {
-            BeforeAll {
-                Mock InstalledBicepVersion -ModuleName Bicep {
-                    return '0.1.2'
-                }
-            }
-
-            It 'If older version is installed it should return $false' {
-                CompareBicepVersion | Should -Be $false
+    }
+    
+    Context 'Old Bicep CLI installed' {
+        BeforeAll {
+            Mock InstalledBicepVersion -ModuleName Bicep {
+                return '0.1.2'
             }
         }
 
-        Context 'Bicep CLI not installed' {
-            BeforeAll {
-                Mock InstalledBicepVersion -ModuleName Bicep {
-                    return 'Not installed'
-                }
+        It 'If older version is installed it should return $false' {
+            InModuleScope Bicep {
+                CompareBicepVersion | Should -Be $false
             }
+        }
+    }
 
-            It 'If no version is installed it should return $false' {
+    Context 'Bicep CLI not installed' {
+        BeforeAll {
+            Mock InstalledBicepVersion -ModuleName Bicep {
+                return 'Not installed'
+            }
+        }
+
+        It 'If no version is installed it should return $false' {
+            InModuleScope Bicep {
                 CompareBicepVersion | Should -Be $false
             }
         }

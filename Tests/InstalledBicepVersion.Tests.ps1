@@ -1,12 +1,9 @@
-try {
+
+
+BeforeAll {
     $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1"
+    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1" -ErrorAction Stop
 }
-catch {
-    Throw "Unable to import Bicep module. $_"
-}
-
-
 
 InModuleScope Bicep { 
     Describe 'InstalledBicepVersion' {
