@@ -40,14 +40,8 @@ if (Test-Path -Path "$ScriptDirectory\..\Source\Private" -PathType Container) {
 
 # Import the module files before starting tests
 BeforeAll {
-    try {
-        $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-        Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1" -Force
-    }
-    catch {
-        Throw "Unable to import module $ModuleName. $_"
-    }
-
+    $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
+    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1" -ErrorAction Stop
 }
 
 Describe "Module $ModuleName" {
