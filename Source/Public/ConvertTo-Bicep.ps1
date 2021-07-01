@@ -28,7 +28,10 @@ If you would like to report any issues or inaccurate conversions, please see htt
         $files = Get-Childitem -Path $Path -Filter '*.json' -File
         if ($files) {
             foreach ($file in $files) {
-                $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $file.FullName)
+                try{
+                    $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $file.FullName)
+                }
+                catch{}
                 foreach ($BicepFile in $BicepObject.Item2.Keys) {
                     if ($AsString.IsPresent) {
                         Write-Output $BicepObject.Item2[$BicepFile]
