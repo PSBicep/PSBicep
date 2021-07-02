@@ -11,7 +11,10 @@ function New-BicepParameterFile {
 
         [Parameter(Position = 3)]
         [ValidateNotNullOrEmpty()]
-        [string]$OutputDirectory
+        [string]$OutputDirectory,
+
+        [switch]
+        $AsHashTable
     )
 
     begin {
@@ -33,22 +36,29 @@ function New-BicepParameterFile {
     process {
         $File = Get-Item -Path $Path
         
-        if ($File) {
+        if ($AsHashTable.IsPresent) {
             $ARMTemplate = ParseBicep -Path $File.FullName -IgnoreDiagnostics
-
-            if($PSBoundParameters.ContainsKey('OutputDirectory')) {
-                $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $File.BaseName)
-            }
-            else {
-                $OutputFilePath = $File.FullName -replace '\.bicep','.parameters.json'
-            }
-            if (!$PSBoundParameters.ContainsKey('Parameters')){
-                $Parameters='Required'
-            }
-             GenerateParameterFile -Content $ARMTemplate -Parameters $Parameters -DestinationPath $OutputFilePath -WhatIf:$WhatIfPreference
+            $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
+            $ARMTemplateObject | ConvertToHashtable -Ordered
         }
         else {
-            Write-Error "No bicep file named $Path was found!"
+            if ($File) {
+                $ARMTemplate = ParseBicep -Path $File.FullName -IgnoreDiagnostics
+                
+                if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
+                    $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $File.BaseName)
+                }
+                else {
+                    $OutputFilePath = $File.FullName -replace '\.bicep', '.parameters.json'
+                }
+                if (!$PSBoundParameters.ContainsKey('Parameters')) {
+                    $Parameters = 'Required'
+                }
+                GenerateParameterFile -Content $ARMTemplate -Parameters $Parameters -DestinationPath $OutputFilePath -WhatIf:$WhatIfPreference
+            }
+            else {
+                Write-Error "No bicep file named $Path was found!"
+            }   
         }
     }
 }
