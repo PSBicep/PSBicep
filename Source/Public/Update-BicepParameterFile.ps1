@@ -14,10 +14,7 @@ function Update-BicepParameterFile {
         [ValidateNotNullOrEmpty()]
         [Parameter(Position = 3)]
         [ValidateSet('All', 'Required')]
-        [string]$Parameters = 'All',
-
-        [ValidateNotNullOrEmpty()]
-        [switch]$AsHashTable
+        [string]$Parameters = 'All'
     )
 
     begin {
@@ -110,13 +107,7 @@ function Update-BicepParameterFile {
                 }
             }
         }
-    
-        if($AsHashTable.IsPresent) {
-            $oldParametersFile
-        }
-        else {
-            $oldParametersFile | ConvertTo-Json -Depth 100 | Out-File -Path $Path -Force
-        }
+        $oldParametersFile | ConvertTo-Json -Depth 100 | Out-File -Path $Path -Force
         
     }
     end {
