@@ -11,6 +11,21 @@ Describe "Get-BicepApiReference" {
         }
     }
 
+    Context 'Checks for new module version' {
+        It 'Calls TestModuleVersion only once' {
+            InModuleScope Bicep {
+                Mock TestModuleVersion {
+                    $Script:ModuleVersionChecked = $true
+                }
+                $Script:ModuleVersionChecked = $false
+
+                $null = Get-BicepApiReference -Type 'Microsoft.Network/virtualNetworks@2020-06-01'
+                $null = Get-BicepApiReference -Type 'Microsoft.Network/virtualNetworks@2020-06-01'
+                Should -Invoke TestModuleVersion -ModuleName Bicep -Exactly -Times 1
+            }
+        }
+    }
+
     Context 'Exceptions' {
         BeforeAll {
             Mock Invoke-WebRequest -ModuleName Bicep {
@@ -26,6 +41,12 @@ Describe "Get-BicepApiReference" {
             }
             { Get-BicepApiReference @params -ErrorAction Stop } | Should -Throw -ExpectedMessage 'No documentation found.*'
             
+        }
+    }
+
+    Context 'No parameters' {
+        It "Opens template start page when no parameters are provided" {
+            Get-BicepApiReference | Should -Be 'https://docs.microsoft.com/en-us/azure/templates'   
         }
     }
 
@@ -70,11 +91,11 @@ Describe "Get-BicepApiReference" {
             }
         )
 
-        It "should create a valid URL using parameters <Parameters>" -TestCases $testcases {
+        It 'Should create a valid URL using parameter set "<ParameterSet>"' -TestCases $testcases {
             Get-BicepApiReference @Splat | Should -Be $Result
         }
 
-        It 'should create a correctly formatted URL' {
+        It 'Should create a correctly formatted URL' {
             $params = @{
                 ResourceProvider = 'Microsoft.Aad'
                 Resource         = 'domainServices'
@@ -82,6 +103,21 @@ Describe "Get-BicepApiReference" {
             }
             $url = Get-BicepApiReference @params
             $url | Should -Match '^https://docs.microsoft.com/en-us/azure/templates/Microsoft\.([a-zA-Z]+/)+[a-zA-Z]+\?tabs=bicep$'
+        }
+
+        It 'Should create a correct URL when using Type parameter' {
+            $Url = Get-BicepApiReference -Type 'Microsoft.Network/virtualNetworks/subnets@2020-06-01'
+            $Url | Should -Be 'https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/virtualNetworks/subnets?tabs=bicep'
+        }
+
+        It 'Should create a correct URL when using Type and Latest parameters' {
+            $Url = Get-BicepApiReference -Type 'Microsoft.Network/virtualNetworks/subnets@2020-06-01' -Latest
+            $Url | Should -Be 'https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/virtualNetworks/subnets?tabs=bicep'
+        }
+
+        It 'Should create a correct URL when using Type and Latest parameters without TypeChild' {
+            $Url = Get-BicepApiReference -Type 'Microsoft.Network/virtualNetworks@2020-06-01' -Latest
+            $Url | Should -Be 'https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/virtualNetworks?tabs=bicep'
         }
     }
 
