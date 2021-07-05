@@ -25,13 +25,12 @@ If you would like to report any issues or inaccurate conversions, please see htt
     }
 
     process {
-        $files = Get-Childitem -Path $Path -Filter '*.json' -File
+        $files = Get-Childitem -Path $Path -Filter '*.json' -File | Select-String -Pattern "schema.management.azure.com/schemas/.*deploymentTemplate.json#" | Select-Object Path 
         if ($files) {
             foreach ($file in $files) {
-                try{
-                    $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $file.FullName)
-                }
-                catch{}
+
+                $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $file.Path)
+
                 foreach ($BicepFile in $BicepObject.Item2.Keys) {
                     if ($AsString.IsPresent) {
                         Write-Output $BicepObject.Item2[$BicepFile]
