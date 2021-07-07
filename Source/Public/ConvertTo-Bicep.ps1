@@ -64,7 +64,7 @@ If you would like to report any issues or inaccurate conversions, please see htt
             }
         }
         else {
-            Write-Host "No bicep files located in path $Path"
+            Write-Host "No ARM template files located in path $Path"
         }
     }
 }
