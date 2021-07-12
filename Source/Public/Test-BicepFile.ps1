@@ -54,18 +54,18 @@ function Test-BicepFile {
                 InformationVariable = 'DiagnosticOutput' 
                 ErrorAction         = 'Stop'
             }
-            if($IgnoreDiagnosticOutput) {
-                $null = ParseBicep @ParseParams *>&1
+            $BuildResult = Build-BicepNetFile -Path $file.FullName
+
+            if (-not $IgnoreDiagnosticOutput) {
+                $BuildResult.Diagnostic | WriteBicepNetDiagnostic -InformationAction 'Continue'
             }
-            else {
-                $null = ParseBicep @ParseParams
-            }
+            
         }
         catch {
             # We don't care about errors here.
         }
 
-        $DiagnosticGroups = $DiagnosticOutput | Group-Object -Property { $_.Tags[0] }
+        $DiagnosticGroups = $BuildResult.Diagnostic | Group-Object -Property { $_.Level }
         $HighestDiagLevel = $null
         foreach ($DiagGroup in $DiagnosticGroups) {
             $Level = [int][BicepDiagnosticLevel]$DiagGroup.Name
@@ -85,11 +85,15 @@ function Test-BicepFile {
             }
             'Json' {
                 $Result = @{}
-                foreach($Group in $DiagnosticGroups) {
-                    $List = foreach($Entry in $Group.Group) {
+                foreach ($Group in $DiagnosticGroups) {
+                    $List = foreach ($Entry in $Group.Group) {
                         @{
-                            Message = $Entry.MessageData.Message
-                            Source = $Entry.Source
+                            Path      = $Entry.LocalPath
+                            Line      = [int]$Entry.Position[0] + 1
+                            Character = [int]$Entry.Position[1] + 1
+                            Level     = $Entry.Level.ToString()
+                            Code      = $Entry.Code
+                            Message   = $Entry.Message
                         }
                     }
                     $Result[$Group.Name] = @($List)
