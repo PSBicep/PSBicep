@@ -1,23 +1,39 @@
 # import classes
-foreach ($function in (Get-ChildItem "$PSScriptRoot\Classes\*.ps1"))
+foreach ($file in (Get-ChildItem "$PSScriptRoot\Classes\*.ps1"))
 {
-	. $function.FullName
-	#$ExecutionContext.InvokeCommand.InvokeScript($false, ([scriptblock]::Create([io.file]::ReadAllText($function))), $null, $null)
+	try {
+		Write-Verbose "Importing $($file.FullName)"
+		. $file.FullName
+	}
+	catch {
+		Write-Error "Failed to import '$($file.FullName)'. $_"
+	}
 }
 
 # import private functions
-foreach ($function in (Get-ChildItem "$PSScriptRoot\Private\*.ps1"))
+foreach ($file in (Get-ChildItem "$PSScriptRoot\Private\*.ps1"))
 {
-	. $function.FullName
-	# $ExecutionContext.InvokeCommand.InvokeScript($false, ([scriptblock]::Create([io.file]::ReadAllText($function))), $null, $null)
+	try {
+		Write-Verbose "Importing $($file.FullName)"
+		. $file.FullName
+	}
+	catch {
+		Write-Error "Failed to import '$($file.FullName)'. $_"
+	}
 }
 
 # import public functions
-foreach ($function in (Get-ChildItem "$PSScriptRoot\Public\*.ps1"))
+foreach ($file in (Get-ChildItem "$PSScriptRoot\Public\*.ps1"))
 {
-	. $function.FullName
-	# $ExecutionContext.InvokeCommand.InvokeScript($false, ([scriptblock]::Create([io.file]::ReadAllText($function))), $null, $null)
+	try {
+		Write-Verbose "Importing $($file.FullName)"
+		. $file.FullName
+	}
+	catch {
+		Write-Error "Failed to import '$($file.FullName)'. $_"
+	}
 }
 
 # cache bicep types
+Write-Verbose "Preloading Bicep types"
 $null = GetBicepTypes -Path "$PSScriptRoot\Assets\BicepTypes.json"

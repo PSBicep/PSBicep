@@ -12,9 +12,9 @@ Get ARM Template reference docs for provided resource type.
 
 ## SYNTAX
 
-### Type (Default)
+### TypeString (Default)
 ```powershell
-Get-BicepApiReference [[-Type] <String>] [-Force] [<CommonParameters>]
+Get-BicepApiReference [[-Type] <String>] [-Latest] [-Force] [<CommonParameters>]
 ```
 
 ### ResourceProvider
@@ -49,13 +49,19 @@ Get-BicepApiReference -ResourceProvider Microsoft.Storage -Resource storageAccou
 
 This will open the documentation for the `Microsoft.Storage` resource provider, resource `storageAccounts` using the ´2018-11-01` API Version in a browser.
 
-### Example 3: Get the ARM template reference for a child resource
+### Example 4: Get the ARM template reference for a child resource
 ```powershell
 Get-BicepApiReference -ResourceProvider Microsoft.Compute -Resource virtualMachines -Child extensions
 ```
 
 This will open the documentation for the `Microsoft.Compute` resource provider, resource `virtualMachines/extensions`
 
+### Example 5: Get the latest ARM template reference documentation using the Bicep types format
+```powershell
+Get-BicepApiReference -Type 'Microsoft.Network/virtualNetworks@2020-06-01' -Latest
+```
+
+This will open the documentation for the `Microsoft.Network` resource provider, resource `virtualNetworks` and use the latest API Version instead of the provided version `2020-06-01`.
 
 ## PARAMETERS
 
@@ -144,6 +150,21 @@ Aliases:
 
 Required: False
 Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Latest
+Open the latest API version when using the types information.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: TypeString
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

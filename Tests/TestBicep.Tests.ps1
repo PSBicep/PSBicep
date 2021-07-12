@@ -1,35 +1,30 @@
-
-try {
+BeforeAll {
     $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1"
-}
-catch {
-    Throw "Unable to import Bicep module. $_"
+    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1" -ErrorAction Stop
 }
 
-InModuleScope Bicep { 
-    Describe "TestBicep" {
-    
-        Context "Bicep CLI installed" {
-            BeforeAll {
-                Mock Get-Command {
-                    'bicep is installed'
-                }
-            }
-            
-            It "Returns true when Bicep CLI is installed" {
-                TestBicep | Should -Be $true
+Describe "TestBicep" {
+    Context "Bicep CLI installed" {
+        BeforeAll {
+            Mock Get-Command -ModuleName Bicep {
+                'bicep is installed'
             }
         }
         
-        Context "Bicep CLI not installed" {
-            BeforeAll {
-                Mock Get-Command {
-                    Write-Error 'bicep not installed'
-                }
+        It "Returns true when Bicep CLI is installed" {
+            InModuleScope Bicep {
+                TestBicep | Should -Be $true
             }
+        }
+    }
+    
+    Context "Bicep CLI not installed" {
+        BeforeAll {
+            Mock Get-Command -ModuleName Bicep { }
+        }
 
-            It "Returns false when Bicep CLI is not installed" {
+        It "Returns false when Bicep CLI is not installed" {
+            InModuleScope Bicep {
                 TestBicep | Should -Be $false
             }
         }
