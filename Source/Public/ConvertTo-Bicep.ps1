@@ -23,10 +23,10 @@ If you would like to report any issues or inaccurate conversions, please see htt
     }
 
     process {
-        $files = Get-Childitem -Path $Path -Filter '*.json' -File | Select-String -Pattern "schema.management.azure.com/schemas/.*deploymentTemplate.json#" | Select-Object Path 
+        $files = Get-Childitem -Path $Path -Filter '*.json' -File | Select-String -Pattern "schema.management.azure.com/schemas/.*deploymentTemplate.json#" | Select-Object -ExpandProperty 'Path' 
         if ($files) {
-            foreach ($file in $files) {
-                $BicepObject = ConvertTo-BicepNetFile -Path $file.FullName
+            foreach ($File in $files) {
+                $BicepObject = ConvertTo-BicepNetFile -Path $File
                 foreach ($BicepFile in $BicepObject.Keys) {
                     if ($AsString.IsPresent) {
                         Write-Output $BicepObject[$BicepFile]
@@ -45,13 +45,6 @@ If you would like to report any issues or inaccurate conversions, please see htt
                     $null = Out-File -InputObject $BicepObject[$BicepFile] -FilePath $FilePath -Encoding utf8
                 }
 
-                # if (-not [string]::IsNullOrEmpty($OutputDirectory)) {
-                #     $FileName = Split-Path -Path $BicepObject.Item1.LocalPath -Leaf
-                #     $FilePath = Join-Path -Path $OutputDirectory -ChildPath $FileName
-                # }
-                # else {
-                #     $FilePath = $BicepObject.Item1.LocalPath
-                # }
                 $null = Build-Bicep -Path $FilePath -AsString
 
                 if($null -ne $TempFolder) {
