@@ -1,5 +1,8 @@
 [cmdletbinding()]
 param (
+    [Parameter()]
+    $BicepNetUrl = 'https://github.com/PSBicep/BicepNet/releases/download/v1.0.0/BicepNet.PS.zip',
+    
     [Parameter(DontShow)]
     $BaseUri = 'https://api.github.com'
 )
@@ -15,7 +18,7 @@ try {
     $null = New-Item -Path './tmp' -ItemType Directory -ErrorAction Ignore
     Push-Location -Path './tmp' -StackName 'downloadDependencies'
     
-    Invoke-WebRequest -Uri 'https://github.com/PSBicep/BicepNet/releases/download/v1.0.0/BicepNet.PS.zip' -OutFile 'BicepNet.PS.zip'
+    Invoke-WebRequest -Uri $BicepNetUrl -OutFile 'BicepNet.PS.zip'
     Expand-Archive -Path ./BicepNet.PS.zip -DestinationPath '../../Source/' -Force
     
     # Download Bicep types
