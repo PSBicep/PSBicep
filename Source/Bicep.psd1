@@ -67,22 +67,22 @@ PowerShellVersion = '7.0'
 # RequiredModules = @()
 
 # Assemblies that must be loaded prior to importing this module
-RequiredAssemblies = @(
-    'Assets\Azure.Bicep.Types.Az.dll',
-    'Assets\Azure.Bicep.Types.dll',
-    'Assets\Azure.Deployments.Core.dll',
-    'Assets\Azure.Deployments.Expression.dll',
-    'Assets\Bicep.Core.dll',
-    'Assets\Bicep.Decompiler.dll',
-    'Assets\Microsoft.Extensions.Configuration.Abstractions.dll',
-    'Assets\Microsoft.Extensions.Configuration.Binder.dll',
-    'Assets\Microsoft.Extensions.Configuration.dll',
-    'Assets\Microsoft.Extensions.Configuration.Json.dll',
-    'Assets\Microsoft.Extensions.Primitives.dll',
-    'Assets\Microsoft.Extensions.FileProviders.Abstractions.dll',
-    'Assets\Microsoft.Extensions.Configuration.FileExtensions.dll',
-    'Assets\Microsoft.Extensions.FileProviders.Physical.dll'
-)
+# RequiredAssemblies = @(
+#     'Assets\Azure.Bicep.Types.Az.dll',
+#     'Assets\Azure.Bicep.Types.dll',
+#     'Assets\Azure.Deployments.Core.dll',
+#     'Assets\Azure.Deployments.Expression.dll',
+#     'Assets\Bicep.Core.dll',
+#     'Assets\Bicep.Decompiler.dll',
+#     'Assets\Microsoft.Extensions.Configuration.Abstractions.dll',
+#     'Assets\Microsoft.Extensions.Configuration.Binder.dll',
+#     'Assets\Microsoft.Extensions.Configuration.dll',
+#     'Assets\Microsoft.Extensions.Configuration.Json.dll',
+#     'Assets\Microsoft.Extensions.Primitives.dll',
+#     'Assets\Microsoft.Extensions.FileProviders.Abstractions.dll',
+#     'Assets\Microsoft.Extensions.Configuration.FileExtensions.dll',
+#     'Assets\Microsoft.Extensions.FileProviders.Physical.dll'
+# )
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
 # ScriptsToProcess = @()
@@ -94,7 +94,7 @@ RequiredAssemblies = @(
 # FormatsToProcess = @()
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-# NestedModules = @()
+NestedModules = @('.\BicepNet.PS\BicepNet.PS.psd1')
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @(
@@ -152,7 +152,7 @@ PrivateData = @{
         ReleaseNotes = 'https://github.com/StefanIvemo/BicepPowerShell/releases'
 
         # Prerelease string of this module
-        # Prerelease = ''
+        Prerelease = ''
 
         # Flag to indicate whether the module requires explicit user acceptance for install/update/save
         # RequireLicenseAcceptance = $false

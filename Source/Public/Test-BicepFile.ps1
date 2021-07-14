@@ -1,3 +1,4 @@
+# TODO This won't work with BicepNet, has to be rewritten.
 function Test-BicepFile {
     [CmdletBinding()]
     param (
@@ -20,8 +21,8 @@ function Test-BicepFile {
 
         # Level of diagnostic that will fail the test
         [Parameter()]
-        [Bicep.Core.Diagnostics.DiagnosticLevel]
-        $AcceptDiagnosticLevel = [Bicep.Core.Diagnostics.DiagnosticLevel]::Info,
+        [BicepDiagnosticLevel]
+        $AcceptDiagnosticLevel = [BicepDiagnosticLevel]::Info,
 
 
         # Write diagnostic output to screen
@@ -36,13 +37,11 @@ function Test-BicepFile {
         }
 
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $DLLPath = [Bicep.Core.Workspaces.Workspace].Assembly.Location
-            $DllFile = Get-Item -Path $DLLPath
-            $FullVersion = $DllFile.VersionInfo.ProductVersion.Split('+')[0]
+            $FullVersion = Get-BicepNetVersion -Verbose:$false
             Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
 
-        if ($AcceptDiagnosticLevel -eq [Bicep.Core.Diagnostics.DiagnosticLevel]::Error) {
+        if ($AcceptDiagnosticLevel -eq [BicepDiagnosticLevel]::Error) {
             throw 'Accepting diagnostic level Error results in test never failing.'
         }
     }
@@ -55,21 +54,21 @@ function Test-BicepFile {
                 InformationVariable = 'DiagnosticOutput' 
                 ErrorAction         = 'Stop'
             }
-            if($IgnoreDiagnosticOutput) {
-                $null = ParseBicep @ParseParams *>&1
+            $BuildResult = Build-BicepNetFile -Path $file.FullName
+
+            if (-not $IgnoreDiagnosticOutput) {
+                $BuildResult.Diagnostic | WriteBicepNetDiagnostic -InformationAction 'Continue'
             }
-            else {
-                $null = ParseBicep @ParseParams
-            }
+            
         }
         catch {
             # We don't care about errors here.
         }
 
-        $DiagnosticGroups = $DiagnosticOutput | Group-Object -Property { $_.Tags[0] }
+        $DiagnosticGroups = $BuildResult.Diagnostic | Group-Object -Property { $_.Level }
         $HighestDiagLevel = $null
         foreach ($DiagGroup in $DiagnosticGroups) {
-            $Level = [int][Bicep.Core.Diagnostics.DiagnosticLevel]$DiagGroup.Name
+            $Level = [int][BicepDiagnosticLevel]$DiagGroup.Name
             if ($Level -gt $HighestDiagLevel) {
                 $HighestDiagLevel = $Level
             }
@@ -86,11 +85,15 @@ function Test-BicepFile {
             }
             'Json' {
                 $Result = @{}
-                foreach($Group in $DiagnosticGroups) {
-                    $List = foreach($Entry in $Group.Group) {
+                foreach ($Group in $DiagnosticGroups) {
+                    $List = foreach ($Entry in $Group.Group) {
                         @{
-                            Message = $Entry.MessageData.Message
-                            Source = $Entry.Source
+                            Path      = $Entry.LocalPath
+                            Line      = [int]$Entry.Position[0] + 1
+                            Character = [int]$Entry.Position[1] + 1
+                            Level     = $Entry.Level.ToString()
+                            Code      = $Entry.Code
+                            Message   = $Entry.Message
                         }
                     }
                     $Result[$Group.Name] = @($List)
