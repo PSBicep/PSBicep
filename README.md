@@ -29,6 +29,14 @@ The Bicep PowerShell Module is published to [PowerShell Gallery](https://www.pow
 Install-Module -Name Bicep
 ```
 
+### Pre-release versions
+
+To install the latest version in development use the `-AllowPrerelease` switch.
+
+```powershell
+Install-Module -Name Bicep -AllowPrerelease
+```
+
 >**Note:** If you want to test the latest features before we've release it to PowerShell Gallery, see the [Contribution Guide](CONTRIBUTING.md) for instructions on how to manually download the dependencies and install the module manually.
 
 ## Bug report and feature requests
