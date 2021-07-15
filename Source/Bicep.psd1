@@ -12,7 +12,7 @@
 RootModule = 'Bicep.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.5.1'
+ModuleVersion = '2.0.0'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core')
@@ -36,6 +36,7 @@ The module also provides the additional features:
 - Generate ARM template parameter files directly from a Bicep file
 - Quickly open the API reference docs by referencing the Bicep types
 - Get the result from a build as a string or hashtable instead of writing to a file
+- Test if a Bicep file is valid without building it
 - Convert Bicep parameter modifiers to decorator style parameters
 - Convert JSON objects to Bicep Language
 - Install/Update/Uninstall Bicep CLI
@@ -46,7 +47,7 @@ For more information about Bicep, please visit the official Bicep GitHub Reposit
 https://github.com/Azure/bicep'
 
 # Minimum version of the PowerShell engine required by this module
-PowerShellVersion = '7.0'
+PowerShellVersion = '7.1'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
@@ -152,7 +153,7 @@ PrivateData = @{
         ReleaseNotes = 'https://github.com/StefanIvemo/BicepPowerShell/releases'
 
         # Prerelease string of this module
-        Prerelease = ''
+        Prerelease = 'Preview1'
 
         # Flag to indicate whether the module requires explicit user acceptance for install/update/save
         # RequireLicenseAcceptance = $false
