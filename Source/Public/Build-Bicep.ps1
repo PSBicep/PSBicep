@@ -79,9 +79,13 @@ function Build-Bicep {
                     }
 
                     if (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {
-                        $BicepModuleVersion = (Get-Module -Name Bicep).Version | Sort-Object -Descending | Select-Object -First 1
+                        $BicepModuleVersion = Get-Module -Name Bicep | Sort-Object -Descending | Select-Object -First 1
                         $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
-                        $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $BicepModuleVersion)"
+                        if (-not [string]::IsNullOrWhiteSpace($BicepModuleVersion.PrivateData.Values.Prerelease)){
+                            $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $($BicepModuleVersion.Version)-$($BicepModuleVersion.PrivateData.Values.Prerelease))"
+                        } else {
+                            $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $($BicepModuleVersion.Version))"
+                        }
                         $ARMTemplate = ConvertTo-Json -InputObject $ARMTemplateObject -Depth 100
                         if ($AsString.IsPresent) {
                             Write-Output $ARMTemplate
