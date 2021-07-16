@@ -49,7 +49,7 @@ If you would like to report any issues or inaccurate conversions, please see htt
                     }
                     
                     if ((Test-Path $FilePath) -and (-not $Force)) {
-                        Write-Error "$FilePath Already exists. Use -Force to overwrite."
+                        Write-Error -Message "$FilePath Already exists. Use -Force to overwrite." -Category ResourceExists -TargetObject $FilePath
                         $VerifyBicepBuild = $false
                     }
                     else {
