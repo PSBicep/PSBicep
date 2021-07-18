@@ -5,7 +5,9 @@ function ConvertTo-Bicep {
         
         [string]$OutputDirectory,
 
-        [switch]$AsString
+        [switch]$AsString,
+
+        [switch]$Force
     )
 
     begin {
@@ -42,10 +44,19 @@ If you would like to report any issues or inaccurate conversions, please see htt
                         $FilePath = $BicepFile
                     }
                     
-                    $null = Out-File -InputObject $BicepObject[$BicepFile] -FilePath $FilePath -Encoding utf8
+                    if ((Test-Path $FilePath) -and (-not $Force)) {
+                        Write-Error -Message "$FilePath Already exists. Use -Force to overwrite." -Category ResourceExists -TargetObject $FilePath
+                        $VerifyBicepBuild = $false
+                    }
+                    else {
+                        $null = Out-File -InputObject $BicepObject[$BicepFile] -FilePath $FilePath -Encoding utf8
+                        $VerifyBicepBuild = $true
+                    }
                 }
-
-                $null = Build-Bicep -Path $FilePath -AsString
+                
+                if ($VerifyBicepBuild) {
+                    $null = Build-Bicep -Path $FilePath -AsString
+                }
 
                 if($null -ne $TempFolder) {
                     Remove-Item -Path $TempFolder -Recurse -Force
