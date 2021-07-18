@@ -60,9 +60,9 @@ function Build-Bicep {
             Break
         }
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $DLLPath = [Bicep.Core.Workspaces.Workspace].Assembly.Location
-            $DllFile = Get-Item -Path $DLLPath
-            $FullVersion = $DllFile.VersionInfo.ProductVersion.Split('+')[0]
+            
+            
+            $FullVersion = Get-BicepNetVersion -Verbose:$false
             Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
     }
@@ -72,15 +72,20 @@ function Build-Bicep {
         if ($files) {
             foreach ($file in $files) {
                 if ($file.Name -notin $ExcludeFile) {
-                    if ($IgnoreDiagnostics.IsPresent) {
-                        $ARMTemplate = ParseBicep -Path $file.FullName -IgnoreDiagnostics
-                    } else {
-                        $ARMTemplate = ParseBicep -Path $file.FullName
+                    $BuildResult = Build-BicepNetFile -Path $file.FullName
+                    $ARMTemplate = $BuildResult.Template[0]
+                    if (-not $IgnoreDiagnostics.IsPresent) {
+                        $BuildResult.Diagnostic | WriteBicepNetDiagnostic -InformationAction 'Continue'
                     }
+
                     if (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {
-                        $BicepModuleVersion = (Get-Module -Name Bicep).Version | Sort-Object -Descending | Select-Object -First 1
+                        $BicepModuleVersion = Get-Module -Name Bicep | Sort-Object -Descending | Select-Object -First 1
                         $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
-                        $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $BicepModuleVersion)"
+                        if (-not [string]::IsNullOrWhiteSpace($BicepModuleVersion.PrivateData.Values.Prerelease)){
+                            $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $($BicepModuleVersion.Version)-$($BicepModuleVersion.PrivateData.Values.Prerelease))"
+                        } else {
+                            $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $($BicepModuleVersion.Version))"
+                        }
                         $ARMTemplate = ConvertTo-Json -InputObject $ARMTemplateObject -Depth 100
                         if ($AsString.IsPresent) {
                             Write-Output $ARMTemplate

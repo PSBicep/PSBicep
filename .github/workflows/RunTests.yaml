@@ -13,8 +13,10 @@ jobs:
       id: assetscache
       uses: actions/cache@v2
       with:
-        path: Source/Assets
-        key: ${{ hashFiles('Source/assemblyversion.txt','scripts\downloadDependencies.ps1') }}
+        path: |
+          Source/Assets
+          Source/BicepNet.PS
+        key: ${{ hashFiles('scripts\downloadDependencies.ps1') }}
     - name: Download required assemblies
       if: steps.assetscache.outputs.cache-hit != 'true'
       shell: pwsh

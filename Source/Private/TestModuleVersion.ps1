@@ -2,9 +2,9 @@ function TestModuleVersion {
         
     $BaseURL = 'https://api.github.com/repos/StefanIvemo/bicepPowershell/releases'
     try {        
-        $LatestVersion = Invoke-RestMethod -Uri ('{0}/latest' -f $BaseURL) -TimeoutSec 1
+        $LatestVersion = Invoke-RestMethod -Uri ('{0}/latest' -f $BaseURL) -TimeoutSec 1 -Verbose:$false
         $LatestBicepVersion = $LatestVersion.tag_name -replace '[v]', ''
-          
+
         $InstalledModuleVersion = (Get-Module -Name Bicep).Version | Sort-Object -Descending | Select-Object -First 1
         
         if($LatestBicepVersion -as [version]) {

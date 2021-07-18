@@ -5,6 +5,8 @@ function WriteBicepDiagnostic {
 
         [Bicep.Core.Syntax.SyntaxTree]$SyntaxTree
     )
+    Write-Warning 'WriteBicepDiagnostic does not work anymore, I''m sorry'
+    return
     
     $FileUri = $SyntaxTree.FileUri
     $LocalPath = $FileUri.LocalPath
