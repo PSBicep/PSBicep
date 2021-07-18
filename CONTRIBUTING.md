@@ -6,11 +6,16 @@ You are more than welcome to contribute to the Bicep PowerShell module, whether 
 
 - Fork this repo (see [this forking guide](https://guides.github.com/activities/forking/) for more information).
 - Checkout the repo locally with `git clone git@github.com:{your_username}/BicepPowerShell.git`.
-- You will need dotnet core sdk 5.0.100 installed locally to be able to download the required assemblies.
-- Run the script `.\scripts\downloadDependencies.ps1` to download the required dependencies (Bicep Assemblies (DLLs) and Bicep Types information) to the Assets (`Source/Assets`) folder.
+- Run the script `.\scripts\downloadDependencies.ps1` to download the required dependencies:
+  - Nested module [BicepNet](https://github.com/PSBicep/BicepNet) to the BicepNet.PS (`Source/BicepNet.PS`) folder.
+  - Bicep Types information to the Assets (`Source/Assets`) folder.
 - If you haven't already, you will need the [PlatyPs](https://github.com/PowerShell/platyPS) PowerShell Module to generate command help and docs.
 
 ## Developing
+
+### BicepNet
+
+The Bicep PowerShell module uses a nested module named [BicepNet](https://github.com/PSBicep/BicepNet). BicepNet is a thin wrapper around Bicep that will load all bicep assemblies in a separate context to avoid conflicts with other modules, like `Az PowerShell`. It is BicepNet that controls which Bicep version is used by the module. When a new Bicep version is released BicepNet must be updated before the Bicep module can leverage the new features.
 
 ### Structure
 
@@ -26,7 +31,7 @@ The repo is organized as below:
 
 ### Running the module locally
 
-- Download the assemblies needed by the module to the `Source/Assets` folder by running the `downloadDependencies.ps1` script:
+- Download the assemblies needed by the module by running the `downloadDependencies.ps1` script:
 
 ```
 .\scripts\downloadDependencies.ps1
@@ -36,17 +41,6 @@ The repo is organized as below:
 
 ```powershell
 Import-Module .\Source\Bicep.psd1
-```
-
-#### Using new assemblies
-
-When a new Bicep version is released and the module needs to be updated to work with the new assemblies, perform the steps below.
-
-- Update the version number in `.\Source\assemblyversion.txt` to the latest Bicep Release tag.
-- Download the assemblies needed by the module to the `Source/Assets` folder by running the `downloadDependencies.ps1` script:
-
-```
-.\scripts\downloadDependencies.ps1
 ```
 
 ### platyPS
