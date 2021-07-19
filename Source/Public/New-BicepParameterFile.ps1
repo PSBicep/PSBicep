@@ -14,7 +14,7 @@ function New-BicepParameterFile {
         [string]$OutputDirectory,
 
         [switch]
-        $AsHashTable
+        $AsHashtable
     )
 
     begin {
@@ -48,7 +48,7 @@ function New-BicepParameterFile {
                 $Parameters='Required'
             }
             
-            if ($AsHashTable.IsPresent) {
+            if ($AsHashtable.IsPresent) {
                 GenerateParameterFile -Content $ARMTemplate -Parameters $Parameters -AsHashtable -WhatIf:$WhatIfPreference
             }
             else {

@@ -21,7 +21,7 @@ function GenerateParameterFile {
 
         [Parameter(ParameterSetName = 'FromFile')]
         [Parameter(ParameterSetName = 'FromContent')]
-        [switch]$AsHashTable
+        [switch]$AsHashtable
     )
 
     if ($PSCmdlet.ParameterSetName -eq 'FromFile') {
@@ -71,7 +71,7 @@ function GenerateParameterFile {
     
     switch ($PSCmdlet.ParameterSetName) {
         'FromFile' {
-            if($AsHashTable.IsPresent) {
+            if($AsHashtable.IsPresent) {
                 $ConvertedToJson | ConvertToHashtable -Ordered
             }
             else {
@@ -79,7 +79,7 @@ function GenerateParameterFile {
             }
         }
         'FromContent' {
-            if($AsHashTable.IsPresent) {
+            if($AsHashtable.IsPresent) {
                 $ConvertedToJson | ConvertToHashtable -Ordered
             }
             else {
