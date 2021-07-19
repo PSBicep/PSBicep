@@ -11,7 +11,10 @@ function New-BicepParameterFile {
 
         [Parameter(Position = 3)]
         [ValidateNotNullOrEmpty()]
-        [string]$OutputDirectory
+        [string]$OutputDirectory,
+
+        [switch]
+        $AsHashTable
     )
 
     begin {
@@ -44,7 +47,13 @@ function New-BicepParameterFile {
             if (!$PSBoundParameters.ContainsKey('Parameters')){
                 $Parameters='Required'
             }
-            GenerateParameterFile -Content $ARMTemplate -Parameters $Parameters -DestinationPath $OutputFilePath -WhatIf:$WhatIfPreference
+            
+            if ($AsHashTable.IsPresent) {
+                GenerateParameterFile -Content $ARMTemplate -Parameters $Parameters -AsHashtable -WhatIf:$WhatIfPreference
+            }
+            else {
+                GenerateParameterFile -Content $ARMTemplate -Parameters $Parameters -DestinationPath $OutputFilePath -WhatIf:$WhatIfPreference
+            }
         }
         else {
             Write-Error "No bicep file named $Path was found!"

@@ -3,7 +3,7 @@ function GenerateParameterFile {
         SupportsShouldProcess)]
     param (
         [Parameter(Mandatory,
-            ParameterSetName = 'FromFile')]
+            ParameterSetName = 'FromFile')] 
         [object]$File,
 
         [Parameter(Mandatory,
@@ -11,14 +11,17 @@ function GenerateParameterFile {
         [ValidateNotNullOrEmpty()]
         [string]$Content,
 
-        [Parameter(Mandatory,
-            ParameterSetName = 'FromContent')]
+        [Parameter(ParameterSetName = 'FromContent')]
         [ValidateNotNullOrEmpty()]
         [string]$DestinationPath,
 
         [Parameter(ParameterSetName = 'FromFile')]
         [Parameter(ParameterSetName = 'FromContent')]
-        [string]$Parameters
+        [string]$Parameters,
+
+        [Parameter(ParameterSetName = 'FromFile')]
+        [Parameter(ParameterSetName = 'FromContent')]
+        [switch]$AsHashTable
     )
 
     if ($PSCmdlet.ParameterSetName -eq 'FromFile') {
@@ -68,10 +71,20 @@ function GenerateParameterFile {
     
     switch ($PSCmdlet.ParameterSetName) {
         'FromFile' {
-            Out-File -InputObject $ConvertedToJson -FilePath "$($file.DirectoryName)\$filename.parameters.json" -WhatIf:$WhatIfPreference
+            if($AsHashTable.IsPresent) {
+                $ConvertedToJson | ConvertToHashtable -Ordered
+            }
+            else {
+                Out-File -InputObject $ConvertedToJson -FilePath "$($file.DirectoryName)\$filename.parameters.json" -WhatIf:$WhatIfPreference
+            }
         }
         'FromContent' {
-            Out-File -InputObject $ConvertedToJson -FilePath $DestinationPath -WhatIf:$WhatIfPreference
+            if($AsHashTable.IsPresent) {
+                $ConvertedToJson | ConvertToHashtable -Ordered
+            }
+            else {
+                Out-File -InputObject $ConvertedToJson -FilePath $DestinationPath -WhatIf:$WhatIfPreference                
+            }
         }
         Default {
             Write-Error "Unable to generate parameter file. Unknown parameter set: $($PSCmdlet.ParameterSetName)"
