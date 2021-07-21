@@ -72,7 +72,7 @@ function GenerateParameterFile {
     switch ($PSCmdlet.ParameterSetName) {
         'FromFile' {
             if($AsHashtable.IsPresent) {
-                $ConvertedToJson | ConvertToHashtable -Ordered
+                $parameterBase
             }
             else {
                 Out-File -InputObject $ConvertedToJson -FilePath "$($file.DirectoryName)\$filename.parameters.json" -WhatIf:$WhatIfPreference
@@ -80,7 +80,7 @@ function GenerateParameterFile {
         }
         'FromContent' {
             if($AsHashtable.IsPresent) {
-                $ConvertedToJson | ConvertToHashtable -Ordered
+                $parameterBase
             }
             else {
                 Out-File -InputObject $ConvertedToJson -FilePath $DestinationPath -WhatIf:$WhatIfPreference                
