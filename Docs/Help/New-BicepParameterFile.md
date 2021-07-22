@@ -14,8 +14,8 @@ Creates an ARM Template parameter file based on a bicep file.
 ## SYNTAX
 
 ```
-New-BicepParameterFile [-Path] <String> [-Parameters <String>] [[-OutputDirectory] <String>] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+New-BicepParameterFile [-Path] <String> [-Parameters <String>] [[-OutputDirectory] <String>] [-AsHashtable]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -47,6 +47,14 @@ New-BicepParameterFile -Path 'AzureFirewall.bicep' -OutputDirectory 'd:\myfolder
 ```
 
 Creates a parameter file in the specified directory.
+
+### Example 4: Generate the parameters of an ARM template as a hashtable
+
+```powershell
+New-BicepParameterFile -Path 'AzureFirewall.bicep' -AsHashtable
+```
+
+Generates the parameters of an ARM template as a hashtable
 
 ## PARAMETERS
 
@@ -120,6 +128,21 @@ Specify which parameters should be exported to the parameter file.
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AsHashtable
+The -AsHashtable prints all output as a hashtable instead of writing it to a file.
+
+```yaml
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 

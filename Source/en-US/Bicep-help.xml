@@ -919,6 +919,17 @@ Convert-JsonToBicep -String $json</dev:code>
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Force</maml:name>
+          <maml:description>
+            <maml:para>Force overwriting of output files.  If the output.bicep file already exists and -Force is not set we will not overwrite the resulting file.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -950,6 +961,18 @@ Convert-JsonToBicep -String $json</dev:code>
         <maml:name>AsString</maml:name>
         <maml:description>
           <maml:para>The -AsString prints all output as a string instead of corresponding files.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Force</maml:name>
+        <maml:description>
+          <maml:para>Force overwriting of output files.  If the output.bicep file already exists and -Force is not set we will not overwrite the resulting file.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -1570,6 +1593,13 @@ Convert-JsonToBicep -String $json</dev:code>
         <dev:code>New-BicepParameterFile -Path 'AzureFirewall.bicep' -OutputDirectory 'd:\myfolder\'</dev:code>
         <dev:remarks>
           <maml:para>Creates a parameter file in the specified directory.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 4: Generate the parameters of an ARM template as a hashtable</maml:title>
+        <dev:code>New-BicepParameterFile -Path 'AzureFirewall.bicep' -AsHashtable</dev:code>
+        <dev:remarks>
+          <maml:para>Generates the parameters of an ARM template as a hashtable</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
