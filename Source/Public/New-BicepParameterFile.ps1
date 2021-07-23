@@ -9,10 +9,12 @@ function New-BicepParameterFile {
         [ValidateSet("All", "Required")]
         [string]$Parameters,        
 
-        [Parameter(Position = 3)]
+        [Parameter(Position = 3,
+            ParameterSetName = ('Default'))]
         [ValidateNotNullOrEmpty()]
         [string]$OutputDirectory,
 
+        [Parameter(ParameterSetName = 'AsHashtable')]
         [switch]
         $AsHashtable
     )

@@ -139,7 +139,7 @@ Accept wildcard characters: False
 ```
 
 ### -AsHashtable
-The -AsHashtable prints all output as a hashtable instead of writing it to a file.
+The -AsHashtable switch prints all output as a hashtable instead of writing it to a file.
 
 ```yaml
 Type: SwitchParameter
