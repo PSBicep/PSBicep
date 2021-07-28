@@ -115,6 +115,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ## NOTES
-Go to module repository https://github.com/StefanIvemo/BicepPowerShell for detailed info, reporting issues and to submit contributions.
+Go to module repository https://github.com/PSBicep/PSBicep for detailed info, reporting issues and to submit contributions.
 
 ## RELATED LINKS
