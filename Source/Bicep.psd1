@@ -37,7 +37,6 @@ The module also provides the additional features:
 - Quickly open the API reference docs by referencing the Bicep types
 - Get the result from a build as a string or hashtable instead of writing to a file
 - Test if a Bicep file is valid without building it
-- Convert Bicep parameter modifiers to decorator style parameters
 - Convert JSON objects to Bicep Language
 - Install/Update/Uninstall Bicep CLI
 - Specify output folder when building* and decompiling Bicep/ARM templates
