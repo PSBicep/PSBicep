@@ -5,7 +5,7 @@ You are more than welcome to contribute to the Bicep PowerShell module, whether 
 ## Getting Started
 
 - Fork this repo (see [this forking guide](https://guides.github.com/activities/forking/) for more information).
-- Checkout the repo locally with `git clone git@github.com:{your_username}/BicepPowerShell.git`.
+- Checkout the repo locally with `git clone git@github.com:{your_username}/PSBicep.git`.
 - Run the script `.\scripts\downloadDependencies.ps1` to download the required dependencies:
   - Nested module [BicepNet](https://github.com/PSBicep/BicepNet) to the BicepNet.PS (`Source/BicepNet.PS`) folder.
   - Bicep Types information to the Assets (`Source/Assets`) folder.
@@ -82,7 +82,7 @@ Update-MarkdownHelp .\Docs\Help
 
 ### Tests
 
-[Pester](https://github.com/pester/Pester) is the ubiquitous test and mock framework for PowerShell. We use it for automatic testing and it executes at Pull Requests. We have a lot improvements to do on the test front and contributions are more than welcome. The progress can be tracked [here](https://github.com/StefanIvemo/BicepPowerShell/issues/22).
+[Pester](https://github.com/pester/Pester) is the ubiquitous test and mock framework for PowerShell. We use it for automatic testing and it executes at Pull Requests. We have a lot improvements to do on the test front and contributions are more than welcome. The progress can be tracked [here](https://github.com/PSBicep/PSBicep/issues/22).
 
 ## Pull Requests
 
@@ -94,13 +94,13 @@ If you like to start contributing to Bicep PowerShell. Please make sure that the
 
 ## Feature Suggestions
 
-- Please first search [Open Issues](https://github.com/StefanIvemo/BicepPowerShell/issues) before opening an issue to check whether your feature has already been suggested. If it has, feel free to add your own comments to the existing issue.
+- Please first search [Open Issues](https://github.com/PSBicep/PSBicep/issues) before opening an issue to check whether your feature has already been suggested. If it has, feel free to add your own comments to the existing issue.
 - Ensure you have included a "What?" - what your feature entails, being as specific as possible, and giving mocked-up syntax examples where possible.
 - Ensure you have included a "Why?" - what the benefit of including this feature will be.
-- Use the "Feature Request" issue template [here](https://github.com/StefanIvemo/BicepPowerShell/issues/new/choose) to submit your request.
+- Use the "Feature Request" issue template [here](https://github.com/PSBicep/PSBicep/issues/new/choose) to submit your request.
 
 ## Bug Reports
 
-- Please first search [Open Issues](https://github.com/StefanIvemo/BicepPowerShell/issues) before opening an issue, to see if it has already been reported.
+- Please first search [Open Issues](https://github.com/PSBicep/PSBicep/issues) before opening an issue, to see if it has already been reported.
 - Try to be as specific as possible, including the version of the Bicep PowerShell module, PowerShell version and OS used to reproduce the issue, and any example files or snippets of Bicep code needed to reproduce it.
-- Use the "Bug Report" issue template [here](https://github.com/StefanIvemo/BicepPowerShell/issues/new/choose) to submit your request.
+- Use the "Bug Report" issue template [here](https://github.com/PSBicep/PSBicep/issues/new/choose) to submit your request.
