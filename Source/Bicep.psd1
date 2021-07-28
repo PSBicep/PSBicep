@@ -125,16 +125,16 @@ PrivateData = @{
         Tags = @('azure', 'bicep', 'arm-json', 'arm-templates', 'windows', 'bicepnet', 'psbicep')
 
         # A URL to the license for this module.
-        LicenseUri = 'https://github.com/PSBicep/BicepPowerShell/blob/main/LICENSE'
+        LicenseUri = 'https://github.com/PSBicep/PSBicep/blob/main/LICENSE'
 
         #A URL to the main website for this project.
-        ProjectUri = 'https://github.com/PSBicep/BicepPowerShell'
+        ProjectUri = 'https://github.com/PSBicep/PSBicep'
 
         # A URL to an icon representing this module.
-        IconUri = 'https://raw.githubusercontent.com/PSBicep/BicepPowerShell/main/logo/BicePS.png'
+        IconUri = 'https://raw.githubusercontent.com/PSBicep/PSBicep/main/logo/BicePS.png'
 
         # ReleaseNotes of this module
-        ReleaseNotes = 'https://github.com/PSBicep/BicepPowerShell/releases'
+        ReleaseNotes = 'https://github.com/PSBicep/PSBicep/releases'
 
         # Prerelease string of this module
         # Prerelease = ''
