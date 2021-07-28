@@ -899,7 +899,7 @@ Convert-JsonToBicep -String $json</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>OutputDirectory</maml:name>
           <maml:description>
-            <maml:para>Specfies the path to the directory where the compiled files should be outputted</maml:para>
+            <maml:para>Specifies the path to the directory where the compiled files should be outputted</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -911,7 +911,18 @@ Convert-JsonToBicep -String $json</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AsString</maml:name>
           <maml:description>
-            <maml:para>The -AsString prints all output as a string instead of corresponding files.</maml:para>
+            <maml:para>-AsString prints all output as a string instead of corresponding files.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Force</maml:name>
+          <maml:description>
+            <maml:para>Force overwriting of output files. If the output.bicep file already exists and -Force is not set we will not overwrite the resulting file.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -937,7 +948,7 @@ Convert-JsonToBicep -String $json</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>OutputDirectory</maml:name>
         <maml:description>
-          <maml:para>Specfies the path to the directory where the compiled files should be outputted</maml:para>
+          <maml:para>Specifies the path to the directory where the compiled files should be outputted</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -949,7 +960,19 @@ Convert-JsonToBicep -String $json</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AsString</maml:name>
         <maml:description>
-          <maml:para>The -AsString prints all output as a string instead of corresponding files.</maml:para>
+          <maml:para>-AsString prints all output as a string instead of corresponding files.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Force</maml:name>
+        <maml:description>
+          <maml:para>Force overwriting of output files. If the output.bicep file already exists and -Force is not set we will not overwrite the resulting file.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
