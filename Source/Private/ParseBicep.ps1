@@ -5,7 +5,10 @@ function ParseBicep {
         $Path,
         [switch]$IgnoreDiagnostics
     )
-
+    begin {
+        Write-Warning 'ParseBicep does not work anymore, I''m sorry'
+        return
+    }
     process {
         $FileResolver = [Bicep.Core.FileSystem.FileResolver]::new()
         $WorkSpace = [Bicep.Core.Workspaces.Workspace]::new()

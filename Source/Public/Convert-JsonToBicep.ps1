@@ -26,8 +26,6 @@ function Convert-JsonToBicep {
         if (-not $Script:ModuleVersionChecked) {
             TestModuleVersion
         }
-        $FileResolver = [Bicep.Core.FileSystem.FileResolver]::new()
-        $ResourceProvider = [Bicep.Core.TypeSystem.Az.AzResourceTypeProvider]::CreateWithAzTypes()
         $tempPath = [System.Io.Path]::GetTempPath()
     }
 
@@ -58,9 +56,9 @@ function Convert-JsonToBicep {
         $file = Get-ChildItem -Path "$tempPath\tempfile.json"
 
         if ($file) {
-            $BicepObject = [Bicep.Decompiler.TemplateDecompiler]::DecompileFileWithModules($ResourceProvider, $FileResolver, $file.FullName)
-            foreach ($BicepFile in $BicepObject.Item2.Keys) {
-                $bicepData = $BicepObject.Item2[$BicepFile]
+            $BicepObject = ConvertTo-BicepNetFile -Path $file.FullName
+            foreach ($BicepFile in $BicepObject.Keys) {
+                $bicepData = $BicepObject[$BicepFile]
             }
             $bicepOutput = $bicepData.Replace("var temp = ", "")
             if ($ToClipboard.IsPresent) {                

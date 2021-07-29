@@ -23,18 +23,23 @@ function New-BicepParameterFile {
         }
 
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $DLLPath = [Bicep.Core.Workspaces.Workspace].Assembly.Location
-            $DLLFile = Get-Item -Path $DLLPath
-            $FullVersion = $DLLFile.VersionInfo.ProductVersion.Split('+')[0]
+            $FullVersion = Get-BicepNetVersion -Verbose:$false
             Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
+        
     }
 
     process {
         $File = Get-Item -Path $Path
-        
+        $validateBicepFile = Test-BicepFile -Path $File.FullName -AcceptDiagnosticLevel Warning -IgnoreDiagnosticOutput
+        if (!($validateBicepFile)) {
+            Write-Error -Message "$($File.FullName) have build errors, make sure that the Bicep template builds successfully and try again."
+            Write-Host "`nYou can use either 'Test-BicepFile' or 'Build-Bicep' to verify that the template builds successfully.`n"
+            break
+        }
         if ($File) {
-            $ARMTemplate = ParseBicep -Path $File.FullName -IgnoreDiagnostics
+            $BuildResult = Build-BicepNetFile -Path $file.FullName
+            $ARMTemplate = $BuildResult.Template[0]
 
             if($PSBoundParameters.ContainsKey('OutputDirectory')) {
                 $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $File.BaseName)
@@ -45,7 +50,7 @@ function New-BicepParameterFile {
             if (!$PSBoundParameters.ContainsKey('Parameters')){
                 $Parameters='Required'
             }
-             GenerateParameterFile -Content $ARMTemplate -Parameters $Parameters -DestinationPath $OutputFilePath -WhatIf:$WhatIfPreference
+            GenerateParameterFile -Content $ARMTemplate -Parameters $Parameters -DestinationPath $OutputFilePath -WhatIf:$WhatIfPreference
         }
         else {
             Write-Error "No bicep file named $Path was found!"

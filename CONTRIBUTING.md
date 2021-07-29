@@ -5,12 +5,17 @@ You are more than welcome to contribute to the Bicep PowerShell module, whether 
 ## Getting Started
 
 - Fork this repo (see [this forking guide](https://guides.github.com/activities/forking/) for more information).
-- Checkout the repo locally with `git clone git@github.com:{your_username}/BicepPowerShell.git`.
-- You will need dotnet core sdk 5.0.100 installed locally to be able to download the required assemblies.
-- Run the script `.\scripts\downloadDependencies.ps1` to download the required dependencies (Bicep Assemblies (DLLs) and Bicep Types information) to the Assets (`Source/Assets`) folder.
+- Checkout the repo locally with `git clone git@github.com:{your_username}/PSBicep.git`.
+- Run the script `.\scripts\downloadDependencies.ps1` to download the required dependencies:
+  - Nested module [BicepNet](https://github.com/PSBicep/BicepNet) to the BicepNet.PS (`Source/BicepNet.PS`) folder.
+  - Bicep Types information to the Assets (`Source/Assets`) folder.
 - If you haven't already, you will need the [PlatyPs](https://github.com/PowerShell/platyPS) PowerShell Module to generate command help and docs.
 
 ## Developing
+
+### BicepNet
+
+The Bicep PowerShell module uses a nested module named [BicepNet](https://github.com/PSBicep/BicepNet). BicepNet is a thin wrapper around Bicep that will load all bicep assemblies in a separate context to avoid conflicts with other modules, like `Az PowerShell`. It is BicepNet that controls which Bicep version is used by the module. When a new Bicep version is released BicepNet must be updated before the Bicep module can leverage the new features.
 
 ### Structure
 
@@ -26,7 +31,7 @@ The repo is organized as below:
 
 ### Running the module locally
 
-- Download the assemblies needed by the module to the `Source/Assets` folder by running the `downloadDependencies.ps1` script:
+- Download the assemblies needed by the module by running the `downloadDependencies.ps1` script:
 
 ```
 .\scripts\downloadDependencies.ps1
@@ -36,17 +41,6 @@ The repo is organized as below:
 
 ```powershell
 Import-Module .\Source\Bicep.psd1
-```
-
-#### Using new assemblies
-
-When a new Bicep version is released and the module needs to be updated to work with the new assemblies, perform the steps below.
-
-- Update the version number in `.\Source\assemblyversion.txt` to the latest Bicep Release tag.
-- Download the assemblies needed by the module to the `Source/Assets` folder by running the `downloadDependencies.ps1` script:
-
-```
-.\scripts\downloadDependencies.ps1
 ```
 
 ### platyPS
@@ -88,7 +82,7 @@ Update-MarkdownHelp .\Docs\Help
 
 ### Tests
 
-[Pester](https://github.com/pester/Pester) is the ubiquitous test and mock framework for PowerShell. We use it for automatic testing and it executes at Pull Requests. We have a lot improvements to do on the test front and contributions are more than welcome. The progress can be tracked [here](https://github.com/StefanIvemo/BicepPowerShell/issues/22).
+[Pester](https://github.com/pester/Pester) is the ubiquitous test and mock framework for PowerShell. We use it for automatic testing and it executes at Pull Requests. We have a lot improvements to do on the test front and contributions are more than welcome. The progress can be tracked [here](https://github.com/PSBicep/PSBicep/issues/22).
 
 ## Pull Requests
 
@@ -100,13 +94,13 @@ If you like to start contributing to Bicep PowerShell. Please make sure that the
 
 ## Feature Suggestions
 
-- Please first search [Open Issues](https://github.com/StefanIvemo/BicepPowerShell/issues) before opening an issue to check whether your feature has already been suggested. If it has, feel free to add your own comments to the existing issue.
+- Please first search [Open Issues](https://github.com/PSBicep/PSBicep/issues) before opening an issue to check whether your feature has already been suggested. If it has, feel free to add your own comments to the existing issue.
 - Ensure you have included a "What?" - what your feature entails, being as specific as possible, and giving mocked-up syntax examples where possible.
 - Ensure you have included a "Why?" - what the benefit of including this feature will be.
-- Use the "Feature Request" issue template [here](https://github.com/StefanIvemo/BicepPowerShell/issues/new/choose) to submit your request.
+- Use the "Feature Request" issue template [here](https://github.com/PSBicep/PSBicep/issues/new/choose) to submit your request.
 
 ## Bug Reports
 
-- Please first search [Open Issues](https://github.com/StefanIvemo/BicepPowerShell/issues) before opening an issue, to see if it has already been reported.
+- Please first search [Open Issues](https://github.com/PSBicep/PSBicep/issues) before opening an issue, to see if it has already been reported.
 - Try to be as specific as possible, including the version of the Bicep PowerShell module, PowerShell version and OS used to reproduce the issue, and any example files or snippets of Bicep code needed to reproduce it.
-- Use the "Bug Report" issue template [here](https://github.com/StefanIvemo/BicepPowerShell/issues/new/choose) to submit your request.
+- Use the "Bug Report" issue template [here](https://github.com/PSBicep/PSBicep/issues/new/choose) to submit your request.

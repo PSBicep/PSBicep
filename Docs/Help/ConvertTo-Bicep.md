@@ -12,15 +12,8 @@ Decompile ARM templates to .bicep files
 
 ## SYNTAX
 
-### Default (Default)
 ```powershell
-ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [<CommonParameters>]
-```
-
-### AsString
-```powershell
-ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] -AsString
- [<CommonParameters>]
+ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-AsString] [-Force] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -69,7 +62,7 @@ Accept wildcard characters: False
 ```
 
 ### -OutputDirectory
-Specfies the path to the directory where the compiled files should be outputted
+Specifies the path to the directory where the compiled files should be outputted
 
 ```yaml
 Type: String
@@ -84,16 +77,32 @@ Accept wildcard characters: False
 ```
 
 ### -AsString
-The -AsString prints all output as a string instead of corresponding files.
+-AsString prints all output as a string instead of corresponding files.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: AsString
+Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Force
+Force overwriting of output files.
+If the output.bicep file already exists and -Force is not set we will not overwrite the resulting file.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -106,6 +115,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ## NOTES
-Go to module repository https://github.com/StefanIvemo/BicepPowerShell for detailed info, reporting issues and to submit contributions.
+Go to module repository https://github.com/PSBicep/PSBicep for detailed info, reporting issues and to submit contributions.
 
 ## RELATED LINKS
