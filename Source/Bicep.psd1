@@ -37,7 +37,6 @@ The module also provides the additional features:
 - Quickly open the API reference docs by referencing the Bicep types
 - Get the result from a build as a string or hashtable instead of writing to a file
 - Test if a Bicep file is valid without building it
-- Convert Bicep parameter modifiers to decorator style parameters
 - Convert JSON objects to Bicep Language
 - Install/Update/Uninstall Bicep CLI
 - Specify output folder when building* and decompiling Bicep/ARM templates
@@ -68,22 +67,7 @@ PowerShellVersion = '7.1'
 # RequiredModules = @()
 
 # Assemblies that must be loaded prior to importing this module
-# RequiredAssemblies = @(
-#     'Assets\Azure.Bicep.Types.Az.dll',
-#     'Assets\Azure.Bicep.Types.dll',
-#     'Assets\Azure.Deployments.Core.dll',
-#     'Assets\Azure.Deployments.Expression.dll',
-#     'Assets\Bicep.Core.dll',
-#     'Assets\Bicep.Decompiler.dll',
-#     'Assets\Microsoft.Extensions.Configuration.Abstractions.dll',
-#     'Assets\Microsoft.Extensions.Configuration.Binder.dll',
-#     'Assets\Microsoft.Extensions.Configuration.dll',
-#     'Assets\Microsoft.Extensions.Configuration.Json.dll',
-#     'Assets\Microsoft.Extensions.Primitives.dll',
-#     'Assets\Microsoft.Extensions.FileProviders.Abstractions.dll',
-#     'Assets\Microsoft.Extensions.Configuration.FileExtensions.dll',
-#     'Assets\Microsoft.Extensions.FileProviders.Physical.dll'
-# )
+# RequiredAssemblies = @()
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
 # ScriptsToProcess = @()
@@ -138,22 +122,22 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        Tags = @('azure', 'bicep', 'arm-json', 'arm-templates', 'windows')
+        Tags = @('azure', 'bicep', 'arm-json', 'arm-templates', 'windows', 'bicepnet', 'psbicep')
 
         # A URL to the license for this module.
-        LicenseUri = 'https://github.com/StefanIvemo/BicepPowerShell/blob/main/LICENSE'
+        LicenseUri = 'https://github.com/PSBicep/PSBicep/blob/main/LICENSE'
 
         #A URL to the main website for this project.
-        ProjectUri = 'https://github.com/StefanIvemo/BicepPowerShell'
+        ProjectUri = 'https://github.com/PSBicep/PSBicep'
 
         # A URL to an icon representing this module.
-        IconUri = 'https://raw.githubusercontent.com/StefanIvemo/BicepPowerShell/main/logo/BicePS.png'
+        IconUri = 'https://raw.githubusercontent.com/PSBicep/PSBicep/main/logo/BicePS.png'
 
         # ReleaseNotes of this module
-        ReleaseNotes = 'https://github.com/StefanIvemo/BicepPowerShell/releases'
+        ReleaseNotes = 'https://github.com/PSBicep/PSBicep/releases'
 
         # Prerelease string of this module
-        Prerelease = 'Preview1'
+        # Prerelease = ''
 
         # Flag to indicate whether the module requires explicit user acceptance for install/update/save
         # RequireLicenseAcceptance = $false

@@ -12,7 +12,7 @@ Decompile ARM templates to .bicep files
 
 ## SYNTAX
 
-```
+```powershell
 ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-AsString] [-Force] [<CommonParameters>]
 ```
 
@@ -62,7 +62,7 @@ Accept wildcard characters: False
 ```
 
 ### -OutputDirectory
-Specfies the path to the directory where the compiled files should be outputted
+Specifies the path to the directory where the compiled files should be outputted
 
 ```yaml
 Type: String
@@ -77,7 +77,7 @@ Accept wildcard characters: False
 ```
 
 ### -AsString
-The -AsString prints all output as a string instead of corresponding files.
+-AsString prints all output as a string instead of corresponding files.
 
 ```yaml
 Type: SwitchParameter
@@ -92,7 +92,7 @@ Accept wildcard characters: False
 ```
 
 ### -Force
-Force overwriting of output files. 
+Force overwriting of output files.
 If the output.bicep file already exists and -Force is not set we will not overwrite the resulting file.
 
 ```yaml
@@ -115,6 +115,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ## NOTES
-Go to module repository https://github.com/StefanIvemo/BicepPowerShell for detailed info, reporting issues and to submit contributions.
+Go to module repository https://github.com/PSBicep/PSBicep for detailed info, reporting issues and to submit contributions.
 
 ## RELATED LINKS

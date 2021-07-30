@@ -5,7 +5,7 @@ param (
     [string]$Token
 )
 
-$BaseURL = "https://api.github.com/repos/StefanIvemo/BicepPowerShell"
+$BaseURL = "https://api.github.com/repos/PSBicep/PSBicep"
 
 $header = @{
     "authorization" = "token $Token"

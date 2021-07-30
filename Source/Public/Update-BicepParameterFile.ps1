@@ -51,6 +51,13 @@ function Update-BicepParameterFile {
             $BicepFilePath = $BicepFile
         }
         
+        $validateBicepFile = Test-BicepFile -Path $BicepFilePath -AcceptDiagnosticLevel Warning -IgnoreDiagnosticOutput
+        if (!($validateBicepFile)) {
+            Write-Error -Message "$BicepFilePath have build errors, make sure that the Bicep template builds successfully and try again."
+            Write-Host "`nYou can use either 'Test-BicepFile' or 'Build-Bicep' to verify that the template builds successfully.`n"
+            break
+        }
+
         # Import the old parameter file and convert it to an ordered hashtable
         $oldParametersFile = Get-Content -Path $Path | ConvertFrom-Json -Depth 100 | ConvertToHashtable -Ordered
 

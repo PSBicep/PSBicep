@@ -31,11 +31,17 @@ function New-BicepParameterFile {
             $FullVersion = Get-BicepNetVersion -Verbose:$false
             Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
+        
     }
 
     process {
         $File = Get-Item -Path $Path
-        
+        $validateBicepFile = Test-BicepFile -Path $File.FullName -AcceptDiagnosticLevel Warning -IgnoreDiagnosticOutput
+        if (!($validateBicepFile)) {
+            Write-Error -Message "$($File.FullName) have build errors, make sure that the Bicep template builds successfully and try again."
+            Write-Host "`nYou can use either 'Test-BicepFile' or 'Build-Bicep' to verify that the template builds successfully.`n"
+            break
+        }
         if ($File) {
             $BuildResult = Build-BicepNetFile -Path $file.FullName
             $ARMTemplate = $BuildResult.Template[0]
