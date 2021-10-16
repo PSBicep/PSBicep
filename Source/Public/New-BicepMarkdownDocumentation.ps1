@@ -63,8 +63,8 @@ function New-BicepMarkdownDocumentation {
         
         $MDProviders = NewMDTableHeader -Headers 'Type', 'Version'
         $MDResources = NewMDTableHeader -Headers 'Name', 'Link', 'Location'
-        $MDInputs = NewMDTableHeader -Headers 'Name', 'Value'
-        $MDVariables = NewMDTableHeader -Headers 'Name', 'Type'
+        $MDInputs = NewMDTableHeader -Headers 'Name', 'Type'
+        $MDVariables = NewMDTableHeader -Headers 'Name', 'Value'
         $MDOutputs = [string]::Empty
 
         $BuildObject = (Build-BicepNetFile -Path $SourceFile.FullName).Template | ConvertFrom-Json
