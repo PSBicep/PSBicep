@@ -84,10 +84,10 @@ $MDProviders
 #region Add Resources to MD output
         foreach ($Resource in $BuildObject.resources) {
             try {
-                $URI = Get-BicepApiReference -Type "$($Resource.resources.Type)@$($Resource.resources.apiVersion)" -ReturnUri
+                $URI = Get-BicepApiReference -Type "$($Resource.Type)@$($Resource.apiVersion)" -ReturnUri -Force
             }
             catch {
-                # If no uri is found this is the base path for template docs. 
+                # If no uri is found this is the base path for template
                 $URI = 'https://docs.microsoft.com/en-us/azure/templates'
             }
             $MDResources += "| $($Provider.name) | [$($Provider.Type)@$($Provider.apiVersion)]($URI) | $($Provider.location) |`n"
@@ -101,10 +101,15 @@ $MDResources
 #endregion
 
 #region Add Variables to MD output
-        $VariableNames = ($BuildObject.variables | Get-Member -MemberType NoteProperty).Name
-        foreach ($var in $VariableNames) {
-            $Param = $BuildObject.variables.$var
-            $MDVariables += "| $var | $Param |`n"
+        if ($null -eq $BuildObject.variables) {
+            $MDVariables = 'n/a'
+        }
+        else {
+            $VariableNames = ($BuildObject.variables | Get-Member -MemberType NoteProperty).Name
+            foreach ($var in $VariableNames) {
+                $Param = $BuildObject.variables.$var
+                $MDVariables += "| $var | $Param |`n"
+            }
         }
 $FileDocumentationResult += @"
 
@@ -115,11 +120,17 @@ $MDVariables
 #endregion
 
 #region Add inputs to MD output
-        $InputNames = ($BuildObject.parameters | Get-Member -MemberType NoteProperty).Name
-        foreach ($Input in $InputNames) {
-            $Param = $BuildObject.parameters.$Input
-            $MDInputs += "| $Input | $($Param.type) |`n"
+        if ($null -eq $BuildObject.parameters) {
+            $MDInputs = 'n/a'
         }
+        else {
+            $InputNames = ($BuildObject.parameters | Get-Member -MemberType NoteProperty).Name
+            foreach ($Input in $InputNames) {
+                $Param = $BuildObject.parameters.$Input
+                $MDInputs += "| $Input | $($Param.type) |`n"
+            }
+        }
+
 $FileDocumentationResult += @"
 
 ## Inputs
@@ -129,10 +140,16 @@ $MDInputs
 #endregion
 
 #region Add outputs to MD output
-        $OutputNames = ($BuildObject.Outputs | Get-Member -MemberType NoteProperty).Name
-        foreach ($OutputName in $OutputNames) {
-            $MDOutputs += "$OutputName`n"
+        if ($null -eq $BuildObject.Outputs) {
+            $MDOutputs = 'n/a'
         }
+        else {
+            $OutputNames = ($BuildObject.Outputs | Get-Member -MemberType NoteProperty).Name
+            foreach ($OutputName in $OutputNames) {
+                $MDOutputs += "$OutputName`n"
+            }
+        }
+
 $FileDocumentationResult += @"
 
 ## Outputs
