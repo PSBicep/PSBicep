@@ -61,9 +61,10 @@ function New-BicepMarkdownDocumentation {
     foreach ($SourceFile in $FileCollection) {
         $FileDocumentationResult = $MDHeader.Replace('{{SourceFile}}', $SourceFile.Name)
         
-        $MDProviders = NewMDTableHeader -Headers 'Name', 'Version'
-        $MDResources = NewMDTableHeader -Headers 'Name', 'Type'
-        $MDInputs = NewMDTableHeader -Headers 'Name', 'Description', 'Type', 'Default', 'Required'
+        $MDProviders = NewMDTableHeader -Headers 'Type', 'Version'
+        $MDResources = NewMDTableHeader -Headers 'Name', 'Link', 'Location'
+        $MDInputs = NewMDTableHeader -Headers 'Name', 'Value'
+        $MDVariables = NewMDTableHeader -Headers 'Name', 'Type'
         $MDOutputs = [string]::Empty
 
         $BuildObject = (Build-BicepNetFile -Path $SourceFile.FullName).Template | ConvertFrom-Json
@@ -82,8 +83,14 @@ $MDProviders
 
 #region Add Resources to MD output
         foreach ($Resource in $BuildObject.resources) {
-            $URI = Get-BicepApiReference -Type "$($BuildObject.resources.Type)@$($BuildObject.resources.apiVersion)" -ReturnUri
-            $MDResources += "| [$($Provider.Type)@$($Provider.apiVersion)]($URI) | $($Provider.kind) |`n"
+            try {
+                $URI = Get-BicepApiReference -Type "$($Resource.resources.Type)@$($Resource.resources.apiVersion)" -ReturnUri
+            }
+            catch {
+                # If no uri is found this is the base path for template docs. 
+                $URI = 'https://docs.microsoft.com/en-us/azure/templates'
+            }
+            $MDResources += "| $($Provider.name) | [$($Provider.Type)@$($Provider.apiVersion)]($URI) | $($Provider.location) |`n"
         }
 $FileDocumentationResult += @"
 
@@ -93,11 +100,25 @@ $MDResources
 "@
 #endregion
 
+#region Add Variables to MD output
+        $VariableNames = ($BuildObject.variables | Get-Member -MemberType NoteProperty).Name
+        foreach ($var in $VariableNames) {
+            $Param = $BuildObject.variables.$var
+            $MDVariables += "| $var | $Param |`n"
+        }
+$FileDocumentationResult += @"
+
+## Variables
+
+$MDVariables
+"@
+#endregion
+
 #region Add inputs to MD output
         $InputNames = ($BuildObject.parameters | Get-Member -MemberType NoteProperty).Name
         foreach ($Input in $InputNames) {
             $Param = $BuildObject.parameters.$Input
-            $MDInputs += "| $Input | $($Param.Description) | $($Param.type) | $($Param.defaultValue) | $($Param.required) |`n"
+            $MDInputs += "| $Input | $($Param.type) |`n"
         }
 $FileDocumentationResult += @"
 
