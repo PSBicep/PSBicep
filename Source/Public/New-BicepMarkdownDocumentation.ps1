@@ -45,9 +45,11 @@ function New-BicepMarkdownDocumentation {
             $FileCollection = @((Get-Item $File)) 
         }
         'FromFolder' { 
-            $FileCollection = Get-ChildItem $PWD -Include *.bicep -Recurse:$Recurse
+            $FileCollection = Get-ChildItem $Path *.bicep -Recurse:$Recurse
         }
     }
+
+    Write-Verbose "Files to process:`n$($FileCollection.Name)"
 
     $MDHeader = @'
 # {{SourceFile}}
