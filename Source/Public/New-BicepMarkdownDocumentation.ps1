@@ -124,10 +124,10 @@ $MDVariables
             $MDParameters = 'n/a'
         }
         else {
-            $InputNames = ($BuildObject.parameters | Get-Member -MemberType NoteProperty).Name
-            foreach ($Input in $InputNames) {
-                $Param = $BuildObject.parameters.$Input
-                $MDParameters += "| $Input | $($Param.type) |`n"
+            $ParameterNames = ($BuildObject.parameters | Get-Member -MemberType NoteProperty).Name
+            foreach ($Parameter in $ParameterNames) {
+                $Param = $BuildObject.parameters.$Parameter
+                $MDParameters += "| $Parameter | $($Param.type) |`n"
             }
         }
 
