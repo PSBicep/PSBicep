@@ -63,7 +63,7 @@ function New-BicepMarkdownDocumentation {
         
         $MDProviders = NewMDTableHeader -Headers 'Type', 'Version'
         $MDResources = NewMDTableHeader -Headers 'Name', 'Link', 'Location'
-        $MDInputs = NewMDTableHeader -Headers 'Name', 'Type'
+        $MDParameters = NewMDTableHeader -Headers 'Name', 'Type'
         $MDVariables = NewMDTableHeader -Headers 'Name', 'Value'
         $MDOutputs = [string]::Empty
 
@@ -119,23 +119,23 @@ $MDVariables
 "@
 #endregion
 
-#region Add inputs to MD output
+#region Add Parameters to MD output
         if ($null -eq $BuildObject.parameters) {
-            $MDInputs = 'n/a'
+            $MDParameters = 'n/a'
         }
         else {
             $InputNames = ($BuildObject.parameters | Get-Member -MemberType NoteProperty).Name
             foreach ($Input in $InputNames) {
                 $Param = $BuildObject.parameters.$Input
-                $MDInputs += "| $Input | $($Param.type) |`n"
+                $MDParameters += "| $Input | $($Param.type) |`n"
             }
         }
 
 $FileDocumentationResult += @"
 
-## Inputs
+## Parameters
 
-$MDInputs
+$MDParameters
 "@
 #endregion
 
