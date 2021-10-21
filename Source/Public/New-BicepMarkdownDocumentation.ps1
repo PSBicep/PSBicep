@@ -90,7 +90,7 @@ $MDProviders
                 # If no uri is found this is the base path for template
                 $URI = 'https://docs.microsoft.com/en-us/azure/templates'
             }
-            $MDResources += "| $($Provider.name) | [$($Provider.Type)@$($Provider.apiVersion)]($URI) | $($Provider.location) |`n"
+            $MDResources += "| $($Resource.name) | [$($Resource.Type)@$($Resource.apiVersion)]($URI) | $($Resource.location) |`n"
         }
 $FileDocumentationResult += @"
 
