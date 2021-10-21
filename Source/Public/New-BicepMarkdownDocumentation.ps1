@@ -65,7 +65,7 @@ function New-BicepMarkdownDocumentation {
         $MDResources = NewMDTableHeader -Headers 'Name', 'Link', 'Location'
         $MDParameters = NewMDTableHeader -Headers 'Name', 'Type'
         $MDVariables = NewMDTableHeader -Headers 'Name', 'Value'
-        $MDOutputs = [string]::Empty
+        $MDOutputs = NewMDTableHeader -Headers 'Name', 'Type', 'Value'
 
         $BuildObject = (Build-BicepNetFile -Path $SourceFile.FullName).Template | ConvertFrom-Json
 
@@ -146,7 +146,8 @@ $MDParameters
         else {
             $OutputNames = ($BuildObject.Outputs | Get-Member -MemberType NoteProperty).Name
             foreach ($OutputName in $OutputNames) {
-                $MDOutputs += "$OutputName`n"
+                $OutputValues = $BuildObject.outputs.$OutputName
+                $MDOutputs += "| $OutputName | $($OutputValues.type) | $($OutputValues.value) |`n"
             }
         }
 
