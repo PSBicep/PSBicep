@@ -42,7 +42,9 @@ function Build-Bicep {
         [Parameter(ParameterSetName = 'AsHashtable')]
         [switch]$AsHashtable,
 
-        [switch]$IgnoreDiagnostics
+        [switch]$IgnoreDiagnostics,
+
+        [switch]$NoRestore
     )
 
     begin {
@@ -72,7 +74,11 @@ function Build-Bicep {
         if ($files) {
             foreach ($file in $files) {
                 if ($file.Name -notin $ExcludeFile) {
-                    $BuildResult = Build-BicepNetFile -Path $file.FullName
+                    if ($NoRestore.IsPresent) {
+                        $BuildResult = Build-BicepNetFile -Path $file.FullName -NoRestore
+                    } else {
+                        $BuildResult = Build-BicepNetFile -Path $file.FullName
+                    }                    
                     $ARMTemplate = $BuildResult.Template[0]
                     if (-not $IgnoreDiagnostics.IsPresent) {
                         $BuildResult.Diagnostic | WriteBicepNetDiagnostic -InformationAction 'Continue'
@@ -81,9 +87,10 @@ function Build-Bicep {
                     if (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {
                         $BicepModuleVersion = Get-Module -Name Bicep | Sort-Object -Descending | Select-Object -First 1
                         $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
-                        if (-not [string]::IsNullOrWhiteSpace($BicepModuleVersion.PrivateData.Values.Prerelease)){
+                        if (-not [string]::IsNullOrWhiteSpace($BicepModuleVersion.PrivateData.Values.Prerelease)) {
                             $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $($BicepModuleVersion.Version)-$($BicepModuleVersion.PrivateData.Values.Prerelease))"
-                        } else {
+                        }
+                        else {
                             $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $($BicepModuleVersion.Version))"
                         }
                         $ARMTemplate = ConvertTo-Json -InputObject $ARMTemplateObject -Depth 100
