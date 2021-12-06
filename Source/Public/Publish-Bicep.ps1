@@ -25,8 +25,8 @@ function Publish-Bicep {
     # Publish module
     try {
         Publish-BicepNetFile -Path $Path -Target $Target
-        Write-Verbose -Message "ACR: Successfully authenticated to $LoginServer"
-        Write-Verbose -Message "Template: [$($BicepFile.Name)] published to: [$Target]"
+        Write-Verbose -Message "Successfully authenticated to $LoginServer"
+        Write-Verbose -Message "[$($BicepFile.Name)] published to: [$Target]"
     }
     catch {
         Throw $_
