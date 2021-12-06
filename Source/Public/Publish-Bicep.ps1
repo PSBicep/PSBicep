@@ -1,4 +1,5 @@
 function Publish-Bicep {
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory, Position = 1)]
         [ValidateNotNullOrEmpty()]
@@ -21,15 +22,14 @@ function Publish-Bicep {
     $BicepFile= Get-Childitem -Path $Path *.bicep -File
     $LoginServer=(($target -split ":")[1] -split "/")[0]
     
-
     # Publish module
     try {
         Publish-BicepNetFile -Path $Path -Target $Target
+        Write-Verbose -Message "ACR: Successfully authenticated to $LoginServer"
         Write-Verbose -Message "Template: [$($BicepFile.Name)] published to: [$Target]"
     }
     catch {
         Throw $_
     }
-
 
 }
