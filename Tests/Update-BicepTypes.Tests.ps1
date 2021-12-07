@@ -6,6 +6,14 @@ BeforeAll {
 
 Describe 'Update-BicepTypes' {
     BeforeAll {
+        Mock TestModuleVersion -ModuleName Bicep {
+            $Script:ModuleVersionChecked = $true
+        }
+
+        Mock Write-Host -ModuleName Bicep {
+            # we dont need output when running tests
+        }
+
         Mock Get-Module -ModuleName Bicep {
             [PSCustomObject]@{
                 Path = 'TestDrive:\Bicep.psm1'
