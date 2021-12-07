@@ -25,9 +25,14 @@ function Update-BicepTypes {
     }
 
     Write-Verbose "Filtering content"
+    
+    # If the Resources property does not exist we want to throw an error
+    if ($BicepTypes.psobject.Properties.name -notcontains 'Resources') {
+        Throw "Resources not found in index file."
+    }
 
     try {
-        $TypesOnly = ConvertTo-Json -InputObject $BicepTypes.types.psobject.Properties.name -Compress 
+        $TypesOnly = ConvertTo-Json -InputObject $BicepTypes.Resources.psobject.Properties.name -Compress
     }
     catch {
         Throw "Unable to filter content. Index file might have changed. $_"
@@ -43,7 +48,7 @@ function Update-BicepTypes {
     }
 
     if (-not $WhatIfPreference) {
-        Write-Host "Updated Bicep types with index file generated $($BicepTypes.Headers.Date)"
+        Write-Host "Updated Bicep types."
     }
 
     # To avoid having to re-import the module, update the module variable
