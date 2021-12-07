@@ -7,7 +7,7 @@ function Publish-Bicep {
 
         [Parameter(Mandatory, Position = 2)]
         [ValidateNotNullOrEmpty()]
-        [string]$Target         
+        [string]$Target          
     )
     begin {
         # Check if a newer version of the module is published
