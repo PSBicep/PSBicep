@@ -13,17 +13,27 @@ function Publish-Bicep {
         # Check if a newer version of the module is published
         if (-not $Script:ModuleVersionChecked) {
             TestModuleVersion
-        }
-
-        # Verbose output Bicep Version used
-        $FullVersion = Get-BicepNetVersion -Verbose:$false
-        Write-Verbose -Message "Using Bicep version: $FullVersion"
+        }       
     }
 
     process {
         $BicepFile = Get-Childitem -Path $Path *.bicep -File
         $LoginServer = (($target -split ":")[1] -split "/")[0]
     
+        try {
+            $validBicep = Test-BicepFile -Path $BicepFile.FullName -IgnoreDiagnosticOutput -AcceptDiagnosticLevel Warning
+            if (-not ($validBicep)) {
+                Write-Error -Message "The provided bicep is not valid. Make sure that your bicep file builds successfully before publishing."
+                break
+            }
+            else {
+                Write-Verbose "[$($BicepFile.Name)] is valid"
+            }
+        }
+        catch {
+            Throw $_  
+        }
+
         # Publish module
         try {
             Publish-BicepNetFile -Path $BicepFile.FullName -Target $Target
