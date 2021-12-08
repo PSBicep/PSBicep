@@ -15,7 +15,7 @@ You are more than welcome to contribute to the Bicep PowerShell module, whether 
 
 ### BicepNet
 
-The Bicep PowerShell module uses a nested module named [BicepNet](https://github.com/PSBicep/BicepNet). BicepNet is a thin wrapper around Bicep that will load all bicep assemblies in a separate context to avoid conflicts with other modules, like `Az PowerShell`. It is BicepNet that controls which Bicep version is used by the module. When a new Bicep version is released BicepNet must be updated before the Bicep module can leverage the new features.
+The Bicep PowerShell module uses a nested module named [BicepNet](https://github.com/PSBicep/BicepNet). BicepNet is a thin wrapper around Bicep that will load all Bicep assemblies in a separate context to avoid conflicts with other modules, like `Az PowerShell`. It is BicepNet that controls which Bicep version is used by the module. When a new Bicep version is released BicepNet must be updated before the Bicep module can leverage the new features.
 
 ### Structure
 
