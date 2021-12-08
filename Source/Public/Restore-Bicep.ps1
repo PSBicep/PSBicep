@@ -6,22 +6,27 @@ function Restore-Bicep {
         [string]$Path         
     )
 
-    # Check if a newer version of the module is published
-    if (-not $Script:ModuleVersionChecked) {
-        TestModuleVersion
+    begin {
+        # Check if a newer version of the module is published
+        if (-not $Script:ModuleVersionChecked) {
+            TestModuleVersion
+        }
+
+        # Verbose output Bicep Version used
+        $FullVersion = Get-BicepNetVersion -Verbose:$false
+        Write-Verbose -Message "Using Bicep version: $FullVersion"
     }
 
-    # Verbose output Bicep Version used
-    $FullVersion = Get-BicepNetVersion -Verbose:$false
-    Write-Verbose -Message "Using Bicep version: $FullVersion"
-  
-    # Restore modules
-    try {
-        Restore-BicepNetFile -Path $Path -ErrorAction Stop
-        Write-Verbose -Message "Successfully restored all modules"
+    process {
+        $BicepFile = Get-Childitem -Path $Path -File
+    
+        # Restore modules
+        try {
+            Restore-BicepNetFile -Path $BicepFile.FullName -ErrorAction Stop
+            Write-Verbose -Message "Successfully restored all modules"
+        }
+        catch {
+            Throw $_
+        }
     }
-    catch {
-        Throw $_
-    }
-
 }
