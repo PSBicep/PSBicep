@@ -9,7 +9,7 @@ BeforeAll {
 Describe 'Publish-Bicep' {
     Context 'When it does not work' { 
         It 'Non existing scheme' {
-            {Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target 'psbicep:bicepmodules.azurecr.io/bicep/storage:v1'} | Should -Throw "The specified module reference scheme*"
+            {Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target 'psbicep:bicepmodules.azurecr.io/bicep/storage:v1'} | Should -Throw "The specified module reference scheme `"psbicep`"*"
         }
 
         It 'Broken bicep file' {
