@@ -17,14 +17,13 @@ function Publish-Bicep {
     }
 
     process {
-        $BicepFile = Get-Childitem -Path $Path *.bicep -File
+        $BicepFile = Get-Childitem -Path $Path -File
         $LoginServer = (($target -split ":")[1] -split "/")[0]
     
         try {
             $validBicep = Test-BicepFile -Path $BicepFile.FullName -IgnoreDiagnosticOutput -AcceptDiagnosticLevel Warning
             if (-not ($validBicep)) {
-                Write-Error -Message "The provided bicep is not valid. Make sure that your bicep file builds successfully before publishing."
-                break
+                throw "The provided bicep is not valid. Make sure that your bicep file builds successfully before publishing."
             }
             else {
                 Write-Verbose "[$($BicepFile.Name)] is valid"

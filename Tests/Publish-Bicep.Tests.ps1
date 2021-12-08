@@ -7,19 +7,13 @@ BeforeAll {
 }
 
 Describe 'Publish-Bicep' {
-    Context 'When it works' {            
-        It 'Publish Bicep' {
-            {Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target 'br:bicepmodules.azurecr.io/bicep/storage:v1'} | Should -Not -Throw
-        }
-    }
-
     Context 'When it does not work' { 
         It 'Non existing scheme' {
             {Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target 'psbicep:bicepmodules.azurecr.io/bicep/storage:v1'} | Should -Throw "The specified module reference scheme*"
         }
 
         It 'Broken bicep file' {
-            Publish-Bicep -Path 'TestDrive:\brokenBicep.bicep' -Target 'br:bicepmodules.azurecr.io/bicep/storage:v1' | Should -Throw "The provided bicep is not valid. Make sure that your bicep file builds successfully before publishing."
+            {Publish-Bicep -Path 'TestDrive:\brokenBicep.bicep' -Target 'br:bicepmodules.azurecr.io/bicep/storage:v1'} | Should -Throw "The provided bicep is not valid. Make sure that your bicep file builds successfully before publishing."
         }        
     }    
 }
