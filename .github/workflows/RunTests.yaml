@@ -29,5 +29,6 @@ jobs:
       shell: pwsh
     - name: Publish test results
       uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      continue-on-error: true
       with:
         files: testResults.xml
