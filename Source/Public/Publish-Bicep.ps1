@@ -35,7 +35,7 @@ function Publish-Bicep {
 
         # Publish module
         try {
-            Publish-BicepNetFile -Path $BicepFile.FullName -Target $Target
+            Publish-BicepNetFile -Path $BicepFile.FullName -Target $Target -ErrorAction Stop
             Write-Verbose -Message "Successfully authenticated to $LoginServer"
             Write-Verbose -Message "[$($BicepFile.Name)] published to: [$Target]"
         }

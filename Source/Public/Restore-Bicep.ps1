@@ -17,7 +17,7 @@ function Restore-Bicep {
   
     # Restore modules
     try {
-        Restore-BicepNetFile -Path $Path
+        Restore-BicepNetFile -Path $Path -ErrorAction Stop
         Write-Verbose -Message "Successfully restored all modules"
     }
     catch {
