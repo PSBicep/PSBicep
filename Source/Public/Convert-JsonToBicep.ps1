@@ -38,7 +38,7 @@ function Convert-JsonToBicep {
             $inputObject = Get-Content -Path $Path | ConvertFrom-Json
         }
 
-        if ((!$IsWindows) -and $ToClipboard.IsPresent) {
+        if ((-not $IsWindows) -and $ToClipboard.IsPresent) {
             Write-Error -Message "The -ToClipboard switch is only supported on Windows systems."
             break
         }
