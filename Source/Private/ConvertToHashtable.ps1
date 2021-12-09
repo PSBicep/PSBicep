@@ -33,7 +33,7 @@ function ConvertToHashtable {
                 $HashTable.Add($Prop.Name, $Prop.Value)
             }
             else {
-                if ($Prop.TypeNameOfValue -eq 'System.Object[]' -and !$Prop.Value) {
+                if ($Prop.TypeNameOfValue -eq 'System.Object[]' -and (-not $Prop.Value)) {
                     $Value = @()
                 }
                 elseif ($Prop.TypeNameOfValue -eq 'System.Object[]' -and $Prop.Value) {
