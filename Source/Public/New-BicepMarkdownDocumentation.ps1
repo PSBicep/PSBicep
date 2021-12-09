@@ -31,7 +31,7 @@ function New-BicepMarkdownDocumentation {
         
         $r = "$r`n|"
         
-        1..($Headers.Count) | foreach {
+        1..($Headers.Count) | ForEach-Object {
             $r += "----|"
         }
 
@@ -100,6 +100,26 @@ $MDResources
 "@
 #endregion
 
+#region Add Parameters to MD output
+if ($null -eq $BuildObject.parameters) {
+    $MDParameters = 'n/a'
+}
+else {
+    $ParameterNames = ($BuildObject.parameters | Get-Member -MemberType NoteProperty).Name
+    foreach ($Parameter in $ParameterNames) {
+        $Param = $BuildObject.parameters.$Parameter
+        $MDParameters += "| $Parameter | $($Param.type) |`n"
+    }
+}
+
+$FileDocumentationResult += @"
+
+## Parameters
+
+$MDParameters
+"@
+#endregion
+
 #region Add Variables to MD output
         if ($null -eq $BuildObject.variables) {
             $MDVariables = 'n/a'
@@ -116,26 +136,6 @@ $FileDocumentationResult += @"
 ## Variables
 
 $MDVariables
-"@
-#endregion
-
-#region Add Parameters to MD output
-        if ($null -eq $BuildObject.parameters) {
-            $MDParameters = 'n/a'
-        }
-        else {
-            $ParameterNames = ($BuildObject.parameters | Get-Member -MemberType NoteProperty).Name
-            foreach ($Parameter in $ParameterNames) {
-                $Param = $BuildObject.parameters.$Parameter
-                $MDParameters += "| $Parameter | $($Param.type) |`n"
-            }
-        }
-
-$FileDocumentationResult += @"
-
-## Parameters
-
-$MDParameters
 "@
 #endregion
 
