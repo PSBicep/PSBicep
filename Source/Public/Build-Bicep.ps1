@@ -42,8 +42,16 @@ function Build-Bicep {
         [Parameter(ParameterSetName = 'AsHashtable')]
         [switch]$AsHashtable,
 
+        [Parameter(ParameterSetName = 'Default')]
+        [Parameter(ParameterSetName = 'AsString')]
+        [Parameter(ParameterSetName = 'AsHashtable')]
+        [Parameter(ParameterSetName = 'OutputPath')]
         [switch]$IgnoreDiagnostics,
 
+        [Parameter(ParameterSetName = 'Default')]
+        [Parameter(ParameterSetName = 'AsString')]
+        [Parameter(ParameterSetName = 'AsHashtable')]
+        [Parameter(ParameterSetName = 'OutputPath')]
         [switch]$NoRestore
     )
 
