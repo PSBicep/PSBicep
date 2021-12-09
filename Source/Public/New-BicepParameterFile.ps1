@@ -37,7 +37,7 @@ function New-BicepParameterFile {
     process {
         $File = Get-Item -Path $Path
         $validateBicepFile = Test-BicepFile -Path $File.FullName -AcceptDiagnosticLevel Warning -IgnoreDiagnosticOutput
-        if (!($validateBicepFile)) {
+        if (-not $validateBicepFile) {
             Write-Error -Message "$($File.FullName) have build errors, make sure that the Bicep template builds successfully and try again."
             Write-Host "`nYou can use either 'Test-BicepFile' or 'Build-Bicep' to verify that the template builds successfully.`n"
             break
@@ -52,7 +52,7 @@ function New-BicepParameterFile {
             else {
                 $OutputFilePath = $File.FullName -replace '\.bicep','.parameters.json'
             }
-            if (!$PSBoundParameters.ContainsKey('Parameters')){
+            if (-not $PSBoundParameters.ContainsKey('Parameters')){
                 $Parameters='Required'
             }
             

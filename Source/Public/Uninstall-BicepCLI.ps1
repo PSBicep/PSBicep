@@ -8,7 +8,7 @@ function Uninstall-BicepCLI {
         TestModuleVersion
     }
     
-    if (!($IsWindows)) {
+    if (-not $IsWindows) {
         Write-Error -Message "This cmdlet is only supported for Windows systems. `
 To uninstall Bicep on your system see instructions on https://github.com/Azure/bicep"
         Write-Host "`nList the available module cmdlets by running 'Get-Help -Name Bicep'`n"
