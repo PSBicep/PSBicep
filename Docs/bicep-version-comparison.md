@@ -4,9 +4,9 @@ When Bicep PowerShell `v1.3.0` was released the official [Bicep](https://github.
 
 The table below shows which version of the Bicep assemblies and BicepNet that are used for each version of the module.
 
-
 | Bicep PowerShell version | Bicep assembly version | BicepNet Version |
 | --- | --- | -- |
+| `2.1.0` | `0.4.1008` | `1.0.6` |
 | `2.0.0` | `0.4.451` | `1.0.4` |
 | `2.0.0-Preview2` | `0.4.451` | `1.0.4` |
 | `2.0.0-Preview1` | `0.4.63` | `1.0.2` |

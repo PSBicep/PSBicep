@@ -12,7 +12,7 @@
 RootModule = 'Bicep.psm1'
 
 # Version number of this module.
-ModuleVersion = '2.0.0'
+ModuleVersion = '2.1.0'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core')
@@ -95,7 +95,9 @@ FunctionsToExport = @(
     'Convert-BicepParamsToDecoratorStyle',
     'New-BicepParameterFile',
     'Update-BicepParameterFile',
-    'Test-BicepFile'
+    'Test-BicepFile',
+    'Publish-Bicep',
+    'Restore-Bicep'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
