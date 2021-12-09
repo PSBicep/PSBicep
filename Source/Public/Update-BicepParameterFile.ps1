@@ -52,7 +52,7 @@ function Update-BicepParameterFile {
         }
         
         $validateBicepFile = Test-BicepFile -Path $BicepFilePath -AcceptDiagnosticLevel Warning -IgnoreDiagnosticOutput
-        if (!($validateBicepFile)) {
+        if (-not $validateBicepFile) {
             Write-Error -Message "$BicepFilePath have build errors, make sure that the Bicep template builds successfully and try again."
             Write-Host "`nYou can use either 'Test-BicepFile' or 'Build-Bicep' to verify that the template builds successfully.`n"
             break
