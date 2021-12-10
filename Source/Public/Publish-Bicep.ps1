@@ -18,8 +18,7 @@ function Publish-Bicep {
 
     process {
         $BicepFile = Get-Childitem -Path $Path -File
-        $LoginServer = (($target -split ":")[1] -split "/")[0]
-    
+            
         try {
             $validBicep = Test-BicepFile -Path $BicepFile.FullName -IgnoreDiagnosticOutput -AcceptDiagnosticLevel Warning
             if (-not ($validBicep)) {
@@ -36,7 +35,6 @@ function Publish-Bicep {
         # Publish module
         try {
             Publish-BicepNetFile -Path $BicepFile.FullName -Target $Target -ErrorAction Stop
-            Write-Verbose -Message "Successfully authenticated to $LoginServer"
             Write-Verbose -Message "[$($BicepFile.Name)] published to: [$Target]"
         }
         catch {
