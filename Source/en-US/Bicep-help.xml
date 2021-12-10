@@ -1774,7 +1774,7 @@ Convert-JsonToBicep -String $json</dev:code>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Restores external modules from the specified Bicep file to the local module cache.</maml:para>
+      <maml:para>Restores all external modules referenced in the .bicep file to the local module cache. Modules from an ACR bicep registry is stored under '%USERPROFILE%\.bicep\br' and template spec modules '%USERPROFILE%\.bicep\ts'.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>

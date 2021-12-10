@@ -17,7 +17,7 @@ Restore-Bicep [-Path] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Restores external modules from the specified Bicep file to the local module cache.
+Restores all external modules referenced in the .bicep file to the local module cache. Modules from an ACR bicep registry is stored under '%USERPROFILE%\.bicep\br' and template spec modules '%USERPROFILE%\.bicep\ts'.
 
 ## EXAMPLES
 
