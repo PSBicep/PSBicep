@@ -3,6 +3,7 @@ function Publish-Bicep {
     param (
         [Parameter(Mandatory, Position = 1)]
         [ValidateNotNullOrEmpty()]
+        [ValidateScript({Test-Path $_})]
         [string]$Path,
 
         [Parameter(Mandatory, Position = 2)]
