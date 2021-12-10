@@ -1667,7 +1667,7 @@ Convert-JsonToBicep -String $json</dev:code>
       <command:verb>Publish</command:verb>
       <command:noun>Bicep</command:noun>
       <maml:description>
-        <maml:para>Publishes the .bicep file to the module registry.</maml:para>
+        <maml:para>Publishes a .bicep file to the module registry.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -2112,14 +2112,13 @@ Convert-JsonToBicep -String $json</dev:code>
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Go to module repository https://github.com/PSBicep/PSBicep for detailed info, reporting issues and to submit contributions.</maml:para>
+        <maml:para>Go to module repository &lt;https://github.com/PSBicep/PSBicep&gt; for detailed info, reporting issues and to submit contributions.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>Update-BicepCLI
-Update Bicep CLI</dev:code>
+        <dev:code>Update-BicepCLI</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>

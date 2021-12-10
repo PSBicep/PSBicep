@@ -8,7 +8,7 @@ schema: 2.0.0
 # Publish-Bicep
 
 ## SYNOPSIS
-Publishes the .bicep file to the module registry.
+Publishes a .bicep file to the module registry.
 
 ## SYNTAX
 
