@@ -15,25 +15,25 @@ Builds one or more .bicep files.
 ### Default (Default)
 ```powershell
 Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>]
- [-GenerateAllParametersFile] [-GenerateRequiredParametersFile] [-IgnoreDiagnostics] [-WhatIf] [-Confirm]
+ [-GenerateAllParametersFile] [-GenerateRequiredParametersFile] [-IgnoreDiagnostics] [-NoRestore] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
 ### OutputPath
 ```powershell
 Build-Bicep [[-Path] <String>] [[-OutputPath] <String>] [-ExcludeFile <String[]>] [-GenerateAllParametersFile]
- [-GenerateRequiredParametersFile] [-IgnoreDiagnostics] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-GenerateRequiredParametersFile] [-IgnoreDiagnostics] [-NoRestore] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### AsHashtable
 ```powershell
-Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-IgnoreDiagnostics] [-WhatIf]
+Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-IgnoreDiagnostics] [-NoRestore] [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
 
 ### AsString
 ```powershell
-Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString] [-IgnoreDiagnostics] [-WhatIf] [-Confirm]
+Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString] [-IgnoreDiagnostics]  [-NoRestore] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -104,6 +104,11 @@ Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputPath 'c:\armtemplates\new
 ### Example 10: Compile a .bicep and ignore all build warnings and errors
 ```powershell
 Build-Bicep -Path '.\vnet.bicep' -IgnoreDiagnostics
+```
+
+### Example 11: Compile a .bicep file without restoring dependant modules
+```powershell
+Build-Bicep -Path '.\main.bicep' -NoRestore
 ```
 
 ## PARAMETERS
@@ -254,6 +259,21 @@ Aliases:
 Required: False
 Position: 1
 Default value: $pwd.path
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NoRestore
+Skips trying to restore dependant modules
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
