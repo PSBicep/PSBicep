@@ -1,5 +1,8 @@
 BeforeAll {
     $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
+    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\BicepNet.PS\BicepNet.PS.psd1" -ErrorAction Stop
+
+    $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
     Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1" -ErrorAction Stop
 
     $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
@@ -15,7 +18,7 @@ Describe 'Publish-Bicep' {
     }
     
     Context 'Parameter validation' {
-        $GoodParamTestCases = @(
+        $GoodParamTestCases = @( 
             @{
                 Pattern = 'br:contosoregistry.azurecr.io/bicep/modules/core/storage:v1'
             },
@@ -45,15 +48,15 @@ Describe 'Publish-Bicep' {
         )
         
         BeforeEach {
-            function Publish-BicepNetFile {}
-            Mock -CommandName Publish-BicepNetFile -MockWith {
+            Mock -CommandName Publish-BicepNetFile -ModuleName Bicep -MockWith {
                 Return $true
             }
         }
 
         It 'Validation of registry <Pattern> should work' -TestCases $GoodParamTestCases {
-            {Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target $Pattern} | Should -Not -Throw
+            {Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target $Pattern} | Should -Not -Throw       
         }
+        
         It 'Validation of registry <Pattern> should not work' -TestCases $BadParamTestCases {
             {Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target $Pattern} | Should -Throw
         }
@@ -61,8 +64,7 @@ Describe 'Publish-Bicep' {
 
     Context 'Validate publish data' {
         BeforeEach {
-            function Publish-BicepNetFile($Path, $Target) {throw}
-            Mock -CommandName Publish-BicepNetFile -MockWith {
+            Mock -CommandName Publish-BicepNetFile -ModuleName Bicep {
                 [PSCustomObject]@{
                     Path = $Path
                     Target = $Target
@@ -72,7 +74,7 @@ Describe 'Publish-Bicep' {
 
         It 'Should call Publish-BicepNetFile' {
             $r = Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target 'br:contosoregistry.azurecr.io/bicep/modules/core/storage:v1'
-            Should -Invoke Publish-BicepNetFile -Times 1
+            Should -Invoke Publish-BicepNetFile -ModuleName Bicep -Times 1
         }
         It 'Path should be same as input' {
             $ItemName = Get-Item 'TestDrive:\workingBicep.bicep'
