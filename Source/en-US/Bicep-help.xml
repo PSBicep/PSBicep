@@ -77,6 +77,17 @@ Any error or warning from bicep will be written to the information stream. To sa
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>NoRestore</maml:name>
+          <maml:description>
+            <maml:para>Skips trying to restore dependant modules</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
           <maml:name>WhatIf</maml:name>
           <maml:description>
@@ -141,6 +152,17 @@ Any error or warning from bicep will be written to the information stream. To sa
           <maml:name>IgnoreDiagnostics</maml:name>
           <maml:description>
             <maml:para>Ignores all build warnings and errors.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>NoRestore</maml:name>
+          <maml:description>
+            <maml:para>Skips trying to restore dependant modules</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -242,6 +264,17 @@ Any error or warning from bicep will be written to the information stream. To sa
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>NoRestore</maml:name>
+          <maml:description>
+            <maml:para>Skips trying to restore dependant modules</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
           <maml:name>WhatIf</maml:name>
           <maml:description>
@@ -329,6 +362,17 @@ Any error or warning from bicep will be written to the information stream. To sa
           <maml:name>IgnoreDiagnostics</maml:name>
           <maml:description>
             <maml:para>Ignores all build warnings and errors.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>NoRestore</maml:name>
+          <maml:description>
+            <maml:para>Skips trying to restore dependant modules</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -470,6 +514,18 @@ Any error or warning from bicep will be written to the information stream. To sa
         </dev:type>
         <dev:defaultValue>$pwd.path</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>NoRestore</maml:name>
+        <maml:description>
+          <maml:para>Skips trying to restore dependant modules</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
         <maml:name>WhatIf</maml:name>
         <maml:description>
@@ -561,6 +617,13 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
       <command:example>
         <maml:title>Example 10: Compile a .bicep and ignore all build warnings and errors</maml:title>
         <dev:code>Build-Bicep -Path '.\vnet.bicep' -IgnoreDiagnostics</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 11: Compile a .bicep file without restoring dependant modules</maml:title>
+        <dev:code>Build-Bicep -Path '.\main.bicep' -NoRestore</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -1838,6 +1901,188 @@ Convert-JsonToBicep -String $json</dev:code>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Publish-Bicep</command:name>
+      <command:verb>Publish</command:verb>
+      <command:noun>Bicep</command:noun>
+      <maml:description>
+        <maml:para>Publishes a .bicep file to the module registry.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Publishes .bicep files to the module registry repository specified.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Publish-Bicep</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>Specifies which bicep file to publish.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>Target</maml:name>
+          <maml:description>
+            <maml:para>Specifies the target registry, repository and tag.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>Specifies which bicep file to publish.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>Target</maml:name>
+        <maml:description>
+          <maml:para>Specifies the target registry, repository and tag.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>Publish-Bicep -Path .\storage.bicep -Target br:psbicep.azurecr.io/bicep/storage:v1</dev:code>
+        <dev:remarks>
+          <maml:para>Publishes storage.bicep as a module in the private module registry psbicep.azurecr.io, to the repository bicep/storage using the v1 tag.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Restore-Bicep</command:name>
+      <command:verb>Restore</command:verb>
+      <command:noun>Bicep</command:noun>
+      <maml:description>
+        <maml:para>Restores external modules from the specified Bicep file to the local module cache.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Restores all external modules referenced in the .bicep file to the local module cache. Modules from an ACR bicep registry is stored under '%USERPROFILE%\.bicep\br' and template spec modules '%USERPROFILE%\.bicep\ts'.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Restore-Bicep</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>Bicep file to restore.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>Bicep file to restore.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>Restore-Bicep -Path .\main.bicep</dev:code>
+        <dev:remarks>
+          <maml:para>Restores all external modules used in main.bicep to the local module cache.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Test-BicepFile</command:name>
       <command:verb>Test</command:verb>
       <command:noun>BicepFile</command:noun>
@@ -2105,14 +2350,13 @@ Convert-JsonToBicep -String $json</dev:code>
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Go to module repository https://github.com/PSBicep/PSBicep for detailed info, reporting issues and to submit contributions.</maml:para>
+        <maml:para>Go to module repository &lt;https://github.com/PSBicep/PSBicep&gt; for detailed info, reporting issues and to submit contributions.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>Update-BicepCLI
-Update Bicep CLI</dev:code>
+        <dev:code>Update-BicepCLI</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>

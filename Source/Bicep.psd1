@@ -96,6 +96,8 @@ FunctionsToExport = @(
     'New-BicepParameterFile',
     'Update-BicepParameterFile',
     'Test-BicepFile',
+    'Publish-Bicep',
+    'Restore-Bicep',
     'New-BicepMarkdownDocumentation'
 )
 
