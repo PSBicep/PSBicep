@@ -12,7 +12,9 @@ function ConvertToHashtable {
         if (
             $null -eq $InputObject -or 
             $InputObject.GetType().FullName -eq 'System.String' -or 
-            $InputObject.GetType().IsValueType
+            $InputObject.GetType().IsValueType -or
+            $InputObject -is [System.Collections.Specialized.OrderedDictionary] -or
+            $InputObject -is [System.Collections.Hashtable]
         ) {
             return $InputObject
         }
@@ -28,7 +30,9 @@ function ConvertToHashtable {
             if (
                 $null -eq $Prop.Value -or 
                 $Prop.TypeNameOfValue -eq 'System.String' -or 
-                $Prop.Value.GetType().IsValueType
+                $Prop.Value.GetType().IsValueType -or
+                $InputObject -is [System.Collections.Specialized.OrderedDictionary] -or
+                $InputObject -is [System.Collections.Hashtable]
             ) {
                 $HashTable.Add($Prop.Name, $Prop.Value)
             }
