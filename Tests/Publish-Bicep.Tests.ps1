@@ -72,7 +72,7 @@ Describe 'Publish-Bicep' {
 
         It 'Should call Publish-BicepNetFile' {
             $r = Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target 'br:contosoregistry.azurecr.io/bicep/modules/core/storage:v1'
-            Assert-MockCalled -CommandName Publish-BicepNetFile -Times 1 -Exactly
+            Should -Invoke Publish-BicepNetFile -Times 1
         }
         It 'Path should be same as input' {
             $ItemName = Get-Item 'TestDrive:\workingBicep.bicep'
