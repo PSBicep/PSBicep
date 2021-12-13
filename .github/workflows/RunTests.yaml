@@ -25,7 +25,7 @@ jobs:
       run: Install-Module -Name Pester -Force
       shell: pwsh
     - name: Run tests
-      run: .\Tests\TestRunner.ps1
+      run: .\Tests\TestRunner.ps1 -TestResults -Verbosity Normal
       shell: pwsh
     - name: Publish test results
       uses: EnricoMi/publish-unit-test-result-action/composite@v1
