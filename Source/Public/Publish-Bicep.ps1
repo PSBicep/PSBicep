@@ -8,6 +8,7 @@ function Publish-Bicep {
 
         [Parameter(Mandatory, Position = 2)]
         [ValidateNotNullOrEmpty()]
+        [ValidatePattern('^(?<Prefix>[bBrR]{2}[:\/]).*(?<tag>:[a-zA-Z0-9]+)$', ErrorMessage = 'Target does not match pattern for registry.')]
         [string]$Target          
     )
     begin {

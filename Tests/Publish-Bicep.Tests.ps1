@@ -7,13 +7,83 @@ BeforeAll {
 }
 
 Describe 'Publish-Bicep' {
-    Context 'When it does not work' { 
-        It 'Non existing scheme' {
-            {Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target 'psbicep:bicepmodules.azurecr.io/bicep/storage:v1'} | Should -Throw "The specified module reference scheme `"psbicep`"*"
+    BeforeEach {
+        Mock -CommandName TestModuleVersion -ModuleName Bicep -Verifiable -MockWith { }
+        Mock -CommandName Test-BicepFile -ModuleName Bicep -Verifiable -MockWith {
+            Return $true
+        }
+    }
+    
+    Context 'Parameter validation' {
+        $GoodParamTestCases = @(
+            @{
+                Pattern = 'br:contosoregistry.azurecr.io/bicep/modules/core/storage:v1'
+            },
+            @{
+                Pattern = 'br:contosoregistry.azurecr.io/modules/storage:v1'
+            },
+            @{
+                Pattern = 'br:contosoregistry.azurecr.io/storage:v5'
+            },
+            @{
+                Pattern = 'br/ContosoRegistry:bicep/modules/core/storage:v1'
+            },
+            @{
+                Pattern = 'br/ContosoRegistry:bicep/modules/storage:v1'
+            },
+            @{
+                Pattern = 'br/ContosoRegistry:storage:v5'
+            }
+        )
+        $BadParamTestCases = @(
+            @{
+                Pattern = 'ab/ContosoRegistry:storage:v5'
+            },
+            @{
+                Pattern = 'br/ContosoRegistry.storage'
+            }
+        )
+        
+        BeforeEach {
+            function Publish-BicepNetFile {}
+            Mock -CommandName Publish-BicepNetFile -MockWith {
+                Return $true
+            }
         }
 
-        It 'Broken bicep file' {
-            {Publish-Bicep -Path 'TestDrive:\brokenBicep.bicep' -Target 'br:bicepmodules.azurecr.io/bicep/storage:v1'} | Should -Throw "The provided bicep is not valid. Make sure that your bicep file builds successfully before publishing."
-        }        
-    }    
+        It 'Validation of registry <Pattern> should work' -TestCases $GoodParamTestCases {
+            {Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target $Pattern} | Should -Not -Throw
+        }
+        It 'Validation of registry <Pattern> should not work' -TestCases $BadParamTestCases {
+            {Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target $Pattern} | Should -Throw
+        }
+    }
+
+    Context 'Validate publish data' {
+        BeforeEach {
+            function Publish-BicepNetFile($Path, $Target) {throw}
+            Mock -CommandName Publish-BicepNetFile -MockWith {
+                [PSCustomObject]@{
+                    Path = $Path
+                    Target = $Target
+                }
+            } 
+        }
+
+        It 'Should call Publish-BicepNetFile' {
+            $r = Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target 'br:contosoregistry.azurecr.io/bicep/modules/core/storage:v1'
+            Assert-MockCalled -CommandName Publish-BicepNetFile -Times 1 -Exactly
+        }
+        It 'Path should be same as input' {
+            $ItemName = Get-Item 'TestDrive:\workingBicep.bicep'
+            $r = Publish-Bicep -Path $ItemName.FullName -Target 'br:contosoregistry.azurecr.io/bicep/modules/core/storage:v1'
+            $r.Path | Should -Be $ItemName.FullName
+        }
+        It 'Target should be same as input' {
+            $TargetName = 'br:contosoregistry.azurecr.io/bicep/modules/core/storage:v1'
+            $r = Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target $TargetName
+            $r.Target | Should -Be $TargetName
+        }
+    }
 }
+
