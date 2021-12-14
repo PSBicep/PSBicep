@@ -24,7 +24,7 @@ function Get-BicepCache {
             # Get all module registries 
             $privateRegistryCache = Get-ChildItem -Path "$env:USERPROFILE/.bicep/br"
             $registryHash = [ordered]@{}
-            # Get all repos per registry
+            # Get all repositories per registry
             foreach ($acr in $privateRegistryCache) {
                 # Get all cached versions
                 $repositories = Get-ChildItem -Path $acr
