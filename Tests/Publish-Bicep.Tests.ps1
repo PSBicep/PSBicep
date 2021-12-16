@@ -23,6 +23,9 @@ Describe 'Publish-Bicep' {
                 Pattern = 'br:contosoregistry.azurecr.io/bicep/modules/core/storage:v1'
             },
             @{
+                Pattern = 'br:contosoregistry.azurecr.io/bicep/modules/core-with_dashes/storage:v1'
+            },
+            @{
                 Pattern = 'br:contosoregistry.azurecr.io/modules/storage:v1'
             },
             @{
@@ -30,6 +33,9 @@ Describe 'Publish-Bicep' {
             },
             @{
                 Pattern = 'br/ContosoRegistry:bicep/modules/core/storage:v1'
+            },
+            @{
+                Pattern = 'br/ContosoRegistry:bicep/modules/core-with_dashes/storage:v1'
             },
             @{
                 Pattern = 'br/ContosoRegistry:bicep/modules/storage:v1'
@@ -44,6 +50,9 @@ Describe 'Publish-Bicep' {
             },
             @{
                 Pattern = 'br/ContosoRegistry.storage'
+            },
+            @{
+                Pattern = 'br/myModules/path/storage:v33'
             }
         )
         
