@@ -1,14 +1,30 @@
 function Publish-Bicep {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory, Position = 1)]
+        [Parameter(ParameterSetName = 'Default', Mandatory, Position = 1)]
+        [Parameter(ParameterSetName = 'Registry', Position = 1)]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({Test-Path $_})]
+        [ValidateScript( { Test-Path $_ })]
         [string]$Path,
 
-        [Parameter(Mandatory, Position = 2)]
+        [Parameter(ParameterSetName = 'Default', Position = 2)]
         [ValidateNotNullOrEmpty()]
-        [string]$Target          
+        [string]$Target,
+        
+        [Parameter(ParameterSetName = 'Registry', Mandatory, Position = 2)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Registry,
+
+        [Parameter(ParameterSetName = 'Registry', Mandatory, Position = 3)]
+        [ValidateNotNullOrEmpty()]
+        [ValidateScript( { $_ -notlike '/*' },
+        ErrorMessage = "Repository must be defined without a leading /")] 
+        [string]$Repository,
+
+        [Parameter(ParameterSetName = 'Registry', Mandatory, Position = 4)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Tag
+        
     )
     begin {
         # Check if a newer version of the module is published
@@ -33,10 +49,23 @@ function Publish-Bicep {
             Throw $_  
         }
 
+        # Set target for publish
+        if (-not $Target) {
+            if ($Registry -like '*azurecr.io*') {
+                $publishTarget = "br:{0}/{1}:{2}" -f $Registry, $Repository, $Tag
+            }
+            else {
+                $publishTarget = "br/{0}:{1}:{2}" -f $Registry, $Repository, $Tag
+            }
+        }
+        else {
+            $publishTarget = $Target
+        }
+        
         # Publish module
         try {
-            Publish-BicepNetFile -Path $BicepFile.FullName -Target $Target -ErrorAction Stop
-            Write-Verbose -Message "[$($BicepFile.Name)] published to: [$Target]"
+            Publish-BicepNetFile -Path $BicepFile.FullName -Target $publishTarget -ErrorAction Stop
+            Write-Verbose -Message "[$($BicepFile.Name)] published to: [$publishTarget]"
         }
         catch {
             Throw $_
