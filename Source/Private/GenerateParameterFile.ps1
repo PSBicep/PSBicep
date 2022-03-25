@@ -34,47 +34,53 @@ function GenerateParameterFile {
         'contentVersion' = '1.0.0.0'
     }
     $parameterNames = $ARMTemplate.Parameters.psobject.Properties.Name
-    $parameterHash = [ordered]@{}
-    foreach ($parameterName in $parameterNames) {
-        $ParameterObject = $ARMTemplate.Parameters.$ParameterName
-        if (($Parameters -eq "Required" -and $null -eq $ParameterObject.defaultValue) -or ($Parameters -eq "All")) {
-        if ($null -eq $ParameterObject.defaultValue) {                               
-            if ($ParameterObject.type -eq 'Array') {
-                $defaultValue = @()
-            }
-            elseif ($ParameterObject.type -eq 'Object') {
-                $defaultValue = @{}
-            }
-            elseif ($ParameterObject.type -eq 'int') {
-                $defaultValue = 0
-            }
-            else {
-                $defaultValue = ""
-            }
-        }
-        elseif ($ParameterObject.defaultValue -like "*()*") {
-            $defaultValue = ""
-        }
-        else {
-            $defaultValue = $ParameterObject.defaultValue
-        }
-            $parameterHash[$parameterName] = @{                                
-                value = $defaultValue
-            }
-        }                       
+    if (-not $parameterNames) {
+        Write-Host "No parameters declared in the specified bicep file."
+        break
     }
-    $parameterBase['parameters'] = $parameterHash
-    $ConvertedToJson = ConvertTo-Json -InputObject $parameterBase -Depth 100
+    else {
+        $parameterHash = [ordered]@{}
+        foreach ($parameterName in $parameterNames) {
+            $ParameterObject = $ARMTemplate.Parameters.$ParameterName
+            if (($Parameters -eq "Required" -and $null -eq $ParameterObject.defaultValue) -or ($Parameters -eq "All")) {
+                if ($null -eq $ParameterObject.defaultValue) {                               
+                    if ($ParameterObject.type -eq 'Array') {
+                        $defaultValue = @()
+                    }
+                    elseif ($ParameterObject.type -eq 'Object') {
+                        $defaultValue = @{}
+                    }
+                    elseif ($ParameterObject.type -eq 'int') {
+                        $defaultValue = 0
+                    }
+                    else {
+                        $defaultValue = ""
+                    }
+                }
+                elseif ($ParameterObject.defaultValue -like "*()*") {
+                    $defaultValue = ""
+                }
+                else {
+                    $defaultValue = $ParameterObject.defaultValue
+                }
+                $parameterHash[$parameterName] = @{                                
+                    value = $defaultValue
+                }
+            }                       
+        }
+        $parameterBase['parameters'] = $parameterHash
+        $ConvertedToJson = ConvertTo-Json -InputObject $parameterBase -Depth 100
     
-    switch ($PSCmdlet.ParameterSetName) {
-        'FromFile' {
-            Out-File -InputObject $ConvertedToJson -FilePath "$($file.DirectoryName)\$filename.parameters.json" -WhatIf:$WhatIfPreference
-        }
-        'FromContent' {
-            Out-File -InputObject $ConvertedToJson -FilePath $DestinationPath -WhatIf:$WhatIfPreference
-        }
-        Default {
-            Write-Error "Unable to generate parameter file. Unknown parameter set: $($PSCmdlet.ParameterSetName)"
+        switch ($PSCmdlet.ParameterSetName) {
+            'FromFile' {
+                Out-File -InputObject $ConvertedToJson -FilePath "$($file.DirectoryName)\$filename.parameters.json" -WhatIf:$WhatIfPreference
+            }
+            'FromContent' {
+                Out-File -InputObject $ConvertedToJson -FilePath $DestinationPath -WhatIf:$WhatIfPreference
+            }
+            Default {
+                Write-Error "Unable to generate parameter file. Unknown parameter set: $($PSCmdlet.ParameterSetName)"
+            }
         }
     }
 }
