@@ -48,15 +48,15 @@ function Clear-BicepModuleCache {
             $RepositoryPath = $Repository -replace '\\', '$'
 
             if (($Registry) -and ($Repository) -and ($Version)) {
-                Remove-Item -Recurse -Path "$OciPath\$Registry\$RepositoryPath\$Version$"
+                Remove-Item -Recurse -Path "$OciPath/$Registry/$RepositoryPath/$Version$"
                 Write-Verbose "Cleared version [$Version] of [$Repository] in [$Registry] from local module cache"
             }
             elseif (($Registry) -and ($Repository)) {
-                Remove-Item -Recurse -Path "$OciPath\$Registry\$RepositoryPath"
+                Remove-Item -Recurse -Path "$OciPath/$Registry/$RepositoryPath"
                 Write-Verbose "Cleared [$Repository] in [$Registry] from local module cache"
             }
             elseif ($Registry) {
-                Remove-Item -Recurse -Path "$OciPath\$Registry"
+                Remove-Item -Recurse -Path "$OciPath/$Registry"
                 Write-Verbose "Cleared [$Registry] from local module cache" 
             }
             else {
@@ -74,19 +74,19 @@ function Clear-BicepModuleCache {
             $TSPath = Get-BicepNetCachePath -TemplateSpecs
 
             if (($SubscriptionId) -and ($ResourceGroup) -and ($Spec) -and ($Version)) {
-                Remove-Item -Recurse -Path "$TSPath\$SubscriptionId\$ResourceGroup\$Spec\$Version"
+                Remove-Item -Recurse -Path "$TSPath/$SubscriptionId/$ResourceGroup/$Spec/$Version"
                 Write-Verbose "Cleared version [$Version] of [$Spec] in [$ResourceGroup] in [$SubscriptionId] from local module cache"
             }
             elseif (($SubscriptionId) -and ($ResourceGroup) -and ($Spec)) {
-                Remove-Item -Recurse -Path "$TSPath\$SubscriptionId\$ResourceGroup\$Spec"
+                Remove-Item -Recurse -Path "$TSPath/$SubscriptionId/$ResourceGroup/$Spec"
                 Write-Verbose "Cleared [$Spec] in [$ResourceGroup] in [$SubscriptionId] from local module cache"
             }
             elseif (($SubscriptionId) -and ($ResourceGroup)) {
-                Remove-Item -Recurse -Path "$TSPath\$SubscriptionId\$ResourceGroup"
+                Remove-Item -Recurse -Path "$TSPath/$SubscriptionId/$ResourceGroup"
                 Write-Verbose "Cleared [$ResourceGroup] in [$SubscriptionId] from local module cache"
             }
             elseif ($SubscriptionId) {
-                Remove-Item -Recurse -Path "$TSPath\$SubscriptionId"
+                Remove-Item -Recurse -Path "$TSPath/$SubscriptionId"
                 Write-Verbose "Cleared [$SubscriptionId] from local module cache" 
             }
             else {
