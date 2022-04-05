@@ -98,6 +98,7 @@ FunctionsToExport = @(
     'Test-BicepFile',
     'Publish-Bicep',
     'Restore-Bicep',
+    'Find-BicepModule',
     'Clear-BicepModuleCache'
 )
 
