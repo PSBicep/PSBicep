@@ -31,7 +31,10 @@ function Clear-BicepModuleCache {
         [Parameter(ParameterSetName = 'Oci', Position = 4)]
         [Parameter(ParameterSetName = 'TemplateSpecs', Position = 5)]
         [ValidateNotNullOrEmpty()]
-        [string]$Version
+        [string]$Version,
+
+        [Parameter(ParameterSetName = 'All', Position = 1)]
+        [switch]$All
      
     )
     begin {
@@ -99,5 +102,14 @@ function Clear-BicepModuleCache {
                 }
             }            
         }
+
+        if ($All) {            
+            $OciPath = Get-BicepNetCachePath -Oci 
+            $TSPath = Get-BicepNetCachePath -TemplateSpecs
+
+            Remove-Item -Recurse -Path $OciPath, $TSPath
+            Write-Verbose "Cleared Oci local module cache" 
+        }              
+
     }
 }
