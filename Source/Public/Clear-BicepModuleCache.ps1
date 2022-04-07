@@ -108,7 +108,7 @@ function Clear-BicepModuleCache {
             $TSPath = Get-BicepNetCachePath -TemplateSpecs
 
             Remove-Item -Recurse -Path $OciPath, $TSPath
-            Write-Verbose "Cleared Oci local module cache" 
+            Write-Verbose "Cleared the local module cache" 
         }              
 
     }
