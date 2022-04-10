@@ -62,6 +62,20 @@ Clear-BicepModuleCache -TemplateSpecs -SubscriptionID <subscription Id>
 
 Removes all cached from template specs for a specific subscription.
 
+### Example 5 - Removes a specific module from local module cache
+```powershell
+Clear-BicepModuleCache -Oci -Registry mymodules.azurecr.io -Repository Storage
+```
+
+Removes all cached versions of the module (repository) `Storage` from mymodules.azurecr.io.
+
+### Example 6 - Removes a specific version from local module cache
+```powershell
+Clear-BicepModuleCache -Oci -Registry mymodules.azurecr.io -Repository Storage -Version v2
+```
+
+Removes version `v2` of the module (repository) `Storage` from mymodules.azurecr.io.
+
 ## PARAMETERS
 
 ### -All
