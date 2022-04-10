@@ -39,15 +39,14 @@ Command to clear all or parts of the local module cache. Supports clearing both 
 Clear-BicepModuleCache -Oci
 ```
 
-Removes all modules cached from private module registries.
-
+Removes all modules cached from private module registries (ACR).
 
 ### Example 2 - Clear all cached modules from template specs
 ```powershell
 Clear-BicepModuleCache -TemplateSpecs
 ```
 
-Removes all modules cached from private template specs.
+Removes all cached template specs.
 
 ### Example 3 - Clear all cached modules from a specific private registry
 ```powershell
@@ -61,9 +60,7 @@ Removes all modules cached from private module registry mymodules.azurecr.io
 Clear-BicepModuleCache -TemplateSpecs -SubscriptionID <subscription Id>
 ```
 
-Removes all modules cached from template specs for a specific subscription.
-
-
+Removes all cached from template specs for a specific subscription.
 
 ## PARAMETERS
 
