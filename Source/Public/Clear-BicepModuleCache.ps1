@@ -1,5 +1,5 @@
 function Clear-BicepModuleCache {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'Oci')]
     param (
         
         [Parameter(ParameterSetName = 'Oci', Position = 1)]
@@ -46,7 +46,7 @@ function Clear-BicepModuleCache {
 
     process {
         
-        if ($Oci) {            
+        if ($Oci -or $All) {            
             $OciPath = Get-BicepNetCachePath -Oci 
             $RepositoryPath = $Repository -replace '\\', '$'
 
@@ -73,7 +73,7 @@ function Clear-BicepModuleCache {
             }            
         }
         
-        if ($TemplateSpecs) {            
+        if ($TemplateSpecs -or $All) {            
             $TSPath = Get-BicepNetCachePath -TemplateSpecs
 
             if (($SubscriptionId) -and ($ResourceGroup) -and ($Spec) -and ($Version)) {
@@ -101,15 +101,6 @@ function Clear-BicepModuleCache {
                     Write-Verbose "No Template Spec local module cache found" 
                 }
             }            
-        }
-
-        if ($All) {            
-            $OciPath = Get-BicepNetCachePath -Oci 
-            $TSPath = Get-BicepNetCachePath -TemplateSpecs
-
-            Remove-Item -Recurse -Path $OciPath, $TSPath
-            Write-Verbose "Cleared the local module cache" 
-        }              
-
+        }            
     }
 }
