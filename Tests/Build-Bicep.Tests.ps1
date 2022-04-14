@@ -33,11 +33,16 @@ Describe 'Build-Bicep' {
     }
     Context 'When it does not work' { 
         It 'Does not generate ARM template' {
-            Build-Bicep -Path 'TestDrive:\brokenBicep.bicep' -AsString -IgnoreDiagnostics | Should -BeNullOrEmpty
+            { Build-Bicep -Path 'TestDrive:\brokenBicep.bicep' -AsString -ErrorAction Stop } | Should -Throw
         }
 
-        It 'Diagnostics' {
-            Build-Bicep -Path 'TestDrive:\brokenBicep.bicep' -AsString 6>&1 -ErrorAction SilentlyContinue | Should -BeLike '*Error BCP018: Expected the "}" character at this location.'
+        It 'Error message works' {
+            try {
+                Build-Bicep -Path 'TestDrive:\brokenBicep.bicep' -AsString -ErrorAction Stop
+            }
+            catch {
+                $_.Exception.Message | Should -BeLike '*Error BCP018: Expected the "}" character at this location.'
+            }
         }
     }
 }

@@ -46,12 +46,6 @@ function Build-Bicep {
         [Parameter(ParameterSetName = 'AsString')]
         [Parameter(ParameterSetName = 'AsHashtable')]
         [Parameter(ParameterSetName = 'OutputPath')]
-        [switch]$IgnoreDiagnostics,
-
-        [Parameter(ParameterSetName = 'Default')]
-        [Parameter(ParameterSetName = 'AsString')]
-        [Parameter(ParameterSetName = 'AsHashtable')]
-        [Parameter(ParameterSetName = 'OutputPath')]
         [switch]$NoRestore
     )
 
@@ -70,8 +64,6 @@ function Build-Bicep {
             Break
         }
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            
-            
             $FullVersion = Get-BicepNetVersion -Verbose:$false
             Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
@@ -86,11 +78,9 @@ function Build-Bicep {
                         $BuildResult = Build-BicepNetFile -Path $file.FullName -NoRestore
                     } else {
                         $BuildResult = Build-BicepNetFile -Path $file.FullName
-                    }                    
-                    $ARMTemplate = $BuildResult.Template[0]
-                    if (-not $IgnoreDiagnostics.IsPresent) {
-                        $BuildResult.Diagnostic | WriteBicepNetDiagnostic -InformationAction 'Continue'
                     }
+
+                    $ARMTemplate = $BuildResult[0]
 
                     if (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {
                         $BicepModuleVersion = Get-Module -Name Bicep | Sort-Object -Descending | Select-Object -First 1
