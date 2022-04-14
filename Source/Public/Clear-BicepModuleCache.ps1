@@ -51,7 +51,7 @@ function Clear-BicepModuleCache {
             $RepositoryPath = $Repository -replace '\\', '$'
 
             if (($Registry) -and ($Repository) -and ($Version)) {
-                Remove-Item -Recurse -Path "$OciPath/$Registry/$RepositoryPath/$Version$"
+                Remove-Item -Recurse -Path "$OciPath/$Registry/$RepositoryPath/$Version`$"
                 Write-Verbose "Cleared version [$Version] of [$Repository] in [$Registry] from local module cache"
             }
             elseif (($Registry) -and ($Repository)) {
