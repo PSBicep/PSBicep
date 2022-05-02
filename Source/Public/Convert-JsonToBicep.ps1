@@ -63,10 +63,10 @@ function Convert-JsonToBicep {
             $bicepOutput = $bicepData.Replace("var temp = ", "")
             if ($ToClipboard.IsPresent) {                
                 Set-Clipboard -Value $bicepOutput
-                Write-Host "Bicep object saved to clipboard"
+                Write-Output "Bicep object saved to clipboard"
             }
             else {
-                Write-Host $bicepOutput
+                Write-Output $bicepOutput
             }
         }
         Remove-Item $file
