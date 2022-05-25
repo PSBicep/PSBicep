@@ -12,7 +12,7 @@
 RootModule = 'Bicep.psm1'
 
 # Version number of this module.
-ModuleVersion = '2.1.0'
+ModuleVersion = '2.2.0'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core')
@@ -41,6 +41,8 @@ The module also provides the additional features:
 - Install/Update/Uninstall Bicep CLI
 - Specify output folder when building* and decompiling Bicep/ARM templates
 - Specify output filename when building Bicep files
+- Find modules in private module registries
+- Clear local module cache
 
 For more information about Bicep, please visit the official Bicep GitHub Repository:
 https://github.com/Azure/bicep'
@@ -97,8 +99,11 @@ FunctionsToExport = @(
     'Update-BicepParameterFile',
     'Test-BicepFile',
     'Publish-Bicep',
-    'Restore-Bicep'
+    'Restore-Bicep',
+    'Find-BicepModule',
+    'Clear-BicepModuleCache'
 )
+
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()

@@ -8,6 +8,7 @@ function Publish-Bicep {
 
         [Parameter(Mandatory, Position = 2)]
         [ValidateNotNullOrEmpty()]
+        [ValidatePattern('^(?<Prefix>[bBrR]{2})(?<ACROrAlias>(:[\w\-_]+\.azurecr.io|\/[\w\-\._]+:))(?<path>[\w\/\-\._]+)(?<tag>:[\w\/\-\._]+)$', ErrorMessage = 'Target does not match pattern for registry. Specify a path to a registry using "br:", or "br/" if using an alias.')]
         [string]$Target          
     )
     begin {

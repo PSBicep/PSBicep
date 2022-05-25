@@ -67,17 +67,6 @@ Any error or warning from bicep will be written to the information stream. To sa
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>IgnoreDiagnostics</maml:name>
-          <maml:description>
-            <maml:para>Ignores all build warnings and errors.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>NoRestore</maml:name>
           <maml:description>
             <maml:para>Skips trying to restore dependant modules</maml:para>
@@ -149,17 +138,6 @@ Any error or warning from bicep will be written to the information stream. To sa
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>IgnoreDiagnostics</maml:name>
-          <maml:description>
-            <maml:para>Ignores all build warnings and errors.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>NoRestore</maml:name>
           <maml:description>
             <maml:para>Skips trying to restore dependant modules</maml:para>
@@ -199,7 +177,7 @@ Any error or warning from bicep will be written to the information stream. To sa
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>OutputDirectory</maml:name>
           <maml:description>
-            <maml:para>Specfies the target directory where the compiled files should be created</maml:para>
+            <maml:para>Specifies the target directory where the compiled files should be created</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -246,17 +224,6 @@ Any error or warning from bicep will be written to the information stream. To sa
           <maml:name>GenerateRequiredParametersFile</maml:name>
           <maml:description>
             <maml:para>Generate an ARM template parameter file with the required parameters from the bicep file.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>IgnoreDiagnostics</maml:name>
-          <maml:description>
-            <maml:para>Ignores all build warnings and errors.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -351,17 +318,6 @@ Any error or warning from bicep will be written to the information stream. To sa
           <maml:name>GenerateRequiredParametersFile</maml:name>
           <maml:description>
             <maml:para>Generate an ARM template parameter file with the required parameters from the bicep file.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>IgnoreDiagnostics</maml:name>
-          <maml:description>
-            <maml:para>Ignores all build warnings and errors.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -466,22 +422,10 @@ Any error or warning from bicep will be written to the information stream. To sa
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>IgnoreDiagnostics</maml:name>
-        <maml:description>
-          <maml:para>Ignores all build warnings and errors.</maml:para>
-        </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>OutputDirectory</maml:name>
         <maml:description>
-          <maml:para>Specfies the target directory where the compiled files should be created</maml:para>
+          <maml:para>Specifies the target directory where the compiled files should be created</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -590,17 +534,7 @@ Any error or warning from bicep will be written to the information stream. To sa
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>Example 7: Compile a .bicep files in the working directory and store diagnostic messages from bicep in a variable.</maml:title>
-        <dev:code>$Diagnostics = Build-Bicep -Path '.\vnet.bicep' 6&gt;&amp;1
-# Messages are tagged and can be sorted.
-$Diagnostics | Where-Object Tags -eq 'Error'
-$Diagnostics | Where-Object Tags -eq 'Warning'</dev:code>
-        <dev:remarks>
-          <maml:para>Stores all Errors and Warnings from bicep in variable $Diagnostics. Then outputs first all Errors then all Warnings.</maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>Example 8: Compile a .bicep file as hashtable and pass it to New-AzResourceGroupDeployment</maml:title>
+        <maml:title>Example 7: Compile a .bicep file as hashtable and pass it to New-AzResourceGroupDeployment</maml:title>
         <dev:code>$Template=Build-Bicep -Path '.\vnet.bicep' -AsHashtable
 New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Template</dev:code>
         <dev:remarks>
@@ -608,24 +542,338 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>Example 9: Compiles single bicep file and saves the output as the specified file path.</maml:title>
+        <maml:title>Example 8: Compiles single bicep file and saves the output as the specified file path.</maml:title>
         <dev:code>Build-Bicep -Path 'c:\bicep\modules\vnet.bicep' -OutputPath 'c:\armtemplates\newvnet.json'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>Example 10: Compile a .bicep and ignore all build warnings and errors</maml:title>
-        <dev:code>Build-Bicep -Path '.\vnet.bicep' -IgnoreDiagnostics</dev:code>
+        <maml:title>Example 9: Compile a .bicep file without restoring dependant modules</maml:title>
+        <dev:code>Build-Bicep -Path '.\main.bicep' -NoRestore</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
       </command:example>
-      <command:example>
-        <maml:title>Example 11: Compile a .bicep file without restoring dependant modules</maml:title>
-        <dev:code>Build-Bicep -Path '.\main.bicep' -NoRestore</dev:code>
-        <dev:remarks>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Clear-BicepModuleCache</command:name>
+      <command:verb>Clear</command:verb>
+      <command:noun>BicepModuleCache</command:noun>
+      <maml:description>
+        <maml:para>Clear the local module cache.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Command to clear all or parts of the local module cache. Supports clearing both modules cached from private registries and template specs.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Clear-BicepModuleCache</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>All</maml:name>
+          <maml:description>
+            <maml:para>Clear the entire cache</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Clear-BicepModuleCache</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Oci</maml:name>
+          <maml:description>
+            <maml:para>Clear the cache for Bicep private registries</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>Registry</maml:name>
+          <maml:description>
+            <maml:para>Specifies which module registry to clear</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+          <maml:name>Repository</maml:name>
+          <maml:description>
+            <maml:para>Specifies the repository to clear</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+          <maml:name>Version</maml:name>
+          <maml:description>
+            <maml:para>Specifies which version of a cached module to clear</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Clear-BicepModuleCache</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>TemplateSpecs</maml:name>
+          <maml:description>
+            <maml:para>Clear the cache for template specs</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>SubscriptionId</maml:name>
+          <maml:description>
+            <maml:para>Specifies which subscription to clear</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+          <maml:name>ResourceGroup</maml:name>
+          <maml:description>
+            <maml:para>Specifies which resource group to clear</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+          <maml:name>Spec</maml:name>
+          <maml:description>
+            <maml:para>Specifies which template spec to clear</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+          <maml:name>Version</maml:name>
+          <maml:description>
+            <maml:para>Specifies which version of a cached module to clear</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>All</maml:name>
+        <maml:description>
+          <maml:para>Clear the entire cache</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Oci</maml:name>
+        <maml:description>
+          <maml:para>Clear the cache for Bicep private registries</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>Registry</maml:name>
+        <maml:description>
+          <maml:para>Specifies which module registry to clear</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <maml:name>Repository</maml:name>
+        <maml:description>
+          <maml:para>Specifies the repository to clear</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <maml:name>ResourceGroup</maml:name>
+        <maml:description>
+          <maml:para>Specifies which resource group to clear</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+        <maml:name>Spec</maml:name>
+        <maml:description>
+          <maml:para>Specifies which template spec to clear</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>SubscriptionId</maml:name>
+        <maml:description>
+          <maml:para>Specifies which subscription to clear</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>TemplateSpecs</maml:name>
+        <maml:description>
+          <maml:para>Clear the cache for template specs</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+        <maml:name>Version</maml:name>
+        <maml:description>
+          <maml:para>Specifies which version of a cached module to clear</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
           <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>- Example 1 - Clear all cached modules from private registries -</maml:title>
+        <dev:code>Clear-BicepModuleCache -Oci</dev:code>
+        <dev:remarks>
+          <maml:para>Removes all modules cached from private module registries (ACR).</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--- Example 2 - Clear all cached modules from template specs ---</maml:title>
+        <dev:code>Clear-BicepModuleCache -TemplateSpecs</dev:code>
+        <dev:remarks>
+          <maml:para>Removes all cached template specs.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 3 - Clear all cached modules from a specific private registry</maml:title>
+        <dev:code>Clear-BicepModuleCache -Oci -Registry mymodules.azurecr.io</dev:code>
+        <dev:remarks>
+          <maml:para>Removes all modules cached from private module registry mymodules.azurecr.io</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 4 - Clear all cached modules from a template specs for a specific subscription</maml:title>
+        <dev:code>Clear-BicepModuleCache -TemplateSpecs -SubscriptionID &lt;subscription Id&gt;</dev:code>
+        <dev:remarks>
+          <maml:para>Removes all cached from template specs for a specific subscription.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title> Example 5 - Removes a specific module from local module cache </maml:title>
+        <dev:code>Clear-BicepModuleCache -Oci -Registry mymodules.azurecr.io -Repository Storage</dev:code>
+        <dev:remarks>
+          <maml:para>Removes all cached versions of the module (repository) `Storage` from mymodules.azurecr.io.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 6 - Removes a specific version from local module cache</maml:title>
+        <dev:code>Clear-BicepModuleCache -Oci -Registry mymodules.azurecr.io -Repository Storage -Version v2</dev:code>
+        <dev:remarks>
+          <maml:para>Removes version `v2` of the module (repository) `Storage` from mymodules.azurecr.io.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -1079,6 +1327,146 @@ Convert-JsonToBicep -String $json</dev:code>
         <dev:code>ConvertTo-Bicep -Path vnet.json -AsString</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Find-BicepModule</command:name>
+      <command:verb>Find</command:verb>
+      <command:noun>BicepModule</command:noun>
+      <maml:description>
+        <maml:para>Command to list modules in private Bicep module registries (ACR).</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>List all modules in a private Bicep module registry (ACR).</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Find-BicepModule</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>Path to Bicep file.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Registry</maml:name>
+          <maml:description>
+            <maml:para>URI to a Bicep registry (ACR)</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Cache</maml:name>
+          <maml:description>
+            <maml:para>Find modules from registries in the local cache.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Cache</maml:name>
+        <maml:description>
+          <maml:para>Find modules from registries in the local cache.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>Path to Bicep file.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Registry</maml:name>
+        <maml:description>
+          <maml:para>URI to a Bicep registry (ACR)</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>------------ Example 1 - Find modules in a registry ------------</maml:title>
+        <dev:code>Find-BicepModule -Registry psbicep.azurecr.io</dev:code>
+        <dev:remarks>
+          <maml:para>Find and lists all modules stored in a Bicep module registry (ACR).</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2 - Find modules in all registries in the local module cache</maml:title>
+        <dev:code>Find-BicepModule -Cache</dev:code>
+        <dev:remarks>
+          <maml:para>Finds modules from all private Bicep module registries that are in the local module cache.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 3 - Find modules in all registries referenced in a Bicep template</maml:title>
+        <dev:code>Find-BicepModule -Path .\storage.bicep</dev:code>
+        <dev:remarks>
+          <maml:para>Finds modules from all private Bicep module registries referenced in the template `storage.bicep`.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

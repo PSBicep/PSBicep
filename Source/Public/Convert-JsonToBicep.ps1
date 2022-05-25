@@ -66,7 +66,7 @@ function Convert-JsonToBicep {
                 Write-Host "Bicep object saved to clipboard"
             }
             else {
-                Write-Host $bicepOutput
+                Write-Output $bicepOutput
             }
         }
         Remove-Item $file
