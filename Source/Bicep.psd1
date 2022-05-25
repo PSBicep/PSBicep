@@ -41,6 +41,8 @@ The module also provides the additional features:
 - Install/Update/Uninstall Bicep CLI
 - Specify output folder when building* and decompiling Bicep/ARM templates
 - Specify output filename when building Bicep files
+- Find modules in private module registries
+- Clear local module cache
 
 For more information about Bicep, please visit the official Bicep GitHub Repository:
 https://github.com/Azure/bicep'
