@@ -82,25 +82,7 @@ PowerShellVersion = '7.1'
 NestedModules = @('.\BicepNet.PS\BicepNet.PS.psd1')
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @(
-    'Build-Bicep', 
-    'ConvertTo-Bicep', 
-    'Get-BicepVersion', 
-    'Install-BicepCLI', 
-    'Update-BicepCLI', 
-    'Uninstall-BicepCLI', 
-    'Get-BicepApiReference',
-    'Update-BicepTypes',
-    'Convert-JsonToBicep',
-    'Convert-BicepParamsToDecoratorStyle',
-    'New-BicepParameterFile',
-    'Update-BicepParameterFile',
-    'Test-BicepFile',
-    'Publish-Bicep',
-    'Restore-Bicep',
-    'Find-BicepModule',
-    'Clear-BicepModuleCache'
-)
+FunctionsToExport = '*'
 
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
