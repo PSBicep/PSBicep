@@ -1,14 +1,19 @@
 [cmdletbinding()]
 param (
     [Parameter()]
-    $BicepNetUrl = 'https://github.com/PSBicep/BicepNet/releases/download/v2.0.4/BicepNet.PS.zip',
-    
-    [Parameter(DontShow)]
-    $BaseUri = 'https://api.github.com'
+    $bicepNetVersion
 )
 
 try {
-    if($PSScriptRoot) {
+
+    if (-not $bicepNetVersion) {
+        $bicepNetVersion = Get-Content -Path "$PSScriptRoot\..\.bicepNetVersion"
+        $bicepNetVersion = $bicepNetVersion.Trim()
+    }
+
+    $BicepNetUrl = "https://github.com/PSBicep/BicepNet/releases/download/$bicepNetVersion/BicepNet.PS.zip"
+
+    if ($PSScriptRoot) {
         Push-Location $PSScriptRoot -StackName 'downloadDependencies'
     }
     Remove-Item -Path './tmp' -Recurse -Force -ErrorAction 'Ignore'
@@ -37,10 +42,7 @@ catch {
     throw
 }
 finally {
-    while(Get-Location -Stack -StackName 'downloadDependencies' -ErrorAction 'Ignore') {
+    while (Get-Location -Stack -StackName 'downloadDependencies' -ErrorAction 'Ignore') {
         Pop-Location -StackName 'downloadDependencies'
     }
 }
-
-
-
