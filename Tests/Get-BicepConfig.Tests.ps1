@@ -27,7 +27,7 @@ InModuleScope -ModuleName Bicep {
             }
             
             It 'Should find custom bicepconfig' {
-                $BicepConfig = Get-BicepConfig -Path 'TestDrive:\workingBicep.bicep'
+                $BicepConfig = Get-BicepConfig -Path "$TestDrive\workingBicep.bicep"
                 $BicepConfig.Path | Should -BeLike "*bicepconfig.json"
             }
 
