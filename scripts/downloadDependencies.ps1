@@ -1,7 +1,7 @@
 [cmdletbinding()]
 param (
     [Parameter()]
-    $BicepNetUrl = 'https://github.com/PSBicep/BicepNet/releases/download/v2.0.5/BicepNet.PS.zip',
+    $BicepNetUrl = 'https://github.com/PSBicep/BicepNet/releases/download/v2.0.4/BicepNet.PS.zip',
     
     [Parameter(DontShow)]
     $BaseUri = 'https://api.github.com'
