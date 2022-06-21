@@ -1,0 +1,14 @@
+{
+    "name": "rdp-rule",
+    "properties": {
+      "description": "Allow RDP",
+      "protocol": "Tcp",
+      "sourcePortRange": "*",
+      "destinationPortRange": "3389",
+      "sourceAddressPrefix": "Internet",
+      "destinationAddressPrefix": "*",
+      "access": "Allow",
+      "priority": 100,
+      "direction": "Inbound"
+    }
+  }
