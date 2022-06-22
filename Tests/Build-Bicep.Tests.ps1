@@ -23,6 +23,13 @@ Describe 'Build-Bicep' {
             Get-Content -Path $templateFile -Raw | ConvertFrom-Json | Should -Not -BeNullOrEmpty
         }
 
+        It 'Build a bicep file with module reference' {
+            $file='TestDrive:\main.bicep'
+            Build-Bicep -Path $file
+            $templateFile = $file -replace '\.bicep', '.json'
+            Get-Content -Path $templateFile -Raw | ConvertFrom-Json | Should -Not -BeNullOrEmpty
+        }
+
         It 'Build a bicep file and generate parameters' {
             $file='TestDrive:\workingBicep.bicep'
             Build-Bicep -Path $file -GenerateAllParametersFile
