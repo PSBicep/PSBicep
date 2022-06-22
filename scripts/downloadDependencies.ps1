@@ -7,7 +7,7 @@ param (
 try {
 
     if (-not $bicepNetVersion) {
-        $bicepNetVersion = Get-Content -Path "$PSScriptRoot\..\.bicepNetVersion"
+        $bicepNetVersion = Get-Content -Path "$PSScriptRoot\..\.bicepNetVersion" -Raw
         $bicepNetVersion = $bicepNetVersion.Trim()
     }
 
