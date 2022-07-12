@@ -19,6 +19,11 @@ function Restore-Bicep {
 
     process {
         $BicepFile = Get-Childitem -Path $Path -File
+
+        if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
+            $bicepConfig= Get-BicepConfig -Path $BicepFile
+            Write-Verbose -Message "Using bicepconfig.json: $($bicepConfig.Path)"
+        }
     
         # Restore modules
         try {

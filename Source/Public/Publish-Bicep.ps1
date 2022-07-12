@@ -20,7 +20,7 @@ function Publish-Bicep {
 
     process {
         $BicepFile = Get-Childitem -Path $Path -File
-            
+
         try {
             $validBicep = Test-BicepFile -Path $BicepFile.FullName -IgnoreDiagnosticOutput -AcceptDiagnosticLevel Warning
             if (-not ($validBicep)) {
@@ -32,6 +32,11 @@ function Publish-Bicep {
         }
         catch {
             Throw $_  
+        }
+
+        if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
+            $bicepConfig= Get-BicepConfig -Path $BicepFile
+            Write-Verbose -Message "Using bicepconfig.json: $($bicepConfig.Path)"
         }
 
         # Publish module
