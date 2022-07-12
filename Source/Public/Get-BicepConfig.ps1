@@ -30,7 +30,14 @@ function Get-BicepConfig {
                 Get-BicepNetConfig -Path $BicepFile -Scope $Scope 
             }
             else {
-                Get-BicepNetConfig -Path $BicepFile
+                try {
+                    # Test if cusotm bicepconfig.json is present
+                    Get-BicepNetConfig -Path $BicepFile
+                }
+                catch {
+                    # Return default config if no custom bicepconfig.json is present
+                    Get-BicepNetConfig -Scope 'Default'
+                }
             }
         }
     }
