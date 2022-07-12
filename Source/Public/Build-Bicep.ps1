@@ -66,6 +66,8 @@ function Build-Bicep {
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
             $FullVersion = Get-BicepNetVersion -Verbose:$false
             Write-Verbose -Message "Using Bicep version: $FullVersion"
+            $BicepConfig= Get-BicepNetConfig -Path $Path
+            Write-Verbose -Message "Using Bicep Config: $BicepConfig.Path"
         }
     }
 
