@@ -1,44 +1,52 @@
 function Get-BicepConfig {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName='Default')]
     param (
-        [Parameter()]
+        [Parameter(ParameterSetName='PathOnly', Mandatory)]
+        [Parameter(ParameterSetName='PathLocal', Mandatory)]
+        [Parameter(ParameterSetName='PathMerged', Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript( { Test-Path $_ })]
+        [ValidateScript( { Test-Path $_ } , ErrorMessage = "File not found")]
         [string]$Path,
 
-        [Parameter()]
-        [ValidateNotNullOrEmpty()]
-        [ValidateSet("Local", "Merged", "Default")]
-        [string]$Scope
+        [Parameter(ParameterSetName='PathLocal', Mandatory)]
+        [Switch]$Local,
 
+        [Parameter(ParameterSetName='PathMerged', Mandatory)]
+        [Switch]$Merged,
+
+        [Parameter(ParameterSetName='Default')]
+        [Switch]$Default
     )
     begin {
         # Check if a newer version of the module is published
         if (-not $Script:ModuleVersionChecked) {
             TestModuleVersion
-        }       
+        }
     }
 
-    process {        
-        
-        if ($Scope -eq 'Default' -and -not $path) {
-            Get-BicepNetConfig -Scope 'Default'
-        }
-        elseif ($Path) {
+    process {
+        if ($Path) {
             $BicepFile = Resolve-Path -Path $Path
-            if ($Scope) {
-                Get-BicepNetConfig -Path $BicepFile -Scope $Scope 
+        }
+        $Params = @{
+            Scope = 'Merged'
+        }
+        switch -Wildcard ($PSCmdlet.ParameterSetName) {
+            'PathLocal' {
+                $Params['Scope'] = 'Local'
             }
-            else {
-                try {
-                    # Test if cusotm bicepconfig.json is present
-                    Get-BicepNetConfig -Path $BicepFile
-                }
-                catch {
-                    # Return default config if no custom bicepconfig.json is present
-                    Get-BicepNetConfig -Scope 'Default'
-                }
+            'Path*' {
+                $Params['Path'] = $BicepFile
             }
+            'Default' {
+                $Params['Scope'] = 'Default'
+            }
+        }
+        try {
+            Get-BicepNetConfig @Params -ErrorAction 'Stop'
+        }
+        catch [System.ArgumentException] {
+            Get-BicepNetConfig -Scope 'Default' -ErrorAction 'Stop'
         }
     }
 }

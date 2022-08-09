@@ -8,15 +8,23 @@ BeforeAll {
 Describe 'Get-BicepConfig tests' {
     BeforeAll {
         $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-        Copy-Item "$ScriptDirectory\supportFiles\*" -Destination TestDrive:\
+        $null = New-Item -ItemType 'Directory' -Path 'TestDrive:\supportFiles' -ErrorAction 'Ignore'
+        Copy-Item "$ScriptDirectory\supportFiles\*" -Destination 'TestDrive:\supportFiles'
+        Copy-Item "$ScriptDirectory\supportFiles\workingBicep.bicep" -Destination 'TestDrive:\'
     }
 
     Context 'Parameters' {
         It 'Should have parameter Path' {
                 (Get-Command Get-BicepConfig).Parameters.Keys | Should -Contain 'Path'
         }
-        It 'Should have parameter Scope' {
-                (Get-Command Get-BicepConfig).Parameters.Keys | Should -Contain 'Scope'
+        It 'Should have parameter Local' {
+                (Get-Command Get-BicepConfig).Parameters.Keys | Should -Contain 'Local'
+        }
+        It 'Should have parameter Merged' {
+                (Get-Command Get-BicepConfig).Parameters.Keys | Should -Contain 'Merged'
+        }
+        It 'Should have parameter Default' {
+                (Get-Command Get-BicepConfig).Parameters.Keys | Should -Contain 'Default'
         }
     }
 
@@ -108,25 +116,53 @@ Describe 'Get-BicepConfig tests' {
                 }       
 '@
         }
-            
-        It 'Get default config' {
-            $defaultConfig = Get-BicepConfig -Scope 'Default' 
+
+        It 'Returns default when used without parameters' {
+            $defaultConfig = Get-BicepConfig
             $defaultConfig.Path | Should -Be 'Default'
         }
 
-        It 'Get merged bicepconfig' {
-            $config = Get-BicepConfig -Path "$TestDrive\workingBicep.bicep" -Scope Merged
+        It 'Returns merged config when used with only Path' {
+            $config = Get-BicepConfig -Path "$TestDrive\supportFiles\workingBicep.bicep"
             $mergedConfigTest = ConvertFrom-Json -InputObject $mergedConfig | ConvertTo-Json -Depth 10
             $ConfigJson = ConvertFrom-Json -InputObject $config.Config | ConvertTo-Json -Depth 10
             $ConfigJson | Should -BeExactly $mergedConfigTest
         }
 
+        It 'Returns default config when used with only Path and no local config exists' {
+            $config = Get-BicepConfig -Path "$TestDrive\workingBicep.bicep"
+            $config.Path | Should -Be 'Default'
+        }
+
+        It 'Get default config' {
+            $defaultConfig = Get-BicepConfig -Default
+            $defaultConfig.Path | Should -Be 'Default'
+        }
+
+        It 'Get merged bicepconfig' {
+            $config = Get-BicepConfig -Path "$TestDrive\supportFiles\workingBicep.bicep" -Merged
+            $mergedConfigTest = ConvertFrom-Json -InputObject $mergedConfig | ConvertTo-Json -Depth 10
+            $ConfigJson = ConvertFrom-Json -InputObject $config.Config | ConvertTo-Json -Depth 10
+            $ConfigJson | Should -BeExactly $mergedConfigTest
+        }
+
+        It 'Returns default config when used with Path and Merged and no local config exists' {
+            $config = Get-BicepConfig -Path "$TestDrive\workingBicep.bicep" -Merged
+            $config.Path | Should -Be 'Default'
+        }
+
+
         It 'Get local bicepconfig' {
-            $config = Get-BicepConfig -Path "$TestDrive\workingBicep.bicep" -Scope Local
+            $config = Get-BicepConfig -Path "$TestDrive\supportFiles\workingBicep.bicep" -Local
             $localConfigTest = ConvertFrom-Json -InputObject $localConfig | ConvertTo-Json -Depth 10
             $ConfigJson = ConvertFrom-Json -InputObject $config.Config | ConvertTo-Json -Depth 10
             $ConfigJson | Should -BeExactly $localConfigTest
         }
+
+        It 'Throws an error when using parameters Path and Default' {
+            {Get-BicepConfig -Path "$TestDrive\supportFiles\workingBicep.bicep" -Default} | Should -Throw
+        }
+
 
     }
 }
