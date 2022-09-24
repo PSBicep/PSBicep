@@ -46,6 +46,7 @@ function Get-BicepConfig {
             Get-BicepNetConfig @Params -ErrorAction 'Stop'
         }
         catch [System.ArgumentException] {
+            # Failed to locate a bicepconfig, get the default config instead.
             Get-BicepNetConfig -Scope 'Default' -ErrorAction 'Stop'
         }
     }
