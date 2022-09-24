@@ -101,7 +101,8 @@ FunctionsToExport = @(
     'Publish-Bicep',
     'Restore-Bicep',
     'Find-BicepModule',
-    'Clear-BicepModuleCache'
+    'Clear-BicepModuleCache',
+    'Get-BicepConfig'
 )
 
 
