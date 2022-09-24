@@ -22,7 +22,7 @@ function Publish-Bicep {
         $BicepFile = Get-Childitem -Path $Path -File
             
         try {
-            $validBicep = Test-BicepFile -Path $BicepFile.FullName -IgnoreDiagnosticOutput -AcceptDiagnosticLevel Warning
+            $validBicep = Test-BicepFile -Path $BicepFile.FullName -IgnoreDiagnosticOutput -AcceptDiagnosticLevel Warning -Verbose:$false
             if (-not ($validBicep)) {
                 throw "The provided bicep is not valid. Make sure that your bicep file builds successfully before publishing."
             }
@@ -32,6 +32,11 @@ function Publish-Bicep {
         }
         catch {
             Throw $_  
+        }
+
+        if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
+            $bicepConfig= Get-BicepConfig -Path $BicepFile
+            Write-Verbose -Message "Using Bicep configuration: $($bicepConfig.Path)"
         }
 
         # Publish module

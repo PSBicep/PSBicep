@@ -74,6 +74,10 @@ function Build-Bicep {
         if ($files) {
             foreach ($file in $files) {
                 if ($file.Name -notin $ExcludeFile) {
+                    if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
+                        $bicepConfig= Get-BicepConfig -Path $file
+                        Write-Verbose -Message "Using Bicep configuration: $($bicepConfig.Path)"
+                    }
                     if ($NoRestore.IsPresent) {
                         $BuildResult = Build-BicepNetFile -Path $file.FullName -NoRestore
                     } else {
