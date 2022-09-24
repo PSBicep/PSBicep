@@ -54,6 +54,12 @@ function Test-BicepFile {
                 InformationVariable = 'DiagnosticOutput' 
                 ErrorAction         = 'Stop'
             }
+            
+            if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
+                $bicepConfig= Get-BicepConfig -Path $file
+                Write-Verbose -Message "Using Bicep configuration: $($bicepConfig.Path)"
+            }
+            
             $BuildResult = Build-BicepNetFile -Path $file.FullName
 
             if (-not $IgnoreDiagnosticOutput) {
