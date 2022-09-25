@@ -163,6 +163,23 @@ Describe 'Get-BicepConfig tests' {
             {Get-BicepConfig -Path "$TestDrive\supportFiles\workingBicep.bicep" -Default} | Should -Throw
         }
 
-
+        AfterAll {
+            # Bicep doesnt seem to properly release the config file, let's wait for it.
+            $configFileLocked = $true
+            $configFilePath = "$TestDrive\supportFiles\bicepconfig.json"
+            while($configFileLocked) {
+                try {
+                    $configFile = [System.IO.File]::Open($configFilePath, 'Open', 'Read')
+                    $configFile.Close()
+                    $configFile.Dispose()
+                    $configFileLocked = $false
+                }
+                catch {
+                    Write-Warning "Bicepconfig file locked, waiting for it to be released."
+                    Start-Sleep -Seconds 1
+                    continue
+                }
+            }
+        }
     }
 }
