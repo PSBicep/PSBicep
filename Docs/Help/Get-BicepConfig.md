@@ -8,78 +8,119 @@ schema: 2.0.0
 # Get-BicepConfig
 
 ## SYNOPSIS
-Command used to find the bicepconfig.json and configuration in use
+Get bicep configuration (bicepconfig.json) in use for a bicep file.
 
 ## SYNTAX
 
+### Default (Default)
 ```
-Get-BicepConfig [[-Path] <String>] [[-Scope] <String>] [<CommonParameters>]
+Get-BicepConfig [-Default] [<CommonParameters>]
+```
+
+### PathMerged
+```
+Get-BicepConfig -Path <String> [-Merged] [<CommonParameters>]
+```
+
+### PathLocal
+```
+Get-BicepConfig -Path <String> [-Local] [<CommonParameters>]
+```
+
+### PathOnly
+```
+Get-BicepConfig -Path <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Command used to find the bicepconfig.json file in use and the current configuration. Shows either the configuration in the local bicepconfig.json file, the merged config or the default config.
+Command to get the bicep configuration in use for a specific Bicep file. Will return path to the bicepconfig.json file as well as the current settings.
 
 ## EXAMPLES
 
-### Example 1 - Get the default bicepconfig
+### Example 1 - Get bicep configuration for a bicep file
 ```powershell
-$bicepConfig=Get-BicepConfig -Scope Default
-$bicepConfig.Config
+Get-BicepConfig -Path .\storage.bicep
 ```
 
-Gets the default configuration built in to Bicep
-
-### Example 2 - Get the merged bicepconfig
+### Example 2 - Get the merged bicep configuration for a bicep file
 ```powershell
-$bicepConfig=Get-BicepConfig -Scope Merged -Path c:\bicepTemplates\storage.bicep
-$bicepConfig.Config
+Get-BicepConfig -Path .\storage.bicep -Merged
 ```
 
-Gets the merged configuration in use for a Bicep file
+Returns the path to the bicepconfig.json file in use, and the merged settings (default + local file).
 
-### Example 3 - Get the local bicepconfig
+
+### Example 3 - Get the local bicep configuration for a bicep file
 ```powershell
-$bicepConfig=Get-BicepConfig -Scope Local -Path c:\bicepTemplates\storage.bicep
-$bicepConfig.Config
+Get-BicepConfig -Path .\storage.bicep -Merged
 ```
 
-Gets the local configuration in use for a Bicep file
+Returns the path to the bicepconfig.json file in use, and the settings in the local bicepconfig.json.
 
-### Example 4 - Find the path to the bicepconfig.json in use
+### Example 4 - Get the default bicep configuration
 ```powershell
-Get-BicepConfig -Path c:\bicepTemplates\storage.bicep
+Get-BicepConfig -Default
 ```
 
-Returns the path to the bicepconfig.json in use and config
+Returns the default settings.
 
 ## PARAMETERS
+
+### -Default
+Returns the default bicep configuration
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Default
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Local
+Returns the settings in the local bicepconfig.json file
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: PathLocal
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Merged
+Returns the merged settings from the local bicepconfig.json file and the default settings
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: PathMerged
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -Path
 Path to a bicep file
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: PathMerged, PathLocal, PathOnly
 Aliases:
 
-Required: False
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Scope
-Scope of the config. `Local` returns the config in the current bicepconfig.json, `Merged` returns the merged config (local file and bicep default config), `Default` returns the default config.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-Accepted values: Local, Merged, Default
-
-Required: False
-Position: 1
+Required: True
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
