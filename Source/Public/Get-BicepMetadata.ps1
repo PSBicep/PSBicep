@@ -14,7 +14,9 @@ function Get-BicepMetadata {
         [Parameter()]
         [ValidateSet('Simple', 'Json', 'Hashtable')]
         [String]
-        $OutputType = 'Simple'
+        $OutputType = 'Simple',
+
+        [switch]$SkipGeneratorMeta
     )
     
     begin {
@@ -36,7 +38,11 @@ function Get-BicepMetadata {
 
             $ARMTemplate = $BuildResult[0]
             $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
-           
+            $templateMetadata=$ARMTemplateObject.metadata
+
+            if ($SkipGeneratorMeta.IsPresent) {
+                $templateMetadata.PSObject.Properties.Remove('_generator')
+            }
         }
         catch {
             # We don't care about errors here.
