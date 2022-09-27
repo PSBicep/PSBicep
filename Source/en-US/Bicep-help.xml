@@ -1982,9 +1982,9 @@ Convert-JsonToBicep -String $json</dev:code>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SkipGeneratorMeta</maml:name>
+          <maml:name>IncludeReservedMetadata</maml:name>
           <maml:description>
-            <maml:para>Skip _generator metadata</maml:para>
+            <maml:para>Include Bicep reserved metadata</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -2020,9 +2020,9 @@ Convert-JsonToBicep -String $json</dev:code>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>SkipGeneratorMeta</maml:name>
+        <maml:name>IncludeReservedMetadata</maml:name>
         <maml:description>
-          <maml:para>Skip _generator metadata</maml:para>
+          <maml:para>Include Bicep reserved metadata</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -2080,10 +2080,10 @@ Convert-JsonToBicep -String $json</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>Example 4 - Get metadata from Bicep file and skip _generator metadata</maml:title>
-        <dev:code>Get-BicepMetadata -Path .\myTemplate.bicep -SkipGeneratorMeta</dev:code>
+        <maml:title>Example 4 - Get metadata from Bicep file and include reserved metadata</maml:title>
+        <dev:code>Get-BicepMetadata -Path .\myTemplate.bicep -IncludeReservedMetadata</dev:code>
         <dev:remarks>
-          <maml:para>Get metadata from Bicep file and skip `_generator` metadata</maml:para>
+          <maml:para>Get metadata from Bicep file and include Bicep reserved metadata</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

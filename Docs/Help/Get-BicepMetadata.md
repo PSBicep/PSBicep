@@ -13,7 +13,7 @@ Get metadata from a Bicep template
 ## SYNTAX
 
 ```
-Get-BicepMetadata [-Path] <String> [[-OutputType] <String>] [-SkipGeneratorMeta] [<CommonParameters>]
+Get-BicepMetadata [-Path] <String> [[-OutputType] <String>] [-IncludeReservedMetadata] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -42,12 +42,12 @@ Get-BicepMetadata -Path .\myTemplate.bicep -OutputType Hashtable
 
 Get metadata from Bicep file and output as hashtable
 
-### Example 4 - Get metadata from Bicep file and skip _generator metadata
+### Example 4 - Get metadata from Bicep file and include reserved metadata
 ```powershell
-Get-BicepMetadata -Path .\myTemplate.bicep -SkipGeneratorMeta
+Get-BicepMetadata -Path .\myTemplate.bicep -IncludeReservedMetadata
 ```
 
-Get metadata from Bicep file and skip `_generator` metadata
+Get metadata from Bicep file and include Bicep reserved metadata
 
 ## PARAMETERS
 
@@ -82,8 +82,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SkipGeneratorMeta
-Skip _generator metadata
+### -IncludeReservedMetadata
+Include Bicep reserved metadata
 
 ```yaml
 Type: SwitchParameter
