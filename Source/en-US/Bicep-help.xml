@@ -1970,7 +1970,7 @@ Convert-JsonToBicep -String $json</dev:code>
             <maml:para>Specify output type</maml:para>
           </maml:description>
           <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Simple</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">PSObject</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">Json</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">Hashtable</command:parameterValue>
           </command:parameterValueGroup>
