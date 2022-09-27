@@ -12,9 +12,9 @@ function Get-BicepMetadata {
 
         # Set output type
         [Parameter()]
-        [ValidateSet('Simple', 'Json', 'Hashtable')]
+        [ValidateSet('PSObject', 'Json', 'Hashtable')]
         [String]
-        $OutputType = 'Simple',
+        $OutputType = 'PSObject',
 
         [switch]$SkipGeneratorMeta
     )
@@ -49,7 +49,7 @@ function Get-BicepMetadata {
         }        
 
         switch ($OutputType) {
-            'Simple' {
+            'PSObject' {
                 $ARMTemplateObject.metadata
             }
             'Json' {

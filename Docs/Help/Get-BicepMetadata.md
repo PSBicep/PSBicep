@@ -58,7 +58,7 @@ Specify output type
 Type: String
 Parameter Sets: (All)
 Aliases:
-Accepted values: Simple, Json, Hashtable
+Accepted values: PSObject, Json, Hashtable
 
 Required: False
 Position: 1
