@@ -16,7 +16,7 @@ function Get-BicepMetadata {
         [String]
         $OutputType = 'PSObject',
 
-        [switch]$SkipGeneratorMeta
+        [switch]$IncludeReservedMetadata
     )
     
     begin {
@@ -40,9 +40,9 @@ function Get-BicepMetadata {
             $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
             $templateMetadata=$ARMTemplateObject.metadata
 
-            if ($SkipGeneratorMeta.IsPresent) {
-                $templateMetadata.PSObject.Properties.Remove('_generator')
-            }
+            if (!$IncludeReservedMetadata.IsPresent) {
+                $templateMetadata=Select-Object -InputObject $templateMetadata -ExcludeProperty '_*'
+            } 
         }
         catch {
             # We don't care about errors here.
@@ -50,13 +50,13 @@ function Get-BicepMetadata {
 
         switch ($OutputType) {
             'PSObject' {
-                $ARMTemplateObject.metadata
+                $templateMetadata
             }
             'Json' {
-                $ARMTemplateObject.metadata | ConvertTo-Json
+                $templateMetadata | ConvertTo-Json
             }
             'Hashtable' {
-                $ARMTemplateObject.metadata | ConvertToHashtable -Ordered
+                $templateMetadata | ConvertToHashtable -Ordered
             }
         }
     }
