@@ -17,6 +17,9 @@ Describe 'Get-BicepMetadata tests' {
         It 'Should have parameter OutputType' {
                 (Get-Command Get-BicepMetadata).Parameters.Keys | Should -Contain 'OutputType'
         }
+        It 'Should have parameter IncludeReservedMetadata' {
+            (Get-Command Get-BicepMetadata).Parameters.Keys | Should -Contain 'IncludeReservedMetadata'
+    }
     }
 
     Context 'Get Bicep Metadata' {
@@ -46,15 +49,20 @@ Describe 'Get-BicepMetadata tests' {
         }
 
         It 'Returns json output' {
-            $meta = Get-BicepMetadata -Path "$TestDrive\supportFiles\bicepWithMeta.bicep" -OutputType Json -SkipGeneratorMeta
+            $meta = Get-BicepMetadata -Path "$TestDrive\supportFiles\bicepWithMeta.bicep" -OutputType Json
             $jsonMetaTest = ConvertFrom-Json -InputObject $jsonMeta | ConvertTo-Json -Depth 10
             $MetaJson = ConvertFrom-Json -InputObject $meta | ConvertTo-Json -Depth 10
             $MetaJson | Should -BeExactly $jsonMetaTest
         }
         
         It 'Returns hashtable output' {
-            $hashMetadata = Get-BicepMetadata -Path "$TestDrive\supportFiles\bicepWithMeta.bicep" -OutputType Hashtable -SkipGeneratorMeta
+            $hashMetadata = Get-BicepMetadata -Path "$TestDrive\supportFiles\bicepWithMeta.bicep" -OutputType Hashtable
             $hashMetadata.pesterMeta.author | Should -BeExactly $hashMeta.pesterMeta.author
+        }
+
+        It 'Returns reserved metadata' {
+            $hashMetadata = Get-BicepMetadata -Path "$TestDrive\supportFiles\bicepWithMeta.bicep" -IncludeReservedMetadata
+            $hashMetadata._generator | Should -Not -BeNullOrEmpty
         }
     }
 }
