@@ -25,6 +25,10 @@ jobs:
       run: Install-Module -Name Pester -Force
       shell: pwsh
     - name: Run tests
+      env:
+        PUBLISH_CLIENT: ${{ secrets.PUBLISH_CLIENT }}
+        PUBLISH_SECRET: ${{ secrets.PUBLISH_SECRET }}
+        PUBLISH_TENANT: ${{ secrets.PUBLISH_TENANT }}
       run: .\Tests\TestRunner.ps1 -TestResults -Verbosity Normal
       shell: pwsh
     - name: Publish test results
