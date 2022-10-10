@@ -7,8 +7,8 @@ BeforeAll {
 
     $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
     Copy-Item "$ScriptDirectory\supportFiles\*" -Destination TestDrive:\
-
-    az login --service-principal -u $env:PUBLISH_CLIENT -p $env:PUBLISH_SECRET -t $env:PUBLISH_TENANT
+    Write-Warning "$Env:PUBLISH_TENANT"
+    az login --service-principal -u $Env:PUBLISH_CLIENT -p $Env:PUBLISH_SECRET -t $Env:PUBLISH_TENANT
 
     $newGuid=New-Guid
 }
