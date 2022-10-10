@@ -1939,6 +1939,158 @@ Convert-JsonToBicep -String $json</dev:code>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Get-BicepMetadata</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>BicepMetadata</command:noun>
+      <maml:description>
+        <maml:para>Get metadata from a Bicep template</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get metadata from a Bicep template</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-BicepMetadata</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="PSPath">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>Path to Bicep file</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>OutputType</maml:name>
+          <maml:description>
+            <maml:para>Specify output type</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">PSObject</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Json</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Hashtable</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>IncludeReservedMetadata</maml:name>
+          <maml:description>
+            <maml:para>Include Bicep reserved metadata</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>OutputType</maml:name>
+        <maml:description>
+          <maml:para>Specify output type</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="PSPath">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>Path to Bicep file</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>IncludeReservedMetadata</maml:name>
+        <maml:description>
+          <maml:para>Include Bicep reserved metadata</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>----------- Example 1 - Get metadata from Bicep file -----------</maml:title>
+        <dev:code>Get-BicepMetadata -Path .\myTemplate.bicep</dev:code>
+        <dev:remarks>
+          <maml:para>Get metadata from Bicep file</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>- Example 2 - Get metadata from Bicep file and output as Json -</maml:title>
+        <dev:code>Get-BicepMetadata -Path .\myTemplate.bicep -OutputType Json</dev:code>
+        <dev:remarks>
+          <maml:para>Get metadata from Bicep file and output as json</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 3 - Get metadata from Bicep file and output as hashtable</maml:title>
+        <dev:code>Get-BicepMetadata -Path .\myTemplate.bicep -OutputType Hashtable</dev:code>
+        <dev:remarks>
+          <maml:para>Get metadata from Bicep file and output as hashtable</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 4 - Get metadata from Bicep file and include reserved metadata</maml:title>
+        <dev:code>Get-BicepMetadata -Path .\myTemplate.bicep -IncludeReservedMetadata</dev:code>
+        <dev:remarks>
+          <maml:para>Get metadata from Bicep file and include Bicep reserved metadata</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Get-BicepVersion</command:name>
       <command:verb>Get</command:verb>
       <command:noun>BicepVersion</command:noun>
