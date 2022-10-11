@@ -1,3 +1,5 @@
+param($PUBLISH_CLIENT, $PUBLISH_SECRET, $PUBLISH_TENANT)
+
 BeforeAll {
     $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
     Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\BicepNet.PS\BicepNet.PS.psd1" -ErrorAction Stop
@@ -8,7 +10,7 @@ BeforeAll {
     $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
     Copy-Item "$ScriptDirectory\supportFiles\*" -Destination TestDrive:\
     Write-Warning "$Env:PUBLISH_TENANT"
-    az login --service-principal -u $Env:PUBLISH_CLIENT -p $Env:PUBLISH_SECRET -t $Env:PUBLISH_TENANT
+    az login --service-principal -u $PUBLISH_CLIENT -p $PUBLISH_SECRET -t $PUBLISH_TENANT
 
     $newGuid=New-Guid
 }
