@@ -73,6 +73,10 @@ else {
 $PesterConfiguration = [PesterConfiguration]::new()
 $PesterConfiguration.Output.Verbosity = $Verbosity
 
+#Exclude integration tests
+$excludePath=Join-Path -Path $RootPath -ChildPath 'Source\IntegrationTests\'
+$PesterConfiguration.Run.ExcludePath = "$excludePath*"
+
 if ($TestFiles.Count -gt 0) {
     $PesterConfiguration.Run.Path = $TestFiles.ToArray()
 }
