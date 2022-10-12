@@ -1,3 +1,8 @@
+env:
+  PUBLISH_CLIENT: ${{ secrets.PUBLISH_CLIENT }}
+  PUBLISH_SECRET: ${{ secrets.PUBLISH_SECRET }}
+  PUBLISH_TENANT: ${{ secrets.PUBLISH_TENANT }}
+
 name: Run tests
 
 on: [pull_request]
@@ -28,12 +33,8 @@ jobs:
       run: .\Tests\TestRunner.ps1 -TestResults -Verbosity Normal
       shell: pwsh
     - name: Run integration tests
-      env:
-        PUBLISH_CLIENT: ${{ secrets.PUBLISH_CLIENT }}
-        PUBLISH_SECRET: ${{ secrets.PUBLISH_SECRET }}
-        PUBLISH_TENANT: ${{ secrets.PUBLISH_TENANT }}
       run: |
-          $container = New-PesterContainer -Path ".\Source\IntegrationTests\*.Tests.ps1" -Data @{ PUBLISH_SECRET=$Env:PUBLISH_SECRET; PUBLISH_CLIENT=$Env:PUBLISH_CLIENT; PUBLISH_TENANT=$Env:PUBLISH_TENANT }
+          $container = New-PesterContainer -Path ".\Source\IntegrationTests\*.Tests.ps1" -Data @{ PUBLISH_SECRET=$env:PUBLISH_SECRET; PUBLISH_CLIENT=$env:PUBLISH_CLIENT; PUBLISH_TENANT=$env:PUBLISH_TENANT }
           Invoke-Pester -Container $container
       shell: pwsh
     - name: Publish test results
