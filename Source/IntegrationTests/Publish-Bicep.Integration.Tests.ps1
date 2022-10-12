@@ -2,10 +2,10 @@ param($PUBLISH_CLIENT, $PUBLISH_SECRET, $PUBLISH_TENANT)
 
 BeforeAll {
     $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\BicepNet.PS\BicepNet.PS.psd1" -ErrorAction Stop
+    Import-Module -FullyQualifiedName "$ScriptDirectory\..\BicepNet.PS\BicepNet.PS.psd1" -ErrorAction Stop
 
     $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1" -ErrorAction Stop
+    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Bicep.psd1" -ErrorAction Stop
 
     $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
     Copy-Item "$ScriptDirectory\supportFiles\*" -Destination TestDrive:\
