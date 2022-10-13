@@ -46,7 +46,11 @@ function Build-Bicep {
         [Parameter(ParameterSetName = 'AsString')]
         [Parameter(ParameterSetName = 'AsHashtable')]
         [Parameter(ParameterSetName = 'OutputPath')]
-        [switch]$NoRestore
+        [switch]$NoRestore,
+
+        [Parameter(ParameterSetName = 'Default')]
+        [Parameter(ParameterSetName = 'OutputPath')]
+        [switch]$Compress
     )
 
     begin {
@@ -115,7 +119,12 @@ function Build-Bicep {
                                 $OutputFilePath = $file.FullName -replace '\.bicep', '.json'
                                 $ParameterFilePath = $file.FullName -replace '\.bicep', '.parameters.json'
                             }
-                            $null = Out-File -Path $OutputFilePath -InputObject $ARMTemplate -Encoding utf8 -WhatIf:$WhatIfPreference
+                            if ($Compress.IsPresent) {
+                                $compressedARMTemplate= $ARMTemplate | ConvertFrom-Json | ConvertTo-Json -Depth 100 -Compress
+                                $null = Out-File -Path $OutputFilePath -InputObject $compressedARMTemplate -Encoding utf8 -WhatIf:$WhatIfPreference
+                            } else {
+                                $null = Out-File -Path $OutputFilePath -InputObject $ARMTemplate -Encoding utf8 -WhatIf:$WhatIfPreference
+                            }
                             if ($GenerateRequiredParametersFile.IsPresent -and $GenerateAllParametersFile.IsPresent) {
                                 $parameterType = 'All'                                    
                                 Write-Warning "Both -GenerateAllParametersFile and -GenerateRequiredParametersFile is present. A parameter file with all parameters will be generated."
