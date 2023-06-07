@@ -104,6 +104,7 @@ FunctionsToExport = @(
     'Clear-BicepModuleCache',
     'Get-BicepConfig',
     'Get-BicepMetadata'
+    'New-BicepMarkdownDocumentation'
 )
 
 

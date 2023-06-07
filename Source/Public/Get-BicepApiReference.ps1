@@ -44,7 +44,11 @@ function Get-BicepApiReference {
         [Parameter(ParameterSetName = 'ResourceProvider')]
         [Parameter(ParameterSetName = 'TypeString')]
         [Alias('Please')]
-        [switch]$Force
+        [switch]$Force,
+
+        [Parameter(ParameterSetName = 'ResourceProvider')]
+        [Parameter(ParameterSetName = 'TypeString')]
+        [switch]$ReturnUri
     )
     begin {
         if (-not $Script:ModuleVersionChecked) {
@@ -130,7 +134,12 @@ function Get-BicepApiReference {
 
         # Now we know if its working or not. Open page or provide error message.
         if ($DocsFound -or $Force.IsPresent) {
-            Start-Process $url
+            if ($ReturnUri) {
+                Write-Output $url
+            }
+            else {
+                Start-Process $url
+            }
         }
         else {
             Write-Error "No documentation found. This usually means that no documentation has been written. Use the -Latest parameter to open the latest available API Version. Or if you would like to try anyway, use the -Force parameter. Url: $url"      
