@@ -4,15 +4,14 @@
 #>
 
 #region Set up test cases
-$ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
 
 # actual exported functions
-$ExportedFunctions = (Get-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1" -ListAvailable -Refresh).ExportedFunctions.Keys
-$ModuleName = (Get-ChildItem -Path "$ScriptDirectory\..\Source\Bicep.psm1").BaseName
+$ExportedFunctions = (Get-Module -FullyQualifiedName "$PSScriptRoot\..\Source\Bicep.psd1" -ListAvailable -Refresh).ExportedFunctions.Keys
+$ModuleName = (Get-ChildItem -Path "$PSScriptRoot\..\Source\Bicep.psm1").BaseName
 
 # Create test cases for public functions
-if (Test-Path -Path "$ScriptDirectory\..\Source\Public" -PathType Container) {
-    $PublicFiles = Get-Childitem "$ScriptDirectory\..\Source\Public\*.ps1"
+if (Test-Path -Path "$PSScriptRoot\..\Source\Public" -PathType Container) {
+    $PublicFiles = Get-Childitem "$PSScriptRoot\..\Source\Public\*.ps1"
     $PublicFunctions = $PublicFiles.Name -replace '\.ps1$'
 
     $PublicTestCases = @()
@@ -25,8 +24,8 @@ if (Test-Path -Path "$ScriptDirectory\..\Source\Public" -PathType Container) {
 }
 
 # Create test cases for private functions
-if (Test-Path -Path "$ScriptDirectory\..\Source\Private" -PathType Container) {
-    $PrivateFiles = Get-Childitem "$ScriptDirectory\..\Source\Private\*.ps1"
+if (Test-Path -Path "$PSScriptRoot\..\Source\Private" -PathType Container) {
+    $PrivateFiles = Get-Childitem "$PSScriptRoot\..\Source\Private\*.ps1"
     $PrivateFunctions = $PrivateFiles.Name -replace '\.ps1$'
 
     $PrivateTestCases = @()
@@ -40,8 +39,7 @@ if (Test-Path -Path "$ScriptDirectory\..\Source\Private" -PathType Container) {
 
 # Import the module files before starting tests
 BeforeAll {
-    $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-    Import-Module -FullyQualifiedName (Join-Path $PSScriptRoot '..\Source\Bicep.psd1') -ErrorAction Stop
+    Import-Module -FullyQualifiedName "$PSScriptRoot\..\Source\Bicep.psd1" -ErrorAction Stop
 }
 
 Describe "Module $ModuleName" {

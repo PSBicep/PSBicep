@@ -1,13 +1,11 @@
 BeforeAll {
-    $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-    Import-Module -FullyQualifiedName (Join-Path $PSScriptRoot '..\Source\Bicep.psd1') -ErrorAction Stop
+    Import-Module -FullyQualifiedName "$PSScriptRoot\..\Source\Bicep.psd1" -ErrorAction Stop
 }
 
 Describe 'Get-BicepMetadata tests' {
     BeforeAll {
-        $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
         $null = New-Item -ItemType 'Directory' -Path 'TestDrive:\supportFiles' -ErrorAction 'Ignore'
-        Copy-Item "$ScriptDirectory\supportFiles\*" -Destination 'TestDrive:\supportFiles'
+        Copy-Item "$PSScriptRoot\supportFiles\*" -Destination 'TestDrive:\supportFiles'
     }
 
     Context 'Parameters' {

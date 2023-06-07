@@ -1,6 +1,6 @@
 
 Remove-Module Bicep -ErrorAction SilentlyContinue
-Import-Module -FullyQualifiedName (Join-Path $PSScriptRoot '..\Source\Bicep.psd1') -ErrorAction Stop
+Import-Module -FullyQualifiedName "$PSScriptRoot\..\Source\Bicep.psd1" -ErrorAction Stop
 
 InModuleScope -ModuleName Bicep {
     Describe 'Clear-BicepModuleCache tests' {
