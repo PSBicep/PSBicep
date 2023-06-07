@@ -1,6 +1,6 @@
 BeforeAll {
     $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-    Import-Module -FullyQualifiedName (Join-Path $PSScriptRoot '..\Source\Bicep.psd1') -ErrorAction Stop
+    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1" -ErrorAction Stop
 }
 
 Describe "ConvertToHashTable" {
