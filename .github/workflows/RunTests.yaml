@@ -3,7 +3,7 @@ name: Run tests
 on: [pull_request]
 
 jobs:
-  build:
+  build-windows:
 
     runs-on: windows-latest
 
