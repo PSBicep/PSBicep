@@ -3,7 +3,7 @@ name: Run tests
 on: [pull_request]
 
 jobs:
-  build:
+  build-windows:
 
     runs-on: windows-latest
 
@@ -26,6 +26,36 @@ jobs:
       shell: pwsh
     - name: Run tests
       run: .\Tests\TestRunner.ps1 -TestResults -Verbosity Normal
+      shell: pwsh
+    - name: Publish test results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      continue-on-error: true
+      with:
+        files: testResults.xml
+
+  build-linux:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup assets cache
+      id: assetscache
+      uses: actions/cache@v2
+      with:
+        path: |
+          Source/Assets
+          Source/BicepNet.PS
+        key: ${{ hashFiles('scripts/downloadDependencies.ps1') }}
+    - name: Download required assemblies
+      if: steps.assetscache.outputs.cache-hit != 'true'
+      shell: pwsh
+      run: ./scripts/downloadDependencies.ps1
+    - name: Import required modules
+      run: Install-Module -Name Pester -Force
+      shell: pwsh
+    - name: Run tests
+      run: ./Tests/TestRunner.ps1 -TestResults -Verbosity Normal
       shell: pwsh
     - name: Publish test results
       uses: EnricoMi/publish-unit-test-result-action/composite@v1
