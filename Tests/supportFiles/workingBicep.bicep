@@ -1,8 +1,10 @@
 param location string = resourceGroup().location
 param name string
 
+var nameVariable = '${name}storageaccount'
+
 resource storageaccount 'Microsoft.Storage/storageAccounts@2021-02-01' = {
-  name: name
+  name: nameVariable
   location: location
   kind: 'StorageV2'
   sku: {
