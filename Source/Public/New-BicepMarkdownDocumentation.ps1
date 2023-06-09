@@ -1,5 +1,5 @@
 function New-BicepMarkdownDocumentation {
-    [CmdletBinding(DefaultParameterSetName = 'FromFile')]
+    [CmdletBinding(DefaultParameterSetName='FromFile')]
     param (
         [Parameter(ParameterSetName = 'FromFile', Position = 0)]
         [string]$File,
@@ -19,7 +19,7 @@ function New-BicepMarkdownDocumentation {
         [switch]$Force
     )
 
-    function New-MDTableHeader {
+    function NewMDTableHeader {
         param(
             [string[]]$Headers
         )
@@ -49,7 +49,7 @@ function New-BicepMarkdownDocumentation {
         }
     }
 
-    Write-Verbose -Verbose "Files to process:`n$($FileCollection.Name)"
+    Write-Verbose "Files to process:`n$($FileCollection.Name)"
 
     $MDHeader = @'
 # {{SourceFile}}
@@ -61,14 +61,13 @@ function New-BicepMarkdownDocumentation {
     foreach ($SourceFile in $FileCollection) {
         $FileDocumentationResult = $MDHeader.Replace('{{SourceFile}}', $SourceFile.Name)
         
-        $MDMetadata = New-MDTableHeader -Headers 'Name', 'Value'
-        $MDProviders = New-MDTableHeader -Headers 'Type', 'Version'
-        $MDResources = New-MDTableHeader -Headers 'Name', 'Link', 'Location'
-        $MDParameters = New-MDTableHeader -Headers 'Name', 'Type', 'AllowedValues', 'Metadata'
-        $MDVariables = New-MDTableHeader -Headers 'Name', 'Value'
-        $MDOutputs = New-MDTableHeader -Headers 'Name', 'Type', 'Value'
+        $MDProviders = NewMDTableHeader -Headers 'Type', 'Version'
+        $MDResources = NewMDTableHeader -Headers 'Name', 'Link', 'Location'
+        $MDParameters = NewMDTableHeader -Headers 'Name', 'Type'
+        $MDVariables = NewMDTableHeader -Headers 'Name', 'Value'
+        $MDOutputs = NewMDTableHeader -Headers 'Name', 'Type', 'Value'
 
-        $BuildObject = (Build-BicepNetFile -Path $SourceFile.FullName) | ConvertFrom-Json -Depth 100
+        $BuildObject = (Build-BicepNetFile -Path $SourceFile.FullName).Template | ConvertFrom-Json
 
         #region Add Metadata to MD output
         if ($null -eq $BuildObject.metadata) {
@@ -101,9 +100,9 @@ $MDMetadata
 
 $MDProviders
 "@
-        #endregion
+#endregion
 
-        #region Add Resources to MD output
+#region Add Resources to MD output
         foreach ($Resource in $BuildObject.resources) {
             try {
                 $URI = Get-BicepApiReference -Type "$($Resource.Type)@$($Resource.apiVersion)" -ReturnUri -Force
@@ -114,53 +113,35 @@ $MDProviders
             }
             $MDResources += "| $($Resource.name) | [$($Resource.Type)@$($Resource.apiVersion)]($URI) | $($Resource.location) |`n"
         }
-        $FileDocumentationResult += @"
+$FileDocumentationResult += @"
 
 ## Resources
 
 $MDResources
 "@
-        #endregion
+#endregion
 
-        #region Add Parameters to MD output
-        if ($null -eq $BuildObject.parameters) {
-            $MDParameters = 'n/a'
-        }
-        else {
-            $ParameterNames = ($BuildObject.parameters | Get-Member -MemberType NoteProperty).Name
+#region Add Parameters to MD output
+if ($null -eq $BuildObject.parameters) {
+    $MDParameters = 'n/a'
+}
+else {
+    $ParameterNames = ($BuildObject.parameters | Get-Member -MemberType NoteProperty).Name
+    foreach ($Parameter in $ParameterNames) {
+        $Param = $BuildObject.parameters.$Parameter
+        $MDParameters += "| $Parameter | $($Param.type) |`n"
+    }
+}
 
-            foreach ($Parameter in $ParameterNames) {
-                $Param = $BuildObject.parameters.$Parameter
-                $MDParameters += "| $Parameter | $($Param.type) | $(
-                    if ($Param.allowedValues) {
-                        forEach ($value in $Param.allowedValues) {
-                                                                    "$value <br>"
-                        }
-                    } else {
-                        "n/a"
-                    }
-                    ) | $(
-                    forEach ($item in $Param.metadata) {
-                            $res = $item.PSObject.members | Where-Object { $_.MemberType -eq 'NoteProperty' }
-                            
-                            if ($null -ne $res) {
-                            
-                                $res.Name + ': ' + $res.Value + '<br>'
-                            
-                            }
-                    }) |`n" 
-            }
-        }
-
-        $FileDocumentationResult += @"
+$FileDocumentationResult += @"
 
 ## Parameters
 
 $MDParameters
 "@
-        #endregion
+#endregion
 
-        #region Add Variables to MD output
+#region Add Variables to MD output
         if ($null -eq $BuildObject.variables) {
             $MDVariables = 'n/a'
         }
@@ -171,15 +152,15 @@ $MDParameters
                 $MDVariables += "| $var | $Param |`n"
             }
         }
-        $FileDocumentationResult += @"
+$FileDocumentationResult += @"
 
 ## Variables
 
 $MDVariables
 "@
-        #endregion
+#endregion
 
-        #region Add outputs to MD output
+#region Add outputs to MD output
         if ($null -eq $BuildObject.Outputs) {
             $MDOutputs = 'n/a'
         }
@@ -191,19 +172,19 @@ $MDVariables
             }
         }
 
-        $FileDocumentationResult += @"
+$FileDocumentationResult += @"
 
 ## Outputs
 
 $MDOutputs
 "@
-        #endregion
+#endregion
 
         if ($Console) {
             $FileDocumentationResult
         }
         else {
-            $OutFileName = $SourceFile.FullName -replace '\.bicep$', '.md'
+            $OutFileName = $SourceFile.FullName -replace '\.bicep$','.md'
             $FileDocumentationResult | Out-File $OutFileName
         }
     }
