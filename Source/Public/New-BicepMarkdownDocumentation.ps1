@@ -111,11 +111,12 @@ $MDMetadata
         #endregion
 
         #region Add providers to MD output
-        if ($null -eq $BuildObject.providers) {
+        # Check if it's an empty array
+        if (-not $BuildObject.resources -or $BuildObject.resources.Count -eq 0) {
             $MDProviders = 'n/a'
         }
         else {
-            foreach ($provider in $BuildObject.providers) {
+            foreach ($provider in $BuildObject.resources) {
                 $MDProviders += "| $($Provider.Type) | $($Provider.apiVersion) |`n"
             }
         }
@@ -130,7 +131,7 @@ $MDProviders
 
         #region Add Resources to MD output
         # Check if it's an empty array
-        if ([string]::IsNullOrEmpty($BuildObject.resources)) {
+        if (-not $BuildObject.resources -or $BuildObject.resources.Count -eq 0) {
             $MDResources = 'n/a'
         }
         else {
