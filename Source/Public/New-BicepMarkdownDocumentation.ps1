@@ -70,23 +70,30 @@ function New-BicepMarkdownDocumentation {
 
         $BuildObject = (Build-BicepNetFile -Path $SourceFile.FullName) | ConvertFrom-Json -Depth 100
 
-        #region Add providers to MD output
-        foreach ($provider in $BuildObject.resources) {
-            $MDProviders += "| $($Provider.Type) | $($Provider.apiVersion) |`n"
+        #region Add Metadata to MD output
+        if ($null -eq $BuildObject.metadata) {
+            $MDMetadata = 'n/a'
         }
-
-        $MDMetadata += forEach ($prop in $BuildObject.metadata.PSObject.Properties | Where-Object { $_.MemberType -eq 'NoteProperty' -and $_.Name -ne '_generator' }) {
-            ("|$($prop.Name)|$($prop.Value)|").Trim()+"`n"
+        else {
+            $MetadataNames = ($BuildObject.metadata | Get-Member -MemberType NoteProperty).Name
+            foreach ($var in $MetadataNames) {
+                $Param = $BuildObject.metadata.$var
+                $MDMetadata += "| $var | $Param |`n"
+            }
         }
-
-
-        # metadata: @{_generator=; type=deployment; name=main.bicep; description=Main deployment bicep file - deploys all the modules, requires a resource group to exist}
 
         $FileDocumentationResult += @"
 ## Metadata
 
 $MDMetadata
 "@
+
+        #endregion
+
+        #region Add providers to MD output
+        foreach ($provider in $BuildObject.resources) {
+            $MDProviders += "| $($Provider.Type) | $($Provider.apiVersion) |`n"
+        }
 
         $FileDocumentationResult += @"
 
