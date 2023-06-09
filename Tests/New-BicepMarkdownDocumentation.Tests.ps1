@@ -158,6 +158,27 @@ Describe 'New-BicepMarkdownDocumentation' -ForEach @(
 
     }
 
+    It '<name> contains the correct Modules' {
+            
+            switch ($_.name) {
+                'bicepWithMeta.bicep' {
+                    $result | Should -Match '## Modules\s+n\/a'
+                }
+                'main.bicep' {
+                    $regexStr = '| storage | workingBicep.bicep |'
+                    $escapedRegexStr = [Regex]::Escape($regexStr)
+                    $result | Should -Match $escapedRegexStr
+                }
+                'workingBicep.bicep' {
+                    $result | Should -Match '## Modules\s+n\/a'
+                }
+                default {
+                    throw "Unknown file name: $($_.name)"
+                }
+            }
+    
+    }
+
 }
 
 Describe 'New-BicepMarkdownDocumentation' -ForEach @(

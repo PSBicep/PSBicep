@@ -67,6 +67,7 @@ function New-BicepMarkdownDocumentation {
         $MDParameters = New-MDTableHeader -Headers 'Name', 'Type', 'AllowedValues', 'Metadata'
         $MDVariables = New-MDTableHeader -Headers 'Name', 'Value'
         $MDOutputs = New-MDTableHeader -Headers 'Name', 'Type', 'Value'
+        $MDModules = New-MDTableHeader -Headers 'Name', 'Path'
 
         try {
             $BuildObject = (Build-BicepNetFile -Path $SourceFile.FullName -ErrorAction Stop) | ConvertFrom-Json -Depth 100
@@ -74,6 +75,17 @@ function New-BicepMarkdownDocumentation {
         catch {
             throw
         }
+
+        #region Get used modules in the bicep file
+
+        try {
+            $UsedModules = Get-UsedModulesInBicepFile -Path $SourceFile.FullName -ErrorAction Stop 
+        }
+        catch {
+            throw
+        }
+
+        #endregion
 
         #region Add Metadata to MD output
 
@@ -212,7 +224,7 @@ $MDVariables
 "@
         #endregion
 
-        #region Add outputs to MD output
+        #region Add Outputs to MD output
         if ($null -eq $BuildObject.Outputs) {
             $MDOutputs = 'n/a'
         }
@@ -230,6 +242,25 @@ $MDVariables
 
 $MDOutputs
 "@
+        #endregion
+
+        #region Add Modules to MD output
+        if (-not $UsedModules -or $UsedModules.Count -eq 0) {
+            $MDModules = 'n/a'
+        }
+        else {
+            foreach ($Module in $UsedModules) {
+                $MDModules += "| $($Module.Name) | $($Module.Path) |`n"
+            }
+        }
+
+        $FileDocumentationResult += @"
+
+## Modules
+
+$MDModules
+"@
+
         #endregion
 
         if ($Console) {
