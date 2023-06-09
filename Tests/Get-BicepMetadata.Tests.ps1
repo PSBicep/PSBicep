@@ -29,7 +29,9 @@ Describe 'Get-BicepMetadata tests' {
                     "author": "PSBicep",
                     "version": "v1.0",
                     "aNumber": 1
-                }
+                },
+                "value": "something",
+                "someothervalue": "something else"
             }
 '@
             $hashMeta=@{
