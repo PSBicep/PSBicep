@@ -103,12 +103,21 @@ Describe 'Get-BicepConfig tests' {
                         "excludedhosts": [
                           "schema.management.azure.com"
                         ]
+                      },
+                      "no-unused-params": {
+                        "level": "off"
                       }
                     }
                   }
                 },
-                "experimentalFeaturesEnabled": {},
-                "formatting": {}
+                "experimentalFeaturesEnabled": {
+                  "symbolicNameCodegen": null,
+                  "extensibility": null,
+                  "resourceTypedParamsAndOutputs": null,
+                  "sourceMapping": null,
+                  "userDefinedTypes": null,
+                  "userDefinedFunctions": null
+                }
               }    
 '@
         }
