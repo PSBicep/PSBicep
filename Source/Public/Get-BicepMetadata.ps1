@@ -33,10 +33,7 @@ function Get-BicepMetadata {
     process {
         $file = Get-Item -Path $Path
         try {  
-       
-            $BuildResult = Build-BicepNetFile -Path $file.FullName
-
-            $ARMTemplate = $BuildResult[0]
+            $ARMTemplate = Build-BicepNetFile -Path $file.FullName
             $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
             $templateMetadata=$ARMTemplateObject.metadata
 

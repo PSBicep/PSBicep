@@ -44,73 +44,72 @@ Describe 'Get-BicepConfig tests' {
                     }
 '@
             $mergedConfig = @'
-                {
-                    "cloud": {
-                        "currentProfile": "AzureCloud",
-                        "profiles": {
-                            "AzureCloud": {
-                                "resourceManagerEndpoint": "https://management.azure.com",
-                                "activeDirectoryAuthority": "https://login.microsoftonline.com"
-                            },
-                            "AzureChinaCloud": {
-                                "resourceManagerEndpoint": "https://management.chinacloudapi.cn",
-                                "activeDirectoryAuthority": "https://login.chinacloudapi.cn"
-                            },
-                            "AzureUSGovernment": {
-                                "resourceManagerEndpoint": "https://management.usgovcloudapi.net",
-                                "activeDirectoryAuthority": "https://login.microsoftonline.us"
-                            }
-                        },
-                        "credentialPrecedence": [
-                            "AzureCLI",
-                            "AzurePowerShell"
-                        ]
-                    },
-                    "moduleAliases": {
-                        "ts": {},
-                        "br": {
-                            "public": {
-                                "registry": "mcr.microsoft.com",
-                                "modulePath": "bicep"
-                            }
-                        }
-                    },
-                    "analyzers": {
-                        "core": {
-                            "verbose": false,
-                            "enabled": true,
-                            "rules": {
-                                "no-hardcoded-env-urls": {
-                                    "level": "warning",
-                                    "disallowedhosts": [
-                                        "api.loganalytics.io",
-                                        "asazure.windows.net",
-                                        "azuredatalakeanalytics.net",
-                                        "azuredatalakestore.net",
-                                        "batch.core.windows.net",
-                                        "core.windows.net",
-                                        "database.windows.net",
-                                        "datalake.azure.net",
-                                        "gallery.azure.com",
-                                        "graph.windows.net",
-                                        "login.microsoftonline.com",
-                                        "management.azure.com",
-                                        "management.core.windows.net",
-                                        "region.asazure.windows.net",
-                                        "trafficmanager.net",
-                                        "vault.azure.net"
-                                    ],
-                                    "excludedhosts": [
-                                        "schema.management.azure.com"
-                                    ]
-                                },
-                                "no-unused-params": {
-                                    "level": "off"
-                                }
-                            }
-                        }
+            {
+                "cloud": {
+                  "currentProfile": "AzureCloud",
+                  "profiles": {
+                    "AzureChinaCloud": {
+                        "resourceManagerEndpoint": "https://management.chinacloudapi.cn",
+                        "activeDirectoryAuthority": "https://login.chinacloudapi.cn"
+                      },
+                      "AzureCloud": {
+                        "resourceManagerEndpoint": "https://management.azure.com",
+                        "activeDirectoryAuthority": "https://login.microsoftonline.com"
+                      },
+                      "AzureUSGovernment": {
+                        "resourceManagerEndpoint": "https://management.usgovcloudapi.net",
+                        "activeDirectoryAuthority": "https://login.microsoftonline.us"
+                      }
+                  },
+                  "credentialPrecedence": [
+                    "AzurePowerShell",
+                    "AzureCLI"
+                  ]
+                },
+                "moduleAliases": {
+                  "ts": {},
+                  "br": {
+                    "public": {
+                      "registry": "mcr.microsoft.com",
+                      "modulePath": "bicep"
                     }
-                }       
+                  }
+                },
+                "analyzers": {
+                  "core": {
+                    "verbose": false,
+                    "enabled": true,
+                    "rules": {
+                      "no-hardcoded-env-urls": {
+                        "level": "warning",
+                        "disallowedhosts": [
+                          "api.loganalytics.io",
+                          "asazure.windows.net",
+                          "azuredatalakeanalytics.net",
+                          "azuredatalakestore.net",
+                          "batch.core.windows.net",
+                          "core.windows.net",
+                          "database.windows.net",
+                          "datalake.azure.net",
+                          "gallery.azure.com",
+                          "graph.windows.net",
+                          "login.microsoftonline.com",
+                          "management.azure.com",
+                          "management.core.windows.net",
+                          "region.asazure.windows.net",
+                          "trafficmanager.net",
+                          "vault.azure.net"
+                        ],
+                        "excludedhosts": [
+                          "schema.management.azure.com"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "experimentalFeaturesEnabled": {},
+                "formatting": {}
+              }    
 '@
         }
 

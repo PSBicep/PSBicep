@@ -82,13 +82,7 @@ function Build-Bicep {
                         $bicepConfig= Get-BicepConfig -Path $file
                         Write-Verbose -Message "Using Bicep configuration: $($bicepConfig.Path)"
                     }
-                    if ($NoRestore.IsPresent) {
-                        $BuildResult = Build-BicepNetFile -Path $file.FullName -NoRestore
-                    } else {
-                        $BuildResult = Build-BicepNetFile -Path $file.FullName
-                    }
-
-                    $ARMTemplate = $BuildResult[0]
+                    $ARMTemplate = Build-BicepNetFile -Path $file.FullName -NoRestore:$NoRestore.IsPresent
 
                     if (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {
                         $BicepModuleVersion = Get-Module -Name Bicep | Sort-Object -Descending | Select-Object -First 1
