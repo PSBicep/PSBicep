@@ -9,6 +9,33 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Update PowerShell from LTS
+      shell: pwsh
+      run: |
+        # Most of the code is from https://aka.ms/install-powershell.ps1 but adapted for GITHUB_PATH
+        $Destination = "$env:LOCALAPPDATA\Microsoft\powershell"
+        if (-not (Test-Path -Path $Destination)) { New-Item -ItemType Directory -Path $Destination }
+
+        Invoke-Expression "& { $(irm https://aka.ms/install-powershell.ps1) } -Destination $Destination"
+        $TargetPath = Join-Path -Path $Destination -ChildPath "pwsh"
+        [Microsoft.Win32.RegistryKey] $Key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Environment', [Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree)
+        if ($null -eq $Key) {
+          throw (New-Object -TypeName 'System.Security.SecurityException' -ArgumentList "Unable to access the target registry")
+        }
+        
+        # Get current unexpanded value
+        [string] $CurrentUnexpandedValue = $Key.GetValue('PATH', '', [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
+        # Keep current PathValueKind if possible/appropriate
+        try {
+            [Microsoft.Win32.RegistryValueKind] $PathValueKind = $Key.GetValueKind('PATH')
+        } catch {
+            [Microsoft.Win32.RegistryValueKind] $PathValueKind = [Microsoft.Win32.RegistryValueKind]::ExpandString
+        }
+        # Evaluate new path
+        $NewPathValue = [string]::Concat($CurrentUnexpandedValue.TrimEnd([System.IO.Path]::PathSeparator), [System.IO.Path]::PathSeparator, $TargetPath)
+        # Upgrade PathValueKind to [Microsoft.Win32.RegistryValueKind]::ExpandString if appropriate
+        if ($NewPathValue.Contains('%')) { $PathValueKind = [Microsoft.Win32.RegistryValueKind]::ExpandString }
+        $Key.SetValue("PATH", $NewPathValue, $PathValueKind)
     - name: Setup assets cache
       id: assetscache
       uses: actions/cache@v2
@@ -39,6 +66,23 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Update PowerShell from LTS
+      shell: pwsh
+      run: |
+        # Most of the code is from https://aka.ms/install-powershell.ps1 but adapted for GITHUB_PATH
+        $Destination = "~/.powershell"
+        if (-not (Test-Path -Path $Destination)) { New-Item -ItemType Directory -Path $Destination }
+
+        Invoke-Expression "& { $(irm https://aka.ms/install-powershell.ps1) } -Destination $Destination"
+        $TargetPath = Join-Path -Path $Destination -ChildPath "pwsh"
+        $Symlink = "/usr/bin/pwsh"
+
+        $Uid = id -u
+        if ($Uid -ne "0") { $SUDO = "sudo" } else { $SUDO = "" }
+        # Make symbolic link point to installed path
+        & $SUDO ln -fs $TargetPath $Symlink
+
+        if ($LASTEXITCODE -ne 0) { throw "Could not add to GITHUB_PATH: failed to make '$Symlink' point to '$TargetPath'." }
     - name: Setup assets cache
       id: assetscache
       uses: actions/cache@v2
