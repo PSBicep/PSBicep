@@ -48,7 +48,7 @@ For more information about Bicep, please visit the official Bicep GitHub Reposit
 https://github.com/Azure/bicep'
 
 # Minimum version of the PowerShell engine required by this module
-PowerShellVersion = '7.2'
+PowerShellVersion = '7.3'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
