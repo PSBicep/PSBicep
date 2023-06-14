@@ -18,24 +18,7 @@ jobs:
 
         Invoke-Expression "& { $(irm https://aka.ms/install-powershell.ps1) } -Destination $Destination"
         $TargetPath = Join-Path -Path $Destination -ChildPath "pwsh"
-        [Microsoft.Win32.RegistryKey] $Key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Environment', [Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree)
-        if ($null -eq $Key) {
-          throw (New-Object -TypeName 'System.Security.SecurityException' -ArgumentList "Unable to access the target registry")
-        }
-        
-        # Get current unexpanded value
-        [string] $CurrentUnexpandedValue = $Key.GetValue('GITHUB_PATH', '', [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
-        # Keep current PathValueKind if possible/appropriate
-        try {
-            [Microsoft.Win32.RegistryValueKind] $PathValueKind = $Key.GetValueKind('GITHUB_PATH')
-        } catch {
-            [Microsoft.Win32.RegistryValueKind] $PathValueKind = [Microsoft.Win32.RegistryValueKind]::ExpandString
-        }
-        # Evaluate new path
-        $NewPathValue = [string]::Concat($CurrentUnexpandedValue.TrimEnd([System.IO.Path]::PathSeparator), [System.IO.Path]::PathSeparator, $TargetPath)
-        # Upgrade PathValueKind to [Microsoft.Win32.RegistryValueKind]::ExpandString if appropriate
-        if ($NewPathValue.Contains('%')) { $PathValueKind = [Microsoft.Win32.RegistryValueKind]::ExpandString }
-        $Key.SetValue("GITHUB_PATH", $NewPathValue, $PathValueKind)
+        echo $TargetPath | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     - name: Setup assets cache
       id: assetscache
       uses: actions/cache@v2
