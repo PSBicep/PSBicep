@@ -12,7 +12,7 @@ jobs:
     - name: Update PowerShell from LTS
       shell: pwsh
       run: |
-        Invoke-Expression "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
+        Invoke-Expression "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI -Quiet"
     - name: Setup assets cache
       id: assetscache
       uses: actions/cache@v2
