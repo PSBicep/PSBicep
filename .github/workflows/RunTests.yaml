@@ -24,10 +24,10 @@ jobs:
         }
         
         # Get current unexpanded value
-        [string] $CurrentUnexpandedValue = $Key.GetValue('PATH', '', [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
+        [string] $CurrentUnexpandedValue = $Key.GetValue('GITHUB_PATH', '', [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
         # Keep current PathValueKind if possible/appropriate
         try {
-            [Microsoft.Win32.RegistryValueKind] $PathValueKind = $Key.GetValueKind('PATH')
+            [Microsoft.Win32.RegistryValueKind] $PathValueKind = $Key.GetValueKind('GITHUB_PATH')
         } catch {
             [Microsoft.Win32.RegistryValueKind] $PathValueKind = [Microsoft.Win32.RegistryValueKind]::ExpandString
         }
@@ -35,7 +35,7 @@ jobs:
         $NewPathValue = [string]::Concat($CurrentUnexpandedValue.TrimEnd([System.IO.Path]::PathSeparator), [System.IO.Path]::PathSeparator, $TargetPath)
         # Upgrade PathValueKind to [Microsoft.Win32.RegistryValueKind]::ExpandString if appropriate
         if ($NewPathValue.Contains('%')) { $PathValueKind = [Microsoft.Win32.RegistryValueKind]::ExpandString }
-        $Key.SetValue("PATH", $NewPathValue, $PathValueKind)
+        $Key.SetValue("GITHUB_PATH", $NewPathValue, $PathValueKind)
     - name: Setup assets cache
       id: assetscache
       uses: actions/cache@v2
