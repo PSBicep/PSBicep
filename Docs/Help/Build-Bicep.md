@@ -13,27 +13,27 @@ Builds one or more .bicep files.
 ## SYNTAX
 
 ### Default (Default)
-```powershell
+```
 Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>]
  [-GenerateAllParametersFile] [-GenerateRequiredParametersFile] [-NoRestore] [-Compress] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
 ### OutputPath
-```powershell
+```
 Build-Bicep [[-Path] <String>] [[-OutputPath] <String>] [-ExcludeFile <String[]>] [-GenerateAllParametersFile]
  [-GenerateRequiredParametersFile] [-NoRestore] [-Compress] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### AsHashtable
-```powershell
-Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-NoRestore] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+```
+Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-NoRestore] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### AsString
-```powershell
-Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString]  [-NoRestore] [-WhatIf] [-Confirm]
+```
+Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString] [-NoRestore] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -132,6 +132,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Compress
+Compress the built ARM Template to reduce file size
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Default, OutputPath
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Confirm
 Prompts you for confirmation before running the cmdlet.
 
@@ -192,6 +207,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -NoRestore
+Skips trying to restore dependent modules
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -OutputDirectory
 Specifies the target directory where the compiled files should be created
 
@@ -233,36 +263,6 @@ Aliases:
 Required: False
 Position: 1
 Default value: $pwd.path
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -NoRestore
-Skips trying to restore dependent modules
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Compress
-Compress the built ARM Template to reduce file size
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

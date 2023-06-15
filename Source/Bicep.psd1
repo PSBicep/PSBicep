@@ -104,7 +104,9 @@ FunctionsToExport = @(
     'Find-BicepModule',
     'Clear-BicepModuleCache',
     'Get-BicepConfig',
-    'Get-BicepMetadata'
+    'Get-BicepMetadata',
+    'Export-BicepResource',
+    'Export-BicepChildResource'
 )
 
 
