@@ -12,7 +12,7 @@ Uninstall Bicep CLI (Windows only)
 
 ## SYNTAX
 
-```powershell
+```
 Uninstall-BicepCLI [-Force] [<CommonParameters>]
 ```
 

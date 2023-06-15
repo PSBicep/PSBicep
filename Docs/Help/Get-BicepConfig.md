@@ -49,7 +49,6 @@ Get-BicepConfig -Path .\storage.bicep -Merged
 
 Returns the path to the bicepconfig.json file in use, and the merged settings (default + local file).
 
-
 ### Example 3 - Get the local bicep configuration for a bicep file
 ```powershell
 Get-BicepConfig -Path .\storage.bicep -Merged

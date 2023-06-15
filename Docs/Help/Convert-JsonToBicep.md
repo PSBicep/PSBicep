@@ -13,12 +13,12 @@ Convert a JSON string or file to Bicep
 ## SYNTAX
 
 ### String
-```powershell
+```
 Convert-JsonToBicep -String <String> [-ToClipboard] [<CommonParameters>]
 ```
 
 ### Path
-```powershell
+```
 Convert-JsonToBicep [-Path <String>] [-ToClipboard] [<CommonParameters>]
 ```
 
@@ -116,8 +116,8 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -ToClipboard (Windows Only)
-Converts a JSON-file to bicep and saves it to the Clipboard
+### -ToClipboard
+Copies the result to the clipboard.
 
 ```yaml
 Type: SwitchParameter
