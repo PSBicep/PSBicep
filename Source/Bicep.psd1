@@ -85,7 +85,8 @@ NestedModules = @('.\BicepNet.PS\BicepNet.PS.psd1')
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @(
-    'Build-Bicep', 
+    'Build-Bicep',
+    'Build-BicepParam',
     'ConvertTo-Bicep', 
     'Get-BicepVersion', 
     'Install-BicepCLI', 
