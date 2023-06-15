@@ -1,8 +1,5 @@
 BeforeAll {
-    $ScriptDirectory = Split-Path -Path $PSCommandPath -Parent
-    Import-Module -FullyQualifiedName "$ScriptDirectory\..\Source\Bicep.psd1" -ErrorAction Stop
-
-    
+    Import-Module -FullyQualifiedName "$PSScriptRoot\..\Source\Bicep.psd1" -ErrorAction Stop
 }
 
 Describe 'Get-BicepConfig tests' {
@@ -166,7 +163,7 @@ Describe 'Get-BicepConfig tests' {
         AfterAll {
             # Bicep doesnt seem to properly release the config file, let's wait for it.
             $configFileLocked = $true
-            $configFilePath = "$TestDrive\supportFiles\bicepconfig.json"
+            $configFilePath = Join-Path $TestDrive 'supportFiles\bicepconfig.json'
             while($configFileLocked) {
                 try {
                     $configFile = [System.IO.File]::Open($configFilePath, 'Open', 'Read')
