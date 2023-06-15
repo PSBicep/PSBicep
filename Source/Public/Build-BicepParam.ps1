@@ -68,7 +68,7 @@ function Build-BicepParam {
                         Write-Verbose -Message "Using Bicep configuration: $($bicepConfig.Path)"
                     }
 
-                    $ARMTemplate = Build-BicepNetParamFile -Path $file.FullName -NoRestore:$NoRestore.IsPresent
+                    $ARMTemplate = Build-BicepNetParamFile -Path $file.FullName
 
                     if (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {
                         if ($AsString.IsPresent) {
