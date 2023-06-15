@@ -13,7 +13,7 @@ Tests if a bicep file is valid.
 ## SYNTAX
 
 ```
-Test-BicepFile [-Path] <String> [[-OutputType] <String>] [[-AcceptDiagnosticLevel] <DiagnosticLevel>]
+Test-BicepFile [-Path] <String> [[-OutputType] <String>] [[-AcceptDiagnosticLevel] <BicepDiagnosticLevel>]
  [-IgnoreDiagnosticOutput] [<CommonParameters>]
 ```
 
@@ -49,7 +49,7 @@ Settings this to Error will accept anything. Since this is not a wanted
 scenario the command will throw an error.
 
 ```yaml
-Type: DiagnosticLevel
+Type: BicepDiagnosticLevel
 Parameter Sets: (All)
 Aliases:
 Accepted values: Off, Info, Warning, Error

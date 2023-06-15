@@ -14,7 +14,7 @@ Creates an ARM Template parameter file based on a bicep file.
 ## SYNTAX
 
 ```
-New-BicepParameterFile [-Path] <String> [-Parameters <String>] [[-OutputDirectory] <String>] [-WhatIf]
+New-BicepParameterFile [-Path] <String> [[-Parameters] <String>] [[-OutputDirectory] <String>] [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
 
@@ -76,6 +76,22 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Parameters
+Specify which parameters should be exported to the parameter file.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+Accepted values: All, Required
+
+Required: False
 Position: 2
 Default value: None
 Accept pipeline input: False
@@ -107,21 +123,6 @@ The cmdlet is not run.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Parameters
-Specify which parameters should be exported to the parameter file.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
 
 Required: False
 Position: Named

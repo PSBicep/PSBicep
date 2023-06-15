@@ -14,21 +14,25 @@ Exports a specified Azure resource as Bicep.
 ## SYNTAX
 
 ### Path (Default)
-```
+
+```powershell
 Export-BicepResource -ResourceId <String[]> [-IncludeTargetScope] -Path <String> [<CommonParameters>]
 ```
 
 ### AsString
-```
+
+```powershell
 Export-BicepResource -ResourceId <String[]> [-IncludeTargetScope] [-AsString] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+
+Exports a specified Azure resource as Bicep.
 
 ## EXAMPLES
 
 ### Example 1
+
 ```powershell
 PS C:\> Export-BicepResource -ResourceId $ResourceId -Path 'C:\temp\myfile.bicep'
 ```
@@ -36,6 +40,7 @@ PS C:\> Export-BicepResource -ResourceId $ResourceId -Path 'C:\temp\myfile.bicep
 Exports a resource specified by resource id to the file "myfile.bicep".
 
 ### Example 2
+
 ```powershell
 PS C:\> Export-BicepResource -ResourceId $ResourceId -AsString
 ```
@@ -109,6 +114,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
@@ -118,6 +124,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### System.Object
+
 ## NOTES
 
 ## RELATED LINKS
