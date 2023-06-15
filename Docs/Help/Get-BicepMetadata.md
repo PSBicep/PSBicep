@@ -51,6 +51,21 @@ Get metadata from Bicep file and include Bicep reserved metadata
 
 ## PARAMETERS
 
+### -IncludeReservedMetadata
+Include Bicep reserved metadata
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -OutputType
 Specify output type
 
@@ -77,21 +92,6 @@ Aliases: PSPath
 
 Required: True
 Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeReservedMetadata
-Include Bicep reserved metadata
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
