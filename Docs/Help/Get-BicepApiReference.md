@@ -13,12 +13,12 @@ Get ARM Template reference docs for provided resource type.
 ## SYNTAX
 
 ### TypeString (Default)
-```powershell
+```
 Get-BicepApiReference [[-Type] <String>] [-Latest] [-Force] [<CommonParameters>]
 ```
 
 ### ResourceProvider
-```powershell
+```
 Get-BicepApiReference -ResourceProvider <String> -Resource <String> [-Child <String>] [-ApiVersion <String>]
  [-Force] [<CommonParameters>]
 ```
@@ -110,6 +110,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Latest
+Open the latest API version when using the types information.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: TypeString
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Resource
 Specify which resource from a resource provider to get the docs for.
 
@@ -150,21 +165,6 @@ Aliases:
 
 Required: False
 Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Latest
-Open the latest API version when using the types information.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: TypeString
-Aliases:
-
-Required: False
-Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

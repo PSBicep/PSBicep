@@ -12,7 +12,7 @@ Decompile ARM templates to .bicep files
 
 ## SYNTAX
 
-```powershell
+```
 ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-AsString] [-Force] [<CommonParameters>]
 ```
 
@@ -46,36 +46,6 @@ ConvertTo-Bicep -Path vnet.json -AsString
 
 ## PARAMETERS
 
-### -Path
-Specfies the path to the directory or file that should be decompiled
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: $pwd.path
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OutputDirectory
-Specifies the path to the directory where the compiled files should be outputted
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -AsString
 -AsString prints all output as a string instead of corresponding files.
 
@@ -103,6 +73,36 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OutputDirectory
+Specifies the path to the directory where the compiled files should be outputted
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Path
+Specfies the path to the directory or file that should be decompiled
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 0
+Default value: $pwd.path
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

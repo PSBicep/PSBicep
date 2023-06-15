@@ -12,7 +12,7 @@ Clear the local module cache.
 
 ## SYNTAX
 
-### Oci
+### Oci (Default)
 ```
 Clear-BicepModuleCache [-Oci] [[-Registry] <String>] [[-Repository] <String>] [[-Version] <String>]
  [<CommonParameters>]
