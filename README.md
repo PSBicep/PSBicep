@@ -1,6 +1,6 @@
 # ![BicepIcon] PSBicep - Bicep PowerShell Module
 
-[![Bicep]][BicepGallery] [![BicepPreview]][BicepGallery] [![BicepDownloads]][BicepGallery]
+[![Bicep]][BicepGallery] [![BicepPreview]][BicepGalleryPreview] [![BicepDownloads]][BicepGallery]
 
 This is the repository for the Bicep PowerShell Module. This is a community project created to enable the features provided by the [Bicep CLI](https://github.com/Azure/bicep) in PowerShell. The module provides the same functionality as Bicep CLI, plus some additional features to simplify the Bicep authoring experience.
 
@@ -77,3 +77,4 @@ This project is currently maintained by the following coders:
 [BicepPreview]: https://img.shields.io/badge/Bicep-v2.4.0--Preview1-red
 [BicepDownloads]: https://img.shields.io/powershellgallery/dt/Bicep
 [BicepGallery]: https://www.powershellgallery.com/packages/Bicep/
+[BicepGalleryPreview]: https://www.powershellgallery.com/packages/Bicep/2.4.0-Preview1
