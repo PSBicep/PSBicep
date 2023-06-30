@@ -110,6 +110,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Latest
+Open the latest API version when using the types information.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: TypeString
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Resource
 Specify which resource from a resource provider to get the docs for.
 

@@ -48,7 +48,7 @@ For more information about Bicep, please visit the official Bicep GitHub Reposit
 https://github.com/Azure/bicep'
 
 # Minimum version of the PowerShell engine required by this module
-PowerShellVersion = '7.1'
+PowerShellVersion = '7.3'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
@@ -85,7 +85,8 @@ NestedModules = @('.\BicepNet.PS\BicepNet.PS.psd1')
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @(
-    'Build-Bicep', 
+    'Build-Bicep',
+    'Build-BicepParam',
     'ConvertTo-Bicep', 
     'Get-BicepVersion', 
     'Install-BicepCLI', 
@@ -106,6 +107,9 @@ FunctionsToExport = @(
     'Get-BicepMetadata',
     'New-BicepMarkdownDocumentation',
     'Get-UsedModulesInBicepFile'
+    'Format-BicepFile',
+    'Export-BicepResource',
+    'Export-BicepChildResource'
 )
 
 
