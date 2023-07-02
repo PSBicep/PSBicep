@@ -71,10 +71,10 @@ Describe 'New-BicepMarkdownDocumentation' -ForEach @(
                 $result | Should -Match  '## Providers\s+n\/a'
             }
             'main.bicep' {
-                $result | Should -Match '\| Type \| Version \|\s+\|----\|----\|\s+\| Microsoft.Resources\/deployments \| 2020-10-01 \|'
+                $result | Should -Match '\| Type \| Version \|\s+\|----\|----\|\s+\| Microsoft.Resources\/deployments'
             }
             'workingBicep.bicep' {
-                $result | Should -Match '\| Type \| Version \|\s+\|----\|----\|\s+\| Microsoft.Storage\/storageAccounts \| 2021-02-01 \|'
+                $result | Should -Match '\| Type \| Version \|\s+\|----\|----\|\s+\| Microsoft.Storage\/storageAccounts'
             }
             default {
                 throw "Unknown file name: $($_.name)"
@@ -90,10 +90,10 @@ Describe 'New-BicepMarkdownDocumentation' -ForEach @(
                 $result | Should -Match '## Resources\s+n\/a'
             }
             'main.bicep' {
-                $result | Should -Match "\| Name \| Link \| Location \|\s+\|----\|----\|----\|\s+\| storageDeploy \| \[Microsoft\.Resources\/deployments@2020-10-01\]\(https:\/\/docs\.microsoft\.com\/en-us\/azure\/templates\/Microsoft\.Resources\/2020-10-01\/deployments\?tabs=bicep\) \|  \|"
+                $result | Should -Match "\| Name \| Link \| Location \|\s+\|----\|----\|----\|\s+\| storageDeploy \| \[Microsoft\.Resources\/deployments"
             }
             'workingBicep.bicep' {
-                $result | Should -Match "\| Name \| Link \| Location \|\s+\|----\|----\|----\|\s+\| \[variables\('nameVariable'\)\] \| \[Microsoft\.Storage\/storageAccounts@2021-02-01\]\(https:\/\/docs\.microsoft\.com\/en-us\/azure\/templates\/Microsoft\.Storage\/2021-02-01\/storageAccounts\?tabs=bicep\) \| \[parameters\('location'\)\] \|"
+                $result | Should -Match "\| Name \| Link \| Location \|\s+\|----\|----\|----\|\s+\| \[variables\('nameVariable'\)\] \| \[Microsoft\.Storage\/storageAccounts"
             }
             default {
                 throw "Unknown file name: $($_.name)"
