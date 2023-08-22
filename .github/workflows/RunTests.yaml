@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Update PowerShell
-      uses: bjompen/UpdatePWSHAction@version
+      uses: bjompen/UpdatePWSHAction@1
       with:
         ReleaseVersion: 'stable'
 
