@@ -9,15 +9,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Update PowerShell from LTS
-      shell: pwsh
-      run: |
-        # Most of the code is from https://aka.ms/install-powershell.ps1 but adapted for GITHUB_PATH
-        $Destination = "~/.powershell"
-        if (-not (Test-Path -Path $Destination)) { New-Item -ItemType Directory -Path $Destination }
-        
-        Invoke-Expression "& { $(irm https://aka.ms/install-powershell.ps1) } -Destination $Destination"
-        echo "$((Get-Item $Destination).FullName)" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+  
+    - name: Update PowerShell
+      uses: bjompen/UpdatePWSHAction@v1.0.0
+      with:
+        ReleaseVersion: 'stable'
+
     - name: Setup assets cache
       id: assetscache
       uses: actions/cache@v2
@@ -48,23 +45,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Update PowerShell from LTS
-      shell: pwsh
-      run: |
-        # Most of the code is from https://aka.ms/install-powershell.ps1 but adapted for GITHUB_PATH
-        $Destination = "~/.powershell"
-        if (-not (Test-Path -Path $Destination)) { New-Item -ItemType Directory -Path $Destination }
+    
+    - name: PWSHUpdater
+      uses: bjompen/UpdatePWSHAction@v1.0.0
+      with:
+        ReleaseVersion: 'stable'
 
-        Invoke-Expression "& { $(irm https://aka.ms/install-powershell.ps1) } -Destination $Destination"
-        $TargetPath = Join-Path -Path $Destination -ChildPath "pwsh"
-        $Symlink = "/usr/bin/pwsh"
-
-        $Uid = id -u
-        if ($Uid -ne "0") { $SUDO = "sudo" } else { $SUDO = "" }
-        # Make symbolic link point to installed path
-        & $SUDO ln -fs $TargetPath $Symlink
-
-        if ($LASTEXITCODE -ne 0) { throw "Could not add to GITHUB_PATH: failed to make '$Symlink' point to '$TargetPath'." }
     - name: Setup assets cache
       id: assetscache
       uses: actions/cache@v2
