@@ -6,7 +6,7 @@ Function Get-UsedModulesInBicepFile {
     )
 
     try {
-        $BicepFile = Get-Content -Path $Path -Raw
+        $BicepFile = Get-Content -Path $Path -Raw | Out-String
     }
     catch {
         throw "Could not read file $Path"
@@ -14,10 +14,9 @@ Function Get-UsedModulesInBicepFile {
 
     $UsedModules = @()
 
-
-    $BicepFile | Select-String -Pattern "module\s+(\w+)\s+'([^']+)'" -AllMatches | ForEach-Object {
-        $_.Matches | ForEach-Object {
-            $ModuleName = $_.Groups[1].Value
+    [regex]::matches($BicepFile, "^\s*module\s+(\w+)\s+'([^']+)'", "Multiline") | ForEach-Object {
+        $_ | ForEach-Object {
+            $ModuleName = $_.Groups[1].value
             $ModulePath = $_.Groups[2].Value
 
             $UsedModules += [PSCustomObject]@{
