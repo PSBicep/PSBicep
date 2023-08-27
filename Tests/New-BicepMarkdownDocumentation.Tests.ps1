@@ -189,6 +189,6 @@ Describe 'New-BicepMarkdownDocumentation' -ForEach @(
 ) {
 
     It "<name> should throw an error" {
-        { New-BicepMarkdownDocumentation -File $_.FullName -Console } | Should -Throw
+        { New-BicepMarkdownDocumentation -File $_.FullName -Console -ErrorAction Stop } | Should -Throw
     }
 }

@@ -21,10 +21,10 @@ function New-BicepMarkdownDocumentation {
 
     switch ($PSCmdLet.ParameterSetName) {
         'FromFile' { 
-            $FileCollection = @((Get-Item $File)) 
+            [System.IO.FileInfo[]]$FileCollection = Get-Item $File
         }
         'FromFolder' { 
-            $FileCollection = Get-ChildItem $Path *.bicep -Recurse:$Recurse
+            [System.IO.FileInfo[]]$FileCollection = Get-ChildItem $Path *.bicep -Recurse:$Recurse
         }
     }
 
