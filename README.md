@@ -35,6 +35,8 @@ Preview commands:
 
 >**Note:** Starting with version `1.3.0` of the Bicep PowerShell module the cmdlets `Build-Bicep` and `ConvertTo-Bicep` uses the assemblies from the official [Bicep](https://github.com/Azure/bicep) repository instead of wrapping the Bicep CLI. When new Bicep versions are released there will be a slight delay before the PowerShell module gets tested updated with the latest assemblies. If new functionality is added to Bicep CLI before the PowerShell module supports it, use `Install-BicepCLI` to install the latest Bicep CLI version and use the CLI while waiting for an updated PowerShell module.
 
+>**UPCOMING BREAKING CHANGE NOTIFICATION!** Future releases of PSBicep _will_ require PowerShell 7.3 or later! Please see Pre-release versions for more info.
+
 ## Installation
 
 The Bicep PowerShell Module is published to [PowerShell Gallery](https://www.powershellgallery.com/packages/Bicep/).
@@ -44,6 +46,8 @@ Install-Module -Name Bicep
 ```
 
 ### Pre-release versions
+
+>**Note:** Running the preview version requires at least PowerShell version 7.3! If you are running this in a pipeline, use the [PWSHUpdater GitHub action](https://github.com/marketplace/actions/pwshupdater) or the [PowerShell updater Azure DevOps task](https://marketplace.visualstudio.com/items?itemName=Bjompen.PWSHUpdater) to run.
 
 To install the latest version in development use the `-AllowPrerelease` switch.
 
