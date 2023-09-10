@@ -111,12 +111,23 @@ Describe 'Get-BicepConfig tests' {
                   }
                 },
                 "experimentalFeaturesEnabled": {
-                  "symbolicNameCodegen": null,
-                  "extensibility": null,
-                  "resourceTypedParamsAndOutputs": null,
-                  "sourceMapping": null,
-                  "userDefinedTypes": null,
-                  "userDefinedFunctions": null
+                  "symbolicNameCodegen": false,
+                  "extensibility": false,
+                  "resourceTypedParamsAndOutputs": false,
+                  "sourceMapping": false,
+                  "userDefinedTypes": false,
+                  "userDefinedFunctions": false,
+                  "prettyPrinting": false,
+                  "testFramework": false,
+                  "assertions": false,
+                  "dynamicTypeLoading": false
+                },
+                "formatting": {
+                  "indentKind": "Space",
+                  "newlineKind": "LF",
+                  "insertFinalNewline": true,
+                  "indentSize": 2,
+                  "width": 80
                 }
               }    
 '@
