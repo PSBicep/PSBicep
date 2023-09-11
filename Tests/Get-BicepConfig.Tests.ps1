@@ -84,7 +84,6 @@ Describe 'Get-BicepConfig tests' {
                         "level": "warning",
                         "disallowedhosts": [
                           "api.loganalytics.io",
-                          "asazure.windows.net",
                           "azuredatalakeanalytics.net",
                           "azuredatalakestore.net",
                           "batch.core.windows.net",
