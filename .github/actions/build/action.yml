@@ -30,7 +30,7 @@ runs:
   - name: Download required dependencies
     if: steps.assetscache.outputs.cache-hit != 'true'
     shell: pwsh
-    run: ./build.ps1 -ResolveDependency
+    run: ./build.ps1 -ResolveDependency -Task noop
 
   - name: Build module
     shell: pwsh
