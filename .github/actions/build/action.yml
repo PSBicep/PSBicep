@@ -34,7 +34,7 @@ runs:
 
   - name: Build module
     shell: pwsh
-    run: ./build.ps1 -tasks package
+    run: ./build.ps1 -tasks pack
     env:
       ModuleVersion: ${{ env.gitVersion.NuGetVersionV2 }}
 
