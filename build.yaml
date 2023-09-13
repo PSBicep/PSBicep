@@ -74,6 +74,8 @@ BuildWorkflow:
   test:
     # Uncomment to modify the PSModulePath in the test pipeline (also requires the build configuration section SetPSModulePath).
     - Set_PSModulePath
+    - copyBicepNetPSToSource
+    - getBicepTypes
     - Pester_Tests_Stop_On_Fail
     # Use this task if pipeline uses code coverage and the module is using the
     # pattern of Public, Private, Enum, Classes.
