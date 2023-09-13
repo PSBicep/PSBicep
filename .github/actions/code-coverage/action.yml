@@ -1,0 +1,40 @@
+name: "Publish test results"
+
+on:
+  workflow_call:
+
+runs:
+  using: 'composite'
+  steps:
+  - uses: actions/checkout@v3
+    with:
+      ref: ${{ github.head_ref }}
+      fetch-depth: 0
+
+  - name: Download Test Artifact Linux
+    uses: actions/download-artifact@v3
+    with:
+      name: CodeCoverageLinux
+      path: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverageLinux/
+
+  # - name: Download Test Artifact Windows
+  #   uses: actions/download-artifact@v3
+  #   with:
+  #     name: CodeCoverageWin
+  #     path: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverageWin/
+
+  - name: Publish Linux Test Results
+    id: linux-test-results
+    uses: EnricoMi/publish-unit-test-result-action@v2
+    if: always()
+    with:
+      nunit_files: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverageLinux/NUnit*.xml
+      check_name: Linux Test Results
+
+  # - name: Publish Win Test Results
+  #   id: win-test-results
+  #   uses: EnricoMi/publish-unit-test-result-action@v2
+  #   if: always()
+  #   with:
+  #     nunit_files: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverageWin/NUnit*.xml
+  #     check_name: Win Test Results

@@ -1,0 +1,34 @@
+name: "Test Linux"
+
+on:
+  workflow_call:
+
+runs:
+  using: 'composite'
+  steps:
+  - uses: actions/checkout@v3
+    with:
+      ref: ${{ github.head_ref }}
+      fetch-depth: 0
+
+  - name: Update PowerShell
+    uses: bjompen/UpdatePWSHAction@v1.0.0
+    with:
+      ReleaseVersion: 'stable'
+
+  - name: Download Build Artifact
+    uses: actions/download-artifact@v3
+    with:
+      name: ${{ env.buildArtifactName }}
+      path: ${{ env.buildFolderName }}
+
+  - name: Run Tests
+    shell: pwsh
+    run: ./build.ps1 -tasks test
+
+  - name: Publish Test Artifact
+    uses: actions/upload-artifact@v3
+    with:
+      path: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/
+      name: CodeCoverageLinux
+    if: success() || failure()
