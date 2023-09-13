@@ -6,12 +6,7 @@ You are more than welcome to contribute to the Bicep PowerShell module, whether 
 
 - Fork this repo (see [this forking guide](https://guides.github.com/activities/forking/) for more information).
 - Checkout the repo locally with `git clone git@github.com:{your_username}/PSBicep.git`.
-- Run the script `.\scripts\downloadDependencies.ps1` to download the required dependencies:
-  - Nested module [BicepNet](https://github.com/PSBicep/BicepNet) to the BicepNet.PS (`Source/BicepNet.PS`) folder.
-  - Bicep Types information to the Assets (`Source/Assets`) folder.
-- If you haven't already, you will need the [PlatyPs](https://github.com/PowerShell/platyPS) PowerShell Module to generate command help and docs.
-
-## Developing
+- Run the command `.\build.ps1 -ResolveDependency -Task build` to download the required dependencies and build the module.
 
 ### BicepNet
 
@@ -31,10 +26,10 @@ The repo is organized as below:
 
 ### Running the module locally
 
-- Download the assemblies needed by the module by running the `downloadDependencies.ps1` script:
+- Download the assemblies needed by the module by running the command `.\build.ps1 -ResolveDependency -Task build`:
 
 ```
-.\scripts\downloadDependencies.ps1
+.\build.ps1 -ResolveDependency -Task build
 ```
 
 - Import the module:
@@ -45,40 +40,10 @@ Import-Module .\Source\Bicep.psd1
 
 ### platyPS
 
-[platyPS](https://github.com/PowerShell/platyPS) is used to write the external help in markdown. When contributing always make sure that the changes are added to the help file.
+[platyPS](https://github.com/PowerShell/platyPS) is used to write the external help in markdown. When contributing always make sure that the changes are added to the help file.  
+A slightly modified version of platyPS is downloaded and used by the build script. The build script will also update markdown files and generate external help.
 
-#### Quickstart
-
-- Install the platyPS module from the [PowerShell Gallery](https://powershellgallery.com):
-
-```powershell
-Install-Module -Name platyPS -Scope CurrentUser
-Import-Module platyPS
-```
-
-- Create initial Markdown help file for `Bicep` module (This will only create help files for new commands, existing files will not be overwritten):
-
-```powershell
-# you should have module imported in the session
-Import-Module .\Source\Bicep.psd1
-New-MarkdownHelp -Module Bicep -OutputFolder .\Docs\Help
-```
-
-Edit the markdown file(s) in the `.\Docs\Help` folder and populate `{{ ... }}` placeholders with missed help content.
-
-- Update the external help from markdown help
-
-```powershell
-New-ExternalHelp .\Docs\Help -OutputPath .\Source\en-US\ -Force
-```
-
-- If you've made a lot of changes to the module code, you can easily update the markdown file(s) automatically with:
-
-```powershell
-# re-import your module with latest changes
-Import-Module .\Source\Bicep.psd1 -Force
-Update-MarkdownHelp .\Docs\Help
-```
+Make sure to edit the markdown file(s) in the `.\Docs\Help` folder and populate `{{ ... }}` placeholders with missed help content.
 
 ### Tests
 
