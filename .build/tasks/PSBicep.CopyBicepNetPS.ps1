@@ -1,7 +1,7 @@
 task copyBicepNetPS {
     $RequiredBicepNetModuleVersion = Get-Metadata -Path 'RequiredModules.psd1' -PropertyName 'BicepNet.PS' -ErrorAction 'Stop'
-    $ModuleVersion = Get-BuiltModuleVersion -OutputDirectory 'output' -ModuleName 'Bicep' -VersionedOutputDirectory
-    $ModuleOutputPath = "output/Bicep/$ModuleVersion"
+    $ModuleVersion = Split-ModuleVersion -ModuleVersion (Get-BuiltModuleVersion -OutputDirectory 'output' -ModuleName 'Bicep' -VersionedOutputDirectory)
+    $ModuleOutputPath = "output/Bicep/$($ModuleVersion.Version)"
     $ModuleSourcePath = "Source/"
     foreach($Path in $ModuleOutputPath, $ModuleSourcePath) {
         $null = New-Item -Path "$Path/BicepNet.PS" -ItemType 'Directory' -Force -ErrorAction 'Stop'

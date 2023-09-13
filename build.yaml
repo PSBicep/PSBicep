@@ -10,7 +10,6 @@ SourceDirectories:
   - Private
   - Public
 CopyPaths:
-  - Assets
   - en-US
   - ../LICENSE
 
