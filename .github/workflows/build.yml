@@ -112,7 +112,7 @@ jobs:
       run: Import-Module ./output/RequiredModules/PowerShellForGitHub/0.16.1/PowerShellForGitHub.psd1 ; ./build.ps1 -tasks publish
       env:
         GitHubToken: ${{ secrets.GITHUB_TOKEN }}
-        GalleryApiToken: ${{ secrets.BICEPNET_PSGALLERY_KEY }}
+        GalleryApiToken: ${{ secrets.BICEP_PSGALLERY_KEY }}
 
     - name: Send Changelog PR
       shell: pwsh
