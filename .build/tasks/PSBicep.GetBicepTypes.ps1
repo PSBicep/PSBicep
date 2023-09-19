@@ -1,8 +1,7 @@
 task getBicepTypes {
+    $ModuleVersion = Split-ModuleVersion -ModuleVersion (Get-BuiltModuleVersion -OutputDirectory 'output' -ModuleName 'Bicep' -VersionedOutputDirectory)
+    $ModuleOutputAssetFolderPath = "output/Bicep/$($ModuleVersion.Version)/Assets"
     $AssetsFolderPath = 'Source/Assets'
-    if(-not (Test-Path -Path $AssetsFolderPath)) {
-        $null = New-Item -Path $AssetsFolderPath -ItemType Directory
-    }
 
     # Download Bicep types
     $BicepTypesFull = Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/Azure/bicep-types-az/main/generated/index.json'
@@ -10,8 +9,15 @@ task getBicepTypes {
         Throw "Bicep types not found."
     }
 
-    # Filter out the resources and save to disk
+    # Filter out the resources
     $BicepTypesFiltered = ConvertTo-Json -InputObject $BicepTypesFull.Resources.psobject.Properties.name -Compress
-    $BicepTypesPath = Join-Path -Path $AssetsFolderPath -ChildPath 'BicepTypes.json'
-    Out-File -FilePath $BicepTypesPath -InputObject $BicepTypesFiltered
+
+    foreach($FolderPath in $ModuleOutputAssetFolderPath, $AssetsFolderPath) {
+        Write-Verbose "Path: $FolderPath" -Verbose
+        if(-not (Test-Path -Path $FolderPath)) {
+            New-Item -Path $FolderPath -ItemType Directory
+        }
+        $BicepTypesPath = Join-Path -Path $FolderPath -ChildPath 'BicepTypes.json'
+        Out-File -FilePath $BicepTypesPath -InputObject $BicepTypesFiltered
+    }
 }

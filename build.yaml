@@ -10,7 +10,6 @@ SourceDirectories:
   - Private
   - Public
 CopyPaths:
-  - Assets
   - en-US
   - ../LICENSE
 
@@ -55,9 +54,10 @@ BuildWorkflow:
 
   build:
     - Clean
+    - copyBicepNetPSToSource
     - Build_Module_ModuleBuilder
     - Build_NestedModules_ModuleBuilder
-    - copyBicepNetPS
+    - copyBicepNetPSToOutput
     - getBicepTypes
     - updateMarkdownHelp
     - updateExternalHelp
@@ -72,6 +72,8 @@ BuildWorkflow:
 
   # Defining test task to be run when invoking `./build.ps1 -Tasks test`
   test:
+    - copyBicepNetPSToSource
+    - getBicepTypes
     # Uncomment to modify the PSModulePath in the test pipeline (also requires the build configuration section SetPSModulePath).
     - Set_PSModulePath
     - Pester_Tests_Stop_On_Fail
@@ -101,25 +103,52 @@ PlatyPS:
 ####################################################
 
 Pester:
-  OutputFormat: NUnitXML
-  # Excludes one or more paths from being used to calculate code coverage.
-  ExcludeFromCodeCoverage:
+  Configuration:
+    Run:
+      Path:
+        - Tests
+      ExcludePath:
 
-  # If no scripts are defined the default is to use all the tests under the project's
-  # tests folder or source folder (if present). Test script paths can be defined to
-  # only run tests in certain folders, or run specific test files, or can be use to
-  # specify the order tests are run.
-  Script:
-  # - tests/QA/module.tests.ps1
-  # - tests/QA
-  # - tests/Unit
-  # - tests/Integration
-  ExcludeTag:
-  #  - helpQuality
-  #  - FunctionalQuality
-  #  - TestQuality
-  Tag:
-  CodeCoverageThreshold: 0 # Set to 0 to bypass
+      Filter:
+        Tag:
+
+        ExcludeTag:
+
+      Output:
+        Verbosity: Detailed
+      CodeCoverage:
+        Path:
+        OutputFormat:
+        CoveragePercentage: 0
+        OutputPath:
+        OutputEncoding:
+        ExcludeTests:
+      TestResult:
+        OutputFormat: NUnitXML
+        OutputPath:
+        OutputEncoding: UTF8
+        TestSuiteName:
+  ####################################################
+  # OutputFormat: NUnitXML
+  # # Excludes one or more paths from being used to calculate code coverage.
+  # ExcludeFromCodeCoverage:
+
+  # # If no scripts are defined the default is to use all the tests under the project's
+  # # tests folder or source folder (if present). Test script paths can be defined to
+  # # only run tests in certain folders, or run specific test files, or can be use to
+  # # specify the order tests are run.
+  # Script:
+  # # - tests/QA/module.tests.ps1
+  # # - tests/QA
+  # # - tests/Unit
+  # # - tests/Integration
+  # ExcludeTag:
+  # #  - helpQuality
+  # #  - FunctionalQuality
+  # #  - TestQuality
+  # Tag:
+  # CodeCoverageThreshold: 0 # Set to 0 to bypass
+  ####################################################
   #CodeCoverageOutputFile: JaCoCo_$OsShortName.xml
   #CodeCoverageOutputFileEncoding: ascii
   # Use this if code coverage should be merged from several pipeline test jobs.
