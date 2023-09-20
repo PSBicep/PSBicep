@@ -88,6 +88,8 @@ BuildWorkflow:
     #- Merge_CodeCoverage_Files
 
   publish:
+    - copyBicepNetPSToSource
+    - getBicepTypes
     - publish_module_to_gallery
     #- Publish_Release_To_GitHub
 
