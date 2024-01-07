@@ -1,0 +1,45 @@
+name: "Build Module"
+
+on:
+  workflow_call:
+
+runs:
+  using: 'composite'
+  steps:
+  - name: Update PowerShell
+    uses: bjompen/UpdatePWSHAction@v1.0.0
+    with:
+      ReleaseVersion: 'stable'
+
+  - name: Install GitVersion
+    uses: gittools/actions/gitversion/setup@v0.9.15
+    with:
+      versionSpec: '5.x'
+
+  - name: Determine Version
+    id:   gitversion
+    uses: gittools/actions/gitversion/execute@v0.9.15
+
+  - name: Setup assets cache
+    id: assetscache
+    uses: actions/cache@v3
+    with:
+      path: output/RequiredModules
+      key: ${{ hashFiles('RequiredModules.psd1') }}
+
+  - name: Download required dependencies
+    if: steps.assetscache.outputs.cache-hit != 'true'
+    shell: pwsh
+    run: ./build.ps1 -ResolveDependency -Task noop
+
+  - name: Build module
+    shell: pwsh
+    run: ./build.ps1 -tasks pack
+    env:
+      ModuleVersion: ${{ env.gitVersion.NuGetVersionV2 }}
+
+  - name: Publish build artifacts
+    uses: actions/upload-artifact@v3
+    with:
+      name: ${{ env.buildArtifactName }}
+      path: ${{ env.buildFolderName }}/

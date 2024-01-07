@@ -1,3 +1,4 @@
+output/
 .vscode
 tmp/
 bin/
@@ -5,3 +6,5 @@ bin/
 coverage.xml
 testResults.xml
 Source/BicepNet.PS/
+build.yaml
+.DS_Store
