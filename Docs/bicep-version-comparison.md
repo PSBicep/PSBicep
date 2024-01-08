@@ -6,6 +6,9 @@ The table below shows which version of the Bicep assemblies and BicepNet that ar
 
 | Bicep PowerShell version | Bicep assembly version | BicepNet Version |
 | --- | --- | -- |
+| `2.5.1` | `0.24.24` | `2.3.1` |
+| `2.5.0-preview0001` | `0.20.4` | `2.2.1` |
+| `2.4.0` | `0.20.4` | `2.2.1` |
 | `2.4.0-Preview1` | `0.18.4` | `2.1.1` |
 | `2.3.3` | `0.11.1` | `2.0.10` |
 | `2.3.2` | `0.10.61` | `2.0.9` |

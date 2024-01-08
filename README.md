@@ -47,8 +47,6 @@ Install-Module -Name Bicep
 
 ### Pre-release versions
 
->**Note:** Running the preview version requires at least PowerShell version 7.3! If you are running this in a pipeline, use the [PWSHUpdater GitHub action](https://github.com/marketplace/actions/pwshupdater) or the [PowerShell updater Azure DevOps task](https://marketplace.visualstudio.com/items?itemName=Bjompen.PWSHUpdater) to run.
-
 To install the latest version in development use the `-AllowPrerelease` switch.
 
 ```powershell
@@ -78,8 +76,8 @@ This project is currently maintained by the following coders:
 
 <!-- References -->
 [BicepIcon]: logo/BicePS_40px.png
-[Bicep]: https://img.shields.io/badge/Bicep-v2.3.3-blue
-[BicepPreview]: https://img.shields.io/badge/Bicep-v2.4.0--Preview1-red
+[Bicep]: https://img.shields.io/badge/Bicep-v2.4.0-blue
+[BicepPreview]: https://img.shields.io/badge/Bicep-v2.5.0--Preview1-red
 [BicepDownloads]: https://img.shields.io/powershellgallery/dt/Bicep
 [BicepGallery]: https://www.powershellgallery.com/packages/Bicep/
-[BicepGalleryPreview]: https://www.powershellgallery.com/packages/Bicep/2.4.0-Preview1
+[BicepGalleryPreview]: https://www.powershellgallery.com/packages/Bicep/2.5.0-Preview1
