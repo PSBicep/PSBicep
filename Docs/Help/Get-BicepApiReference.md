@@ -14,13 +14,13 @@ Get ARM Template reference docs for provided resource type.
 
 ### TypeString (Default)
 ```
-Get-BicepApiReference [[-Type] <String>] [-Latest] [-Force] [<CommonParameters>]
+Get-BicepApiReference [[-Type] <String>] [-Latest] [-Force] [-ReturnUri] [<CommonParameters>]
 ```
 
 ### ResourceProvider
 ```
 Get-BicepApiReference -ResourceProvider <String> -Resource <String> [-Child <String>] [-ApiVersion <String>]
- [-Force] [<CommonParameters>]
+ [-Force] [-ReturnUri] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -165,6 +165,36 @@ Aliases:
 
 Required: False
 Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Latest
+Open the latest API version when using the types information.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: TypeString
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ReturnUri
+If set, the command will output the api documentation URI instead of opening a browser.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
