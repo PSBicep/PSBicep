@@ -9,7 +9,10 @@ function Publish-Bicep {
         [Parameter(Mandatory, Position = 2)]
         [ValidateNotNullOrEmpty()]
         [ValidatePattern('^(?<Prefix>[bBrR]{2})(?<ACROrAlias>(:[\w\-_]+\.azurecr.io|\/[\w\-\._]+:))(?<path>[\w\/\-\._]+)(?<tag>:[\w\/\-\._]+)$', ErrorMessage = 'Target does not match pattern for registry. Specify a path to a registry using "br:", or "br/" if using an alias.')]
-        [string]$Target          
+        [string]$Target,
+
+        [Parameter(Position = 3)]
+        [switch]$Force
     )
     begin {
         # Check if a newer version of the module is published
@@ -41,7 +44,7 @@ function Publish-Bicep {
 
         # Publish module
         try {
-            Publish-BicepNetFile -Path $BicepFile.FullName -Target $Target -ErrorAction Stop
+            Publish-BicepNetFile -Path $BicepFile.FullName -Target $Target -Force:$Force.IsPresent -ErrorAction Stop
             Write-Verbose -Message "[$($BicepFile.Name)] published to: [$Target]"
         }
         catch {
