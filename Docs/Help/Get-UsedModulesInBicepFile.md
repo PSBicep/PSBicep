@@ -5,33 +5,37 @@ online version:
 schema: 2.0.0
 ---
 
-# Restore-Bicep
+# Get-UsedModulesInBicepFile
 
 ## SYNOPSIS
-Restores external modules from the specified Bicep file to the local module cache.
+
+Get modules used in a Bicep file.
 
 ## SYNTAX
 
 ```
-Restore-Bicep [-Path] <String> [<CommonParameters>]
+Get-UsedModulesInBicepFile [-Path] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Restores all external modules referenced in the .bicep file to the local module cache. Modules from an ACR bicep registry is stored under '%USERPROFILE%\.bicep\br' and template spec modules '%USERPROFILE%\.bicep\ts'.
+
+Get information about modules used in a Bicep file.
 
 ## EXAMPLES
 
 ### Example 1
+
 ```powershell
-Restore-Bicep -Path .\main.bicep
+PS C:\> Get-UsedModulesInBicepFile -Path $BicepFilePath
 ```
 
-Restores all external modules used in main.bicep to the local module cache.
+Get all modules from a specific Bicep file.
 
 ## PARAMETERS
 
 ### -Path
-Bicep file to restore.
+
+The path to the Bicep file.
 
 ```yaml
 Type: String
@@ -39,7 +43,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 1
+Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

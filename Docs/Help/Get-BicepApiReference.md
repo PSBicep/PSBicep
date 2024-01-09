@@ -14,7 +14,8 @@ Get ARM Template reference docs for provided resource type.
 
 ### TypeString (Default)
 ```
-Get-BicepApiReference [[-Type] <String>] [-Latest] [-Force] [-ReturnUri] [<CommonParameters>]
+Get-BicepApiReference [[-Type] <String>] [-Latest] [-Force] [-ReturnUri]
+ [<CommonParameters>]
 ```
 
 ### ResourceProvider
@@ -170,21 +171,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Latest
-Open the latest API version when using the types information.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: TypeString
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ReturnUri
 If set, the command will output the api documentation URI instead of opening a browser.
 
@@ -201,7 +187,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
