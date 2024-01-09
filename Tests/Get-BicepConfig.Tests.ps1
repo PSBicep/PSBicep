@@ -75,6 +75,14 @@ Describe 'Get-BicepConfig tests' {
                     }
                   }
                 },
+                "providerAliases": {
+                  "br": {
+                    "public": {
+                      "registry": "mcr.microsoft.com",
+                      "providerPath": "bicep/providers"
+                    }
+                  }
+                },
                 "analyzers": {
                   "core": {
                     "verbose": false,
@@ -114,12 +122,16 @@ Describe 'Get-BicepConfig tests' {
                   "extensibility": false,
                   "resourceTypedParamsAndOutputs": false,
                   "sourceMapping": false,
-                  "userDefinedTypes": false,
                   "userDefinedFunctions": false,
                   "prettyPrinting": false,
                   "testFramework": false,
                   "assertions": false,
-                  "dynamicTypeLoading": false
+                  "dynamicTypeLoading": false,
+                  "providerRegistry": false,
+                  "microsoftGraphPreview": false,
+                  "compileTimeImports": false,
+                  "publishSource": false,
+                  "optionalModuleNames": false
                 },
                 "formatting": {
                   "indentKind": "Space",

@@ -15,7 +15,7 @@
     Sampler                       = 'latest'
     'Sampler.GitHubTasks'         = 'latest'
     MarkdownLinkCheck             = 'latest'
-    'BicepNet.PS'                 = '2.2.1'
+    'BicepNet.PS'                 = '2.3.1'
     'SimonWahlin/platyPS' = @{
         Version = 'main'
         DependencyType = 'GitHub'
