@@ -12,7 +12,7 @@ function New-BicepMarkdownDocumentation {
 
         [Parameter(ParameterSetName = 'FromFile')]
         [Parameter(ParameterSetName = 'FromFolder')]
-        [switch]$Console,
+        [switch]$AsString,
 
         [Parameter(ParameterSetName = 'FromFile')]
         [Parameter(ParameterSetName = 'FromFolder')]
@@ -151,7 +151,7 @@ $MDModules
         #endregion
 
         #region output
-        if ($Console) {
+        if ($AsString) {
             $FileDocumentationResult
         }
         else {
