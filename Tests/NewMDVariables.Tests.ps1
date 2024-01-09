@@ -3,10 +3,10 @@ BeforeAll {
 }
 
 InModuleScope Bicep {
-    Describe 'New-MDVariables' {
+    Describe 'NewMDVariables' {
         Context 'when given null variables' {
             It 'returns "n/a"' {
-                $result = New-MDVariables -Variables $null
+                $result = NewMDVariables -Variables $null
                 $result | Should -Be 'n/a'
             }
         }

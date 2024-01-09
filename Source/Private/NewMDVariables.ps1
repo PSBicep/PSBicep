@@ -1,4 +1,4 @@
-function New-MDVariables {
+function NewMDVariables {
     [CmdletBinding()]
     param(
         [object]$Variables
@@ -9,7 +9,7 @@ function New-MDVariables {
     }
 
     $VariableNames = ($Variables | Get-Member -MemberType NoteProperty).Name
-    $MDVariables = New-MDTableHeader -Headers 'Name', 'Value'
+    $MDVariables = NewMDTableHeader -Headers 'Name', 'Value'
 
     foreach ($var in $VariableNames) {
         $Param = $Variables.$var

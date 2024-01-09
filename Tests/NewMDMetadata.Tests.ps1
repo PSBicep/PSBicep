@@ -3,10 +3,10 @@ BeforeAll {
 }
 
 InModuleScope Bicep {
-    Describe 'New-MDResources' {
-        Context 'when given null resources' {
+    Describe 'NewMDMetadata' {
+        Context 'when given null metadata' {
             It 'returns "n/a"' {
-                $result = New-MDResources -Resources $null
+                $result = NewMDMetadata -Metadata $null
                 $result | Should -Be 'n/a'
             }
         }

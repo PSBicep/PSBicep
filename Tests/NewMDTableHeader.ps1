@@ -3,13 +3,13 @@ BeforeAll {
 }
 
 InModuleScope Bicep {
-    Describe 'New-MDTableHeader' {
+    Describe 'NewMDTableHeader' {
         Context 'When given an array of headers' {
             $headers = 'Name', 'Property', 'Value'
             $expectedOutput = '| Name | Property | Value |\n| ---- | --- | ------ |'
 
             It 'Returns a valid Markdown table header' {
-                $result = New-MDTableHeader -Headers $headers
+                $result = NewMDTableHeader -Headers $headers
                 $result | Should -Be $expectedOutput
             }
         }
@@ -18,7 +18,7 @@ InModuleScope Bicep {
             $headers = @()
 
             It 'throws an error' {
-                { New-MDTableHeader -Headers $headers } | Should -Throw
+                { NewMDTableHeader -Headers $headers } | Should -Throw
             }
         }
     }

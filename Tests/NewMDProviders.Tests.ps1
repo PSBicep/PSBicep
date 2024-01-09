@@ -2,10 +2,10 @@ BeforeAll {
     Import-Module -FullyQualifiedName "$PSScriptRoot\..\Source\Bicep.psd1" -ErrorAction Stop
 }
 InModuleScope Bicep {
-    Describe 'New-MDProviders' {
+    Describe 'NewMDProviders' {
         Context 'when given null providers' {
             It 'returns "n/a"' {
-                $result = New-MDProviders -Providers $null
+                $result = NewMDProviders -Providers $null
                 $result | Should -Be 'n/a'
             }
         }

@@ -56,18 +56,13 @@ function New-BicepMarkdownDocumentation {
 
         #region Get used modules in the bicep file
 
-        try {
-            $UsedModules = Get-UsedModulesInBicepFile -Path $SourceFile.FullName -ErrorAction Stop 
-        }
-        catch {
-            throw
-        }
+        $UsedModules = Get-BicepUsedModules -Path $SourceFile.FullName -ErrorAction Stop 
 
         #endregion
 
         #region Add Metadata to MD output
 
-        $MDMetadata = New-MDMetadata -Metadata $BuildObject.metadata
+        $MDMetadata = NewMDMetadata -Metadata $BuildObject.metadata
 
         $FileDocumentationResult += @"
 ## Metadata
@@ -79,7 +74,7 @@ $MDMetadata
 
         #region Add providers to MD output
 
-        $MDProviders = New-MDProviders -Providers $BuildObject.resources
+        $MDProviders = NewMDProviders -Providers $BuildObject.resources
 
         $FileDocumentationResult += @"
 
@@ -91,7 +86,7 @@ $MDProviders
 
         #region Add Resources to MD output
 
-        $MDResources = New-MDResources -Resources $BuildObject.resources
+        $MDResources = NewMDResources -Resources $BuildObject.resources
 
         $FileDocumentationResult += @"
 
@@ -103,7 +98,7 @@ $MDResources
 
         #region Add Parameters to MD output
 
-        $MDParameters = New-MDParameters -Parameters $BuildObject.parameters
+        $MDParameters = NewMDParameters -Parameters $BuildObject.parameters
 
         $FileDocumentationResult += @"
 
@@ -115,7 +110,7 @@ $MDParameters
 
         #region Add Variables to MD output
 
-        $MDVariables = New-MDVariables -Variables $BuildObject.variables
+        $MDVariables = NewMDVariables -Variables $BuildObject.variables
 
         $FileDocumentationResult += @"
 
@@ -127,7 +122,7 @@ $MDVariables
 
         #region Add Outputs to MD output
 
-        $MDOutputs = New-MDOutputs -Outputs $BuildObject.outputs
+        $MDOutputs = NewMDOutputs -Outputs $BuildObject.outputs
 
         $FileDocumentationResult += @"
 
@@ -139,7 +134,7 @@ $MDOutputs
 
         #region Add Modules to MD output
 
-        $MDModules = New-MDModules -Modules $UsedModules
+        $MDModules = NewMDModules -Modules $UsedModules
 
         $FileDocumentationResult += @"
 

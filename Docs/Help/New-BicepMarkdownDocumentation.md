@@ -14,12 +14,14 @@ Create markdown documentation for bicep files
 
 ### FromFile (Default)
 ```
-New-BicepMarkdownDocumentation [[-File] <String>] [-Console] [-Force] [<CommonParameters>]
+New-BicepMarkdownDocumentation [[-File] <String>] [-AsString] [-Force]
+ [<CommonParameters>]
 ```
 
 ### FromFolder
 ```
-New-BicepMarkdownDocumentation [[-Path] <String>] [-Recurse] [-Console] [-Force] [<CommonParameters>]
+New-BicepMarkdownDocumentation [[-Path] <String>] [-Recurse] [-AsString] [-Force]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -43,7 +45,7 @@ This command will traverse the c:\MyBicepFiles\ folder, including subfolders, an
 
 ## PARAMETERS
 
-### -Console
+### -AsString
 Output the resulting markdown to to the cosole as string.
 
 ```yaml
