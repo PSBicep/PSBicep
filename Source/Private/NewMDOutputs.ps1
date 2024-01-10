@@ -1,4 +1,4 @@
-function New-MDOutputs {
+function NewMDOutputs {
     [CmdletBinding()]
     param(
         [object]$Outputs
@@ -9,7 +9,7 @@ function New-MDOutputs {
     }
 
     $OutputNames = ($Outputs | Get-Member -MemberType NoteProperty).Name
-    $MDOutputs = New-MDTableHeader -Headers 'Name', 'Type', 'Value'
+    $MDOutputs = NewMDTableHeader -Headers 'Name', 'Type', 'Value'
 
     foreach ($OutputName in $OutputNames) {
         $OutputValues = $Outputs.$OutputName

@@ -1,8 +1,8 @@
-Function Get-UsedModulesInBicepFile {
+Function Get-BicepUsedModules {
     param(
         [cmdletbinding()]
         [Parameter(Mandatory = $true)]
-        [string]$Path
+        [string[]]$Path
     )
 
     try {

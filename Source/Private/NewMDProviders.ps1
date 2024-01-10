@@ -1,4 +1,4 @@
-function New-MDProviders {
+function NewMDProviders {
     [CmdletBinding()]
     param(
         [object[]]$Providers
@@ -8,7 +8,7 @@ function New-MDProviders {
         return 'n/a'
     }
 
-    $MDProviders = New-MDTableHeader -Headers 'Type', 'Version'
+    $MDProviders = NewMDTableHeader -Headers 'Type', 'Version'
 
     foreach ($provider in $Providers) {
         $MDProviders += "| $($Provider.Type) | $($Provider.apiVersion) |`n"

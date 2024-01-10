@@ -1,4 +1,4 @@
-function New-MDTableHeader {
+function NewMDTableHeader {
     [CmdletBinding()]
     param(
         [string[]]$Headers

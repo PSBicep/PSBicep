@@ -1,4 +1,4 @@
-function New-MDParameters {
+function NewMDParameters {
     [CmdletBinding()]
     param(
         [object]$Parameters
@@ -9,7 +9,7 @@ function New-MDParameters {
     }
 
     $ParameterNames = ($Parameters | Get-Member -MemberType NoteProperty).Name
-    $MDParameters = New-MDTableHeader -Headers 'Name', 'Type', 'AllowedValues', 'Metadata'
+    $MDParameters = NewMDTableHeader -Headers 'Name', 'Type', 'AllowedValues', 'Metadata'
 
     foreach ($Parameter in $ParameterNames) {
         $Param = $Parameters.$Parameter
