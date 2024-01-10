@@ -1,4 +1,4 @@
-function New-MDModules {
+function NewMDModules {
     [CmdletBinding()]
     param(
         [object[]]$Modules
@@ -8,7 +8,7 @@ function New-MDModules {
         return 'n/a'
     }
 
-    $MDModules = New-MDTableHeader -Headers 'Name', 'Path'
+    $MDModules = NewMDTableHeader -Headers 'Name', 'Path'
 
     foreach ($Module in $Modules) {
         $MDModules += "| $($Module.Name) | $($Module.Path) |`n"

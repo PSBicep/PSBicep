@@ -1,4 +1,4 @@
-function New-MDResources {
+function NewMDResources {
     [CmdletBinding()]
     param(
         [object[]]$Resources
@@ -8,7 +8,7 @@ function New-MDResources {
         return 'n/a'
     }
 
-    $MDResources = New-MDTableHeader -Headers 'Name', 'Link', 'Location'
+    $MDResources = NewMDTableHeader -Headers 'Name', 'Link', 'Location'
 
     foreach ($Resource in $Resources) {
         try {

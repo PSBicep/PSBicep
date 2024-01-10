@@ -21,7 +21,7 @@ Describe 'New-BicepMarkdownDocumentation' -ForEach @(
 
     BeforeAll {
         # Don't need to exec it multiple times, just once
-        $result = New-BicepMarkdownDocumentation -File $_.FullName -Console
+        $result = New-BicepMarkdownDocumentation -File $_.FullName -AsString
 
         # Calm down PSScriptAnalyzer as it is used.
         $null = $result
@@ -189,6 +189,6 @@ Describe 'New-BicepMarkdownDocumentation' -ForEach @(
 ) {
 
     It "<name> should throw an error" {
-        { New-BicepMarkdownDocumentation -File $_.FullName -Console -ErrorAction Stop } | Should -Throw
+        { New-BicepMarkdownDocumentation -File $_.FullName -AsString -ErrorAction Stop } | Should -Throw
     }
 }
