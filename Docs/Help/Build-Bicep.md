@@ -15,26 +15,27 @@ Builds one or more .bicep files.
 ### Default (Default)
 ```
 Build-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>]
- [-GenerateAllParametersFile] [-GenerateRequiredParametersFile] [-NoRestore] [-Compress] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-GenerateAllParametersFile] [-GenerateRequiredParametersFile] [-NoRestore] [-Compress]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### OutputPath
 ```
 Build-Bicep [[-Path] <String>] [[-OutputPath] <String>] [-ExcludeFile <String[]>] [-GenerateAllParametersFile]
- [-GenerateRequiredParametersFile] [-NoRestore] [-Compress] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-GenerateRequiredParametersFile] [-NoRestore] [-Compress] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### AsHashtable
 ```
-Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-NoRestore] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-NoRestore]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### AsString
 ```
-Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString] [-NoRestore] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Build-Bicep [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString] [-NoRestore]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -283,7 +284,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

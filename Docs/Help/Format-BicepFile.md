@@ -14,33 +14,31 @@ Format one or several Bicep files.
 ## SYNTAX
 
 ### Default (Default)
-
-```powershell
+```
 Format-BicepFile [[-Path] <String>] [[-NewlineOption] <String>] [[-IndentKindOption] <String>]
- [[-IndentSize] <Int32>] [-InsertFinalNewline] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [[-IndentSize] <Int32>] [-InsertFinalNewline] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### OutputPath
-
-```powershell
+```
 Format-BicepFile [[-Path] <String>] [[-OutputPath] <String>] [[-NewlineOption] <String>]
- [[-IndentKindOption] <String>] [[-IndentSize] <Int32>] [-InsertFinalNewline] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [[-IndentKindOption] <String>] [[-IndentSize] <Int32>] [-InsertFinalNewline]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### OutputDirectory
-
-```powershell
+```
 Format-BicepFile [[-Path] <String>] [[-OutputDirectory] <String>] [[-NewlineOption] <String>]
- [[-IndentKindOption] <String>] [[-IndentSize] <Int32>] [-InsertFinalNewline] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [[-IndentKindOption] <String>] [[-IndentSize] <Int32>] [-InsertFinalNewline]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### AsString
-
-```powershell
+```
 Format-BicepFile [[-Path] <String>] [[-NewlineOption] <String>] [[-IndentKindOption] <String>]
- [[-IndentSize] <Int32>] [-InsertFinalNewline] [-AsString] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [[-IndentSize] <Int32>] [-InsertFinalNewline] [-AsString] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -229,8 +227,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

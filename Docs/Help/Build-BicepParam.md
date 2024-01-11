@@ -13,27 +13,27 @@ Builds one or more .bicepparam files.
 ## SYNTAX
 
 ### Default (Default)
-```powershell
+```
 Build-BicepParam [[-Path] <String>] [[-OutputDirectory] <String>] [-ExcludeFile <String[]>] [-Compress]
  [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### OutputPath
-```powershell
-Build-BicepParam [[-Path] <String>] [[-OutputPath] <String>] [-ExcludeFile <String[]>] [-Compress] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+```
+Build-BicepParam [[-Path] <String>] [[-OutputPath] <String>] [-ExcludeFile <String[]>] [-Compress]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### AsHashtable
-```powershell
-Build-BicepParam [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+```
+Build-BicepParam [[-Path] <String>] [-ExcludeFile <String[]>] [-AsHashtable]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### AsString
-```powershell
-Build-BicepParam [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+```
+Build-BicepParam [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -227,7 +227,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

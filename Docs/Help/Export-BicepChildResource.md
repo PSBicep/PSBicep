@@ -14,15 +14,15 @@ Exports all child resources of a specified Azure resource container as Bicep.
 ## SYNTAX
 
 ### OutputPath (Default)
-
-```powershell
-Export-BicepChildResource [-ParentResourceId] <String> [-OutputDirectory] <String> [<CommonParameters>]
+```
+Export-BicepChildResource [-ParentResourceId] <String> [-OutputDirectory] <String>
+ [<CommonParameters>]
 ```
 
 ### AsString
-
-```powershell
-Export-BicepChildResource [-ParentResourceId] <String> [-AsString] [<CommonParameters>]
+```
+Export-BicepChildResource [-ParentResourceId] <String> [-AsString]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -90,8 +90,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
