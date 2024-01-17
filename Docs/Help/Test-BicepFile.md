@@ -8,7 +8,7 @@ schema: 2.0.0
 # Test-BicepFile
 
 ## SYNOPSIS
-Tests if a bicep file is valid.
+Tests if a bicep or bicepparam file is valid.
 
 ## SYNTAX
 
