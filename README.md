@@ -28,9 +28,6 @@ Commands implemented:
 - [Update-BicepCLI](./Docs/Help/Update-BicepCLI.md)
 - [Update-BicepParameterFile](./Docs/Help/Update-BicepParameterFile.md)
 - [Update-BicepTypes](./Docs/Help/Update-BicepTypes.md)
- 
-Preview commands:
-
 - [Build-BicepParam](./Docs/Help/Build-BicepParam.md)
 - [Export-BicepResource](./Docs/Help/Export-BicepResource.md)
 - [Export-BicepChildResource](./Docs/Help/Export-BicepChildResource.md)
@@ -80,7 +77,7 @@ This project is currently maintained by the following coders:
 
 <!-- References -->
 [BicepIcon]: logo/BicePS_40px.png
-[Bicep]: https://img.shields.io/badge/Bicep-v2.4.0-blue
+[Bicep]: https://img.shields.io/badge/Bicep-v2.5.0-blue
 [BicepPreview]: https://img.shields.io/badge/Bicep-v2.5.0--Preview1-red
 [BicepDownloads]: https://img.shields.io/powershellgallery/dt/Bicep
 [BicepGallery]: https://www.powershellgallery.com/packages/Bicep/
