@@ -1,0 +1,81 @@
+{
+  // This is the base configuration which provides the defaults for all values (end users don't see this file).
+  // Intellisense for bicepconfig.json is controlled by src/vscode-bicep/schemas/bicepconfig.schema.json
+
+  "cloud": {
+    "currentProfile": "AzureCloud",
+    "profiles": {
+      "AzureCloud": {
+        "resourceManagerEndpoint": "https://management.azure.com",
+        "activeDirectoryAuthority": "https://login.microsoftonline.com"
+      },
+      "AzureChinaCloud": {
+        "resourceManagerEndpoint": "https://management.chinacloudapi.cn",
+        "activeDirectoryAuthority": "https://login.chinacloudapi.cn"
+      },
+      "AzureUSGovernment": {
+        "resourceManagerEndpoint": "https://management.usgovcloudapi.net",
+        "activeDirectoryAuthority": "https://login.microsoftonline.us"
+      }
+    },
+    "credentialPrecedence": [
+      "AzurePowerShell"
+    ]
+  },
+  "moduleAliases": {
+    "ts": {},
+    "br": {
+      "public": {
+        "registry": "mcr.microsoft.com",
+        "modulePath": "bicep"
+      }
+    }
+  },
+  "providerAliases": {
+    "br": {
+      "public": {
+        "registry": "mcr.microsoft.com",
+        "providerPath": "bicep/providers"
+      }
+    }
+  },
+  "providers": {
+    "az": "builtin:",
+    "kubernetes": "builtin:",
+    "microsoftGraph": "builtin:"
+  },
+  "implicitProviders": ["az"],
+  "analyzers": {
+    "core": {
+      "verbose": false,
+      "enabled": true,
+      "rules": {
+        "no-hardcoded-env-urls": {
+          "level": "warning",
+          "disallowedhosts": [
+            "api.loganalytics.io",
+            "azuredatalakeanalytics.net",
+            "azuredatalakestore.net",
+            "batch.core.windows.net",
+            "core.windows.net",
+            "database.windows.net",
+            "datalake.azure.net",
+            "gallery.azure.com",
+            "graph.windows.net",
+            "login.microsoftonline.com",
+            "management.azure.com",
+            "management.core.windows.net",
+            "region.asazure.windows.net",
+            "trafficmanager.net",
+            "vault.azure.net"
+          ],
+          "excludedhosts": [
+            "schema.management.azure.com"
+          ]
+        }
+      }
+    }
+  },
+  "experimentalFeaturesEnabled": {},
+  "formatting": {}
+}

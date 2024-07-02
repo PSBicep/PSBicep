@@ -10,8 +10,11 @@ SourceDirectories:
   - Private
   - Public
 CopyPaths:
+  - ../BicepNet.Core/bin/BicepNet.Core
+  - ../BicepNet.PS/bin/BicepNet.PS
   - en-US
   - ../LICENSE
+  - ../CHANGELOG.md
 Suffix: suffix.ps1
 
 Encoding: UTF8
@@ -53,27 +56,24 @@ BuildWorkflow:
     - build
     - test
 
+  compile:
+    - dotnetBuild
+
   build:
     - Clean
-    - copyBicepNetPSToSource
+    - dotnetBuild
     - Build_Module_ModuleBuilder
-    - Build_NestedModules_ModuleBuilder
-    - copyBicepNetPSToOutput
     - getBicepTypes
     - updateMarkdownHelp
     - updateExternalHelp
     - Create_changelog_release_output
 
-
   pack:
     - build
     - package_module_nupkg
 
-
-
   # Defining test task to be run when invoking `./build.ps1 -Tasks test`
   test:
-    - copyBicepNetPSToSource
     - getBicepTypes
     # Uncomment to modify the PSModulePath in the test pipeline (also requires the build configuration section SetPSModulePath).
     - Set_PSModulePath
@@ -89,7 +89,6 @@ BuildWorkflow:
     #- Merge_CodeCoverage_Files
 
   publish:
-    - copyBicepNetPSToSource
     - getBicepTypes
     - publish_module_to_gallery
     #- Publish_Release_To_GitHub
