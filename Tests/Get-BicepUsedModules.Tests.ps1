@@ -1,6 +1,6 @@
 # Data driven https://pester.dev/docs/usage/data-driven-tests
 BeforeAll {
-    Import-Module -FullyQualifiedName "$PSScriptRoot\..\Source\Bicep.psd1" -ErrorAction Stop -Force
+    Import-Module -FullyQualifiedName "$PSScriptRoot\..\output\Bicep" -ErrorAction Stop
 }
 
 

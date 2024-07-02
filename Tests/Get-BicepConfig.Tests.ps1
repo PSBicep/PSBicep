@@ -1,5 +1,5 @@
 BeforeAll {
-    Import-Module -FullyQualifiedName "$PSScriptRoot\..\Source\Bicep.psd1" -ErrorAction Stop
+  Import-Module -FullyQualifiedName "$PSScriptRoot\..\output\Bicep" -ErrorAction Stop
 }
 
 Describe 'Get-BicepConfig tests' {
@@ -45,102 +45,106 @@ Describe 'Get-BicepConfig tests' {
 '@
             $mergedConfig = @'
             {
-                "cloud": {
-                  "currentProfile": "AzureCloud",
-                  "profiles": {
-                    "AzureChinaCloud": {
-                        "resourceManagerEndpoint": "https://management.chinacloudapi.cn",
-                        "activeDirectoryAuthority": "https://login.chinacloudapi.cn"
-                      },
-                      "AzureCloud": {
-                        "resourceManagerEndpoint": "https://management.azure.com",
-                        "activeDirectoryAuthority": "https://login.microsoftonline.com"
-                      },
-                      "AzureUSGovernment": {
-                        "resourceManagerEndpoint": "https://management.usgovcloudapi.net",
-                        "activeDirectoryAuthority": "https://login.microsoftonline.us"
-                      }
+              "cloud": {
+                "currentProfile": "AzureCloud",
+                "profiles": {
+                  "AzureChinaCloud": {
+                    "resourceManagerEndpoint": "https://management.chinacloudapi.cn",
+                    "activeDirectoryAuthority": "https://login.chinacloudapi.cn"
                   },
-                  "credentialPrecedence": [
-                    "AzurePowerShell",
-                    "AzureCLI"
-                  ]
-                },
-                "moduleAliases": {
-                  "ts": {},
-                  "br": {
-                    "public": {
-                      "registry": "mcr.microsoft.com",
-                      "modulePath": "bicep"
-                    }
+                  "AzureCloud": {
+                    "resourceManagerEndpoint": "https://management.azure.com",
+                    "activeDirectoryAuthority": "https://login.microsoftonline.com"
+                  },
+                  "AzureUSGovernment": {
+                    "resourceManagerEndpoint": "https://management.usgovcloudapi.net",
+                    "activeDirectoryAuthority": "https://login.microsoftonline.us"
                   }
                 },
-                "providerAliases": {
-                  "br": {
-                    "public": {
-                      "registry": "mcr.microsoft.com",
-                      "providerPath": "bicep/providers"
-                    }
+                "credentialPrecedence": [
+                  "AzurePowerShell"
+                ]
+              },
+              "moduleAliases": {
+                "ts": {},
+                "br": {
+                  "public": {
+                    "registry": "mcr.microsoft.com",
+                    "modulePath": "bicep"
                   }
-                },
-                "analyzers": {
-                  "core": {
-                    "verbose": false,
-                    "enabled": true,
-                    "rules": {
-                      "no-hardcoded-env-urls": {
-                        "level": "warning",
-                        "disallowedhosts": [
-                          "api.loganalytics.io",
-                          "azuredatalakeanalytics.net",
-                          "azuredatalakestore.net",
-                          "batch.core.windows.net",
-                          "core.windows.net",
-                          "database.windows.net",
-                          "datalake.azure.net",
-                          "gallery.azure.com",
-                          "graph.windows.net",
-                          "login.microsoftonline.com",
-                          "management.azure.com",
-                          "management.core.windows.net",
-                          "region.asazure.windows.net",
-                          "trafficmanager.net",
-                          "vault.azure.net"
-                        ],
-                        "excludedhosts": [
-                          "schema.management.azure.com"
-                        ]
-                      },
-                      "no-unused-params": {
-                        "level": "off"
-                      }
-                    }
-                  }
-                },
-                "experimentalFeaturesEnabled": {
-                  "symbolicNameCodegen": false,
-                  "extensibility": false,
-                  "resourceTypedParamsAndOutputs": false,
-                  "sourceMapping": false,
-                  "userDefinedFunctions": false,
-                  "prettyPrinting": false,
-                  "testFramework": false,
-                  "assertions": false,
-                  "dynamicTypeLoading": false,
-                  "providerRegistry": false,
-                  "microsoftGraphPreview": false,
-                  "compileTimeImports": false,
-                  "publishSource": false,
-                  "optionalModuleNames": false
-                },
-                "formatting": {
-                  "indentKind": "Space",
-                  "newlineKind": "LF",
-                  "insertFinalNewline": true,
-                  "indentSize": 2,
-                  "width": 80
                 }
-              }    
+              },
+              "providerAliases": {
+                "br": {
+                  "public": {
+                    "registry": "mcr.microsoft.com",
+                    "providerPath": "bicep/providers"
+                  }
+                }
+              },
+              "providers": {
+                "microsoftGraph": "builtin:",
+                "az": "builtin:",
+                "kubernetes": "builtin:"
+              },
+              "implicitProviders": [
+                "az"
+              ],
+              "analyzers": {
+                "core": {
+                  "verbose": false,
+                  "enabled": true,
+                  "rules": {
+                    "no-hardcoded-env-urls": {
+                      "level": "warning",
+                      "disallowedhosts": [
+                        "api.loganalytics.io",
+                        "azuredatalakeanalytics.net",
+                        "azuredatalakestore.net",
+                        "batch.core.windows.net",
+                        "core.windows.net",
+                        "database.windows.net",
+                        "datalake.azure.net",
+                        "gallery.azure.com",
+                        "graph.windows.net",
+                        "login.microsoftonline.com",
+                        "management.azure.com",
+                        "management.core.windows.net",
+                        "region.asazure.windows.net",
+                        "trafficmanager.net",
+                        "vault.azure.net"
+                      ],
+                      "excludedhosts": [
+                        "schema.management.azure.com"
+                      ]
+                    },
+                    "no-unused-params": {
+                      "level": "off"
+                    }
+                  }
+                }
+              },
+              "experimentalFeaturesEnabled": {
+                "symbolicNameCodegen": false,
+                "extensibility": false,
+                "resourceTypedParamsAndOutputs": false,
+                "sourceMapping": false,
+                "legacyFormatter": false,
+                "testFramework": false,
+                "assertions": false,
+                "dynamicTypeLoading": false,
+                "providerRegistry": false,
+                "optionalModuleNames": false,
+                "resourceDerivedTypes": false
+              },
+              "formatting": {
+                "indentKind": "Space",
+                "newlineKind": "LF",
+                "insertFinalNewline": true,
+                "indentSize": 2,
+                "width": 120
+              }
+            } 
 '@
         }
 

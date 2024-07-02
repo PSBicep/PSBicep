@@ -1,9 +1,8 @@
 BeforeAll {
-    Import-Module -FullyQualifiedName "$PSScriptRoot\..\Source\Bicep.psd1" -ErrorAction Stop
+    Import-Module -FullyQualifiedName "$PSScriptRoot\..\output\Bicep" -ErrorAction Stop
 }
- 
 Describe 'CompareBicepVersion' {
-    BeforeAll {
+    BeforeAll { 
         Mock ListBicepVersions -ModuleName Bicep {
             throw "should not happen"
         }
