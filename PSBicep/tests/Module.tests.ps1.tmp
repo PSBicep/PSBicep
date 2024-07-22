@@ -1,0 +1,34 @@
+# TODO: If this should be kept, move to general tests folder
+param(
+    $TestCaseData = "$PSScriptRoot/BicepNet.PS.ParameterTests.json"
+)
+
+BeforeDiscovery {
+    $TestCases = Get-Content $TestCaseData | ConvertFrom-Json
+}
+
+BeforeAll {
+    $ModulePath = Convert-Path "$PSScriptRoot/../../output/BicepNet.PS"
+    Import-Module $ModulePath -Force
+    $ModuleCommands = Get-Command -Module 'BicepNet.PS'
+}
+
+Describe 'No breaking parameter changes' {
+    Context 'Checking parameter definitions on command <_.CommandName>' -Foreach $TestCases {
+
+        BeforeAll {
+            $TestCommand = $_
+            $ModuleCommand = $ModuleCommands | Where-Object {$_.Name -eq $TestCommand.CommandName}
+        }
+
+        It 'Parameter <_.Parametername> is of type <_.ParameterType>' -Foreach $_.Parameters {
+            $ModuleCommand.Parameters.($_.Parametername).ParameterType.FullName | Should -Be $_.ParameterType
+        }
+
+        It 'All parameters are tested' {
+            $ModuleCommand.Parameters.Keys | ForEach-Object {
+                $TestCommand.Parameters.ParameterName | Should -Contain $_
+            }
+        }
+    }
+}

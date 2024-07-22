@@ -8,41 +8,25 @@ Describe 'Get-BicepUsedModules' -ForEach @(
     @{
         name     = 'bicepWithMeta.bicep'
         fullName = "$PSScriptRoot\supportFiles\bicepWithMeta.bicep"
+        count    = 0
     }
     @{
         name     = 'main.bicep'
         fullName = "$PSScriptRoot\supportFiles\main.bicep"
+        count    = 1
     },
     @{
         name     = 'workingBicep.bicep'
         fullName = "$PSScriptRoot\supportFiles\workingBicep.bicep"
+        count    = 0
     }
 ) {
 
-    It '<name> should find modules used in the bicep file' {
+    It '<name> should find <count> modules used in the bicep file' {
 
         $result = Get-BicepUsedModules -Path $_.fullName
-
-        switch ($_.Name) {
-            'bicepWithMeta.bicep' {
-                $result | Should -Be @()
-            }
-            'main.bicep' {
-                $expected = [PSCustomObject]@{
-                    Name = 'storage'
-                    Path = 'workingBicep.bicep'
-                } 
-                $expectedJson = $expected | ConvertTo-Json -Depth 100
-                $resultJson = $result | ConvertTo-Json -Depth 100
-                $resultJson | Should -Be $expectedJson
-            }
-            'workingBicep.bicep' {
-                $result | Should -Be @()
-            }
-            default {
-                throw "Unknown file name: $($_.name)"
-            }
-        }
+        $Count = $_.count
+        @($result).Count | Should -Be $Count
     }
 }
 

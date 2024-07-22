@@ -42,7 +42,7 @@ function New-BicepMarkdownDocumentation {
 
         #region build Bicep PS object
         try {
-            $BuildObject = (Build-BicepNetFile -Path $SourceFile.FullName -ErrorAction Stop) | ConvertFrom-Json -Depth 100
+            $BuildObject = (Build-BicepFile -Path $SourceFile.FullName -ErrorAction Stop) | ConvertFrom-Json -Depth 100
         }
         catch {
             Write-Error -Message "Failed to build $($SourceFile.Name) - $($_.Exception.Message)"

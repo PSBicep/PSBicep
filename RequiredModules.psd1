@@ -6,7 +6,6 @@
             Repository = 'PSGallery'
         }
     }
-
     InvokeBuild                   = 'latest'
     PSScriptAnalyzer              = 'latest'
     Pester                        = 'latest'

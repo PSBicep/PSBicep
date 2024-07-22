@@ -10,8 +10,8 @@ SourceDirectories:
   - Private
   - Public
 CopyPaths:
-  - ../BicepNet.Core/bin/BicepNet.Core
-  - ../BicepNet.PS/bin/BicepNet.PS
+  - ../PSBicep.Core/bin/PSBicep.Core
+  - ../PSBicep/bin/PSBicep
   - en-US
   - ../LICENSE
   - ../CHANGELOG.md
@@ -57,11 +57,11 @@ BuildWorkflow:
     - test
 
   compile:
-    - dotnetBuild
+    -  PSBicep.Compile
 
   build:
     - Clean
-    - dotnetBuild
+    - compile
     - Build_Module_ModuleBuilder
     - getBicepTypes
     - updateMarkdownHelp

@@ -83,8 +83,8 @@ Describe 'Get-BicepConfig tests' {
                 }
               },
               "providers": {
-                "microsoftGraph": "builtin:",
                 "az": "builtin:",
+                "microsoftGraph": "builtin:",
                 "kubernetes": "builtin:"
               },
               "implicitProviders": [

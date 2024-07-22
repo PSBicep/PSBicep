@@ -48,7 +48,7 @@ function Publish-Bicep {
 
         # Publish module
         try {
-            Publish-BicepNetFile -Path $BicepFile.FullName -Target $Target -PublishSource:$PublishSource.IsPresent -Force:$Force.IsPresent -ErrorAction Stop
+            Publish-BicepFile -Path $BicepFile.FullName -Target $Target -PublishSource:$PublishSource.IsPresent -Force:$Force.IsPresent -ErrorAction Stop
             Write-Verbose -Message "[$($BicepFile.Name)] published to: [$Target]"
         }
         catch {

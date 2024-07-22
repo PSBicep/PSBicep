@@ -3,7 +3,7 @@ output/
 tmp/
 bin/
 obj/
-BicepNet.Core/Properties/
+PSBicep.Core/Properties/
 /Source/Assets
 coverage.xml
 testResults.xml

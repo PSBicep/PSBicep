@@ -23,7 +23,7 @@ function New-BicepParameterFile {
         }
 
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $FullVersion = Get-BicepNetVersion -Verbose:$false
+            $FullVersion = Get-BicepVersion -Verbose:$false
             Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
         
@@ -38,7 +38,7 @@ function New-BicepParameterFile {
             break
         }
         if ($File) {
-            $ARMTemplate = Build-BicepNetFile -Path $file.FullName
+            $ARMTemplate = Build-BicepFile -Path $file.FullName
 
             if($PSBoundParameters.ContainsKey('OutputDirectory')) {
                 $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $File.BaseName)

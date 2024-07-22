@@ -68,7 +68,7 @@ function Build-Bicep {
             Break
         }
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $FullVersion = Get-BicepNetVersion -Verbose:$false
+            $FullVersion = Get-BicepVersion -Verbose:$false
             Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
     }
@@ -82,7 +82,7 @@ function Build-Bicep {
                         $bicepConfig= Get-BicepConfig -Path $file
                         Write-Verbose -Message "Using Bicep configuration: $($bicepConfig.Path)"
                     }
-                    $ARMTemplate = Build-BicepNetFile -Path $file.FullName -NoRestore:$NoRestore.IsPresent
+                    $ARMTemplate = Build-BicepFile -Path $file.FullName -NoRestore:$NoRestore.IsPresent
 
                     if (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {
                         $BicepModuleVersion = Get-Module -Name Bicep | Sort-Object -Descending | Select-Object -First 1

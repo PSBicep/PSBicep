@@ -1,71 +1,70 @@
 function WriteBicepDiagnostic {
     [CmdletBinding()]
     param (
-        [Bicep.Core.Diagnostics.Diagnostic]$Diagnostic,
-
-        [Bicep.Core.Syntax.SyntaxTree]$SyntaxTree
+        [Parameter(ValueFromPipeline)]
+        [BicepDiagnosticEntry[]]
+        $Diagnostic
     )
-    Write-Warning 'WriteBicepDiagnostic does not work anymore, I''m sorry'
-    return
     
-    $FileUri = $SyntaxTree.FileUri
-    $LocalPath = $FileUri.LocalPath
-    $LineStarts = $SyntaxTree.LineStarts
+    process {
+        foreach($DiagnosticEntry in $Diagnostic) {
+            $LocalPath = $DiagnosticEntry.LocalPath
 
-    $Position = [Bicep.Core.Text.TextCoordinateConverter]::GetPosition($LineStarts, $Diagnostic.Span.Position)
-    [int]$Line = $Position.Item1 + 1
-    [int]$Character = $Position.Item2 + 1
+            [int]$Line = $DiagnosticEntry.Position[0] + 1
+            [int]$Character = $DiagnosticEntry.Position[1] + 1
 
-    $Level = $Diagnostic.Level.ToString()
-    $Code = $Diagnostic.Code
-    $Message = $Diagnostic.Message
-    $OutputString = "$LocalPath(${Line},$Character) : $Level ${Code}: $Message"
+            $Level = $DiagnosticEntry.Level.ToString()
+            $Code = $DiagnosticEntry.Code
+            $Message = $DiagnosticEntry.Message
+            $OutputString = "$LocalPath(${Line},$Character) : $Level ${Code}: $Message"
 
-    switch ($Diagnostic.Level) {
-        'Info' {
-            $Params = @{
-                MessageData = [System.Management.Automation.HostInformationMessage]@{
-                    Message         = $OutputString
-                    ForegroundColor = $Host.PrivateData.VerboseForegroundColor
-                    BackgroundColor = $Host.PrivateData.VerboseBackgroundColor
+            switch ($Level) {
+                'Info' {
+                    $Params = @{
+                        MessageData = [System.Management.Automation.HostInformationMessage]@{
+                            Message         = $OutputString
+                            ForegroundColor = $Host.PrivateData.VerboseForegroundColor
+                            BackgroundColor = $Host.PrivateData.VerboseBackgroundColor
+                        }
+                        Tag         = 'Information'
+                    }
                 }
-                Tag         = 'Information'
-            }
-        }
-        'Warning' {
-            $Params = @{
-                MessageData = [System.Management.Automation.HostInformationMessage]@{
-                    Message         = $OutputString
-                    ForegroundColor = $Host.PrivateData.WarningForegroundColor
-                    BackgroundColor = $Host.PrivateData.WarningBackgroundColor
+                'Warning' {
+                    $Params = @{
+                        MessageData = [System.Management.Automation.HostInformationMessage]@{
+                            Message         = $OutputString
+                            ForegroundColor = $Host.PrivateData.WarningForegroundColor
+                            BackgroundColor = $Host.PrivateData.WarningBackgroundColor
+                        }
+                        Tag         = 'Warning'
+                    }
                 }
-                Tag         = 'Warning'
-            }
-        }
-        'Error' {
-            $Params = @{
-                MessageData = [System.Management.Automation.HostInformationMessage]@{
-                    Message         = $OutputString
-                    ForegroundColor = $Host.PrivateData.ErrorForegroundColor
-                    BackgroundColor = $Host.PrivateData.ErrorBackgroundColor
+                'Error' {
+                    $Params = @{
+                        MessageData = [System.Management.Automation.HostInformationMessage]@{
+                            Message         = $OutputString
+                            ForegroundColor = $Host.PrivateData.ErrorForegroundColor
+                            BackgroundColor = $Host.PrivateData.ErrorBackgroundColor
+                        }
+                        Tag         = 'Error'
+                    }
                 }
-                Tag         = 'Error'
-            }
-        }
-        'Off' {
-            $Params = @{
-                MessageData = [System.Management.Automation.HostInformationMessage]@{
-                    Message         = $OutputString
-                    ForegroundColor = $Host.PrivateData.VerboseForegroundColor
-                    BackgroundColor = $Host.PrivateData.VerboseBackgroundColor
+                'Off' {
+                    $Params = @{
+                        MessageData = [System.Management.Automation.HostInformationMessage]@{
+                            Message         = $OutputString
+                            ForegroundColor = $Host.PrivateData.VerboseForegroundColor
+                            BackgroundColor = $Host.PrivateData.VerboseBackgroundColor
+                        }
+                        Tag         = 'Off'
+                    }
                 }
-                Tag         = 'Off'
+                default {
+                    Write-Warning "Unhandled diagnostic level: $_"
+                }
             }
-        }
-        default {
-            Write-Warning "Unhandled diagnostic level: $_"
+        
+            Write-Information @Params
         }
     }
-
-    return $Params
 }

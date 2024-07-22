@@ -1,4 +1,4 @@
-# TODO This won't work with BicepNet, has to be rewritten.
+# TODO This won't work with Bicep, has to be rewritten.
 function Test-BicepFile {
     [CmdletBinding()]
     param (
@@ -37,7 +37,7 @@ function Test-BicepFile {
         }
 
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $FullVersion = Get-BicepNetVersion -Verbose:$false
+            $FullVersion = Get-BicepVersion -Verbose:$false
             Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
 
@@ -60,10 +60,10 @@ function Test-BicepFile {
                 Write-Verbose -Message "Using Bicep configuration: $($bicepConfig.Path)"
             }
             
-            $BuildResult = Build-BicepNetFile -Path $file.FullName
+            $BuildResult = Build-BicepFile -Path $file.FullName
 
             if (-not $IgnoreDiagnosticOutput) {
-                $BuildResult.Diagnostic | WriteBicepNetDiagnostic -InformationAction 'Continue'
+                $BuildResult.Diagnostic | WriteBicepDiagnostic -InformationAction 'Continue'
             }
             
         }
