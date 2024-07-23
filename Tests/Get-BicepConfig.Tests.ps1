@@ -154,9 +154,12 @@ Describe 'Get-BicepConfig tests' {
         }
 
         It 'Returns merged config when used with only Path' {
+            # Excluding the Providers property as it is output using different sorting order each time
             $config = Get-BicepConfig -Path "$TestDrive\supportFiles\workingBicep.bicep"
-            $mergedConfigTest = ConvertFrom-Json -InputObject $mergedConfig | ConvertTo-Json -Depth 10
-            $ConfigJson = ConvertFrom-Json -InputObject $config.Config | ConvertTo-Json -Depth 10
+            $mergedConfigTest = ConvertFrom-Json -InputObject $mergedConfig | 
+              Select-Object -ExcludeProperty Providers | ConvertTo-Json -Depth 10
+            $ConfigJson = ConvertFrom-Json -InputObject $config.Config | 
+              Select-Object -ExcludeProperty Providers | ConvertTo-Json -Depth 10
             $ConfigJson | Should -BeExactly $mergedConfigTest
         }
 
@@ -171,9 +174,12 @@ Describe 'Get-BicepConfig tests' {
         }
 
         It 'Get merged bicepconfig' {
+            # Excluding the Providers property as it is output using different sorting order each time
             $config = Get-BicepConfig -Path "$TestDrive\supportFiles\workingBicep.bicep" -Merged
-            $mergedConfigTest = ConvertFrom-Json -InputObject $mergedConfig | ConvertTo-Json -Depth 10
-            $ConfigJson = ConvertFrom-Json -InputObject $config.Config | ConvertTo-Json -Depth 10
+            $mergedConfigTest = ConvertFrom-Json -InputObject $mergedConfig | 
+              Select-Object -ExcludeProperty Providers | ConvertTo-Json -Depth 10
+            $ConfigJson = ConvertFrom-Json -InputObject $config.Config | 
+              Select-Object -ExcludeProperty Providers | ConvertTo-Json -Depth 10
             $ConfigJson | Should -BeExactly $mergedConfigTest
         }
 
