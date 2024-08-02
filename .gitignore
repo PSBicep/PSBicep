@@ -2,9 +2,10 @@ output/
 .vscode
 tmp/
 bin/
+obj/
+PSBicep.Core/Properties/
 /Source/Assets
 coverage.xml
 testResults.xml
-Source/BicepNet.PS/
 build.yaml
 .DS_Store

@@ -47,7 +47,7 @@ function Clear-BicepModuleCache {
     process {
         
         if ($Oci -or $All) {            
-            $OciPath = Get-BicepNetCachePath -Oci 
+            $OciPath = Get-BicepCachePath -Oci 
             $RepositoryPath = $Repository -replace '\\', '$'
 
             if (($Registry) -and ($Repository) -and ($Version)) {
@@ -74,7 +74,7 @@ function Clear-BicepModuleCache {
         }
         
         if ($TemplateSpecs -or $All) {            
-            $TSPath = Get-BicepNetCachePath -TemplateSpecs
+            $TSPath = Get-BicepCachePath -TemplateSpecs
 
             if (($SubscriptionId) -and ($ResourceGroup) -and ($Spec) -and ($Version)) {
                 Remove-Item -Recurse -Path "$TSPath/$SubscriptionId/$ResourceGroup/$Spec/$Version" -Force

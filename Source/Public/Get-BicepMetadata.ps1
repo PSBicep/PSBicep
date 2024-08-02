@@ -25,7 +25,7 @@ function Get-BicepMetadata {
         }
 
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $FullVersion = Get-BicepNetVersion -Verbose:$false
+            $FullVersion = Get-BicepVersion -Verbose:$false
             Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
     }
@@ -33,7 +33,7 @@ function Get-BicepMetadata {
     process {
         $file = Get-Item -Path $Path
         try {  
-            $ARMTemplate = Build-BicepNetFile -Path $file.FullName
+            $ARMTemplate = Build-BicepFile -Path $file.FullName
             $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
             $templateMetadata=$ARMTemplateObject.metadata
 

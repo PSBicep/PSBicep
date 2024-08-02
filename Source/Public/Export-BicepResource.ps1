@@ -39,9 +39,9 @@ function Export-BicepResource {
             IncludeTargetScope = $IncludeTargetScope.IsPresent
         }
         switch ($PSCmdlet.ParameterSetName) {
-            'AsString' { (Export-BicepNetResource @Params).Values }
+            'AsString' { (Export-BicepResource @Params).Values }
             'Path' {
-                $Dict = Export-BicepNetResource @Params
+                $Dict = Export-BicepResource @Params
                 Out-File -InputObject $Dict.Values -FilePath $Path -Encoding utf8 -Force
             }
         }

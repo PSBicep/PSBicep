@@ -53,7 +53,7 @@ function Build-BicepParam {
             Break
         }
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $FullVersion = Get-BicepNetVersion -Verbose:$false
+            $FullVersion = Get-BicepVersion -Verbose:$false
             Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
     }
@@ -68,7 +68,7 @@ function Build-BicepParam {
                         Write-Verbose -Message "Using Bicep configuration: $($bicepConfig.Path)"
                     }
 
-                    $ARMTemplate = Build-BicepNetParamFile -Path $file.FullName
+                    $ARMTemplate = Build-BicepParamFile -Path $file.FullName
 
                     if (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {
                         if ($AsString.IsPresent) {

@@ -1,5 +1,5 @@
 BeforeAll {
-    Import-Module -FullyQualifiedName "$PSScriptRoot\..\Source\Bicep.psd1" -ErrorAction Stop
+    Import-Module -FullyQualifiedName "$PSScriptRoot\..\output\Bicep" -ErrorAction Stop
 }
 
 Describe "ConvertToHashTable" {

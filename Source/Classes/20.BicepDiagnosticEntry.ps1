@@ -6,8 +6,8 @@ class BicepDiagnosticEntry {
     [string] $Message
 
     BicepDiagnosticEntry ([object]$Entry) {
-        if($Entry.pstypenames[0] -ne 'BicepNet.Core.DiagnosticEntry') {
-            throw "Requires type 'BicepNet.Core.DiagnosticEntry'"
+        if($Entry.pstypenames[0] -ne 'PSBicep.Core.DiagnosticEntry') {
+            throw "Requires type 'PSBicep.Core.DiagnosticEntry'"
         }
         $this.LocalPath = $Entry.LocalPath
         $this.Position = $Entry.Position[0], $Entry.Position[1]

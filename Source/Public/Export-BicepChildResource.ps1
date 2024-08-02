@@ -20,13 +20,13 @@ function Export-BicepChildResource {
             $null = New-Item $OutputDirectory -Force -ItemType Directory -WhatIf:$WhatIfPreference
         }
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $FullVersion = Get-BicepNetVersion -Verbose:$false
+            $FullVersion = Get-BicepVersion -Verbose:$false
             Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
     }
 
     process {
-        $ChildResources = Export-BicepNetChildResource -ParentResourceId $ParentResourceId
+        $ChildResources = Export-BicepChildResource -ParentResourceId $ParentResourceId
         foreach($key in $ChildResources.Keys) {
             switch ($pscmdlet.ParameterSetName) {
                 'OutputPath' { 

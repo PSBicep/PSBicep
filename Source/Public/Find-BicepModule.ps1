@@ -34,7 +34,7 @@ function Find-BicepModule {
                 }
                 else {
                     Write-Verbose "[$($BicepFile.Name)] is valid"
-                    Find-BicepNetModule -Path $Path
+                    Find-BicepModule -Path $Path
                     Write-Verbose -Message "Finding modules used in [$($BicepFile.Name)]"
                 }
             }
@@ -46,7 +46,7 @@ function Find-BicepModule {
         # Find modules in ACR
         if ($Registry) {
             try {
-                Find-BicepNetModule -Registry $Registry
+                Find-BicepModule -Registry $Registry
                 Write-Verbose -Message "Finding all modules stored in: [$Registry]"
             }
             catch {
@@ -58,7 +58,7 @@ function Find-BicepModule {
         if ($Cache) {
             # Find module
             try {
-                Find-BicepNetModule -Cache
+                Find-BicepModule -Cache
                 Write-Verbose -Message "Finding modules in the local module cache"
             }
             catch {

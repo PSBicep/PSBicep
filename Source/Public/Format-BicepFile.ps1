@@ -68,7 +68,7 @@ function Format-BicepFile {
             Break
         }
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $FullVersion = Get-BicepNetVersion -Verbose:$false
+            $FullVersion = Get-BicepVersion -Verbose:$false
             Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
     }
@@ -82,7 +82,7 @@ function Format-BicepFile {
                     Write-Verbose -Message "Using Bicep configuration: $($bicepConfig.Path)"
                 }
 
-                # Set up splatting with common parameters for BicepNet
+                # Set up splatting with common parameters for Bicep
                 $Params = @{
                     'NewlineOption' = $NewlineOption
                     'IndentKindOption' = $IndentKindOption
@@ -90,7 +90,7 @@ function Format-BicepFile {
                     'InsertFinalNewline' = $InsertFinalNewline.IsPresent
                     'Content' = Get-Content -Path $file -Raw
                 }
-                $FormattedBicep = Format-BicepNet @Params
+                $FormattedBicep = Format-Bicep @Params
 
                 if (-not [string]::IsNullOrWhiteSpace($FormattedBicep)) {
                     if ($AsString.IsPresent) {

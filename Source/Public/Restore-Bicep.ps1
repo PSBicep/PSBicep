@@ -13,7 +13,7 @@ function Restore-Bicep {
         }
 
         # Verbose output Bicep Version used
-        $FullVersion = Get-BicepNetVersion -Verbose:$false
+        $FullVersion = Get-BicepVersion -Verbose:$false
         Write-Verbose -Message "Using Bicep version: $FullVersion"
     }
 
@@ -27,7 +27,7 @@ function Restore-Bicep {
 
         # Restore modules
         try {
-            Restore-BicepNetFile -Path $BicepFile.FullName -ErrorAction Stop
+            Restore-BicepFile -Path $BicepFile.FullName -ErrorAction Stop
             Write-Verbose -Message "Successfully restored all modules"
         }
         catch {

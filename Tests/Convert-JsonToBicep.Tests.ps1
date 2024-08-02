@@ -1,27 +1,26 @@
 BeforeAll {
-    Import-Module -FullyQualifiedName "$PSScriptRoot\..\Source\Bicep.psd1" -ErrorAction Stop
+    Import-Module -FullyQualifiedName "$PSScriptRoot\..\output\Bicep" -ErrorAction Stop
     Copy-Item "$PSScriptRoot\supportFiles\*" -Destination TestDrive:\
 }
 
-InModuleScope -ModuleName Bicep {
-    Describe 'Convert-JsonToBicep tests' {
+Describe 'Convert-JsonToBicep tests' {
 
-        Context 'Parameters' {
-            It 'Should have parameter String' {
+    Context 'Parameters' {
+        It 'Should have parameter String' {
                 (Get-Command Convert-JsonToBicep).Parameters.Keys | Should -Contain 'String'
-            }
-            It 'Should have parameter Path' {
-                (Get-Command Convert-JsonToBicep).Parameters.Keys | Should -Contain 'Path'
-            }
-            It 'Should have parameter ToClipboard' {
-                (Get-Command Convert-JsonToBicep).Parameters.Keys | Should -Contain 'ToClipboard'
-            }
         }
+        It 'Should have parameter Path' {
+                (Get-Command Convert-JsonToBicep).Parameters.Keys | Should -Contain 'Path'
+        }
+        It 'Should have parameter ToClipboard' {
+                (Get-Command Convert-JsonToBicep).Parameters.Keys | Should -Contain 'ToClipboard'
+        }
+    }
 
-        Context 'Converting JSON' {
+    Context 'Converting JSON' {
             
-            BeforeAll {
-                $jsonString = @'
+        BeforeAll {
+            $jsonString = @'
                 {
                     "name": "rdp-rule",
                     "properties": {
@@ -37,21 +36,20 @@ InModuleScope -ModuleName Bicep {
                     }
                   }
 '@
-            }
-            
-            It 'Should convert JSON string to bicep' {
-                Convert-JsonToBicep -String $jsonString | Should -BeOfType System.String
-            }
-
-            It 'Should convert JSON from path to Bicep' {
-                Convert-JsonToBicep -Path 'TestDrive:\nsgRule.json' | Should -BeOfType System.String
-            }
-
-            It 'Should write output' {
-                $bicepData = Convert-JsonToBicep -Path 'TestDrive:\nsgRule.json'
-                $bicepData | Should -Not -BeNullOrEmpty
-            }
-
         }
+            
+        It 'Should convert JSON string to bicep' {
+            Convert-JsonToBicep -String $jsonString | Should -BeOfType System.String
+        }
+
+        It 'Should convert JSON from path to Bicep' {
+            Convert-JsonToBicep -Path 'TestDrive:\nsgRule.json' | Should -BeOfType System.String
+        }
+
+        It 'Should write output' {
+            $bicepData = Convert-JsonToBicep -Path 'TestDrive:\nsgRule.json'
+            $bicepData | Should -Not -BeNullOrEmpty
+        }
+
     }
 }

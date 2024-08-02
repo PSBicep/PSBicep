@@ -56,7 +56,7 @@ function Convert-JsonToBicep {
         $file = Get-ChildItem -Path "$tempPath\tempfile.json"
 
         if ($file) {
-            $BicepObject = ConvertTo-BicepNetFile -Path $file.FullName
+            $BicepObject = ConvertTo-BicepFile -Path $file.FullName
             foreach ($BicepFile in $BicepObject.Keys) {
                 $bicepData = $BicepObject[$BicepFile]
             }

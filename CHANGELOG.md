@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Merged BicepNet codebase into PSBicep for easier maintainance
+
 ### Added
 
+- Bicep support for version 0.28.1
 - Bicep support for version 0.20.4

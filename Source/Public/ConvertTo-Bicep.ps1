@@ -28,7 +28,7 @@ If you would like to report any issues or inaccurate conversions, please see htt
         $files = Get-Childitem -Path $Path -Filter '*.json' -File | Select-String -Pattern "schema.management.azure.com/schemas/.*deploymentTemplate.json#" | Select-Object -ExpandProperty 'Path' 
         if ($files) {
             foreach ($File in $files) {
-                $BicepObject = ConvertTo-BicepNetFile -Path $File
+                $BicepObject = ConvertTo-BicepFile -Path $File
                 foreach ($BicepFile in $BicepObject.Keys) {
                     if ($AsString.IsPresent) {
                         Write-Output $BicepObject[$BicepFile]

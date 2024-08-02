@@ -48,7 +48,7 @@ For more information about Bicep, please visit the official Bicep GitHub Reposit
 https://github.com/Azure/bicep'
 
 # Minimum version of the PowerShell engine required by this module
-PowerShellVersion = '7.3'
+PowerShellVersion = '7.4'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
@@ -81,40 +81,39 @@ PowerShellVersion = '7.3'
 # FormatsToProcess = @()
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-NestedModules = @('./BicepNet.PS/2.3.1/BicepNet.PS.psd1')
+NestedModules = @('PSBicep/PSBicep.dll')
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @(
     'Build-Bicep',
     'Build-BicepParam',
+    'Clear-BicepModuleCache',
+    'Convert-BicepParamsToDecoratorStyle',
+    'Convert-JsonToBicep',
     'ConvertTo-Bicep', 
+    'Export-BicepChildResource'
+    'Export-BicepResource',
+    'Find-BicepModule',
+    'Format-BicepFile',
+    'Get-BicepApiReference',
+    'Get-BicepMetadata',
+    'Get-BicepUsedModules',
     'Get-BicepVersion', 
     'Install-BicepCLI', 
-    'Update-BicepCLI', 
-    'Uninstall-BicepCLI', 
-    'Get-BicepApiReference',
-    'Update-BicepTypes',
-    'Convert-JsonToBicep',
-    'Convert-BicepParamsToDecoratorStyle',
+    'New-BicepMarkdownDocumentation',
     'New-BicepParameterFile',
-    'Update-BicepParameterFile',
-    'Test-BicepFile',
     'Publish-Bicep',
     'Restore-Bicep',
-    'Find-BicepModule',
-    'Clear-BicepModuleCache',
-    'Get-BicepConfig',
-    'Get-BicepMetadata',
-    'New-BicepMarkdownDocumentation',
-    'Get-BicepUsedModules'
-    'Format-BicepFile',
-    'Export-BicepResource',
-    'Export-BicepChildResource'
+    'Test-BicepFile',
+    'Uninstall-BicepCLI', 
+    'Update-BicepCLI', 
+    'Update-BicepParameterFile',
+    'Update-BicepTypes'
 )
 
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
-CmdletsToExport = @()
+CmdletsToExport = @('Get-BicepConfig')
 
 # Variables to export from this module
 VariablesToExport = ''

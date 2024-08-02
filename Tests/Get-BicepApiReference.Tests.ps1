@@ -1,6 +1,5 @@
 BeforeAll {
-    # We have to import the module with -Force to get it to load bicep types properly.
-    Import-Module -FullyQualifiedName "$PSScriptRoot\..\Source\Bicep.psd1" -Force -ErrorAction Stop
+    Import-Module -FullyQualifiedName "$PSScriptRoot\..\output\Bicep" -ErrorAction Stop
 }
 
 Describe "Get-BicepApiReference" {

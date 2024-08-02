@@ -12,6 +12,9 @@ function Publish-Bicep {
         [string]$Target,
 
         [Parameter(Position = 3)]
+        [switch]$PublishSource,
+
+        [Parameter(Position = 4)]
         [switch]$Force
     )
     begin {
@@ -34,6 +37,7 @@ function Publish-Bicep {
             }
         }
         catch {
+            $_.CategoryInfo.Activity = 'Publish-Bicep'
             Throw $_  
         }
 
@@ -44,11 +48,12 @@ function Publish-Bicep {
 
         # Publish module
         try {
-            Publish-BicepNetFile -Path $BicepFile.FullName -Target $Target -Force:$Force.IsPresent -ErrorAction Stop
+            Publish-BicepFile -Path $BicepFile.FullName -Target $Target -PublishSource:$PublishSource.IsPresent -Force:$Force.IsPresent -ErrorAction Stop
             Write-Verbose -Message "[$($BicepFile.Name)] published to: [$Target]"
         }
         catch {
-            Throw $_
+            $_.CategoryInfo.Activity = 'Publish-Bicep'
+            throw $_
         }
     }
 }

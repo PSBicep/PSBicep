@@ -1,0 +1,982 @@
+[
+  {
+    "CommandName": "Build-BicepFile",
+    "Parameters": [
+      {
+        "ParameterName": "Path",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "NoRestore",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "Build-BicepNetParamFile",
+    "Parameters": [
+      {
+        "ParameterName": "Path",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "TemplatePath",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "NoRestore",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "Clear-BicepNetCredential",
+    "Parameters": [
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "Convert-BicepNetResourceToBicep",
+    "Parameters": [
+      {
+        "ParameterName": "ResourceId",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "ResourceBody",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "ConvertTo-BicepNetFile",
+    "Parameters": [
+      {
+        "ParameterName": "Path",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "Export-BicepNetChildResource",
+    "Parameters": [
+      {
+        "ParameterName": "ParentResourceId",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "IncludeTargetScope",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "Export-BicepNetResource",
+    "Parameters": [
+      {
+        "ParameterName": "ResourceId",
+        "ParameterType": "System.String[]"
+      },
+      {
+        "ParameterName": "IncludeTargetScope",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "Find-BicepNetModule",
+    "Parameters": [
+      {
+        "ParameterName": "Path",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "Registry",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "Cache",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "Format-BicepNet",
+    "Parameters": [
+      {
+        "ParameterName": "Content",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "FileKind",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "NewlineOption",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "IndentKindOption",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "IndentSize",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "InsertFinalNewline",
+        "ParameterType": "System.Boolean"
+      },
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "Get-BicepNetAccessToken",
+    "Parameters": [
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "Get-BicepNetCachePath",
+    "Parameters": [
+      {
+        "ParameterName": "Oci",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "TemplateSpecs",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "Get-BicepNetConfig",
+    "Parameters": [
+      {
+        "ParameterName": "Scope",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "Path",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "Get-BicepNetVersion",
+    "Parameters": [
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "Publish-BicepNetFile",
+    "Parameters": [
+      {
+        "ParameterName": "Path",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "Target",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "DocumentationUri",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "PublishSource",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Force",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "Restore-BicepNetFile",
+    "Parameters": [
+      {
+        "ParameterName": "Path",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  },
+  {
+    "CommandName": "Set-BicepNetCredential",
+    "Parameters": [
+      {
+        "ParameterName": "AccessToken",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "TenantId",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter"
+      },
+      {
+        "ParameterName": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference"
+      },
+      {
+        "ParameterName": "ErrorVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "WarningVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "InformationVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutVariable",
+        "ParameterType": "System.String"
+      },
+      {
+        "ParameterName": "OutBuffer",
+        "ParameterType": "System.Int32"
+      },
+      {
+        "ParameterName": "PipelineVariable",
+        "ParameterType": "System.String"
+      }
+    ]
+  }
+]
