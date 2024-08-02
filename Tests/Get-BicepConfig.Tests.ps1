@@ -155,7 +155,7 @@ Describe 'Get-BicepConfig tests' {
 
         It 'Returns merged config when used with only Path' {
             # Excluding the Providers property as it is output using different sorting order each time
-            $config = Get-BicepConfig -Path "$TestDrive\supportFiles\workingBicep.bicep"
+            $config = Get-BicepConfig -Path "$TestDrive/supportFiles/workingBicep.bicep"
             $mergedConfigTest = ConvertFrom-Json -InputObject $mergedConfig | 
               Select-Object -ExcludeProperty Providers | ConvertTo-Json -Depth 10
             $ConfigJson = ConvertFrom-Json -InputObject $config.Config | 
@@ -164,7 +164,7 @@ Describe 'Get-BicepConfig tests' {
         }
 
         It 'Returns default config when used with only Path and no local config exists' {
-            $config = Get-BicepConfig -Path "$TestDrive\workingBicep.bicep"
+            $config = Get-BicepConfig -Path "$TestDrive/workingBicep.bicep"
             $config.Path | Should -Be 'Default'
         }
 
@@ -175,7 +175,7 @@ Describe 'Get-BicepConfig tests' {
 
         It 'Get merged bicepconfig' {
             # Excluding the Providers property as it is output using different sorting order each time
-            $config = Get-BicepConfig -Path "$TestDrive\supportFiles\workingBicep.bicep" -Merged
+            $config = Get-BicepConfig -Path "$TestDrive/supportFiles/workingBicep.bicep" -Merged
             $mergedConfigTest = ConvertFrom-Json -InputObject $mergedConfig | 
               Select-Object -ExcludeProperty Providers | ConvertTo-Json -Depth 10
             $ConfigJson = ConvertFrom-Json -InputObject $config.Config | 
@@ -184,26 +184,26 @@ Describe 'Get-BicepConfig tests' {
         }
 
         It 'Returns default config when used with Path and Merged and no local config exists' {
-            $config = Get-BicepConfig -Path "$TestDrive\workingBicep.bicep" -Merged
+            $config = Get-BicepConfig -Path "$TestDrive/workingBicep.bicep" -Merged
             $config.Path | Should -Be 'Default'
         }
 
 
         It 'Get local bicepconfig' {
-            $config = Get-BicepConfig -Path "$TestDrive\supportFiles\workingBicep.bicep" -Local
+            $config = Get-BicepConfig -Path "$TestDrive/supportFiles/workingBicep.bicep" -Local
             $localConfigTest = ConvertFrom-Json -InputObject $localConfig | ConvertTo-Json -Depth 10
             $ConfigJson = ConvertFrom-Json -InputObject $config.Config | ConvertTo-Json -Depth 10
             $ConfigJson | Should -BeExactly $localConfigTest
         }
 
         It 'Throws an error when using parameters Path and Default' {
-            {Get-BicepConfig -Path "$TestDrive\supportFiles\workingBicep.bicep" -Default} | Should -Throw
+            {Get-BicepConfig -Path "$TestDrive/supportFiles/workingBicep.bicep" -Default} | Should -Throw
         }
 
         AfterAll {
             # Bicep doesnt seem to properly release the config file, let's wait for it.
             $configFileLocked = $true
-            $configFilePath = Join-Path $TestDrive 'supportFiles\bicepconfig.json'
+            $configFilePath = Join-Path $TestDrive 'supportFiles/bicepconfig.json'
             while($configFileLocked) {
                 try {
                     $configFile = [System.IO.File]::Open($configFilePath, 'Open', 'Read')
