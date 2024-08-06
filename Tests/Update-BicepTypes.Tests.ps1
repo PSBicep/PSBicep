@@ -64,17 +64,4 @@ Describe 'Update-BicepTypes' {
 
         { Update-BicepTypes } | Should -Throw "Failed to save new Bicep types. Error"
     }
-
-    It 'Calls TestModuleVersion only the first time' {
-        InModuleScope Bicep {
-            Mock TestModuleVersion {
-                $Script:ModuleVersionChecked = $true
-            }
-            $Script:ModuleVersionChecked = $false
-
-            Update-BicepTypes
-            Update-BicepTypes
-            Should -Invoke TestModuleVersion -ModuleName Bicep -Exactly -Times 1
-        }
-    }
 }

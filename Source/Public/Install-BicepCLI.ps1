@@ -8,10 +8,6 @@ function Install-BicepCLI {
         [switch]$Force
     )
 
-    if (-not $Script:ModuleVersionChecked) {
-        TestModuleVersion
-    }
-
     $BicepInstalled = TestBicep
 
     if (-not $IsWindows) {

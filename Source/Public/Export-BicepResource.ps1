@@ -23,10 +23,6 @@ function Export-BicepResource {
     )
 
     begin {
-        # Check if a newer version of the module is published
-        if (-not $Script:ModuleVersionChecked) {
-            TestModuleVersion
-        }
         # Create the directory if it does not exist
         if ($PSBoundParameters.ContainsKey('Path') -and (-not (Test-Path $Path))) {
             $null = New-Item (Split-Path -Path $Path) -Force -ItemType Directory -WhatIf:$WhatIfPreference

@@ -2,26 +2,33 @@ function ListBicepVersions {
     [CmdletBinding()]
     param (
         [switch]$Latest
-
     )
-    $BaseURL = 'https://api.github.com/repos/Azure/bicep/releases'
-    
-    if ($Latest) {
+    if($null -eq $Script:AvailableBicepVersions) {
         try {
-            $LatestVersion = Invoke-RestMethod -Uri ('{0}/latest' -f $BaseURL)
-            $LatestVersion.tag_name -replace '[v]', ''
+            $Script:AvailableBicepVersions = GetGithubReleaseVersion -Organization 'Azure' -Repository 'bicep' -ErrorAction 'Stop'
         }
         catch {
-            Write-Error -Message "Could not get latest version from GitHub. $_" -Category ObjectNotFound
+            $Script:AvailableBicepVersions = @()
+            Write-Verbose "Failed to retrieve versions with error: $_"
+        }
+    }
+
+    if($null -eq $Script:LatestBicepVersion) {
+        try {
+            $Script:LatestBicepVersion = GetGithubReleaseVersion -Organization 'Azure' -Repository 'bicep' -Latest -ErrorAction 'Stop'
+        }
+        catch {
+            $Script:LatestBicepVersion = ''
+            Write-Verbose "Failed to retrieve latest version with error: $_"
+        }
+    }
+    
+    if($Latest.IsPresent) {
+        if($Script:LatestBicepVersion -is [version]) {
+            Write-Output -InputObject $Script:LatestBicepVersion
         }
     }
     else {
-        try {
-            $AvailableVersions = Invoke-RestMethod -Uri $BaseURL
-            $AvailableVersions.tag_name -replace '[v]', ''   
-        }
-        catch {
-            Write-Error -Message "Could not get versions from GitHub. $_" -Category ObjectNotFound
-        }
+        Write-Output -InputObject $Script:AvailableBicepVersions
     }
 }

@@ -10,21 +10,6 @@ Describe "Get-BicepApiReference" {
         }
     }
 
-    Context 'Checks for new module version' {
-        It 'Calls TestModuleVersion only once' {
-            InModuleScope Bicep {
-                Mock TestModuleVersion {
-                    $Script:ModuleVersionChecked = $true
-                }
-                $Script:ModuleVersionChecked = $false
-
-                $null = Get-BicepApiReference -Type 'Microsoft.Network/virtualNetworks@2020-06-01'
-                $null = Get-BicepApiReference -Type 'Microsoft.Network/virtualNetworks@2020-06-01'
-                Should -Invoke TestModuleVersion -ModuleName Bicep -Exactly -Times 1
-            }
-        }
-    }
-
     Context 'Exceptions' {
         BeforeAll {
             Mock Invoke-WebRequest -ModuleName Bicep {

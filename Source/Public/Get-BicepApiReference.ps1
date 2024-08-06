@@ -50,11 +50,6 @@ function Get-BicepApiReference {
         [Parameter(ParameterSetName = 'TypeString')]
         [switch]$ReturnUri
     )
-    begin {
-        if (-not $Script:ModuleVersionChecked) {
-            TestModuleVersion
-        }
-    }
     
     process {
         $baseUrl = "https://docs.microsoft.com/en-us/azure/templates"

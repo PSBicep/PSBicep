@@ -32,14 +32,6 @@ function Test-BicepFile {
     )
     
     begin {
-        if (-not $Script:ModuleVersionChecked) {
-            TestModuleVersion
-        }
-
-        if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $FullVersion = Get-BicepVersion -Verbose:$false
-            Write-Verbose -Message "Using Bicep version: $FullVersion"
-        }
 
         if ($AcceptDiagnosticLevel -eq [BicepDiagnosticLevel]::Error) {
             throw 'Accepting diagnostic level Error results in test never failing.'

@@ -21,7 +21,7 @@ Describe 'ListBicepVersions' {
 
         It 'Returns correct latest version' {
             InModuleScope Bicep {
-                ListBicepVersions -Latest | Should -Be '1.2.3'
+                ListBicepVersions -Latest | Should -Be ([version]'1.2.3')
             }
         }
 
@@ -41,15 +41,17 @@ Describe 'ListBicepVersions' {
             }
         }
 
-        It 'Throws error if unable to get latest version file from GitHub' {
+        It 'Outputs nothing if unable to get latest version file from GitHub' {
             InModuleScope Bicep {
-                { ListBicepVersions -Latest -ErrorAction Stop } | Should -Throw "Could not get latest version from GitHub.*"
+                $Script:LatestBicepVersion = $null
+                ListBicepVersions -Latest -ErrorAction Stop | Should -Be $null
             }
         }
 
-        It 'Throws error if unable to get all version files from GitHub' {
+        It 'Outputs nothing if unable to get all version files from GitHub' {
             InModuleScope Bicep {
-                { ListBicepVersions -ErrorAction Stop } | Should -Throw "Could not get versions from GitHub.*"
+                $Script:AvailableBicepVersions = $null
+                ListBicepVersions -ErrorAction Stop | Should -Be $null
             }
         }
 

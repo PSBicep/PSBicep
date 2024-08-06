@@ -2,10 +2,6 @@ function Update-BicepCLI {
     [CmdletBinding()]
     param (
     )
-
-    if (-not $Script:ModuleVersionChecked) {
-        TestModuleVersion
-    }
     
     if (-not $IsWindows) {
         Write-Error -Message "This cmdlet is only supported for Windows systems. `
