@@ -11,7 +11,7 @@ function GetGithubReleaseVersion {
     }
     try {
         $Versions = Invoke-RestMethod -Uri $Url -ErrorAction 'Stop'
-        return ($Versions.tag_name -replace '[v]', '') -as [version]
+        return ($Versions.tag_name -replace '[v]', '' | Foreach-Object -Process {$_ -as [version]})
     }
     catch {
         Write-Error -Message "Could not get version of $Organization/$Repository from GitHub. $_" -Category ObjectNotFound

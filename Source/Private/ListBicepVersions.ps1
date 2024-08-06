@@ -23,8 +23,10 @@ function ListBicepVersions {
         }
     }
     
-    if($Latest.IsPresent -and $Script:LatestBicepVersion -is [version]) {
-        Write-Output -InputObject $Script:LatestBicepVersion
+    if($Latest.IsPresent) {
+        if($Script:LatestBicepVersion -is [version]) {
+            Write-Output -InputObject $Script:LatestBicepVersion
+        }
     }
     else {
         Write-Output -InputObject $Script:AvailableBicepVersions

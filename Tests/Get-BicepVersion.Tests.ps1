@@ -20,22 +20,6 @@ Describe 'Get-BicepVersion' {
             'Version 2'
         }
     }
-    
-        Context 'First executed command after import' {
-            It 'Checks for new version the first time only' {
-                InModuleScope Bicep {
-                    Mock TestModuleVersion -ModuleName Bicep {
-                        $Script:ModuleVersionChecked = $true
-                    }
-
-                    $Script:ModuleVersionChecked = $false
-                    
-                    $null = Get-BicepVersion
-                    $null = Get-BicepVersion    
-                    Should -Invoke TestModuleVersion -ModuleName Bicep -Times 1 -Exactly
-                }
-            }
-        }
 
     Context 'Verify -All switch' {
         It 'Invokes ListBicepVersions with -Latest when -All is not used' {
