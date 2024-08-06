@@ -13,15 +13,8 @@ function Export-BicepChildResource {
     )
 
     begin {
-        if (-not $Script:ModuleVersionChecked) {
-            TestModuleVersion
-        }
         if ($PSBoundParameters.ContainsKey('OutputDirectory') -and (-not (Test-Path $OutputDirectory))) {
             $null = New-Item $OutputDirectory -Force -ItemType Directory -WhatIf:$WhatIfPreference
-        }
-        if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $FullVersion = Get-BicepVersion -Verbose:$false
-            Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
     }
 

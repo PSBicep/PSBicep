@@ -15,12 +15,6 @@ function Find-BicepModule {
         [switch]$Cache
 
     )
-    begin {
-        # Check if a newer version of the module is published
-        if (-not $Script:ModuleVersionChecked) {
-            TestModuleVersion
-        }       
-    }
 
     process {        
         # Find modules used in local bicep file

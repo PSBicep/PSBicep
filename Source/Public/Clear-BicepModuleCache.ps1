@@ -37,13 +37,6 @@ function Clear-BicepModuleCache {
         [switch]$All
      
     )
-    begin {
-        # Check if a newer version of the module is published
-        if (-not $Script:ModuleVersionChecked) {
-            TestModuleVersion
-        }       
-    }
-
     process {
         
         if ($Oci -or $All) {            

@@ -17,12 +17,6 @@ function Publish-Bicep {
         [Parameter(Position = 4)]
         [switch]$Force
     )
-    begin {
-        # Check if a newer version of the module is published
-        if (-not $Script:ModuleVersionChecked) {
-            TestModuleVersion
-        }       
-    }
 
     process {
         $BicepFile = Get-Childitem -Path $Path -File

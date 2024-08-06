@@ -23,9 +23,6 @@ function Convert-JsonToBicep {
     )
 
     begin {
-        if (-not $Script:ModuleVersionChecked) {
-            TestModuleVersion
-        }
         $tempPath = [System.Io.Path]::GetTempPath()
     }
 

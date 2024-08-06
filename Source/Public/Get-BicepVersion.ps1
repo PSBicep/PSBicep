@@ -3,9 +3,7 @@ function Get-BicepVersion {
         [switch]$All
 
     )
-    if (-not $Script:ModuleVersionChecked) {
-        TestModuleVersion
-    }
+    
     if ($All.IsPresent) {
         ListBicepVersions
     }

@@ -19,17 +19,6 @@ function Get-BicepMetadata {
         [switch]$IncludeReservedMetadata
     )
     
-    begin {
-        if (-not $Script:ModuleVersionChecked) {
-            TestModuleVersion
-        }
-
-        if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $FullVersion = Get-BicepVersion -Verbose:$false
-            Write-Verbose -Message "Using Bicep version: $FullVersion"
-        }
-    }
-    
     process {
         $file = Get-Item -Path $Path
         try {  

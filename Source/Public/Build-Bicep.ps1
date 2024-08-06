@@ -54,9 +54,6 @@ function Build-Bicep {
     )
 
     begin {
-        if (-not $Script:ModuleVersionChecked) {
-            TestModuleVersion
-        }
         if ($PSBoundParameters.ContainsKey('OutputDirectory') -and (-not (Test-Path $OutputDirectory))) {
             $null = New-Item $OutputDirectory -Force -ItemType Directory -WhatIf:$WhatIfPreference
         }
@@ -66,10 +63,6 @@ function Build-Bicep {
         if ($PSBoundParameters.ContainsKey('OutputPath') -and ((Split-path -path $Path -leaf) -notmatch "\.bicep$")) { 
             Write-Error 'If -Path and -OutputPath parameters are used, only one .bicep file can be used as input to -Path. E.g. -Path "C:\Output\template.bicep" -OutputPath "C:\Output\newtemplate.json".'
             Break
-        }
-        if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $FullVersion = Get-BicepVersion -Verbose:$false
-            Write-Verbose -Message "Using Bicep version: $FullVersion"
         }
     }
 
