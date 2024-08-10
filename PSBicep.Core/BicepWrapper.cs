@@ -1,5 +1,4 @@
-﻿using Bicep.Cli.Logging;
-using Bicep.Core;
+﻿using Bicep.Core;
 using Bicep.Core.Analyzers.Interfaces;
 using Bicep.Core.Configuration;
 using Bicep.Core.Features;
@@ -12,17 +11,19 @@ using Bicep.Core.TypeSystem.Providers.Az;
 using Bicep.Core.Utils;
 using Bicep.Core.Workspaces;
 using Bicep.Decompiler;
-using PSBicep.Core.Authentication;
-using PSBicep.Core.Azure;
-using PSBicep.Core.Configuration;
-using PSBicep.Core.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.Threading;
+using PSBicep.Core.Authentication;
+using PSBicep.Core.Azure;
+using PSBicep.Core.Configuration;
+using PSBicep.Core.Logging;
+using PSBicep.Core.Models;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
+using System.Management.Automation;
 
 namespace PSBicep.Core;
 
@@ -40,9 +41,8 @@ public partial class BicepWrapper
     private readonly JoinableTaskFactory joinableTaskFactory;
     private readonly INamespaceProvider namespaceProvider;
     private readonly IContainerRegistryClientFactory clientFactory;
-    private readonly ModuleDispatcher moduleDispatcher;
+    private readonly IModuleDispatcher moduleDispatcher;
     private readonly IArtifactRegistryProvider moduleRegistryProvider;
-    private readonly IArtifactReferenceFactory artifactReferenceFactory;
     private readonly BicepTokenCredentialFactory tokenCredentialFactory;
     private readonly AzResourceTypeLoader azResourceTypeLoader;
     private readonly IEnvironment environment;
@@ -53,14 +53,14 @@ public partial class BicepWrapper
     private readonly IFeatureProviderFactory featureProviderFactory;
     private readonly BicepCompiler compiler;
     private readonly BicepDecompiler decompiler;
-    private readonly Workspace workspace;
+    private readonly IWorkspace workspace;
     private readonly RootConfiguration configuration;
     private readonly AzureResourceProvider azResourceProvider;
 
-    public BicepWrapper(ILogger bicepLogger)
+    public BicepWrapper(PSCmdlet cmdlet)
     {
         services = new ServiceCollection()
-            .AddBicep(bicepLogger)
+            .AddPSBicep(cmdlet)
             .BuildServiceProvider();
 
         joinableTaskFactory = new JoinableTaskFactory(new JoinableTaskContext());
@@ -69,9 +69,8 @@ public partial class BicepWrapper
         azResourceTypeLoader = services.GetRequiredService<AzResourceTypeLoader>();
         namespaceProvider = services.GetRequiredService<INamespaceProvider>();
         clientFactory = services.GetRequiredService<IContainerRegistryClientFactory>();
-        moduleDispatcher = services.GetRequiredService<ModuleDispatcher>();
+        moduleDispatcher = services.GetRequiredService<IModuleDispatcher>();
         moduleRegistryProvider = services.GetRequiredService<IArtifactRegistryProvider>();
-        artifactReferenceFactory = services.GetRequiredService<IArtifactReferenceFactory>();
         tokenCredentialFactory = services.GetRequiredService<BicepTokenCredentialFactory>();
         tokenCredentialFactory.Logger = services.GetRequiredService<ILogger>();
         fileResolver = services.GetRequiredService<IFileResolver>();
@@ -84,7 +83,7 @@ public partial class BicepWrapper
 
         decompiler = services.GetRequiredService<BicepDecompiler>();
 
-        workspace = services.GetRequiredService<Workspace>();
+        workspace = services.GetRequiredService<IWorkspace>();
         configuration = configurationManager.GetConfiguration(new Uri("inmemory://main.bicep"));
         azResourceProvider = services.GetRequiredService<AzureResourceProvider>();
 
@@ -114,17 +113,4 @@ public partial class BicepWrapper
 
     public BicepConfigInfo GetBicepConfigInfo(BicepConfigScope scope, string path) =>
         configurationManager.GetConfigurationInfo(scope, PathHelper.FilePathToFileUrl(path ?? ""));
-
-    private DiagnosticSummary LogDiagnostics(Compilation compilation)
-    {
-        if (compilation is null)
-        {
-            throw new InvalidOperationException("Compilation is null. A compilation must exist before logging the diagnostics.");
-        }
-
-        return diagnosticLogger.LogDiagnostics(
-            new DiagnosticOptions(Bicep.Cli.Arguments.DiagnosticsFormat.Default, false),
-            compilation
-        );
-    }
 }

@@ -74,20 +74,20 @@ Describe 'Get-BicepConfig tests' {
                   }
                 }
               },
-              "providerAliases": {
+              "extensionAliases": {
                 "br": {
                   "public": {
                     "registry": "mcr.microsoft.com",
-                    "providerPath": "bicep/providers"
+                    "extensionPath": "bicep/extensions"
                   }
                 }
               },
-              "providers": {
-                "az": "builtin:",
+              "extensions": {
                 "microsoftGraph": "builtin:",
-                "kubernetes": "builtin:"
+                "kubernetes": "builtin:",
+                "az": "builtin:"
               },
-              "implicitProviders": [
+              "implicitExtensions": [
                 "az"
               ],
               "analyzers": {
@@ -127,14 +127,16 @@ Describe 'Get-BicepConfig tests' {
               "experimentalFeaturesEnabled": {
                 "symbolicNameCodegen": false,
                 "extensibility": false,
+                "extendableParamFiles": false,
                 "resourceTypedParamsAndOutputs": false,
                 "sourceMapping": false,
                 "legacyFormatter": false,
                 "testFramework": false,
                 "assertions": false,
                 "dynamicTypeLoading": false,
-                "providerRegistry": false,
+                "extensionRegistry": false,
                 "optionalModuleNames": false,
+                "localDeploy": false,
                 "resourceDerivedTypes": false
               },
               "formatting": {
@@ -144,7 +146,7 @@ Describe 'Get-BicepConfig tests' {
                 "indentSize": 2,
                 "width": 120
               }
-            } 
+            }
 '@
         }
 
@@ -154,12 +156,12 @@ Describe 'Get-BicepConfig tests' {
         }
 
         It 'Returns merged config when used with only Path' {
-            # Excluding the Providers property as it is output using different sorting order each time
+            # Excluding the extensions property as it is output using different sorting order each time
             $config = Get-BicepConfig -Path "$TestDrive/supportFiles/workingBicep.bicep"
             $mergedConfigTest = ConvertFrom-Json -InputObject $mergedConfig | 
-              Select-Object -ExcludeProperty Providers | ConvertTo-Json -Depth 10
+              Select-Object -ExcludeProperty extensions | ConvertTo-Json -Depth 10
             $ConfigJson = ConvertFrom-Json -InputObject $config.Config | 
-              Select-Object -ExcludeProperty Providers | ConvertTo-Json -Depth 10
+              Select-Object -ExcludeProperty extensions | ConvertTo-Json -Depth 10
             $ConfigJson | Should -BeExactly $mergedConfigTest
         }
 
@@ -174,12 +176,12 @@ Describe 'Get-BicepConfig tests' {
         }
 
         It 'Get merged bicepconfig' {
-            # Excluding the Providers property as it is output using different sorting order each time
+            # Excluding the extensions property as it is output using different sorting order each time
             $config = Get-BicepConfig -Path "$TestDrive/supportFiles/workingBicep.bicep" -Merged
             $mergedConfigTest = ConvertFrom-Json -InputObject $mergedConfig | 
-              Select-Object -ExcludeProperty Providers | ConvertTo-Json -Depth 10
+              Select-Object -ExcludeProperty extensions | ConvertTo-Json -Depth 10
             $ConfigJson = ConvertFrom-Json -InputObject $config.Config | 
-              Select-Object -ExcludeProperty Providers | ConvertTo-Json -Depth 10
+              Select-Object -ExcludeProperty extensions | ConvertTo-Json -Depth 10
             $ConfigJson | Should -BeExactly $mergedConfigTest
         }
 

@@ -1,10 +1,10 @@
-using Bicep.Cli.Logging;
 using Bicep.Core;
 using Bicep.Core.Diagnostics;
 using Bicep.Core.Exceptions;
 using Bicep.Core.FileSystem;
 using Bicep.Core.Registry;
 using Bicep.Core.SourceCode;
+using PSBicep.Core.Logging;
 using System;
 using System.Diagnostics;
 using System.IO;

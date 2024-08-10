@@ -21,5 +21,5 @@
                                             TargetType = 'Exact'
                                         }
                                     }
-    'Azure/Bicep'                 = 'v0.28.1'
+    'Azure/Bicep'                 = 'v0.29.47'
 }
