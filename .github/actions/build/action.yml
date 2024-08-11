@@ -34,11 +34,20 @@ runs:
     shell: pwsh
     run: ./build.ps1 -ResolveDependency -Task noop
 
+  # Replace dot in semVer with dash, for Sampler validation in pre-release
+  - name: Format semVer for Sampler
+    id: formatSemVer
+    shell: pwsh
+    run: |
+      $SemVer = '${{ steps.gitversion.outputs.semVer }}'
+      $SemVer = $SemVer.Replace('.', '-')
+      Add-Content -Path $env:GITHUB_OUTPUT -Value "formattedSemVer=$SemVer"
+
   - name: Build module
     shell: pwsh
     run: ./build.ps1 -tasks pack
     env:
-      ModuleVersion: ${{ steps.gitversion.outputs.semVer }}
+      ModuleVersion: ${{ steps.formatSemVer.outputs.formattedSemVer }}
 
   - name: Publish build artifacts
     uses: actions/upload-artifact@v3
