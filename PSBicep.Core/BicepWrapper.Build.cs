@@ -25,7 +25,7 @@ public partial class BicepWrapper
 
         var compilation = await compiler.CreateCompilation(inputUri, skipRestore: noRestore);
 
-        var summary = LogDiagnostics(compilation);
+        var summary = diagnosticLogger.LogDiagnostics(compilation);
 
         if (diagnosticLogger is not null && summary.HasErrors)
         {

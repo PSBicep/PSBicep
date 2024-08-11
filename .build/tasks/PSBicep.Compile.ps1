@@ -4,7 +4,7 @@ param (
 
     [ValidateSet('Debug', 'Release')]
     [string]
-    $Configuration = 'Release',
+    $Configuration = (property CompileConfiguration 'Release'),
 
     [Switch]
     $Full,
@@ -14,6 +14,7 @@ param (
 )
 
 task PSBicep.Compile {
+    Write-Verbose "Configuration: $Configuration" -Verbose
     $CommonFiles = [System.Collections.Generic.HashSet[string]]::new()
     if($ClearNugetCache) {
         dotnet nuget locals all --clear
@@ -57,7 +58,4 @@ task PSBicep.Compile {
 
         Pop-Location
     }
-
-    # Hack to get the logging abstractions DLL into the PS module instead of the ALC
-    Move-Item "PSBicep.Core/bin/PSBicep.Core/Microsoft.Extensions.Logging.Abstractions.dll" "PSBicep/bin/PSBicep" -ErrorAction 'Ignore'
 }

@@ -18,9 +18,7 @@
         "activeDirectoryAuthority": "https://login.microsoftonline.us"
       }
     },
-    "credentialPrecedence": [
-      "AzurePowerShell"
-    ]
+    "credentialPrecedence": ["AzurePowerShell"]
   },
   "moduleAliases": {
     "ts": {},
@@ -31,20 +29,20 @@
       }
     }
   },
-  "providerAliases": {
+  "extensionAliases": {
     "br": {
       "public": {
         "registry": "mcr.microsoft.com",
-        "providerPath": "bicep/providers"
+        "extensionPath": "bicep/extensions"
       }
     }
   },
-  "providers": {
+  "extensions": {
     "az": "builtin:",
     "kubernetes": "builtin:",
     "microsoftGraph": "builtin:"
   },
-  "implicitProviders": ["az"],
+  "implicitExtensions": ["az"],
   "analyzers": {
     "core": {
       "verbose": false,
@@ -69,9 +67,7 @@
             "trafficmanager.net",
             "vault.azure.net"
           ],
-          "excludedhosts": [
-            "schema.management.azure.com"
-          ]
+          "excludedhosts": ["schema.management.azure.com"]
         }
       }
     }

@@ -3,7 +3,7 @@ using System.Management.Automation;
 
 namespace PSBicep.Commands;
 
-public partial class BaseCommand : PSCmdlet
+public class BaseCommand : PSCmdlet
 {
     protected string name;
     protected BicepWrapper bicepWrapper;
@@ -12,6 +12,5 @@ public partial class BaseCommand : PSCmdlet
     {
         base.BeginProcessing();
         bicepWrapper = new BicepWrapper(this);
-        name = MyInvocation.InvocationName;
     }
 }

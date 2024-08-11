@@ -42,7 +42,7 @@ public partial class BicepWrapper
             workspace, 
             compilation.SourceFileGrouping);
 
-        LogDiagnostics(compilation);
+        diagnosticLogger.LogDiagnostics(compilation);
 
         if (modulesToRestoreReferences.Any())
         {
