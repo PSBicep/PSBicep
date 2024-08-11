@@ -11,8 +11,6 @@ branches:
     label: preview
     regex: ^main$
     increment: Patch
-  pull-request:
-    label: PR
   feature:
     label: useBranchName
     increment: Minor
