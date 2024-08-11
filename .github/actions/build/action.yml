@@ -41,7 +41,7 @@ runs:
     run: |
       $SemVer = '${{ steps.gitversion.outputs.semVer }}'
       # Replace last dot with dash for Sampler to accept it as pre-release, does not allow dots in pre-release name
-      $SemVer = $SemVer -replace '^([\d\.]+\-\w+)\.(\d)$','$1-$2'
+      $SemVer = $SemVer -replace '^([\d\.]+\-\w+)\.(\d+)$','$1-$2'
       Add-Content -Path $env:GITHUB_OUTPUT -Value "formattedSemVer=$SemVer"
 
   - name: Build module
