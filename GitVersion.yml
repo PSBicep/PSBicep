@@ -1,23 +1,25 @@
-mode: Mainline
+strategies:
+  - Mainline
 next-version: 0.0.1
 major-version-bump-message: '(breaking\schange|breaking|major)\b'
 minor-version-bump-message: '(adds?|features?|minor)\b'
 patch-version-bump-message: '\s?(fix|patch)'
 no-bump-message: '\+semver:\s?(none|skip)'
-assembly-informational-format: '{NuGetVersionV2}+Sha.{Sha}.Date.{CommitDate}'
+assembly-versioning-scheme: 'MajorMinorPatch'
 branches:
   main:
-    tag: preview
+    label: preview
     regex: ^main$
+    increment: Patch
   pull-request:
-    tag: PR
+    label: PR
   feature:
-    tag: useBranchName
+    label: useBranchName
     increment: Minor
     regex: f(eature(s)?)?[\/-]
     source-branches: ['main']
   hotfix:
-    tag: fix
+    label: fix
     increment: Patch
     regex: (hot)?fix(es)?[\/-]
     source-branches: ['main']
