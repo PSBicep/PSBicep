@@ -38,7 +38,7 @@ runs:
     shell: pwsh
     run: ./build.ps1 -tasks pack
     env:
-      ModuleVersion: ${{ env.gitversion.outputs.SemVer }}
+      ModuleVersion: ${{ env.gitversion.outputs.semVer }}
 
   - name: Publish build artifacts
     uses: actions/upload-artifact@v3
