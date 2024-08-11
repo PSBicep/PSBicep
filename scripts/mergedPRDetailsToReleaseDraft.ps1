@@ -13,7 +13,7 @@ $header = @{
 }
 
 #Get all releases including drafts
-$getReleases = Invoke-RestMethod -Method Get -Headers $header -URI  ('{0}/releases' -f $BaseURL)
+$getReleases = Invoke-RestMethod -Method Get -Headers $header -URI  ('{0}/releases' -f $BaseURL) -ContentType 'application/json'
 
 #Check if a release draft exists
 foreach ($release in $getReleases) {
