@@ -13,8 +13,8 @@ public class GetBicepConfigCommand : BaseCommand
     [Parameter(Mandatory = true, ParameterSetName = "PathLocal")]
     [Parameter(Mandatory = true, ParameterSetName = "PathMerged")]
     [Parameter(Mandatory = true, ParameterSetName = "PathOnly")]
-    [ValidateNotNullOrEmpty]
-    [ValidateFileExists]
+    [ValidateNotNullOrEmpty()]
+    [ValidateFileExists()]
     public string Path { get; set; }
 
     [Parameter(Mandatory = true, ParameterSetName = "PathLocal")]
@@ -46,7 +46,7 @@ public class GetBicepConfigCommand : BaseCommand
             _ => BicepConfigScope.Default
         };
     
-        WriteObject(bicepWrapper.GetBicepConfigInfo(scope, Path));
+        WriteObject(bicepWrapper.GetBicepConfigInfo(scope, bicepFilePath));
     }
 }
 

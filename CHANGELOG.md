@@ -7,9 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Merged BicepNet codebase into PSBicep for easier maintainance
+- Fix bug with Get-BicepConfig not properly resolving paths
 
 ### Added
 
-- Bicep support for version 0.28.1
-- Bicep support for version 0.20.4
+- Bicep support for version 0.30.23
+- Clear-BicepModuleCache has new parameter -Path to support custom cache path set in bicepconfig (fixes #306)
+- Publish-Bicep now supports -DocumentationUri (fixes #294)

@@ -74,19 +74,6 @@ Describe 'Get-BicepConfig tests' {
                   }
                 }
               },
-              "extensionAliases": {
-                "br": {
-                  "public": {
-                    "registry": "mcr.microsoft.com",
-                    "extensionPath": "bicep/extensions"
-                  }
-                }
-              },
-              "extensions": {
-                "microsoftGraph": "builtin:",
-                "kubernetes": "builtin:",
-                "az": "builtin:"
-              },
               "implicitExtensions": [
                 "az"
               ],
@@ -133,11 +120,10 @@ Describe 'Get-BicepConfig tests' {
                 "legacyFormatter": false,
                 "testFramework": false,
                 "assertions": false,
-                "dynamicTypeLoading": false,
-                "extensionRegistry": false,
                 "optionalModuleNames": false,
                 "localDeploy": false,
-                "resourceDerivedTypes": false
+                "resourceDerivedTypes": false,
+                "secureOutputs": false
               },
               "formatting": {
                 "indentKind": "Space",

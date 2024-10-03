@@ -45,7 +45,7 @@ Describe 'Build-Bicep' {
                 Build-Bicep -Path 'TestDrive:\brokenBicep.bicep' -AsString -ErrorAction Stop
             }
             catch {
-                $_.Exception.Message | Should -BeLike '*Error BCP018: Expected the "}" character at this location.'
+                $_.Exception.Message | Should -BeLike '*Error BCP018: Expected the "}" character at this location. `[https://aka.ms/bicep/core-diagnostics#BCP018]'
             }
         }
     }

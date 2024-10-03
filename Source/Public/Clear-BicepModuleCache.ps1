@@ -31,6 +31,11 @@ function Clear-BicepModuleCache {
         [Parameter(ParameterSetName = 'Oci', Position = 4)]
         [Parameter(ParameterSetName = 'TemplateSpecs', Position = 5)]
         [ValidateNotNullOrEmpty()]
+        [string]$Path,
+        
+        [Parameter(ParameterSetName = 'Oci', Position = 5)]
+        [Parameter(ParameterSetName = 'TemplateSpecs', Position = 6)]
+        [ValidateNotNullOrEmpty()]
         [string]$Version,
 
         [Parameter(ParameterSetName = 'All', Position = 1)]
@@ -38,9 +43,12 @@ function Clear-BicepModuleCache {
      
     )
     process {
-        
+        $PathSplat = @{}
+        if([string]::IsNullOrEmpty($Path) -eq $false) {$PathSplat.Add('Path', (Resolve-Path -Path $Path).Path)}
+
         if ($Oci -or $All) {            
-            $OciPath = Get-BicepCachePath -Oci 
+            $OciPath = Get-BicepCachePath -Oci @PathSplat
+            Write-Verbose "Using cache path [$OciPath]"
             $RepositoryPath = $Repository -replace '\\', '$'
 
             if (($Registry) -and ($Repository) -and ($Version)) {
@@ -67,8 +75,8 @@ function Clear-BicepModuleCache {
         }
         
         if ($TemplateSpecs -or $All) {            
-            $TSPath = Get-BicepCachePath -TemplateSpecs
-
+            $TSPath = Get-BicepCachePath -TemplateSpecs @PathSplat
+            Write-Verbose "Using cache path [$TSPath]"
             if (($SubscriptionId) -and ($ResourceGroup) -and ($Spec) -and ($Version)) {
                 Remove-Item -Recurse -Path "$TSPath/$SubscriptionId/$ResourceGroup/$Spec/$Version" -Force
                 Write-Verbose "Cleared version [$Version] of [$Spec] in [$ResourceGroup] in [$SubscriptionId] from local module cache"

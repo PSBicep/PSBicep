@@ -16,6 +16,7 @@ namespace PSBicep.Core.Configuration;
 
 // This is a full copy of Bicep.Core.Configuration.ConfigurationManager where only GetDefaultConfiguration() is removed
 // We have implemented our own GetDefaultConfiguration() instead
+
 public partial class BicepConfigurationManager(IFileSystem fileSystem) : IConfigurationManager
 {
     private readonly ConcurrentDictionary<Uri, (RootConfiguration? config, DiagnosticBuilder.DiagnosticBuilderDelegate? loadError)> configFileUriToLoadedConfigCache = new();
@@ -42,7 +43,7 @@ public partial class BicepConfigurationManager(IFileSystem fileSystem) : IConfig
         configFileUriToLoadedConfigCache.AddOrUpdate(configUri, LoadConfiguration, (uri, prev) =>
         {
             var reloaded = LoadConfiguration(uri);
-            if (prev.config is {} prevConfig && reloaded.Item1 is {} newConfig)
+            if (prev.config is { } prevConfig && reloaded.Item1 is { } newConfig)
             {
                 returnVal = (prevConfig, newConfig);
             }
@@ -95,7 +96,6 @@ public partial class BicepConfigurationManager(IFileSystem fileSystem) : IConfig
             return new(
                 configuration.Cloud,
                 configuration.ModuleAliases,
-                configuration.ExtensionAliases,
                 configuration.Extensions,
                 configuration.ImplicitExtensions,
                 configuration.Analyzers,
@@ -108,7 +108,7 @@ public partial class BicepConfigurationManager(IFileSystem fileSystem) : IConfig
 
         return configuration;
     }
-
+    
     //private RootConfiguration GetDefaultConfiguration() => IConfigurationManager.GetBuiltInConfiguration();
 
     private (RootConfiguration?, DiagnosticBuilder.DiagnosticBuilderDelegate?) LoadConfiguration(Uri configurationUri)
@@ -158,7 +158,7 @@ public partial class BicepConfigurationManager(IFileSystem fileSystem) : IConfig
                 }
                 catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or SecurityException)
                 {
-                    // The exception could happen in senarios where users may not have read permission on the parent folder.
+                    // The exception could happen in scenarios where users may not have read permission on the parent folder.
                     // We should not throw ConfigurationException in such cases since it will block compilation.
                     lookupDiagnostic = x => x.PotentialConfigDirectoryCouldNotBeScanned(currentDirectory, exception.Message);
                     break;
@@ -169,5 +169,5 @@ public partial class BicepConfigurationManager(IFileSystem fileSystem) : IConfig
         return new(null, lookupDiagnostic);
     }
 
-    private record ConfigLookupResult(Uri? ConfigFileUri = null, DiagnosticBuilder.DiagnosticBuilderDelegate? LookupDiagnostic = null);
+    private record ConfigLookupResult(Uri? configFileUri = null, DiagnosticBuilder.DiagnosticBuilderDelegate? lookupDiagnostic = null);
 }
