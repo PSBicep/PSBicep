@@ -80,11 +80,11 @@ if ($prLabel -in $prLabels) {
     $requestBody = ConvertTo-Json $body -Depth 10
     
     if (-not $releaseId) {
-        $null = Invoke-RestMethod -Method Post -Headers $Header -Body $requestBody -URI  ('{0}/releases' -f $BaseURL) -Verbose
+        $null = Invoke-RestMethod -Method Post -Headers $Header -Body $requestBody -URI  ('{0}/releases' -f $BaseURL)  -ContentType 'application/json' -Verbose
         Write-Verbose "New releasedraft created"
     }
     else {
-        $null = Invoke-RestMethod -Method Patch -Headers $Header -Body $requestBody -URI  ('{0}/releases/{1}' -f $BaseURL, $releaseId) -Verbose
+        $null = Invoke-RestMethod -Method Patch -Headers $Header -Body $requestBody -URI  ('{0}/releases/{1}' -f $BaseURL, $releaseId) -ContentType 'application/json' -Verbose
         Write-Verbose "Updated release draft with $PR"
     }
 } else {
