@@ -98,7 +98,7 @@ BuildWorkflow:
 ####################################################
 PlatyPS:
   HelpOutputFolder: en-US
-  HelpMarkdownFolder: ../Docs/Help
+  HelpMarkdownFolder: Docs/Help
 
 ####################################################
 #       PESTER  Configuration                      #

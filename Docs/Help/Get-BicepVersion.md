@@ -13,7 +13,7 @@ View the installed version and the latest available version of Bicep CLI.
 ## SYNTAX
 
 ```
-Get-BicepVersion [-All] [<CommonParameters>]
+Get-BicepVersion [-All]
 ```
 
 ## DESCRIPTION
@@ -22,7 +22,7 @@ Get-BicepVersion is a command to compare the installed version of Bicep CLI with
 ## EXAMPLES
 
 ### Example 1: Compare installed version with latest release
-```powershell
+```
 Get-BicepVersion
 ```
 
@@ -38,13 +38,10 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
-
-### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
