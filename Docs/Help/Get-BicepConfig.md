@@ -17,14 +17,14 @@ Get bicep configuration (bicepconfig.json) in use for a bicep file.
 Get-BicepConfig [-Default] [<CommonParameters>]
 ```
 
-### PathMerged
-```
-Get-BicepConfig -Path <String> [-Merged] [<CommonParameters>]
-```
-
 ### PathLocal
 ```
 Get-BicepConfig -Path <String> [-Local] [<CommonParameters>]
+```
+
+### PathMerged
+```
+Get-BicepConfig -Path <String> [-Merged] [<CommonParameters>]
 ```
 
 ### PathOnly
@@ -33,31 +33,32 @@ Get-BicepConfig -Path <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Command to get the bicep configuration in use for a specific Bicep file. Will return path to the bicepconfig.json file as well as the current settings.
+Command to get the bicep configuration in use for a specific Bicep file.
+Will return path to the bicepconfig.json file as well as the current settings.
 
 ## EXAMPLES
 
 ### Example 1 - Get bicep configuration for a bicep file
-```powershell
+```
 Get-BicepConfig -Path .\storage.bicep
 ```
 
 ### Example 2 - Get the merged bicep configuration for a bicep file
-```powershell
+```
 Get-BicepConfig -Path .\storage.bicep -Merged
 ```
 
 Returns the path to the bicepconfig.json file in use, and the merged settings (default + local file).
 
 ### Example 3 - Get the local bicep configuration for a bicep file
-```powershell
+```
 Get-BicepConfig -Path .\storage.bicep -Merged
 ```
 
 Returns the path to the bicepconfig.json file in use, and the settings in the local bicepconfig.json.
 
 ### Example 4 - Get the default bicep configuration
-```powershell
+```
 Get-BicepConfig -Default
 ```
 
@@ -75,7 +76,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -90,7 +91,7 @@ Aliases:
 
 Required: True
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -105,7 +106,7 @@ Aliases:
 
 Required: True
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -115,7 +116,7 @@ Path to a bicep file
 
 ```yaml
 Type: String
-Parameter Sets: PathMerged, PathLocal, PathOnly
+Parameter Sets: PathLocal, PathMerged, PathOnly
 Aliases:
 
 Required: True
@@ -131,7 +132,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

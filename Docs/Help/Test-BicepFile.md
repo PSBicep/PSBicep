@@ -18,20 +18,20 @@ Test-BicepFile [-Path] <String> [[-OutputType] <String>] [[-AcceptDiagnosticLeve
 ```
 
 ## DESCRIPTION
-Tests if a bicep file is valid. Returns true/false by default, but can
-be made to return JSON output.
+Tests if a bicep file is valid.
+Returns true/false by default, but can be made to return JSON output.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Test-BicepFile -Path 'MyBicep.bicep'
 ```
 
 Returns true if the bicep file has no errors or warnings.
 
 ### Example 2
-```powershell
+```
 PS C:\> Test-BicepFile -Path 'MyBicep.bicep' -AcceptDiagnosticLevel 'Warning'
 ```
 
@@ -40,13 +40,11 @@ Returns true if the bicep file has no errors.
 ## PARAMETERS
 
 ### -AcceptDiagnosticLevel
-Set the highest level of diagnostic output that will be accepted
-for the test to pass. Setting Warning here will make a bicep file
-with errors fail the test while a bicep files with warnings will be
-tested valid.
+Set the highest level of diagnostic output that will be accepted for the test to pass.
+Setting Warning here will make a bicep file with errors fail the test while a bicep files with warnings will be tested valid.
 
-Settings this to Error will accept anything. Since this is not a wanted
-scenario the command will throw an error.
+Settings this to Error will accept anything.
+Since this is not a wanted scenario the command will throw an error.
 
 ```yaml
 Type: BicepDiagnosticLevel
@@ -62,8 +60,7 @@ Accept wildcard characters: False
 ```
 
 ### -IgnoreDiagnosticOutput
-Will run silently, not outputing any diagnostic information 
-to the information stream.
+Will run silently, not outputing any diagnostic information  to the information stream.
 
 ```yaml
 Type: SwitchParameter
@@ -72,13 +69,14 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -OutputType
-Set format for output. Simple will only return true or false.
+Set format for output.
+Simple will only return true or false.
 
 ```yaml
 Type: String
@@ -114,7 +112,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### System.Object

@@ -92,6 +92,12 @@ public partial class BicepWrapper
         TemplateSpecsCachePath = Path.Combine(services.GetRequiredService<IFeatureProviderFactory>().GetFeatureProvider(new Uri("inmemory:///main.bicp")).CacheRootDirectory, ArtifactReferenceSchemes.TemplateSpecs);
     }
 
+    public string GetOciCachePath(string path) =>
+        Path.Combine(services.GetRequiredService<IFeatureProviderFactory>().GetFeatureProvider(new Uri(path)).CacheRootDirectory, ArtifactReferenceSchemes.Oci);
+
+    public string GetTemplateSpecsCachePath(string path) =>
+        Path.Combine(services.GetRequiredService<IFeatureProviderFactory>().GetFeatureProvider(new Uri(path)).CacheRootDirectory, ArtifactReferenceSchemes.TemplateSpecs);
+
     public void ClearAuthentication() => tokenCredentialFactory.Clear();
     public void SetAuthentication(string? token = null, string? tenantId = null) =>
         tokenCredentialFactory.SetToken(configuration.Cloud.ActiveDirectoryAuthorityUri, token, tenantId);

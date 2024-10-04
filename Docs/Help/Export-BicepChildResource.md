@@ -8,7 +8,6 @@ schema: 2.0.0
 # Export-BicepChildResource
 
 ## SYNOPSIS
-
 Exports all child resources of a specified Azure resource container as Bicep.
 
 ## SYNTAX
@@ -26,14 +25,12 @@ Export-BicepChildResource [-ParentResourceId] <String> [-AsString]
 ```
 
 ## DESCRIPTION
-
 Exports all child resources of a specified Azure resource container as Bicep.
 
 ## EXAMPLES
 
 ### Example 1
-
-```powershell
+```
 PS C:\> Export-BicepChildResource -ParentResourceId $ParentResourceId -OutputDirectory $Path
 ```
 
@@ -42,7 +39,6 @@ Exports all child resources from an Azure resource container by id.
 ## PARAMETERS
 
 ### -AsString
-
 Exports the resources as string.
 
 ```yaml
@@ -52,13 +48,12 @@ Aliases:
 
 Required: True
 Position: 2
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -OutputDirectory
-
 Specifies the directory to output the Bicep files to.
 
 ```yaml
@@ -74,7 +69,6 @@ Accept wildcard characters: False
 ```
 
 ### -ParentResourceId
-
 The resource id of the resource container, or parent resource.
 
 ```yaml
@@ -95,11 +89,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object
-
 ## NOTES
 
 ## RELATED LINKS

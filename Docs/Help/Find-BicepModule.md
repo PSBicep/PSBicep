@@ -23,25 +23,25 @@ List all modules in a private Bicep module registry (ACR).
 ## EXAMPLES
 
 ### Example 1 - Find modules in a registry
-```powershell
+```
 Find-BicepModule -Registry psbicep.azurecr.io
 ```
 
 Find and lists all modules stored in a Bicep module registry (ACR).
 
 ### Example 2 - Find modules in all registries in the local module cache
-```powershell
+```
 Find-BicepModule -Cache
 ```
 
 Finds modules from all private Bicep module registries that are in the local module cache.
 
 ### Example 3 - Find modules in all registries referenced in a Bicep template
-```powershell
+```
 Find-BicepModule -Path .\storage.bicep
 ```
 
-Finds modules from all private Bicep module registries referenced in the template `storage.bicep`.
+Finds modules from all private Bicep module registries referenced in the template \`storage.bicep\`.
 
 ## PARAMETERS
 
@@ -55,7 +55,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -96,7 +96,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

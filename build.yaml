@@ -65,6 +65,7 @@ BuildWorkflow:
     - Build_Module_ModuleBuilder
     - getBicepTypes
     - updateMarkdownHelp
+    - repairPlatyPSHelp
     - updateExternalHelp
     - Create_changelog_release_output
 
@@ -98,7 +99,7 @@ BuildWorkflow:
 ####################################################
 PlatyPS:
   HelpOutputFolder: en-US
-  HelpMarkdownFolder: ../Docs/Help
+  HelpMarkdownFolder: Docs/Help
 
 ####################################################
 #       PESTER  Configuration                      #

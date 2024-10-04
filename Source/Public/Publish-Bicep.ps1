@@ -1,20 +1,24 @@
 function Publish-Bicep {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory, Position = 1)]
+        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({Test-Path $_})]
         [string]$Path,
 
-        [Parameter(Mandatory, Position = 2)]
+        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [ValidatePattern('^(?<Prefix>[bBrR]{2})(?<ACROrAlias>(:[\w\-_]+\.azurecr.io|\/[\w\-\._]+:))(?<path>[\w\/\-\._]+)(?<tag>:[\w\/\-\._]+)$', ErrorMessage = 'Target does not match pattern for registry. Specify a path to a registry using "br:", or "br/" if using an alias.')]
         [string]$Target,
 
-        [Parameter(Position = 3)]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]$DocumentationUri,
+
+        [Parameter()]
         [switch]$PublishSource,
 
-        [Parameter(Position = 4)]
+        [Parameter()]
         [switch]$Force
     )
 
@@ -32,7 +36,7 @@ function Publish-Bicep {
         }
         catch {
             $_.CategoryInfo.Activity = 'Publish-Bicep'
-            Throw $_  
+            Throw $_
         }
 
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
@@ -41,8 +45,17 @@ function Publish-Bicep {
         }
 
         # Publish module
+        $PublishParams = @{
+            Path = $BicepFile.FullName
+            Target = $Target
+            PublishSource = $PublishSource.IsPresent
+            Force = $Force.IsPresent
+        }
+        if($PSBoundParameters.ContainsKey('DocumentationUri')) {
+            $PublishParams.Add('DocumentationUri', $DocumentationUri)
+        }
         try {
-            Publish-BicepFile -Path $BicepFile.FullName -Target $Target -PublishSource:$PublishSource.IsPresent -Force:$Force.IsPresent -ErrorAction Stop
+            Publish-BicepFile @PublishParams -ErrorAction Stop
             Write-Verbose -Message "[$($BicepFile.Name)] published to: [$Target]"
         }
         catch {

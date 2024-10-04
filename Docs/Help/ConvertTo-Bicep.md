@@ -18,30 +18,29 @@ ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-AsString] [-F
 ```
 
 ## DESCRIPTION
-**ConvertTo-Bicep** is equivalent to 'bicep decompile' but with some additional features.
+ConvertTo-Bicep is equivalent to 'bicep decompile' but with some additional features.
 
--Decompile all ARM templates in a directory
--Specify output directory
+-Decompile all ARM templates in a directory -Specify output directory
 
 ## EXAMPLES
 
 ### Example 1: Decompile single json file in working directory
-```powershell
+```
 ConvertTo-Bicep -Path vnet.json
 ```
 
 ### Example 2: Decompile all ARM template json files in the provided directory
-```powershell
+```
 ConvertTo-Bicep -Path 'c:\armtemplates\'
 ```
 
 ### Example 3: Decompile single json file in working directory
-```powershell
+```
 ConvertTo-Bicep -Path vnet.json -OutputDirectory 'c:\bicep\modules\'
 ```
 
 ### Example 4: Decompile single json file and output as a string
-```powershell
+```
 ConvertTo-Bicep -Path vnet.json -AsString
 ```
 
@@ -73,7 +72,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

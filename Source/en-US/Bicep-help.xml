@@ -11,11 +11,11 @@
     </command:details>
     <maml:description>
       <maml:para>Build-Bicep is equivalent to the Bicep CLI command 'bicep build' but with some additional features.</maml:para>
-      <maml:para>- Compile all files in a directory
-- Generate ARM Template Parameter files
-- Output ARM Template directly as string or hashtable without writing to file
-
-Any error or warning from bicep will be written to the information stream. To save output in a variable, use stream redirection. See example below.</maml:para>
+      <maml:para>- Compile all files in a directory</maml:para>
+      <maml:para>- Generate ARM Template Parameter files</maml:para>
+      <maml:para>- Output ARM Template directly as string or hashtable without writing to file</maml:para>
+      <maml:para></maml:para>
+      <maml:para>Any error or warning from bicep will be written to the information stream. To save output in a variable, use stream redirection. See example below.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -610,9 +610,10 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
     </command:details>
     <maml:description>
       <maml:para>Build-BicepParam is equivalent to the Bicep CLI command 'bicep build-params' but with some additional features.</maml:para>
-      <maml:para>- Compile all bicepparam files in a directory
-- Output ARM Template parameters directly as string or hashtable without writing to file
-Any error or warning from bicep will be written to the information stream. To save output in a variable, use stream redirection. See example below.</maml:para>
+      <maml:para>- Compile all bicepparam files in a directory</maml:para>
+      <maml:para>- Output ARM Template parameters directly as string or hashtable without writing to file</maml:para>
+      <maml:para></maml:para>
+      <maml:para>Any error or warning from bicep will be written to the information stream. To save output in a variable, use stream redirection. See example below.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1152,6 +1153,18 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill Path Description }}</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>Clear-BicepModuleCache</maml:name>
@@ -1206,6 +1219,18 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Specifies which version of a cached module to clear</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill Path Description }}</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1325,6 +1350,18 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill Path Description }}</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -1399,12 +1436,12 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Convert-BicepParamsToDecoratorStyle (Decommissioned)</command:name>
+      <command:name>Convert-BicepParamsToDecoratorStyle</command:name>
       <command:verb>Convert</command:verb>
-      <command:noun>BicepParamsToDecoratorStyle (Decommissioned)</command:noun>
+      <command:noun>BicepParamsToDecoratorStyle</command:noun>
       <maml:description>
         <maml:para>Convert Bicep parameters from v0.1-0.2 style to decorator style.</maml:para>
-        <maml:para>&gt;NOTE: This command has been decommissioned since parameter modifiers are no longer supported starting with Bicep 0.4. If you have old bicep files that you need to update to use decorator style parameters use version 1.4.7 of the module that is using an older Bicep version.</maml:para>
+        <maml:para>NOTE: This command has been decommissioned since parameter modifiers are no longer supported starting with Bicep 0.4. If you have old bicep files that you need to update to use decorator style parameters use version 1.4.7 of the module that is using an older Bicep version.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -1412,8 +1449,8 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Convert-BicepParamsToDecoratorStyle (Decommissioned)</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Convert-BicepParamsToDecoratorStyle</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Path</maml:name>
           <maml:description>
             <maml:para>Specfies the path to the file with parameters to convert</maml:para>
@@ -1426,9 +1463,9 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>ToClipboard  (Windows only)</maml:name>
+          <maml:name>ToClipboard</maml:name>
           <maml:description>
-            <maml:para>Saves the converted params to the clipboard.</maml:para>
+            <maml:para>Saves the converted params to the clipboard. Only works on Windows.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -1439,7 +1476,7 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Path</maml:name>
         <maml:description>
           <maml:para>Specfies the path to the file with parameters to convert</maml:para>
@@ -1452,9 +1489,9 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>ToClipboard  (Windows only)</maml:name>
+        <maml:name>ToClipboard</maml:name>
         <maml:description>
-          <maml:para>Saves the converted params to the clipboard.</maml:para>
+          <maml:para>Saves the converted params to the clipboard. Only works on Windows.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -1491,7 +1528,7 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>Example 1: Convert parameters from one bicep file to decorator style parameters</maml:title>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
         <dev:code>Convert-BicepParamsToDecoratorStyle -Path .\VirtualHubVPNGateway.bicep</dev:code>
         <dev:remarks>
           <maml:para>This example takes a bicep file as input and converts all parameters to decorator style parameters and outputs the result.</maml:para>
@@ -1502,6 +1539,108 @@ New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Templa
         <dev:code>Convert-BicepParamsToDecoratorStyle -Path .\VirtualHubVPNGateway.bicep -ToClipboard</dev:code>
         <dev:remarks>
           <maml:para>This example takes a bicep file as input and converts all parameters to decorator style parameters saves the result to the clipboard.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Convert-BicepParamsToDecoratorStyle</command:name>
+      <command:verb>Convert</command:verb>
+      <command:noun>BicepParamsToDecoratorStyle</command:noun>
+      <maml:description>
+        <maml:para>{{ Fill in the Synopsis }}</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>{{ Fill in the Description }}</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Convert-BicepParamsToDecoratorStyle</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill Path Description }}</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ToClipboard</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill ToClipboard Description }}</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill Path Description }}</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>ToClipboard</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill ToClipboard Description }}</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; {{ Add example code here }}</dev:code>
+        <dev:remarks>
+          <maml:para>{{ Add example description here }}</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -3450,9 +3589,9 @@ Convert-JsonToBicep -String $json</dev:code>
           <maml:description>
             <maml:para>The path to the Bicep file.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -3465,9 +3604,9 @@ Convert-JsonToBicep -String $json</dev:code>
         <maml:description>
           <maml:para>The path to the Bicep file.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -4184,6 +4323,29 @@ Convert-JsonToBicep -String $json</dev:code>
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>DocumentationUri</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill DocumentationUri Description }}</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>PublishSource</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill PublishSource Description }}</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -4215,6 +4377,30 @@ Convert-JsonToBicep -String $json</dev:code>
         <maml:name>Force</maml:name>
         <maml:description>
           <maml:para>Overwrites any existing published file.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>DocumentationUri</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill DocumentationUri Description }}</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>PublishSource</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill PublishSource Description }}</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>

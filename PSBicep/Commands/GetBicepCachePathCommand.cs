@@ -12,16 +12,21 @@ public class GetBicepCachePathCommand : BaseCommand
     [Parameter(Mandatory = true, ParameterSetName = "ts")]
     public SwitchParameter TemplateSpecs { get; set; }
 
+    [Parameter(Mandatory = false, ParameterSetName = "br")]
+    [Parameter(Mandatory = false, ParameterSetName = "ts")]
+    public string Path { get; set; } = "inmemory:///main.bicp";
+
+
     protected override void EndProcessing()
     {
         string result = "";
         if (Oci.IsPresent || ParameterSetName == "br")
         {
-            result = bicepWrapper.OciCachePath;
+            result = bicepWrapper.GetOciCachePath(Path);
         }
         else if (TemplateSpecs.IsPresent)
         {
-            result = bicepWrapper.TemplateSpecsCachePath;
+            result = bicepWrapper.GetTemplateSpecsCachePath(Path);
         }
         WriteObject(result);
     }

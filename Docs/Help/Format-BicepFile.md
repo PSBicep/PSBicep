@@ -8,7 +8,6 @@ schema: 2.0.0
 # Format-BicepFile
 
 ## SYNOPSIS
-
 Format one or several Bicep files.
 
 ## SYNTAX
@@ -42,22 +41,19 @@ Format-BicepFile [[-Path] <String>] [[-NewlineOption] <String>] [[-IndentKindOpt
 ```
 
 ## DESCRIPTION
-
 Format one or several Bicep files.
 
 ## EXAMPLES
 
 ### Example 1
-
-```powershell
+```
 PS C:\> Format-BicepFile -Path $BicepTemplate
 ```
 
 Formats a Bicep file.
 
 ### Example 2
-
-```powershell
+```
 PS C:\> Format-BicepFile -Path $Directory -OutputDirectory $OtherDir
 ```
 
@@ -66,7 +62,6 @@ Formats all Bicep files in a folder and outputs the result as other files in ano
 ## PARAMETERS
 
 ### -AsString
-
 Outputs the Bicep file(s) as string instead of files.
 
 ```yaml
@@ -76,13 +71,12 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Confirm
-
 Prompts you for confirmation before running the cmdlet.
 
 ```yaml
@@ -92,13 +86,12 @@ Aliases: cf
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -IndentKindOption
-
 The kind of indentation, spaces or tabs.
 
 ```yaml
@@ -114,7 +107,6 @@ Accept wildcard characters: False
 ```
 
 ### -IndentSize
-
 The size of indentation.
 
 ```yaml
@@ -130,7 +122,6 @@ Accept wildcard characters: False
 ```
 
 ### -InsertFinalNewline
-
 Whether or not to insert a final new line in the formatted file(s).
 
 ```yaml
@@ -140,13 +131,12 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -NewlineOption
-
 The newline type for the file.
 
 ```yaml
@@ -162,7 +152,6 @@ Accept wildcard characters: False
 ```
 
 ### -OutputDirectory
-
 The directory to output files to.
 
 ```yaml
@@ -178,7 +167,6 @@ Accept wildcard characters: False
 ```
 
 ### -OutputPath
-
 The path to output the file to.
 
 ```yaml
@@ -194,7 +182,6 @@ Accept wildcard characters: False
 ```
 
 ### -Path
-
 The path to the file or directory of files to format.
 
 ```yaml
@@ -210,7 +197,6 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
-
 Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
 
@@ -221,7 +207,7 @@ Aliases: wi
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -232,11 +218,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object
-
 ## NOTES
 
 ## RELATED LINKS

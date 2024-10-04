@@ -8,7 +8,6 @@ schema: 2.0.0
 # Update-BicepCLI
 
 ## SYNOPSIS
-
 Update Bicep CLI (Windows only)
 
 ## SYNTAX
@@ -18,14 +17,12 @@ Update-BicepCLI [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Update-BicepCLI is a command to update to the latest Bicep CLI release available from the Azure/Bicep repo.
 
 ## EXAMPLES
 
 ### Example 1
-
-```powershell
+```
 Update-BicepCLI
 ```
 
@@ -39,7 +36,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ## NOTES
-
-Go to module repository <https://github.com/PSBicep/PSBicep> for detailed info, reporting issues and to submit contributions.
+Go to module repository \<https://github.com/PSBicep/PSBicep\> for detailed info, reporting issues and to submit contributions.
 
 ## RELATED LINKS

@@ -8,24 +8,21 @@ schema: 2.0.0
 # Get-BicepUsedModules
 
 ## SYNOPSIS
-
 Get modules used in a Bicep file.
 
 ## SYNTAX
 
 ```
-Get-BicepUsedModules [-Path] <String> [<CommonParameters>]
+Get-BicepUsedModules [-Path] <String[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Get information about modules used in a Bicep file.
 
 ## EXAMPLES
 
 ### Example 1
-
-```powershell
+```
 PS C:\> Get-BicepUsedModules -Path $BicepFilePath
 ```
 
@@ -34,11 +31,10 @@ Get all modules from a specific Bicep file.
 ## PARAMETERS
 
 ### -Path
-
 The path to the Bicep file.
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 
@@ -55,7 +51,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

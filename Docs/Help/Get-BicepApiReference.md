@@ -25,49 +25,50 @@ Get-BicepApiReference -ResourceProvider <String> -Resource <String> [-Child <Str
 ```
 
 ## DESCRIPTION
-**Get-BicepApiReference** is a command to find and open the ARM template reference documentation in a browser for the provided resource type.
+Get-BicepApiReference is a command to find and open the ARM template reference documentation in a browser for the provided resource type.
 
 ## EXAMPLES
 
 ### Example 1: Get ARM template reference documentation using the Bicep types format
-```powershell
+```
 Get-BicepApiReference -Type 'Microsoft.Network/virtualNetworks@2020-06-01'
 ```
 
-This will open the documentation for the `Microsoft.Network` resource provider, resource `virtualNetworks` and API Version `2020-06-01` in a browser.
+This will open the documentation for the \`Microsoft.Network\` resource provider, resource \`virtualNetworks\` and API Version \`2020-06-01\` in a browser.
 
 ### Example 2: Get the latest ARM template reference for a resource type
-```powershell
+```
 Get-BicepApiReference -ResourceProvider Microsoft.Storage -Resource storageAccounts
 ```
 
-This will open the documentation for the `Microsoft.Storage` resource provider, resource `storageAccounts` using the latest API Version in a browser.
+This will open the documentation for the \`Microsoft.Storage\` resource provider, resource \`storageAccounts\` using the latest API Version in a browser.
 
 ### Example 3: Get the ARM template reference for a resource type using a specific API Version
-```powershell
+```
 Get-BicepApiReference -ResourceProvider Microsoft.Storage -Resource storageAccounts -ApiVersion 2018-11-01
 ```
 
-This will open the documentation for the `Microsoft.Storage` resource provider, resource `storageAccounts` using the ´2018-11-01` API Version in a browser.
+This will open the documentation for the \`Microsoft.Storage\` resource provider, resource \`storageAccounts\` using the ´2018-11-01\` API Version in a browser.
 
 ### Example 4: Get the ARM template reference for a child resource
-```powershell
+```
 Get-BicepApiReference -ResourceProvider Microsoft.Compute -Resource virtualMachines -Child extensions
 ```
 
-This will open the documentation for the `Microsoft.Compute` resource provider, resource `virtualMachines/extensions`
+This will open the documentation for the \`Microsoft.Compute\` resource provider, resource \`virtualMachines/extensions\`
 
 ### Example 5: Get the latest ARM template reference documentation using the Bicep types format
-```powershell
+```
 Get-BicepApiReference -Type 'Microsoft.Network/virtualNetworks@2020-06-01' -Latest
 ```
 
-This will open the documentation for the `Microsoft.Network` resource provider, resource `virtualNetworks` and use the latest API Version instead of the provided version `2020-06-01`.
+This will open the documentation for the \`Microsoft.Network\` resource provider, resource \`virtualNetworks\` and use the latest API Version instead of the provided version \`2020-06-01\`.
 
 ## PARAMETERS
 
 ### -ApiVersion
-Specifies the Api Version to use. If no API Version is provided the latest will be used.
+Specifies the Api Version to use.
+If no API Version is provided the latest will be used.
 
 ```yaml
 Type: String
@@ -106,7 +107,7 @@ Aliases: Please
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -121,7 +122,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -181,7 +182,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -192,7 +193,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

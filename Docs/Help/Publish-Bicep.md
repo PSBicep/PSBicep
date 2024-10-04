@@ -13,7 +13,8 @@ Publishes a .bicep file to the module registry.
 ## SYNTAX
 
 ```
-Publish-Bicep [-Path] <String> [-Target] <String> [<CommonParameters>]
+Publish-Bicep [-Path] <String> [-Target] <String> [-DocumentationUri <String>] [-PublishSource] [-Force]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -22,7 +23,7 @@ Publishes .bicep files to the module registry repository specified.
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 Publish-Bicep -Path .\storage.bicep -Target br:psbicep.azurecr.io/bicep/storage:v1
 ```
 
@@ -70,11 +71,40 @@ Aliases:
 
 Required: False
 Position: 3
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DocumentationUri
+{{ Fill DocumentationUri Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -PublishSource
+{{ Fill PublishSource Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -82,7 +112,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

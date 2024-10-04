@@ -28,14 +28,14 @@ This command converts any valid JSON object to Bicep Language format
 ## EXAMPLES
 
 ### Example 1: Convert a json object to Bicep Language
-```powershell
+```
 Convert-JsonToBicep -String '{"key": "value", "anotherKey": "anotherValue"}'
 ```
 
 This example converts a simple JSON object to Bicep Language
 
 ### Example 2: Convert a json array to Bicep Language
-```powershell
+```
 $json = @'
 [
   {
@@ -64,21 +64,21 @@ Convert-JsonToBicep -String $json
 This example converts a JSON array to Bicep Language
 
 ### Example 3: Read a file and convert to Bicep Language
-```powershell
+```
 Get-Content -Path <path to .json file> -Raw | Convert-JsonToBicep
 ```
 
 This example converts a JSON file to Bicep Language
 
 ### Example 4: Converts a JSON-file to bicep
-```powershell
+```
 Convert-JsonToBicep -path <path to .json-file>
 ```
 
 This example converts a JSON file to Bicep Language
 
 ### Example 5: Converts a JSON-file to bicep and saves it to the Clipboard
-```powershell
+```
 Convert-JsonToBicep -path <path to .json-file> -ToClipboard
 ```
 
@@ -126,7 +126,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -137,7 +137,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

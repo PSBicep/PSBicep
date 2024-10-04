@@ -8,7 +8,6 @@ schema: 2.0.0
 # Update-BicepParameterFile
 
 ## SYNOPSIS
-
 Updates existing ARM Template parameter file based on a bicep file.
 
 ## SYNTAX
@@ -19,22 +18,22 @@ Update-BicepParameterFile [-Path] <String> [[-BicepFile] <String>] [[-Parameters
 ```
 
 ## DESCRIPTION
-
-Updates a parameter file with new parameters, without removing existing values. Also removes parameters from the parameter file if they have been removed from the bicep file.
+Updates a parameter file with new parameters, without removing existing values.
+Also removes parameters from the parameter file if they have been removed from the bicep file.
 
 ## EXAMPLES
 
 ### Example 1
-
-```powershell
+```
 PS C:\> Update-BicepParameterFile -Path .\vnet.parameters.json
 ```
 
-Update a parameter file vnet.parameters.json, without specifying the name of the bicep file. It will look for a bicep file in the same directory with a name based on the parameterfile. In this case vnet.bicep.
+Update a parameter file vnet.parameters.json, without specifying the name of the bicep file.
+It will look for a bicep file in the same directory with a name based on the parameterfile.
+In this case vnet.bicep.
 
 ### Example 2
-
-```powershell
+```
 PS C:\> Update-BicepParameterFile -Path .\vnet.parameters.json -BicepFile .\bicepfiles\virtualnetwork.bicep
 ```
 
@@ -43,7 +42,6 @@ Update a parameter file vnet.parameters.json, specifying the location of the bic
 ## PARAMETERS
 
 ### -BicepFile
-
 Path to the bicep file which the parameter file should be updated from.
 
 ```yaml
@@ -59,7 +57,6 @@ Accept wildcard characters: False
 ```
 
 ### -Parameters
-
 Whether or not to update the parameter file with all parameters or only the required ones.
 
 ```yaml
@@ -76,7 +73,6 @@ Accept wildcard characters: False
 ```
 
 ### -Path
-
 Path to the parameters.json file that needs updating.
 
 ```yaml
@@ -97,11 +93,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object
-
 ## NOTES
 
 ## RELATED LINKS

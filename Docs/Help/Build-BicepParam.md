@@ -37,54 +37,55 @@ Build-BicepParam [[-Path] <String>] [-ExcludeFile <String[]>] [-AsString]
 ```
 
 ## DESCRIPTION
-**Build-BicepParam** is equivalent to the Bicep CLI command 'bicep build-params' but with some additional features.
+Build-BicepParam is equivalent to the Bicep CLI command 'bicep build-params' but with some additional features.
 
-- Compile all bicepparam files in a directory  
-- Output ARM Template parameters directly as string or hashtable without writing to file  
+- Compile all bicepparam files in a directory
+- Output ARM Template parameters directly as string or hashtable without writing to file
 
 Any error or warning from bicep will be written to the information stream.
-To save output in a variable, use stream redirection. See example below.
+To save output in a variable, use stream redirection.
+See example below.
 
 ## EXAMPLES
 
 ### Example 1 Compile single bicepparam file in working directory
-```powershell
+```
 Build-BicepParam -Path vnet.bicep
 ```
 
 ### Example 2: Compile single bicepparam file and specify the output directory
-```powershell
+```
 Build-BicepParam -Path 'c:\bicep\modules\vnet.bicepparam' -OutputDirectory 'c:\armtemplates\vnet.parameters.json'
 ```
 
 ### Example 3: Compile all .bicepparam files in a directory
-```powershell
+```
 Build-BicepParam -Path 'c:\bicep\modules\'
 ```
 
 ### Example 4: Compile all .bicepparam files in the working directory except vnet.bicepparam
-```powershell
+```
 Build-BicepParam -Path 'c:\bicep\modules\' -ExcludeFile vnet.bicepparam
 ```
 
 ### Example 5: Compile a .bicepparam file and output as string
-```powershell
+```
 Build-BicepParam -Path '.\vnet.bicep' -AsString
 ```
 
 ### Example 7: Compile a .bicepparam file as hashtable and pass it to New-AzResourceGroupDeployment
-```powershell
+```
 $ParameterObject = Build-BicepParam -Path '.\vnet.bicepparam' -AsHashtable
 New-AzResourceGroupDeployment -ResourceGroupName vnet-rg -TemplateObject $Template -TemplateParameterObject $ParameterObject
 ```
 
 ### Example 8: Compiles single bicepparam file and saves the output as the specified file path.
-```powershell
+```
 Build-BicepParam -Path 'c:\bicep\modules\vnet.bicepparam' -OutputPath 'c:\armtemplates\newvnet.parameters.json'
 ```
 
 ### Example 10: Compile a .bicep file and compress the outputted ARM Json
-```powershell
+```
 Build-BicepParam -Path '.\main.bicep' -Compress
 ```
 
@@ -100,7 +101,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -115,7 +116,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -130,7 +131,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -145,7 +146,7 @@ Aliases: cf
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -221,7 +222,7 @@ Aliases: wi
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -8,7 +8,6 @@ schema: 2.0.0
 # Export-BicepResource
 
 ## SYNOPSIS
-
 Exports a specified Azure resource as Bicep.
 
 ## SYNTAX
@@ -26,22 +25,19 @@ Export-BicepResource -ResourceId <String[]> [-IncludeTargetScope] [-AsString]
 ```
 
 ## DESCRIPTION
-
 Exports a specified Azure resource as Bicep.
 
 ## EXAMPLES
 
 ### Example 1
-
-```powershell
+```
 PS C:\> Export-BicepResource -ResourceId $ResourceId -Path 'C:\temp\myfile.bicep'
 ```
 
 Exports a resource specified by resource id to the file "myfile.bicep".
 
 ### Example 2
-
-```powershell
+```
 PS C:\> Export-BicepResource -ResourceId $ResourceId -AsString
 ```
 
@@ -50,7 +46,6 @@ Exports a resource specified by resource id as a string.
 ## PARAMETERS
 
 ### -AsString
-
 Specify that the resource will be exported as a string.
 
 ```yaml
@@ -60,13 +55,12 @@ Aliases:
 
 Required: True
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -IncludeTargetScope
-
 Include the target scope in the resulting exported resource string or file.
 
 ```yaml
@@ -76,13 +70,12 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Path
-
 The path to the Bicep file that the resource will be exported to.
 
 ```yaml
@@ -98,7 +91,6 @@ Accept wildcard characters: False
 ```
 
 ### -ResourceId
-
 The id of the resource to export.
 
 ```yaml
@@ -119,11 +111,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String[]
-
 ## OUTPUTS
 
 ### System.Object
-
 ## NOTES
 
 ## RELATED LINKS

@@ -23,28 +23,28 @@ Get metadata from a Bicep template
 ## EXAMPLES
 
 ### Example 1 - Get metadata from Bicep file
-```powershell
+```
 Get-BicepMetadata -Path .\myTemplate.bicep
 ```
 
 Get metadata from Bicep file
 
 ### Example 2 - Get metadata from Bicep file and output as Json
-```powershell
+```
 Get-BicepMetadata -Path .\myTemplate.bicep -OutputType Json
 ```
 
 Get metadata from Bicep file and output as json
 
 ### Example 3 - Get metadata from Bicep file and output as hashtable
-```powershell
+```
 Get-BicepMetadata -Path .\myTemplate.bicep -OutputType Hashtable
 ```
 
 Get metadata from Bicep file and output as hashtable
 
 ### Example 4 - Get metadata from Bicep file and include reserved metadata
-```powershell
+```
 Get-BicepMetadata -Path .\myTemplate.bicep -IncludeReservedMetadata
 ```
 
@@ -62,7 +62,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -104,7 +104,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

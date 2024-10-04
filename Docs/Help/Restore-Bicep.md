@@ -17,12 +17,13 @@ Restore-Bicep [-Path] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Restores all external modules referenced in the .bicep file to the local module cache. Modules from an ACR bicep registry is stored under '%USERPROFILE%\.bicep\br' and template spec modules '%USERPROFILE%\.bicep\ts'.
+Restores all external modules referenced in the .bicep file to the local module cache.
+Modules from an ACR bicep registry is stored under '%USERPROFILE%\.bicep\br' and template spec modules '%USERPROFILE%\.bicep\ts'.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 Restore-Bicep -Path .\main.bicep
 ```
 
@@ -51,7 +52,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

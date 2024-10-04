@@ -17,12 +17,12 @@ Uninstall-BicepCLI [-Force] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-**Uninstall-BicepCLI** uninstalls all Bicep CLI versions installed (Windows Installer and PowerShell installations)
+Uninstall-BicepCLI uninstalls all Bicep CLI versions installed (Windows Installer and PowerShell installations)
 
 ## EXAMPLES
 
 ### Example 1: Uninstall Bicep CLI
-```powershell
+```
 Uninstall-BicepCLI -Force
 ```
 
@@ -38,7 +38,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -49,7 +49,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

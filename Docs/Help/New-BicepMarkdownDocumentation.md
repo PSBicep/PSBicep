@@ -15,13 +15,13 @@ Create markdown documentation for bicep files
 ### FromFile (Default)
 ```
 New-BicepMarkdownDocumentation [[-File] <String>] [-AsString] [-Force]
-[<CommonParameters>]
+ [<CommonParameters>]
 ```
 
 ### FromFolder
 ```
 New-BicepMarkdownDocumentation [[-Path] <String>] [-Recurse] [-AsString] [-Force]
-[<CommonParameters>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,18 +30,19 @@ This command creates a basic markdown documentation of one or more bicep files.
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> New-BicepMarkdownDocumentation -File C:\MyBicepFile.bicep
 ```
 
-This command will create a file called `c:\MyBicepFile.md` containing basic documentation.
+This command will create a file called \`c:\MyBicepFile.md\` containing basic documentation.
 
 ### Example 2
-```powershell
+```
 PS C:\> New-BicepMarkdownDocumentation -Path C:\MyBicepFiles\ -Verbose -Recurse
 ```
 
-This command will traverse the c:\MyBicepFiles\ folder, including subfolders, and create documentation for all bicep files. The markdown files will be saved with the same name as the bicep files, using .md file extension.
+This command will traverse the c:\MyBicepFiles\ folder, including subfolders, and create documentation for all bicep files.
+The markdown files will be saved with the same name as the bicep files, using .md file extension.
 
 ## PARAMETERS
 
@@ -55,7 +56,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -85,13 +86,14 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Path
-Path to folder containing bicep files. All files in folder will have markdown documentation created.
+Path to folder containing bicep files.
+All files in folder will have markdown documentation created.
 
 ```yaml
 Type: String
@@ -115,7 +117,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -126,11 +128,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### File or string
-
 ## NOTES
 
 ## RELATED LINKS
