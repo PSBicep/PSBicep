@@ -8,7 +8,6 @@ schema: 2.0.0
 # Convert-BicepParamsToDecoratorStyle
 
 ## SYNOPSIS
-**(Decommissioned)**
 Convert Bicep parameters from v0.1-0.2 style to decorator style.
 
 >NOTE: This command has been decommissioned since parameter modifiers are no longer supported starting with Bicep 0.4. If you have old bicep files that you need to update to use decorator style parameters use version 1.4.7 of the module that is using an older Bicep version.
