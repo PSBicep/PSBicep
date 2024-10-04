@@ -77,7 +77,7 @@ Accept wildcard characters: False
 ```
 
 ### -DocumentationUri
-Uri to module documentation.
+{{ Fill DocumentationUri Description }}
 
 ```yaml
 Type: String
@@ -92,7 +92,7 @@ Accept wildcard characters: False
 ```
 
 ### -PublishSource
-Publish bicep source code side by side with ARM template to allow for better authoring experience.
+{{ Fill PublishSource Description }}
 
 ```yaml
 Type: SwitchParameter
@@ -101,7 +101,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

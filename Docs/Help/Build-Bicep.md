@@ -45,7 +45,9 @@ Build-Bicep is equivalent to the Bicep CLI command 'bicep build' but with some a
 - Generate ARM Template Parameter files
 - Output ARM Template directly as string or hashtable without writing to file
 
-Any error or warning from bicep will be written to the information stream. To save output in a variable, use stream redirection. See example below.
+Any error or warning from bicep will be written to the information stream.
+To save output in a variable, use stream redirection.
+See example below.
 
 ## EXAMPLES
 

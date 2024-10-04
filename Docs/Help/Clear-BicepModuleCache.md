@@ -216,7 +216,7 @@ Accept wildcard characters: False
 ```
 
 ### -Path
-Path to a bicep file used to discover correct bicepconfig.json
+{{ Fill Path Description }}
 
 ```yaml
 Type: String
