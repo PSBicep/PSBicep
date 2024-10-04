@@ -65,6 +65,7 @@ BuildWorkflow:
     - Build_Module_ModuleBuilder
     - getBicepTypes
     - updateMarkdownHelp
+    - repairPlatyPSHelp
     - updateExternalHelp
     - Create_changelog_release_output
 
