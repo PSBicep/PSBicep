@@ -96,11 +96,6 @@ jobs:
         ref: ${{ github.head_ref }}
         fetch-depth: 0
     
-    - name: Update PowerShell
-      uses: bjompen/UpdatePWSHAction@v1.0.0
-      with:
-        ReleaseVersion: 'stable'
-    
     - name: Download Build Artifact
       uses: actions/download-artifact@v3
       with:
