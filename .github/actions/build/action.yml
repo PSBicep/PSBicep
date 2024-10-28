@@ -6,10 +6,6 @@ on:
 runs:
   using: 'composite'
   steps:
-  - name: Update PowerShell
-    uses: bjompen/UpdatePWSHAction@v1.0.0
-    with:
-      ReleaseVersion: 'stable'
 
   - name: Install GitVersion
     uses: gittools/actions/gitversion/setup@v3.0.0
