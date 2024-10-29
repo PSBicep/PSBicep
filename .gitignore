@@ -1,5 +1,4 @@
 output/
-.vscode
 tmp/
 bin/
 obj/
