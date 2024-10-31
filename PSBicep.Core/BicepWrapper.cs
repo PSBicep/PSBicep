@@ -53,7 +53,7 @@ public partial class BicepWrapper
     private readonly IFeatureProviderFactory featureProviderFactory;
     private readonly BicepCompiler compiler;
     private readonly BicepDecompiler decompiler;
-    private readonly IWorkspace workspace;
+    private readonly Workspace workspace;
     private readonly RootConfiguration configuration;
     private readonly AzureResourceProvider azResourceProvider;
 
@@ -83,7 +83,7 @@ public partial class BicepWrapper
 
         decompiler = services.GetRequiredService<BicepDecompiler>();
 
-        workspace = services.GetRequiredService<IWorkspace>();
+        workspace = services.GetRequiredService<Workspace>();
         configuration = configurationManager.GetConfiguration(new Uri("inmemory://main.bicep"));
         azResourceProvider = services.GetRequiredService<AzureResourceProvider>();
 

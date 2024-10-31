@@ -105,6 +105,16 @@ public class AzureResourceProvider(ITokenCredentialFactory credentialFactory) : 
         }
     }
     
+    public async IAsyncEnumerable<(string, JsonElement)> GetResourcesAsync(RootConfiguration configuration, string[] ids, [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        foreach (var id in ids)
+        {
+            var resourceId = AzureHelpers.ValidateResourceId(id);
+            var resource = await GetGenericResource(configuration, resourceId, null, cancellationToken);
+            yield return (id, resource);
+        }
+    }
+    
     public async Task<JsonElement> GetGenericResource(RootConfiguration configuration, IAzResourceProvider.AzResourceIdentifier resourceId, string? apiVersion, CancellationToken cancellationToken)
     {
         (string resourceType, string? apiVersion) resourceTypeApiVersionMapping = (resourceId.FullyQualifiedType, apiVersion);

@@ -13,7 +13,7 @@ internal static class BicepHelper
     {
         var matchedType = azResourceTypeLoader.GetAvailableTypes()
             .Where(x => StringComparer.OrdinalIgnoreCase.Equals(fullyQualifiedType, x.FormatType()))
-            .OrderByDescending(x => x.ApiVersion, ApiVersionComparer.Instance)
+            .OrderByDescending(x => x.ApiVersion ?? "", ApiVersionComparer.Instance)
             .FirstOrDefault();
         if (matchedType is null || matchedType.ApiVersion is null)
         {

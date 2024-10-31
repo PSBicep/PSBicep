@@ -91,8 +91,6 @@ FunctionsToExport = @(
     'Convert-BicepParamsToDecoratorStyle',
     'Convert-JsonToBicep',
     'ConvertTo-Bicep', 
-    'Export-BicepChildResource'
-    'Export-BicepResource',
     'Find-BicepModule',
     'Format-BicepFile',
     'Get-BicepApiReference',
@@ -113,7 +111,12 @@ FunctionsToExport = @(
 
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
-CmdletsToExport = @('Get-BicepConfig')
+CmdletsToExport = @(
+    'Convert-ARMResourceToBicep', 
+    'Get-BicepConfig', 
+    'Export-BicepChildResource',
+    'Export-BicepResource'
+)
 
 # Variables to export from this module
 VariablesToExport = ''
