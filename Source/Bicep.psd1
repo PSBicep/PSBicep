@@ -66,7 +66,9 @@ PowerShellVersion = '7.4'
 # ProcessorArchitecture = ''
 
 # Modules that must be imported into the global environment prior to importing this module
-# RequiredModules = @()
+RequiredModules = @(
+    @{ModuleName = 'AzAuth'; MinimumVersion = '2.3.0'; MaximumVersion = '2.999.999'}
+)
 
 # Assemblies that must be loaded prior to importing this module
 # RequiredAssemblies = @()
@@ -90,7 +92,8 @@ FunctionsToExport = @(
     'Clear-BicepModuleCache',
     'Convert-BicepParamsToDecoratorStyle',
     'Convert-JsonToBicep',
-    'ConvertTo-Bicep', 
+    'ConvertTo-Bicep',
+    'Export-BicepResource',
     'Find-BicepModule',
     'Format-BicepFile',
     'Get-BicepApiReference',
@@ -114,8 +117,7 @@ FunctionsToExport = @(
 CmdletsToExport = @(
     'Convert-ARMResourceToBicep', 
     'Get-BicepConfig', 
-    'Export-BicepChildResource',
-    'Export-BicepResource'
+    'Export-BicepChildResource'
 )
 
 # Variables to export from this module
