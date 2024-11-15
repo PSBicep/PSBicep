@@ -119,4 +119,10 @@ public partial class BicepWrapper
 
     public BicepConfigInfo GetBicepConfigInfo(BicepConfigScope scope, string path) =>
         configurationManager.GetConfigurationInfo(scope, PathHelper.FilePathToFileUrl(path ?? ""));
+        
+    public string ResolveBicepResourceType(string id) {
+        var resourceId = AzureHelpers.ValidateResourceId(id);
+        return BicepHelper.ResolveBicepTypeDefinition(resourceId.FullyQualifiedType, azResourceTypeLoader, logger).ToString();
+    }
 }
+

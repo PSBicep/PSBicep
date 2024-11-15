@@ -22,7 +22,7 @@ function Export-BicepResource {
     )
     
     begin {
-        AssertAzureConnection
+        AssertAzureConnection -TokenSplat $script:TokenSplat
         
         if ($PSCmdlet.ParameterSetName -like 'ByQuery*') {
             $Resources = SearchAzureResourceGraph -QueryPath $KQLQuery
@@ -41,39 +41,17 @@ function Export-BicepResource {
     }
     
     process {
-        $ResourceId | Foreach-Object -ThrottleLimit 50 -Parallel {
-            function Get-AzRestResource {
-                [CmdletBinding()]
-                param (
-                    $Token,
-                    $ResourceId,
-                    $ApiVersion
-                )
-                
-                begin {
-                    $Headers = @{
-                        authorization = "Bearer $using:Token"
-                        contentType   = 'application/json'
-                    }
-                    
-                }
-                
-                process {
-                    $uri = "https://management.azure.com/${ResourceId}?api-version=$ApiVersion"
-                    Invoke-WebRequest -Uri $uri -Method 'Get' -Headers $Headers -UseBasicParsing
-                }
-            
+        $ResourceId | Foreach-Object {
+            [pscustomobject]@{
+                ApiVersion = ((Resolve-BicepResourceType -ResourceId $_) -split '@')[-1]
+                ResourceId = $_
             }
+        } | Foreach-Object -ThrottleLimit 50 -Parallel {
             
-            $ResourceId = $_
+            $ResourceId = $_.ResourceId
+            $ApiVersion = $_.ApiVersion
             $hashtable = $using:hash
 
-            #TODO: Use function logic
-            $ApiVersion = switch ($ResourceId) {
-                { $_ -like '*/policyassignments/*' } { '2024-04-01' }
-                { $_ -like '*/policysetdefinitions/*' } { '2023-04-01' }
-                { $_ -like '*/policydefinitions/*' } { '2023-04-01' }
-            }
             
             $maxRetries = 50
             $retryCount = 0
@@ -97,8 +75,12 @@ function Export-BicepResource {
              
                 try {
                     $uri = "https://management.azure.com/${ResourceId}?api-version=$ApiVersion"
-                    Invoke-WebRequest -Uri $uri -Method 'Get' -Headers $Headers -UseBasicParsing
-                    $Response = Get-AzRestResource -ResourceId $ResourceId -ApiVersion $ApiVersion -Token $hashtable['config']['token'].Token
+                    $Headers = @{
+                        authorization = "Bearer $($hashtable['config']['token'].Token)"
+                        contentType   = 'application/json'
+                    }
+                    $Response = Invoke-WebRequest -Uri $uri -Method 'Get' -Headers $Headers -UseBasicParsing
+ 
                     if ($Response.StatusCode -eq 200) {
                         $hashtable[$ResourceId] = $Response.Content
                     }
