@@ -18,14 +18,20 @@ function Export-BicepResource {
         [Parameter(ParameterSetName = 'ByQueryOutStream')]
         [Parameter(ParameterSetName = 'ByIdOutPath')]
         [Parameter(ParameterSetName = 'ByIdOutStream')]
-        [switch]$IncludeTargetScope
+        [switch]$IncludeTargetScope,
+        
+        [Parameter(ParameterSetName = 'ByQueryOutPath')]
+        [Parameter(ParameterSetName = 'ByQueryOutStream')]
+        [Parameter(ParameterSetName = 'ByIdOutPath')]
+        [Parameter(ParameterSetName = 'ByIdOutStream')]
+        [switch]$Raw
     )
     
     begin {
         AssertAzureConnection -TokenSplat $script:TokenSplat
         
         if ($PSCmdlet.ParameterSetName -like 'ByQuery*') {
-            $Resources = SearchAzureResourceGraph -QueryPath $KQLQuery
+            $Resources = SearchAzureResourceGraph -Query $KQLQuery
             if ($null -eq $Resources.id) {
                 throw 'KQL query must return a column named "id"'
             }
@@ -51,7 +57,6 @@ function Export-BicepResource {
             $ResourceId = $_.ResourceId
             $ApiVersion = $_.ApiVersion
             $hashtable = $using:hash
-
             
             $maxRetries = 50
             $retryCount = 0
@@ -87,7 +92,6 @@ function Export-BicepResource {
                     else {
                         Write-Warning "Failed to get $_ with status code $($Response.StatusCode)"
                     }
-        
                     return
                 }
                 catch {
@@ -113,6 +117,31 @@ function Export-BicepResource {
     
     end {
         # Ensure that we use any new tokens in module
-        $script:Token = $hashtable['config']['token']
+        $script:Token = $hash['config']['token']
+        $hash.Remove('config')
+
+        $hash.GetEnumerator() | ForEach-Object {
+            $Id = $_.Key
+            if ($Raw.IsPresent) {
+                $Template = $_.Value
+            } else {
+                $Template = ConvertTo-Bicep -ResourceId $Id -ResourceBody $_.Value
+            }
+            if ($PSCmdlet.ParameterSetName -like '*OutPath') {
+                $FileName = $Id -replace '/', '_'
+                $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath "$FileName.bicep"
+                $null = Out-File -InputObject $Template -FilePath $OutputFilePath -Encoding utf8
+            }
+            elseif ($PSCmdlet.ParameterSetName -like '*OutStream') {
+                [pscustomobject]@{
+                    ResourceId = $Id
+                    Template = $Template
+                }
+            }
+            else {
+                throw [System.NotImplementedException]::new()
+            }
+            
+        }
     }
 }

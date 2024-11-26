@@ -27,7 +27,7 @@ function SearchAzureResourceGraph {
         throw 'KQL Query can only be run against either a Subscription or a Management Group, not both.'
     }
     
-    AssertAzureConnection
+    AssertAzureConnection -TokenSplat $script:TokenSplat
 
     if ($PSCmdlet.ParameterSetName -eq 'Path') {
         $Query = Get-Content $QueryPath -Raw
