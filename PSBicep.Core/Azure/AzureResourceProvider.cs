@@ -1,13 +1,18 @@
 using Azure.Core;
 using Azure.ResourceManager;
+using Bicep.Core;
 using Bicep.Core.Configuration;
 using Bicep.Core.Diagnostics;
+using Bicep.Core.Extensions;
 using Bicep.Core.Parsing;
 using Bicep.Core.PrettyPrint;
 using Bicep.Core.PrettyPrint.Options;
+using Bicep.Core.PrettyPrintV2;
 using Bicep.Core.Registry.Auth;
 using Bicep.Core.Resources;
+using Bicep.Core.Rewriters;
 using Bicep.Core.Syntax;
+using Bicep.Core.Workspaces;
 using Bicep.LanguageServer.Providers;
 using System;
 using System.Collections.Generic;
@@ -153,8 +158,9 @@ public class AzureResourceProvider(ITokenCredentialFactory credentialFactory) : 
         }
     }
     
-    public static string GenerateBicepTemplate(IAzResourceProvider.AzResourceIdentifier resourceId, ResourceTypeReference resourceType, JsonElement resource, bool includeTargetScope = false)
+    public static string GenerateBicepTemplate(BicepCompiler compiler, IAzResourceProvider.AzResourceIdentifier resourceId, ResourceTypeReference resourceType, JsonElement resource, RootConfiguration configuration, bool includeTargetScope = false)
     {
+        // Calculate target scope to be able to add it to the top of the template
         var resourceIdentifier = new ResourceIdentifier(resourceId.FullyQualifiedId);
         string targetScope = (string?)(resourceIdentifier.Parent?.ResourceType) switch
         {
@@ -168,14 +174,29 @@ public class AzureResourceProvider(ITokenCredentialFactory credentialFactory) : 
             targetScope = $"targetScope = 'tenant'{Environment.NewLine}";
         }
 
+        // Generate Bicep template
         var resourceDeclaration = AzureHelpers.CreateResourceSyntax(resource, resourceId, resourceType);
-
-        var printOptions = new PrettyPrintOptions(NewlineOption.LF, IndentKindOption.Space, 2, false);
         var program = new ProgramSyntax(
             [resourceDeclaration],
-            SyntaxFactory.CreateToken(TokenType.EndOfFile));
-        var template = PrettyPrinter.PrintProgram(program, printOptions, EmptyDiagnosticLookup.Instance, EmptyDiagnosticLookup.Instance);
+            SyntaxFactory.EndOfFileToken);
+
+        BicepSourceFile bicepFile = SourceFileFactory.CreateBicepFile(new Uri("inmemory:///generated.bicep"), program.ToString());
+        var workspace = new Workspace();
+        workspace.UpsertSourceFile(bicepFile);
+        var compilation = compiler.CreateCompilationWithoutRestore(bicepFile.FileUri, workspace);
+
+        bicepFile = RewriterHelper.RewriteMultiple(
+            compiler,
+            compilation,
+            bicepFile,
+            rewritePasses: 5,
+            model => new TypeCasingFixerRewriter(model),
+            model => new ReadOnlyPropertyRemovalRewriter(model));
+
+        var printerOptions = configuration.Formatting.Data;
+        var template = PrettyPrinterV2.PrintValid(bicepFile.ProgramSyntax, printerOptions);
 
         return includeTargetScope ? targetScope + template : template;
+
     }
 }

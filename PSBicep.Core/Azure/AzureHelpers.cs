@@ -119,9 +119,9 @@ public static partial class AzureHelpers
             SyntaxFactory.CreateStringLiteral($"Generated from {resourceId.FullyQualifiedId}"));
 
         return new ResourceDeclarationSyntax(
-            [description, SyntaxFactory.NewlineToken,],
-            SyntaxFactory.CreateIdentifierToken("resource"),
-            SyntaxFactory.CreateIdentifier(NotLetters().Replace(resourceId.UnqualifiedName, "")),
+            new SyntaxBase[] { description, SyntaxFactory.NewlineToken, },
+            SyntaxFactory.ResourceKeywordToken,
+            SyntaxFactory.CreateIdentifierWithTrailingSpace(UnifiedNamePattern().Replace(resourceId.UnqualifiedName, "")),
             SyntaxFactory.CreateStringLiteral(typeReference.FormatName()),
             null,
             SyntaxFactory.CreateToken(TokenType.Assignment),
@@ -169,7 +169,6 @@ public static partial class AzureHelpers
                 throw new InvalidOperationException($"Failed to deserialize JSON");
         }
     }
-
     [GeneratedRegex("[^a-zA-Z]")]
-    private static partial Regex NotLetters();
+    private static partial Regex UnifiedNamePattern();
 }

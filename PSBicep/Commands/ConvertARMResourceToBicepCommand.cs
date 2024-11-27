@@ -13,9 +13,12 @@ public class ConvertARMResourceToBicep : BaseCommand
     [ValidateNotNullOrEmpty]
     public string ResourceBody { get; set; }
 
+    [Parameter()]
+    public string ConfigurationPath { get; set; }
+
     protected override void ProcessRecord()
     {
-        var result = bicepWrapper.ConvertResourceToBicep(ResourceId, ResourceBody);
+        var result = bicepWrapper.ConvertResourceToBicep(ResourceId, ResourceBody, ConfigurationPath);
         WriteObject(result);
     }
 }

@@ -23,12 +23,12 @@ namespace PSBicep.Core;
 
 public partial class BicepWrapper
 {
-    public string? ConvertResourceToBicep(string resourceId, string resourceBody, bool includeTargetScope = false)
+    public string? ConvertResourceToBicep(string resourceId, string resourceBody, string? configurationPath = null, bool includeTargetScope = false)
     {
         var id = AzureHelpers.ValidateResourceId(resourceId);
         var matchedType = BicepHelper.ResolveBicepTypeDefinition(id.FullyQualifiedType, azResourceTypeLoader, logger);
         JsonElement resource = JsonSerializer.Deserialize<JsonElement>(resourceBody);
-
-        return AzureResourceProvider.GenerateBicepTemplate(id, matchedType, resource, includeTargetScope);
+        configurationManager.GetConfiguration(new Uri(configurationPath ?? "inmemory:///main.bicep"));
+        return AzureResourceProvider.GenerateBicepTemplate(compiler, id, matchedType, resource, configuration, includeTargetScope);
     }
 }

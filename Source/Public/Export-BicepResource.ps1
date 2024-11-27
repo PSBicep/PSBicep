@@ -95,6 +95,15 @@ function Export-BicepResource {
                     return
                 }
                 catch {
+                    # TODO: Implement retry logic for status code 400 with next newest api version
+                    # NoRegisteredProviderFound
+                    # Exception:
+                    # {
+                    #   "error": {
+                    #     "code": "NoRegisteredProviderFound",
+                    #     "message": "No registered resource provider found for location \u0027global\u0027 and API version \u00272023-01-01-preview\u0027 for type \u0027activityLogAlerts\u0027. The supported api-versions are \u00272017-03-01-preview, 2017-04-01, 2020-10-01\u0027. The supported locations are \u0027global, westeurope, northeurope\u0027."
+                    #   }
+                    # }
                     Write-Warning ("Failed to get resource! {0}" -f $_.Exception.Message)
                     $_
                     if ($_.Exception.Response.StatusCode -eq 429) {
@@ -119,7 +128,7 @@ function Export-BicepResource {
         # Ensure that we use any new tokens in module
         $script:Token = $hash['config']['token']
         $hash.Remove('config')
-
+        
         $hash.GetEnumerator() | ForEach-Object {
             $Id = $_.Key
             if ($Raw.IsPresent) {
