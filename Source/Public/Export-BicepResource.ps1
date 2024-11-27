@@ -20,6 +20,10 @@ function Export-BicepResource {
         [Parameter(ParameterSetName = 'ByIdOutStream')]
         [switch]$IncludeTargetScope,
         
+        [Parameter(ParameterSetName = 'ByQueryOutStream')]
+        [Parameter(ParameterSetName = 'ByIdOutStream')]
+        [switch]$AsString,
+
         [Parameter(ParameterSetName = 'ByQueryOutPath')]
         [Parameter(ParameterSetName = 'ByQueryOutStream')]
         [Parameter(ParameterSetName = 'ByIdOutPath')]
@@ -142,15 +146,19 @@ function Export-BicepResource {
                 $null = Out-File -InputObject $Template -FilePath $OutputFilePath -Encoding utf8
             }
             elseif ($PSCmdlet.ParameterSetName -like '*OutStream') {
-                [pscustomobject]@{
-                    ResourceId = $Id
-                    Template = $Template
+                if($AsString.IsPresent) {
+                    $Template
+                }
+                else {
+                    [pscustomobject]@{
+                        ResourceId = $Id
+                        Template = $Template
+                    }
                 }
             }
             else {
                 throw [System.NotImplementedException]::new()
             }
-            
         }
     }
 }

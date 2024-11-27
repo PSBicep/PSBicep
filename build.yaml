@@ -69,6 +69,12 @@ BuildWorkflow:
     - updateExternalHelp
     - Create_changelog_release_output
 
+  quickbuild: # Least amount of tasks to run to build the module, useful for quick testing while developing
+    - Clean
+    - compile
+    - Build_Module_ModuleBuilder
+    - getBicepTypes
+
   pack:
     - build
     - package_module_nupkg
