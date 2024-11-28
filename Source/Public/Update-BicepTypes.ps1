@@ -34,7 +34,7 @@ function Update-BicepTypes {
         Throw "Unable to filter content. Index file might have changed. $_"
     }
 
-    Write-Verbose "Saving to disk"
+    Write-Verbose "Saving to disk at '$BicepTypesPath'"
     
     try {
         Out-File -FilePath $BicepTypesPath -InputObject $TypesOnly -WhatIf:$WhatIfPreference

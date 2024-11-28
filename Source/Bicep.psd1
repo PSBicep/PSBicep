@@ -90,6 +90,7 @@ FunctionsToExport = @(
     'Build-Bicep',
     'Build-BicepParam',
     'Clear-BicepModuleCache',
+    'Connect-Bicep',
     'Convert-BicepParamsToDecoratorStyle',
     'Convert-JsonToBicep',
     'ConvertTo-Bicep',

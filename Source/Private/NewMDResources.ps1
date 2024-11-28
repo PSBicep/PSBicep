@@ -1,7 +1,13 @@
 function NewMDResources {
     [CmdletBinding()]
     param(
-        [object[]]$Resources
+        [Parameter(Mandatory)]
+        [AllowEmptyCollection()]
+        [AllowNull()]
+        [object[]]$Resources,
+
+        [Parameter()]
+        [string]$LanguageVersion = '1.0'
     )
 
     if (-not $Resources -or $Resources.Count -eq 0) {
@@ -9,6 +15,18 @@ function NewMDResources {
     }
 
     $MDResources = NewMDTableHeader -Headers 'Name', 'Link', 'Location'
+    
+    # If language version is 2.0, $Resources is a dictionary and we need to adapt the object
+    if ($LanguageVersion -eq '2.0') {
+        $Resources = foreach ($ResourceName in $Resources[0].psobject.properties.name) {
+            $Resource = $Resources."$ResourceName"
+            $Hash = @{}
+            foreach ($PropertyName in $Resource.psobject.properties.name) {
+                $Hash[$PropertyName] = $Resource."$PropertyName"
+            }
+            [pscustomobject]$Hash
+        }
+    }
 
     foreach ($Resource in $Resources) {
         try {
