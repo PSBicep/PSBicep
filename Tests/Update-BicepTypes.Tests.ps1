@@ -21,7 +21,10 @@ Describe 'Update-BicepTypes' {
 
         Mock Invoke-RestMethod -ModuleName Bicep {
             [PSCustomObject]@{
-                Resources = @{ sample='sample' }
+                Resources = [PSCustomObject]@{
+                    'Microsoft.Web/sites/slots/functions@2020-10-01' = 'sample1'
+                    'Microsoft.Web/sites/slots/functions@2020-10-02' = 'sample2'
+                }
             }
         }
     }
@@ -42,14 +45,14 @@ Describe 'Update-BicepTypes' {
     It 'Throws expected error if Resources is not present in index file' {
         Mock Invoke-RestMethod -ModuleName Bicep {
             [PSCustomObject]@{
-                NotResources = @{ sample='sample' }
+                NotResources = @{ sample = 'sample' }
             }
         }
 
         { Update-BicepTypes } | Should -Throw "Resources not found in index file."
     }
 
-    It 'Throws expected error if conversion to json does not work'{
+    It 'Throws expected error if conversion to json does not work' {
         Mock ConvertTo-Json -ModuleName Bicep {
             Throw 'Error'
         }
