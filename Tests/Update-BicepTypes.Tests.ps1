@@ -27,6 +27,9 @@ Describe 'Update-BicepTypes' {
                 }
             }
         }
+
+        Mock Set-Variable -ModuleName Bicep -ParameterFilter { $Scope -eq 'Script' } {
+        }
     }
 
     It 'Updates BicepTypes.json' {

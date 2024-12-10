@@ -49,8 +49,8 @@ function GetBicepTypes {
             
             $null = $allResourceProviders.Add($ResourceProviders)
         }
-        $Script:BicepResourceProviders = $allResourceProviders
-        $Script:BicepResourceProvidersTable = $allResourceProvidersTable
+        Set-Variable -Name 'BicepResourceProviders' -Value $allResourceProviders -Scope 'Script'
+        Set-Variable -Name 'BicepResourceProvidersTable' -Value $allResourceProvidersTable -Scope 'Script'
     }
 
     Write-Output -InputObject $Script:BicepResourceProviders
