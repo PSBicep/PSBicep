@@ -4,6 +4,7 @@ function ListBicepVersions {
         [switch]$Latest
     )
     if($null -eq $Script:AvailableBicepVersions) {
+        # Get all available versions
         try {
             $Script:AvailableBicepVersions = GetGithubReleaseVersion -Organization 'Azure' -Repository 'bicep' -ErrorAction 'Stop'
         }
@@ -14,6 +15,7 @@ function ListBicepVersions {
     }
 
     if($null -eq $Script:LatestBicepVersion) {
+        # Call the /latest endpoint to get only the latest version
         try {
             $Script:LatestBicepVersion = GetGithubReleaseVersion -Organization 'Azure' -Repository 'bicep' -Latest -ErrorAction 'Stop'
         }
