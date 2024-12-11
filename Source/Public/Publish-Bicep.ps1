@@ -22,6 +22,10 @@ function Publish-Bicep {
         [switch]$Force
     )
 
+    begin {    
+        AssertAzureConnection -TokenSplat $script:TokenSplat
+    }
+
     process {
         $BicepFile = Get-Childitem -Path $Path -File
             

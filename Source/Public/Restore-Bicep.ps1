@@ -6,6 +6,9 @@ function Restore-Bicep {
         [string]$Path         
     )
 
+    begin {    
+    }
+
     process {
         $BicepFile = Get-Childitem -Path $Path -File
 
