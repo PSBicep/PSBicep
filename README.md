@@ -4,20 +4,26 @@
 
 This is the repository for the Bicep PowerShell Module. This is a community project created to enable the features provided by the [Bicep CLI](https://github.com/Azure/bicep) in PowerShell. The module provides the same functionality as Bicep CLI, plus some additional features to simplify the Bicep authoring experience.
 
+>**Note:** When new Bicep versions are released there will be a slight delay before the PowerShell module gets tested updated with the latest assemblies. If new functionality is added to Bicep CLI before the PowerShell module supports it, use `Install-BicepCLI` to install the latest Bicep CLI version and use the CLI while waiting for an updated PowerShell module.
+
 Commands implemented:
 
 - [Build-Bicep](./Docs/Help/Build-Bicep.md)
+- [Build-BicepParam](./Docs/Help/Build-BicepParam.md)
 - [Clear-BicepModuleCache](./Docs/Help/Clear-BicepModuleCache.md)
+- [Connect-Bicep](./Docs/Help/Connect-Bicep.md)
 - [Convert-BicepParamsToDecoratorStyle](./Docs/Help/Convert-BicepParamsToDecoratorStyle.md)
 - [Convert-JsonToBicep](./Docs/Help/Convert-JsonToBicep.md)
 - [ConvertTo-Bicep](./Docs/Help/ConvertTo-Bicep.md)
+- [Export-BicepResource](./Docs/Help/Export-BicepResource.md)
+- [Export-BicepChildResource (**experimental**)](./Docs/Help/Export-BicepChildResource.md)
 - [Find-BicepModule](./Docs/Help/Find-BicepModule.md)
+- [Format-BicepFile](./Docs/Help/Format-BicepFile.md)
 - [Get-BicepApiReference](./Docs/Help/Get-BicepApiReference.md)
 - [Get-BicepConfig](./Docs/Help/Get-BicepConfig.md)
 - [Get-BicepMetadata](./Docs/Help/Get-BicepMetadata.md)
 - [Get-BicepUsedModules](./Docs/Help/Get-BicepUsedModules.md)
 - [Get-BicepVersion](./Docs/Help/Get-BicepVersion.md)
-- [Get-UsedModulesInBicepFile](./Docs/Help/Get-UsedModulesInBicepFile.md)
 - [Install-BicepCLI](./Docs/Help/Install-BicepCLI.md)
 - [New-BicepMarkdownDocumentation](./Docs/Help/New-BicepMarkdownDocumentation.md)
 - [New-BicepParameterFile](./Docs/Help/New-BicepParameterFile.md)
@@ -28,15 +34,20 @@ Commands implemented:
 - [Update-BicepCLI](./Docs/Help/Update-BicepCLI.md)
 - [Update-BicepParameterFile](./Docs/Help/Update-BicepParameterFile.md)
 - [Update-BicepTypes](./Docs/Help/Update-BicepTypes.md)
-- [Build-BicepParam](./Docs/Help/Build-BicepParam.md)
+
+## Authentication
+
+Due to the separation of code in C# and PowerShell, we currently depend on two different authentication models. Any feature that relies on built-in functionality in Bicep uses the authentication set in bicepconfig.json while Export-BicepResource uses PSBicep authentication depending on the module AzAuth and uses the command Connect-Bicep to log in.
+
+We hope to use Connect-Bicep as default for all commands in the future.
+
+The following commands will communcate with Azure and requires authentication:
+
+- [Connect-Bicep](./Docs/Help/Connect-Bicep.md)
 - [Export-BicepResource](./Docs/Help/Export-BicepResource.md)
 - [Export-BicepChildResource](./Docs/Help/Export-BicepChildResource.md)
-- [Format-BicepFile](./Docs/Help/Format-BicepFile.md)
-
-
->**Note:** Starting with version `1.3.0` of the Bicep PowerShell module the cmdlets `Build-Bicep` and `ConvertTo-Bicep` uses the assemblies from the official [Bicep](https://github.com/Azure/bicep) repository instead of wrapping the Bicep CLI. When new Bicep versions are released there will be a slight delay before the PowerShell module gets tested updated with the latest assemblies. If new functionality is added to Bicep CLI before the PowerShell module supports it, use `Install-BicepCLI` to install the latest Bicep CLI version and use the CLI while waiting for an updated PowerShell module.
-
->**UPCOMING BREAKING CHANGE NOTIFICATION!** Future releases of PSBicep _will_ require new versions of PowerShell! This is due to Bicep using new versions of .NET which forces us to use a PowerShell version with support for that.
+- [Publish-Bicep](./Docs/Help/Publish-Bicep.md)
+- [Restore-Bicep](./Docs/Help/Restore-Bicep.md)
 
 ## Installation
 
