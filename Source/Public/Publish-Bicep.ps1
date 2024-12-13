@@ -23,7 +23,8 @@ function Publish-Bicep {
     )
 
     begin {    
-        AssertAzureConnection -TokenSplat $script:TokenSplat
+        # This command currently uses native Bicep authentication for now
+        # AssertAzureConnection -TokenSplat $script:TokenSplat
     }
 
     process {
