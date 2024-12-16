@@ -22,7 +22,7 @@
                                         }
                                     }
     'AzAuth'                      = @{
-                                        Version = '2.3.0'
+                                        Version = '2.4.0'
                                         MaximumVersion = '2.99.99'
                                     }
     'Azure/Bicep'                 = 'v0.31.92'

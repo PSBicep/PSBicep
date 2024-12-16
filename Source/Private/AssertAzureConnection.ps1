@@ -8,20 +8,35 @@ function AssertAzureConnection {
         [string]$CertificatePath,
 
         [Parameter()]
+        [ValidateSet("ManagedIdentity", "Environment", "AzurePowerShell", "AzureCLI", "VisualStudioCode", "VisualStudio")]
+        [string[]]$CredentialPrecedence,
+
+        [Parameter()]
         [string]$Resource = 'https://management.azure.com'
     )
     $LocalTokenSplat = $TokenSplat.Clone()
+    $LocalTokenSplat['Resource'] = $Resource
     $NotConnectedErrorMessage = 'Not connected to Azure. Please connect to Azure by running Connect-Bicep before running this command.'
-    if(-not $LocalTokenSplat.ContainsKey('ClientId')) {
-        throw $NotConnectedErrorMessage
+
+    # Connect-Bicep has not been run and we can try to get a token based on credential precedence.
+    if ($script:TokenSource -ne 'PSBicep' -and $CredentialPrecedence.Count -gt 0) {
+        try {
+            $NewToken = Get-AzToken @LocalTokenSplat -CredentialPrecedence $CredentialPrecedence -ErrorAction 'Stop'
+            $script:Token = $NewToken # Only make assignment to script scope if no exception is thrown
+            return
+        }
+        catch {
+            Write-Error -Exception $_.Exception -Message $NotConnectedErrorMessage -ErrorAction 'Stop'
+        } 
     }
-    # If token doesn't exist, has expired, or is for another resource - get a new one
-    if ($null -eq $script:Token -or 
+    
+    #  If token is null, about to expire or has wrong resource/audience, try to refresh it
+    if (
+        $null -eq $script:Token -or
         $script:Token.ExpiresOn -le [System.DateTimeOffset]::Now.AddMinutes(15) -or 
         $script:Token.Claims['aud'] -ne $Resource
     ) {
         try {
-            $LocalTokenSplat['Resource'] = $Resource
             if ($CertificatePath) {
                 $Certificate = Get-Item $CertificatePath
                 
@@ -36,14 +51,16 @@ function AssertAzureConnection {
             # If we reach this point, we know that we have run Connect-Bicep
             # We can therefore safely remove parameters from the local LocalTokenSplat
             # The non-interative token we get here should only be session-local from the previous auth
-            if($LocalTokenSplat.ContainsKey('Interactive')) {
+            if ($LocalTokenSplat.ContainsKey('Interactive')) {
                 $LocalTokenSplat.Remove('Interactive')
             }
-            if($LocalTokenSplat.ContainsKey('ClientId')) {
+            if ($LocalTokenSplat.ContainsKey('ClientId')) {
                 $LocalTokenSplat.Remove('ClientId')
             }
-            $script:Token = Get-AzToken @LocalTokenSplat -ErrorAction 'Stop'
-        } catch {
+            $NewToken = Get-AzToken @LocalTokenSplat -ErrorAction 'Stop'
+            $script:Token = $NewToken # Only make assignment to script scope if no exception is thrown
+        }
+        catch {
             Write-Error -Exception $_.Exception -Message $NotConnectedErrorMessage -ErrorAction 'Stop'
         }
     }

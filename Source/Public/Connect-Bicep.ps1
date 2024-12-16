@@ -46,4 +46,6 @@ function Connect-Bicep {
     if ($ManagedIdentity.IsPresent) { $script:TokenSplat['ManagedIdentity'] = $true }
     
     $script:Token = Get-AzToken @script:TokenSplat
+    # Save the source of the token to module scope for AssertAzureConnection to know how to refresh it
+    $script:TokenSource = 'PSBicep'
 }

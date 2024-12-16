@@ -67,7 +67,7 @@ PowerShellVersion = '7.4'
 
 # Modules that must be imported into the global environment prior to importing this module
 RequiredModules = @(
-    @{ModuleName = 'AzAuth'; ModuleVersion = '2.3.0'; MaximumVersion = '2.999.999'}
+    @{ModuleName = 'AzAuth'; ModuleVersion = '2.4.0'; MaximumVersion = '2.999.999'}
 )
 
 # Assemblies that must be loaded prior to importing this module

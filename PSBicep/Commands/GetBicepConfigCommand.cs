@@ -26,6 +26,12 @@ public class GetBicepConfigCommand : BaseCommand
     [Parameter(ParameterSetName = "Default")]
     public SwitchParameter Default { get; set; }
 
+    [Parameter(ParameterSetName = "Default")]
+    [Parameter(ParameterSetName = "PathLocal")]
+    [Parameter(ParameterSetName = "PathMerged")]
+    [Parameter(ParameterSetName = "PathOnly")]
+    public SwitchParameter AsString { get; set; }
+
     protected override void BeginProcessing()
     {
         base.BeginProcessing();
@@ -45,8 +51,12 @@ public class GetBicepConfigCommand : BaseCommand
             "PathOnly" => BicepConfigScope.Merged,
             _ => BicepConfigScope.Default
         };
-    
-        WriteObject(bicepWrapper.GetBicepConfigInfo(scope, bicepFilePath));
+        var config = bicepWrapper.GetBicepConfigInfo(scope, bicepFilePath);
+        if(AsString.IsPresent) {
+            WriteObject(config.ToString());
+        } else {
+            WriteObject(config);
+        }
     }
 }
 
