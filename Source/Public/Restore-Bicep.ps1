@@ -6,20 +6,29 @@ function Restore-Bicep {
         [string]$Path         
     )
 
-    begin {    
+    begin {   
+        
     }
 
     process {
+        $BicepToken = @{}
         $BicepFile = Get-Childitem -Path $Path -File
-
+        $Config = Get-BicepConfig -Path $BicepFile
+        try {
+            AssertAzureConnection -TokenSplat $script:TokenSplat -BicepConfig $Config -ErrorAction 'Stop'
+            $BicepToken['Token'] = $script:Token.Token
+        } catch {
+            # We don't care about errors here, let bicep throw if authentication is needed
+        }
+        
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $bicepConfig= Get-BicepConfig -Path $BicepFile
+            
             Write-Verbose -Message "Using Bicep configuration: $($bicepConfig.Path)"
         }
 
         # Restore modules
         try {
-            Restore-BicepFile -Path $BicepFile.FullName -ErrorAction Stop
+            Restore-BicepFile -Path $BicepFile.FullName @BicepToken -ErrorAction Stop
             Write-Verbose -Message "Successfully restored all modules"
         }
         catch {

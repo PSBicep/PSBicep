@@ -8,8 +8,7 @@ function AssertAzureConnection {
         [string]$CertificatePath,
 
         [Parameter()]
-        [ValidateSet("ManagedIdentity", "Environment", "AzurePowerShell", "AzureCLI", "VisualStudioCode", "VisualStudio")]
-        [string[]]$CredentialPrecedence,
+        [PSBicep.Models.BicepConfigInfo]$BicepConfig,
 
         [Parameter()]
         [string]$Resource = 'https://management.azure.com'
@@ -19,9 +18,9 @@ function AssertAzureConnection {
     $NotConnectedErrorMessage = 'Not connected to Azure. Please connect to Azure by running Connect-Bicep before running this command.'
 
     # Connect-Bicep has not been run and we can try to get a token based on credential precedence.
-    if ($script:TokenSource -ne 'PSBicep' -and $CredentialPrecedence.Count -gt 0) {
+    if ($script:TokenSource -ne 'PSBicep' -and $null -ne $BicepConfig) {
         try {
-            $NewToken = Get-AzToken @LocalTokenSplat -CredentialPrecedence $CredentialPrecedence -ErrorAction 'Stop'
+            $NewToken = Get-AzToken @LocalTokenSplat -CredentialPrecedence $BicepConfig.cloud.credentialPrecedence -ErrorAction 'Stop'
             $script:Token = $NewToken # Only make assignment to script scope if no exception is thrown
             return
         }
@@ -31,11 +30,7 @@ function AssertAzureConnection {
     }
     
     #  If token is null, about to expire or has wrong resource/audience, try to refresh it
-    if (
-        $null -eq $script:Token -or
-        $script:Token.ExpiresOn -le [System.DateTimeOffset]::Now.AddMinutes(15) -or 
-        $script:Token.Claims['aud'] -ne $Resource
-    ) {
+    if (-not (ValidateAzureToken -Token $script:Token -Resource $Resource)) {
         try {
             if ($CertificatePath) {
                 $Certificate = Get-Item $CertificatePath

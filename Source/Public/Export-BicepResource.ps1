@@ -35,9 +35,8 @@ function Export-BicepResource {
         # Get bicepconfig based on current location
         $ConfigPath = Get-Location
         $Config = Get-BicepConfig -Path $ConfigPath -Merged -AsString | ConvertFrom-Json -AsHashtable
-        $CredentialPrecedence = $Config.cloud.credentialPrecedence
 
-        AssertAzureConnection -TokenSplat $script:TokenSplat -CredentialPrecedence $CredentialPrecedence
+        AssertAzureConnection -TokenSplat $script:TokenSplat -BicepConfig $Config
         
         if ($PSCmdlet.ParameterSetName -like 'ByQuery*') {
             $Resources = SearchAzureResourceGraph -Query $KQLQuery

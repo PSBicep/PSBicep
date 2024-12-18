@@ -13,4 +13,9 @@ public class BaseCommand : PSCmdlet
         base.BeginProcessing();
         bicepWrapper = new BicepWrapper(this);
     }
+
+    protected void SetAuthentication(string token)
+    {
+        bicepWrapper.SetAuthentication(token);
+    }
 }

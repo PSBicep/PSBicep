@@ -22,11 +22,6 @@ function Publish-Bicep {
         [switch]$Force
     )
 
-    begin {    
-        # This command currently uses native Bicep authentication for now
-        # AssertAzureConnection -TokenSplat $script:TokenSplat
-    }
-
     process {
         $BicepFile = Get-Childitem -Path $Path -File
             
@@ -44,16 +39,19 @@ function Publish-Bicep {
             Throw $_
         }
 
+        $bicepConfig= Get-BicepConfig -Path $BicepFile
         if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-            $bicepConfig= Get-BicepConfig -Path $BicepFile
             Write-Verbose -Message "Using Bicep configuration: $($bicepConfig.Path)"
         }
 
+        AssertAzureConnection -TokenSplat $script:TokenSplat -BicepConfig $bicepConfig -ErrorAction 'Stop'
+        
         # Publish module
         $PublishParams = @{
             Path = $BicepFile.FullName
             Target = $Target
             PublishSource = $PublishSource.IsPresent
+            Token = $script:Token.Token
             Force = $Force.IsPresent
         }
         if($PSBoundParameters.ContainsKey('DocumentationUri')) {

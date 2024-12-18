@@ -14,11 +14,13 @@ namespace PSBicep.Core;
 
 public partial class BicepWrapper
 {
-    public void Publish(string inputFilePath, string targetModuleReference, string? documentationUri, bool publishSource = false, bool overwriteIfExists = false) =>
-        joinableTaskFactory.Run(() => PublishAsync(inputFilePath, targetModuleReference, documentationUri, overwriteIfExists));
+    public void Publish(string inputFilePath, string targetModuleReference, string token, string? documentationUri, bool publishSource = false, bool overwriteIfExists = false) =>
+        joinableTaskFactory.Run(() => PublishAsync(inputFilePath, targetModuleReference, token, documentationUri, overwriteIfExists));
 
-    public async Task PublishAsync(string inputFilePath, string targetModuleReference, string? documentationUri, bool publishSource = false, bool overwriteIfExists = false, bool skipRestore = false)
+    public async Task PublishAsync(string inputFilePath, string targetModuleReference, string token, string? documentationUri, bool publishSource = false, bool overwriteIfExists = false, bool skipRestore = false)
     {
+        SetAuthentication(token);
+        
         var inputPath = PathHelper.ResolvePath(inputFilePath);
         var inputUri = PathHelper.FilePathToFileUrl(inputPath);
         var features = featureProviderFactory.GetFeatureProvider(inputUri);
