@@ -16,7 +16,7 @@ public partial class BicepWrapper
 
     public async Task RestoreAsync(string inputFilePath, bool forceModulesRestore = false)
     {
-        logger?.LogInformation("Restoring external modules to local cache for file {inputFilePath}", inputFilePath);
+        logger?.LogTrace("Restoring external modules to local cache for file {inputFilePath}", inputFilePath);
         var inputPath = PathHelper.ResolvePath(inputFilePath);
         var inputUri = PathHelper.FilePathToFileUrl(inputPath);
 
@@ -46,11 +46,11 @@ public partial class BicepWrapper
 
         if (modulesToRestoreReferences.Any())
         {
-            logger?.LogInformation("Successfully restored modules in {inputFilePath}", inputFilePath);
+            logger?.LogTrace("Successfully restored modules in {inputFilePath}", inputFilePath);
         }
         else
         {
-            logger?.LogInformation("No new modules to restore in {inputFilePath}", inputFilePath);
+            logger?.LogTrace("No new modules to restore in {inputFilePath}", inputFilePath);
         }
     }
 }

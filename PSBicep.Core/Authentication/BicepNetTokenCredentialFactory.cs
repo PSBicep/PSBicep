@@ -41,12 +41,12 @@ public class BicepTokenCredentialFactory : ITokenCredentialFactory
 
         if (Credential == null)
         {
-            Logger?.LogInformation("No stored credential to clear.");
+            Logger?.LogTrace("No stored credential to clear.");
             return;
         }
 
         Credential = null;
-        Logger?.LogInformation("Cleared stored credential.");
+        Logger?.LogTrace("Cleared stored credential.");
     }
 
     internal void SetToken(Uri activeDirectoryAuthorityUri, string? token = null, string? tenantId = null)
@@ -54,7 +54,7 @@ public class BicepTokenCredentialFactory : ITokenCredentialFactory
         // User provided a token
         if (!string.IsNullOrWhiteSpace(token))
         {
-            Logger?.LogInformation("Token provided as authentication.");
+            Logger?.LogTrace("Token provided as authentication.");
 
             // Try to parse JWT for expiry date
             try
@@ -64,7 +64,7 @@ public class BicepTokenCredentialFactory : ITokenCredentialFactory
                 var tokenExp = jwtSecurityToken.Claims.First(claim => claim.Type.Equals("exp")).Value;
                 var expDateTime = DateTimeOffset.FromUnixTimeSeconds(long.Parse(tokenExp));
 
-                Logger?.LogInformation("Successfully parsed token, expiration date is {expDateTime}.", expDateTime);
+                Logger?.LogTrace("Successfully parsed token, expiration date is {expDateTime}.", expDateTime);
                 Credential = new ExternalTokenCredential(token, expDateTime);
             }
             catch (Exception ex)

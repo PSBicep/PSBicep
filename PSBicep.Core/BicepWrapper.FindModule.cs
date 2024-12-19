@@ -29,7 +29,7 @@ public partial class BicepWrapper
         }
         else // Otherwise search a file for valid references
         {
-            logger?.LogInformation("Searching file {inputString} for endpoints", inputString);
+            logger?.LogTrace("Searching file {inputString} for endpoints", inputString);
             var inputUri = PathHelper.FilePathToFileUrl(inputString);
 
             var sourceFileGrouping = SourceFileGroupingBuilder.Build(
@@ -59,13 +59,13 @@ public partial class BicepWrapper
     {
         List<string> endpoints = [];
 
-        logger?.LogInformation("Searching cache {OciCachePath} for endpoints", OciCachePath);
+        logger?.LogTrace("Searching cache {OciCachePath} for endpoints", OciCachePath);
         var directories = Directory.GetDirectories(OciCachePath);
         foreach (var directoryPath in directories)
         {
             var directoryName = Path.GetFileName(directoryPath);
             if(directoryName != "mcr.microsoft.com") {
-                logger?.LogInformation("Found endpoint {directoryName}", directoryName);
+                logger?.LogTrace("Found endpoint {directoryName}", directoryName);
                 endpoints.Add(directoryName);
             }
         }
@@ -77,11 +77,11 @@ public partial class BicepWrapper
     {
         if (endpoints.Count > 0)
         {
-            logger?.LogInformation("Found endpoints:\n{joinedEndpoints}", string.Join("\n", endpoints));
+            logger?.LogTrace("Found endpoints:\n{joinedEndpoints}", string.Join("\n", endpoints));
         }
         else
         {
-            logger?.LogInformation("Found no endpoints in file");
+            logger?.LogTrace("Found no endpoints in file");
         }
 
         // Create credential and options
@@ -95,13 +95,13 @@ public partial class BicepWrapper
         {
             try
             {
-                logger?.LogInformation("Searching endpoint {endpoint}", endpoint);
+                logger?.LogTrace("Searching endpoint {endpoint}", endpoint);
                 var client = new ContainerRegistryClient(new Uri($"https://{endpoint}"), cred, options);
                 var repositoryNames = client.GetRepositoryNames();
 
                 foreach (var repositoryName in repositoryNames)
                 {
-                    logger?.LogInformation("Searching module {repositoryName}", repositoryName);
+                    logger?.LogTrace("Searching module {repositoryName}", repositoryName);
 
                     // Create model repository to output
                     BicepRepository bicepRepository = new(endpoint, repositoryName);
@@ -110,7 +110,7 @@ public partial class BicepWrapper
                     var repositoryManifests = repository.GetAllManifestProperties();
 
                     var manifestCount = repositoryManifests.Count();
-                    logger?.LogInformation("{manifestCount} manifest(s) found.", manifestCount);
+                    logger?.LogTrace("{manifestCount} manifest(s) found.", manifestCount);
 
                     foreach (var moduleManifest in repositoryManifests)
                     {
@@ -124,7 +124,7 @@ public partial class BicepWrapper
                         {
                             foreach (var tag in tags)
                             {
-                                logger?.LogInformation("Found tag \"{tag.Name}\"", tag.Name);
+                                logger?.LogTrace("Found tag \"{tag.Name}\"", tag.Name);
                                 tagList.Add(new BicepRepositoryModuleTag(
                                     name: tag.Name,
                                     digest: tag.Digest,
@@ -135,7 +135,7 @@ public partial class BicepWrapper
                             }
                         } // When there are no tags, we cannot enumerate null - disregard this error and continue
                         catch (InvalidOperationException ex) when (ex.TargetSite?.Name == "EnumerateArray" || ex.TargetSite?.Name == "ThrowJsonElementWrongTypeException") {
-                            logger?.LogInformation("No tags found for manifest with digest {moduleManifest.Digest}", moduleManifest.Digest);
+                            logger?.LogTrace("No tags found for manifest with digest {moduleManifest.Digest}", moduleManifest.Digest);
                         }
 
                         var bicepModule = new BicepRepositoryModule(
