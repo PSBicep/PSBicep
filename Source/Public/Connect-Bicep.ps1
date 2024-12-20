@@ -10,7 +10,7 @@ function Connect-Bicep {
         [Parameter(ParameterSetName = 'Interactive')]
         [Parameter(Mandatory, ParameterSetName = 'Certificate')]
         [ValidateNotNullOrEmpty()]
-        [string]$TenantId,
+        [string]$Tenant,
     
         [Parameter(ParameterSetName = 'ManagedIdentity')]
         [Parameter(ParameterSetName = 'Interactive')]
@@ -30,7 +30,7 @@ function Connect-Bicep {
     $script:CertificatePath = $null
     
     $script:TokenSplat['ClientId'] = $ClientId
-    if ($PSBoundParameters.ContainsKey('TenantId')) { $script:TokenSplat['TenantId'] = $TenantId }
+    if ($PSBoundParameters.ContainsKey('Tenant')) { $script:TokenSplat['TenantId'] = $Tenant }
     if ($PSBoundParameters.ContainsKey('CertificatePath')) {
         $script:CertificatePath = $CertificatePath
         $Certificate = Get-Item $CertificatePath

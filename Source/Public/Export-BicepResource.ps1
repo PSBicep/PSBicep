@@ -34,7 +34,7 @@ function Export-BicepResource {
     begin {
         # Get bicepconfig based on current location
         $ConfigPath = Get-Location
-        $Config = Get-BicepConfig -Path $ConfigPath -Merged -AsString | ConvertFrom-Json -AsHashtable
+        $Config = Get-BicepConfig -Path $ConfigPath -Merged -AsString
 
         AssertAzureConnection -TokenSplat $script:TokenSplat -BicepConfig $Config
         

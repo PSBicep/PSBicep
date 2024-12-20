@@ -17,7 +17,8 @@ function Restore-Bicep {
         try {
             AssertAzureConnection -TokenSplat $script:TokenSplat -BicepConfig $Config -ErrorAction 'Stop'
             $BicepToken['Token'] = $script:Token.Token
-        } catch {
+        }
+        catch {
             # We don't care about errors here, let bicep throw if authentication is needed
         }
         
