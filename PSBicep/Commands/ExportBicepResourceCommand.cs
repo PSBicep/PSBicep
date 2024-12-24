@@ -21,6 +21,7 @@ public class ExportBicepResourceCommand : BaseCommand
 
     protected override void BeginProcessing()
     {
+        WriteWarning("This command is deprecated and will be removed in a future release. Use Export-BicepResource instead. Please file an Issue on GitHub if you have a use case that still requires this command.");
         base.BeginProcessing();
         if (ParameterSetName == "Path")
         {
