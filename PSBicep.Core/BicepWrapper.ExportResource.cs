@@ -1,4 +1,4 @@
-﻿using PSBicep.Core.Azure;
+using PSBicep.Core.Azure;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -24,7 +24,7 @@ public partial class BicepWrapper
         {
             var name = AzureHelpers.GetResourceFriendlyName(id);
             var resourceId = AzureHelpers.ValidateResourceId(id);
-            var matchedType = BicepHelper.ResolveBicepTypeDefinition(resourceId.FullyQualifiedType, azResourceTypeLoader, logger);
+            var matchedType = BicepHelper.ResolveBicepTypeDefinition(resourceId.FullyQualifiedType, azResourceTypeLoader, logger: logger);
             result.Add(name, AzureResourceProvider.GenerateBicepTemplate(compiler, resourceId, matchedType, resource, config, includeTargetScope: includeTargetScope));
         }
 

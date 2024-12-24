@@ -16,9 +16,15 @@ public class ConvertARMResourceToBicep : BaseCommand
     [Parameter()]
     public string ConfigurationPath { get; set; }
 
+    [Parameter()]
+    public SwitchParameter IncludeTargetScope { get; set; }
+
+    [Parameter()]
+    public SwitchParameter RemoveUnknownProperties { get; set; }
+
     protected override void ProcessRecord()
     {
-        var result = bicepWrapper.ConvertResourceToBicep(ResourceId, ResourceBody, ConfigurationPath);
+        var result = bicepWrapper.ConvertResourceToBicep(ResourceId, ResourceBody, ConfigurationPath, IncludeTargetScope.IsPresent, RemoveUnknownProperties.IsPresent);
         WriteObject(result);
     }
 }

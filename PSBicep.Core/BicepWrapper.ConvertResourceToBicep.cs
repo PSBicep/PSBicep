@@ -1,34 +1,17 @@
-﻿using Bicep.Core;
-using Bicep.Core.Configuration;
-using Bicep.Core.Extensions;
-using Bicep.Core.Parsing;
-using Bicep.Core.PrettyPrint;
-using Bicep.Core.PrettyPrint.Options;
-using Bicep.Core.PrettyPrintV2;
-using Bicep.Core.Resources;
-using Bicep.Core.Rewriters;
-using Bicep.Core.Semantics;
-using Bicep.Core.Syntax;
-using Bicep.Core.Workspaces;
-using Bicep.LanguageServer.Providers;
-using PSBicep.Core.Azure;
-using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System;
 using System.Text.Json;
-using System.Text.RegularExpressions;
+using PSBicep.Core.Azure;
 
 namespace PSBicep.Core;
 
 public partial class BicepWrapper
 {
-    public string? ConvertResourceToBicep(string resourceId, string resourceBody, string? configurationPath = null, bool includeTargetScope = false)
+    public string? ConvertResourceToBicep(string resourceId, string resourceBody, string? configurationPath = null, bool includeTargetScope = false, bool removeUnknownProperties = false)
     {
         var id = AzureHelpers.ValidateResourceId(resourceId);
-        var matchedType = BicepHelper.ResolveBicepTypeDefinition(id.FullyQualifiedType, azResourceTypeLoader, logger);
+        var matchedType = BicepHelper.ResolveBicepTypeDefinition(id.FullyQualifiedType, azResourceTypeLoader, logger: logger);
         JsonElement resource = JsonSerializer.Deserialize<JsonElement>(resourceBody);
         configurationManager.GetConfiguration(new Uri(configurationPath ?? "inmemory:///main.bicep"));
-        return AzureResourceProvider.GenerateBicepTemplate(compiler, id, matchedType, resource, configuration, includeTargetScope);
+        return AzureResourceProvider.GenerateBicepTemplate(compiler, id, matchedType, resource, configuration, includeTargetScope, removeUnknownProperties);
     }
 }

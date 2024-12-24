@@ -1,25 +1,23 @@
-using Azure.Core;
-using Azure.ResourceManager;
-using Bicep.Core;
-using Bicep.Core.Configuration;
-using Bicep.Core.Diagnostics;
-using Bicep.Core.Extensions;
-using Bicep.Core.Parsing;
-using Bicep.Core.PrettyPrint;
-using Bicep.Core.PrettyPrint.Options;
-using Bicep.Core.PrettyPrintV2;
-using Bicep.Core.Registry.Auth;
-using Bicep.Core.Resources;
-using Bicep.Core.Rewriters;
-using Bicep.Core.Syntax;
-using Bicep.Core.Workspaces;
-using Bicep.LanguageServer.Providers;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure.Core;
+using Azure.ResourceManager;
+using Bicep.Core;
+using Bicep.Core.Configuration;
+using Bicep.Core.Extensions;
+using Bicep.Core.PrettyPrintV2;
+using Bicep.Core.Registry.Auth;
+using Bicep.Core.Resources;
+using Bicep.Core.Rewriters;
+using Bicep.Core.Semantics;
+using Bicep.Core.Syntax;
+using Bicep.Core.Workspaces;
+using Bicep.LanguageServer.Providers;
+using PSBicep.Core.Rewriters;
 
 namespace PSBicep.Core.Azure;
 public class AzureResourceProvider(ITokenCredentialFactory credentialFactory) : IAzResourceProvider
@@ -109,7 +107,7 @@ public class AzureResourceProvider(ITokenCredentialFactory credentialFactory) : 
             }
         }
     }
-    
+
     public async IAsyncEnumerable<(string, JsonElement)> GetResourcesAsync(RootConfiguration configuration, string[] ids, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         foreach (var id in ids)
@@ -119,14 +117,14 @@ public class AzureResourceProvider(ITokenCredentialFactory credentialFactory) : 
             yield return (id, resource);
         }
     }
-    
+
     public async Task<JsonElement> GetGenericResource(RootConfiguration configuration, IAzResourceProvider.AzResourceIdentifier resourceId, string? apiVersion, CancellationToken cancellationToken)
     {
         (string resourceType, string? apiVersion) resourceTypeApiVersionMapping = (resourceId.FullyQualifiedType, apiVersion);
 
         var armClient = CreateArmClient(configuration, resourceId.subscriptionId, resourceTypeApiVersionMapping);
         var resourceIdentifier = new ResourceIdentifier(resourceId.FullyQualifiedId);
-        
+
         switch (resourceIdentifier.ResourceType)
         {
             case "Microsoft.Management/managementGroups":
@@ -157,8 +155,8 @@ public class AzureResourceProvider(ITokenCredentialFactory credentialFactory) : 
                 return await JsonSerializer.DeserializeAsync<JsonElement>(contentStream, cancellationToken: cancellationToken);
         }
     }
-    
-    public static string GenerateBicepTemplate(BicepCompiler compiler, IAzResourceProvider.AzResourceIdentifier resourceId, ResourceTypeReference resourceType, JsonElement resource, RootConfiguration configuration, bool includeTargetScope = false)
+
+    public static string GenerateBicepTemplate(BicepCompiler compiler, IAzResourceProvider.AzResourceIdentifier resourceId, ResourceTypeReference resourceType, JsonElement resource, RootConfiguration configuration, bool includeTargetScope = false, bool removeUnknownProperties = false)
     {
         // Calculate target scope to be able to add it to the top of the template
         var resourceIdentifier = new ResourceIdentifier(resourceId.FullyQualifiedId);
@@ -185,13 +183,24 @@ public class AzureResourceProvider(ITokenCredentialFactory credentialFactory) : 
         workspace.UpsertSourceFile(bicepFile);
         var compilation = compiler.CreateCompilationWithoutRestore(bicepFile.FileUri, workspace);
 
+        var rewriters = new List<Func<SemanticModel, SyntaxRewriteVisitor>>
+        {
+            model => new TypeCasingFixerRewriter(model),
+            model => new ReadOnlyPropertyRemovalRewriter(model)
+        };
+
+
+        if (removeUnknownProperties == true)
+        {
+            rewriters.Add(model => new UnknownPropertyRemovalRewriter(model));
+        }
+
         bicepFile = RewriterHelper.RewriteMultiple(
             compiler,
             compilation,
             bicepFile,
             rewritePasses: 5,
-            model => new TypeCasingFixerRewriter(model),
-            model => new ReadOnlyPropertyRemovalRewriter(model));
+            [.. rewriters]);
 
         var printerOptions = configuration.Formatting.Data;
         var template = PrettyPrinterV2.PrintValid(bicepFile.ProgramSyntax, printerOptions);

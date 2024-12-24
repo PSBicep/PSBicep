@@ -1,13 +1,13 @@
-using Azure.Deployments.Core.Definitions.Identifiers;
-using Bicep.Core.Parsing;
-using Bicep.Core.Resources;
-using Bicep.Core.Syntax;
-using Bicep.LanguageServer.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Azure.Deployments.Core.Definitions.Identifiers;
+using Bicep.Core.Parsing;
+using Bicep.Core.Resources;
+using Bicep.Core.Syntax;
+using Bicep.LanguageServer.Providers;
 
 namespace PSBicep.Core.Azure;
 
@@ -121,7 +121,7 @@ public static partial class AzureHelpers
         return new ResourceDeclarationSyntax(
             new SyntaxBase[] { description, SyntaxFactory.NewlineToken, },
             SyntaxFactory.ResourceKeywordToken,
-            SyntaxFactory.CreateIdentifierWithTrailingSpace(UnifiedNamePattern().Replace(resourceId.UnqualifiedName, "")),
+            SyntaxFactory.CreateIdentifierWithTrailingSpace(GenerateValidIdentifier(resourceId.UnqualifiedName, resourceId.FullyQualifiedName)),
             SyntaxFactory.CreateStringLiteral(typeReference.FormatName()),
             null,
             SyntaxFactory.CreateToken(TokenType.Assignment),
@@ -129,6 +129,20 @@ public static partial class AzureHelpers
             SyntaxFactory.CreateObject(properties));
     }
 
+    private static string GenerateValidIdentifier(string unqualifiedName, string qualifiedName)
+    {
+        string identifier = UnifiedNamePattern().Replace(unqualifiedName, "");
+        if (string.IsNullOrEmpty(identifier))
+        {
+            // Identifier must start with a letter
+            qualifiedName = StartsWithNonLetter().Replace(qualifiedName, "");
+            // Replace separators with underscores
+            qualifiedName = qualifiedName.Replace("/", "_");
+            // Remove any other invalid characters
+            identifier = InvalidIdentifierChars().Replace(qualifiedName, "");
+        }
+        return identifier;
+    }
     // Private method originally copied from InsertResourceHandler.cs
     private static SyntaxBase ConvertJsonElement(JsonElement element)
     {
@@ -171,4 +185,8 @@ public static partial class AzureHelpers
     }
     [GeneratedRegex("[^a-zA-Z]")]
     private static partial Regex UnifiedNamePattern();
+    [GeneratedRegex("^[^a-zA-Z]+")]
+    private static partial Regex StartsWithNonLetter();
+    [GeneratedRegex("[^a-zA-Z0-9_]")]
+    private static partial Regex InvalidIdentifierChars();
 }

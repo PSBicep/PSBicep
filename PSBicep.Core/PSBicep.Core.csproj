@@ -25,7 +25,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Threading" Version="17.10.48" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.2" />
-    <PackageReference Include="System.Management.Automation" Version="7.4.0" />
+    <PackageReference Include="System.Management.Automation" Version="7.4.0" PrivateAssets="all"/>
   </ItemGroup>
 
   <ItemGroup>

@@ -4,6 +4,10 @@ function Export-BicepResource {
         [Parameter(Mandatory, ParameterSetName = 'ByQueryOutPath')]
         [Parameter(Mandatory, ParameterSetName = 'ByQueryOutStream')]
         [string]$KQLQuery,
+        
+        [Parameter(ParameterSetName = 'ByQueryOutPath')]
+        [Parameter(ParameterSetName = 'ByQueryOutStream')]
+        [switch]$UseKQLResult,
 
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName = 'ByIdOutPath')]
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName = 'ByIdOutStream')]
@@ -19,6 +23,12 @@ function Export-BicepResource {
         [Parameter(ParameterSetName = 'ByIdOutPath')]
         [Parameter(ParameterSetName = 'ByIdOutStream')]
         [switch]$IncludeTargetScope,
+
+        [Parameter(ParameterSetName = 'ByQueryOutPath')]
+        [Parameter(ParameterSetName = 'ByQueryOutStream')]
+        [Parameter(ParameterSetName = 'ByIdOutPath')]
+        [Parameter(ParameterSetName = 'ByIdOutStream')]
+        [switch]$RemoveUnknownProperties,
         
         [Parameter(ParameterSetName = 'ByQueryOutStream')]
         [Parameter(ParameterSetName = 'ByIdOutStream')]
@@ -34,7 +44,7 @@ function Export-BicepResource {
     begin {
         # Get bicepconfig based on current location
         $ConfigPath = Get-Location
-        $Config = Get-BicepConfig -Path $ConfigPath -Merged -AsString
+        $Config = Get-BicepConfig -Path $ConfigPath -Merged
 
         AssertAzureConnection -TokenSplat $script:TokenSplat -BicepConfig $Config
         
@@ -55,79 +65,95 @@ function Export-BicepResource {
     }
     
     process {
-        $ResourceId | Foreach-Object {
-            [pscustomobject]@{
-                ApiVersion = ((Resolve-BicepResourceType -ResourceId $_) -split '@')[-1]
-                ResourceId = $_
+        if ($UseKQLResult.IsPresent) {
+            Write-Warning 'Using KQL result from Azure Rsource Graph is experimental and may generate invalid or incomplete bicep files'
+            foreach ($resource in $Resources) {
+                $hash[$resource.id] = $resource | ConvertTo-Json -Depth 100
             }
-        } | Foreach-Object -ThrottleLimit 50 -Parallel {
+        } else {
+            $ResourceId | Foreach-Object {
+                $resolvedType = Resolve-BicepResourceType -ResourceId $_
+                [pscustomobject]@{
+                    ApiVersions = Get-BicepApiVersion -ResourceTypeReference $resolvedType
+                    ResourceId = $_
+                    TypeIndex = 0
+                }
+            } | Foreach-Object -ThrottleLimit 50 -Parallel {
+                
+                $ResourceId = $_.ResourceId
+                $ApiVersionList = $_.ApiVersions
+                $TypeIndex = $_.TypeIndex
+                $hashtable = $using:hash
+                
+                $maxRetries = 50
+                $retryCount = 0
+                $backoffInterval = 2
+                $TokenThreshold = (Get-Date).AddMinutes(-5)
             
-            $ResourceId = $_.ResourceId
-            $ApiVersion = $_.ApiVersion
-            $hashtable = $using:hash
-            
-            $maxRetries = 50
-            $retryCount = 0
-            $backoffInterval = 2
-            $TokenThreshold = (Get-Date).AddMinutes(-5)
-        
-            while ($retryCount -lt $maxRetries) {
-        
-                while ($hashtable['config']['backoff']) {
-                    Write-Warning "$ResourceId is backing off"
-                    Start-Sleep -Seconds 10
-                }
-
-                $hashtable['config']['token'] = $using:Token
-                if (-not $hashtable['config']['backoff'] -and $hashtable['config']['token'].ExpiresOn -lt $TokenThreshold) {
-                    $hashtable['config']['backoff'] = $true
-                    & $using:AssertFunction -TokenSplat $hash['config']['TokenSplat']
-                    $hashtable['config']['token'] = $script:Token
-                    $hashtable['config']['backoff'] = $false
-                }
-             
-                try {
-                    $uri = "https://management.azure.com/${ResourceId}?api-version=$ApiVersion"
-                    $Headers = @{
-                        authorization = "Bearer $($hashtable['config']['token'].Token)"
-                        contentType   = 'application/json'
+                while ($retryCount -lt $maxRetries) {
+                    $ApiVersion = $ApiVersionList[$TypeIndex]
+                    while ($hashtable['config']['backoff']) {
+                        Write-Warning "$ResourceId is backing off"
+                        Start-Sleep -Seconds 10
                     }
-                    $Response = Invoke-WebRequest -Uri $uri -Method 'Get' -Headers $Headers -UseBasicParsing
- 
-                    if ($Response.StatusCode -eq 200) {
-                        $hashtable[$ResourceId] = $Response.Content
+    
+                    $hashtable['config']['token'] = $using:Token
+                    if (-not $hashtable['config']['backoff'] -and $hashtable['config']['token'].ExpiresOn -lt $TokenThreshold) {
+                        $hashtable['config']['backoff'] = $true
+                        & $using:AssertFunction -TokenSplat $hash['config']['TokenSplat']
+                        $hashtable['config']['token'] = $script:Token
+                        $hashtable['config']['backoff'] = $false
                     }
-                    else {
-                        Write-Warning "Failed to get $_ with status code $($Response.StatusCode)"
-                    }
-                    return
-                }
-                catch {
-                    # TODO: Implement retry logic for status code 400 with next newest api version
-                    # NoRegisteredProviderFound
-                    # Exception:
-                    # {
-                    #   "error": {
-                    #     "code": "NoRegisteredProviderFound",
-                    #     "message": "No registered resource provider found for location \u0027global\u0027 and API version \u00272023-01-01-preview\u0027 for type \u0027activityLogAlerts\u0027. The supported api-versions are \u00272017-03-01-preview, 2017-04-01, 2020-10-01\u0027. The supported locations are \u0027global, westeurope, northeurope\u0027."
-                    #   }
-                    # }
-                    Write-Warning ("Failed to get resource! {0}" -f $_.Exception.Message)
-                    $_
-                    if ($_.Exception.Response.StatusCode -eq 429) {
-                        if (-not $hashtable['config']['backoff']) {
-                            $hashtable['config']['backoff'] = $true
-                            Start-Sleep -Seconds ($backoffInterval * [math]::Pow(2, $retryCount))
-                            $retryCount++
-                            $hashtable['config']['backoff'] = $false
+                 
+                    try {
+                        $uri = "https://management.azure.com/${ResourceId}?api-version=$ApiVersion"
+                        $Headers = @{
+                            authorization = "Bearer $($hashtable['config']['token'].Token)"
+                            contentType   = 'application/json'
                         }
+                        $Response = Invoke-WebRequest -Uri $uri -Method 'Get' -Headers $Headers -UseBasicParsing
+     
+                        if ($Response.StatusCode -eq 200) {
+                            $hashtable[$ResourceId] = $Response.Content
+                        }
+                        else {
+                            Write-Warning "Failed to get $_ with status code $($Response.StatusCode)"
+                        }
+                        return
                     }
-                    else {
-                        throw $_
+                    catch {
+                        $CurrentError = $_
+
+                        # Retrylogic for 400 errors
+                        if ($CurrentError.Exception.Response.StatusCode -eq 400) {
+
+                            # If error is due to no registered provider, try next api version
+                            if($CurrentError.ErrorDetails.Message -like '*"code": "NoRegisteredProviderFound"*') {
+                                $TypeIndex++
+                                $retryCount++
+                                if ($TypeIndex -ge $ApiVersionList.Count) {
+                                    Write-Warning "No more api versions to try for $ResourceId"
+                                    throw $CurrentError
+                                }
+                                continue
+                            }
+                        }
+
+                        if ($CurrentError.Exception.Response.StatusCode -eq 429) {
+                            if (-not $hashtable['config']['backoff']) {
+                                $hashtable['config']['backoff'] = $true
+                                Start-Sleep -Seconds ($backoffInterval * [math]::Pow(2, $retryCount))
+                                $retryCount++
+                                $hashtable['config']['backoff'] = $false
+                            }
+                        }
+
+                        Write-Warning ("Failed to get resource! {0}" -f $CurrentError.Exception.Message)
+                        throw $CurrentError
                     }
                 }
+                throw "Max retries reached for $_"
             }
-            throw "Max retries reached for $_"
         }
         
     }
@@ -139,24 +165,38 @@ function Export-BicepResource {
         
         $hash.GetEnumerator() | ForEach-Object {
             $Id = $_.Key
+            $Value = $_.Value
             if ($Raw.IsPresent) {
-                $Template = $_.Value
-            } else {
-                $Template = ConvertTo-Bicep -ResourceId $Id -ResourceBody $_.Value
+                $Template = $Value
+            }
+            else {
+                try {
+                    $Template = ConvertTo-Bicep -ResourceId $Id -ResourceBody $Value -RemoveUnknownProperties:$RemoveUnknownProperties.IsPresent -ErrorAction 'Stop'
+                }
+                catch {
+                    # TODO: Add more error handling
+                    # Fails for TemplateSpecs since the unqualifiedName is 1.0
+                    # [return new ResourceDeclarationSyntax(](https://github.com/PSBicep/PSBicep/blob/7122526f5c176789763aa4062823759bfc36c521/PSBicep.Core/Azure/AzureHelpers.cs#L121)
+                    Write-Warning "Failed to convert $Id to bicep: $_"
+                    continue
+                }
             }
             if ($PSCmdlet.ParameterSetName -like '*OutPath') {
+                if (-not (Test-Path -Path $OutputDirectory -PathType 'Container')) {
+                    $null = New-Item -Path $OutputDirectory -ItemType 'Directory'
+                }
                 $FileName = $Id -replace '/', '_'
                 $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath "$FileName.bicep"
                 $null = Out-File -InputObject $Template -FilePath $OutputFilePath -Encoding utf8
             }
             elseif ($PSCmdlet.ParameterSetName -like '*OutStream') {
-                if($AsString.IsPresent) {
+                if ($AsString.IsPresent) {
                     $Template
                 }
                 else {
                     [pscustomobject]@{
                         ResourceId = $Id
-                        Template = $Template
+                        Template   = $Template
                     }
                 }
             }
