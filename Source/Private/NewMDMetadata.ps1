@@ -8,7 +8,7 @@ function NewMDMetadata {
         return 'n/a'
     }
 
-    $MetadataNames = ($Metadata | Get-Member -MemberType NoteProperty).Name
+    $MetadataNames = ($Metadata | Get-Member -MemberType NoteProperty).Name | Where-Object {$_ -NotLike '_*'}
     $MDMetadata = NewMDTableHeader -Headers 'Name', 'Value'
 
     foreach ($var in $MetadataNames) {
