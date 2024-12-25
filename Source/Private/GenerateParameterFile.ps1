@@ -35,7 +35,17 @@ function GenerateParameterFile {
     }
     $parameterNames = $ARMTemplate.Parameters.psobject.Properties.Name
     if (-not $parameterNames) {
-        Write-Host "No parameters declared in the specified bicep file."
+        switch($PSCmdlet.ParameterSetName) {
+            'FromFile' {
+                Write-Host "No parameters declared in the specified bicep file $($file.FullName)."
+            }
+            'FromContent' {
+                Write-Host "No parameters declared in the specified bicep content."
+            }
+            Default {
+                Write-Error "Unable to generate parameter file. Unknown parameter set: $($PSCmdlet.ParameterSetName)"
+            }
+        }
         break
     }
     else {
