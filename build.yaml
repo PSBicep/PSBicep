@@ -57,12 +57,14 @@ BuildWorkflow:
     - test
 
   compile:
+    -  PSBicep.Restore
     -  PSBicep.Compile
 
   build:
     - Clean
     - compile
     - Build_Module_ModuleBuilder
+    - Set_PSModulePath
     - getBicepTypes
     - updateMarkdownHelp
     - repairPlatyPSHelp
@@ -71,8 +73,9 @@ BuildWorkflow:
 
   quickbuild: # Least amount of tasks to run to build the module, useful for quick testing while developing
     - Clean
-    - compile
+    - PSBicep.Compile
     - Build_Module_ModuleBuilder
+    - Set_PSModulePath
     - getBicepTypes
 
   pack:

@@ -502,6 +502,13 @@ Begin
             $null = $PSBoundParameters.Remove('ResolveDependency')
         }
 
+        if ($Env:ModuleVersion) {
+            Write-Host "Module version is already set to '$Env:ModuleVersion'" -ForegroundColor 'Yellow'
+        } elseif (Get-Command 'gitversion' -ErrorAction 'SilentlyContinue') {
+            $Env:ModuleVersion = (gitversion /output json /format "{SemVer}") -replace '^([\d\.]+\-\w+)\.(\d+)$', '$1-$2'
+            Write-Host "Setting module version to the output of 'gitversion': '$Env:ModuleVersion'." -ForegroundColor 'Yellow'
+        }
+
         Write-Host -Object "[build] Starting build with InvokeBuild." -ForegroundColor Green
 
         Invoke-Build @PSBoundParameters -Task $Tasks -File $MyInvocation.MyCommand.Path
