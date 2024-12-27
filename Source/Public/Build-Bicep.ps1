@@ -80,12 +80,17 @@ function Build-Bicep {
                     if (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {
                         $BicepModuleVersion = Get-Module -Name Bicep | Sort-Object -Descending | Select-Object -First 1
                         $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
-                        if (-not [string]::IsNullOrWhiteSpace($BicepModuleVersion.PrivateData.Values.Prerelease)) {
-                            $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $($BicepModuleVersion.Version)-$($BicepModuleVersion.PrivateData.Values.Prerelease))"
+                        
+                        if($ARMTemplateObject.'$schema' -ne 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#') {
+                            # Only add metadata to the ARM template if it is not a parameter file
+                            if (-not [string]::IsNullOrWhiteSpace($BicepModuleVersion.PrivateData.Values.Prerelease)) {
+                                $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $($BicepModuleVersion.Version)-$($BicepModuleVersion.PrivateData.Values.Prerelease))"
+                            }
+                            else {
+                                $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $($BicepModuleVersion.Version))"
+                            }
                         }
-                        else {
-                            $ARMTemplateObject.metadata._generator.name += " (Bicep PowerShell $($BicepModuleVersion.Version))"
-                        }
+
                         $ARMTemplate = ConvertTo-Json -InputObject $ARMTemplateObject -Depth 100
                         if ($AsString.IsPresent) {
                             Write-Output $ARMTemplate
