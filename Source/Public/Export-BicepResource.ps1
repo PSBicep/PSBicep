@@ -72,7 +72,13 @@ function Export-BicepResource {
             }
         } else {
             $ResourceId | Foreach-Object {
-                $resolvedType = Resolve-BicepResourceType -ResourceId $_
+                try{
+                    $resolvedType = Resolve-BicepResourceType -ResourceId $_ -ErrorAction 'Stop'
+
+                } catch {
+                    Write-Warning "Failed to resolve resource type for $_, skipping."
+                    return
+                }
                 [pscustomobject]@{
                     ApiVersions = Get-BicepApiVersion -ResourceTypeReference $resolvedType
                     ResourceId = $_
@@ -178,7 +184,7 @@ function Export-BicepResource {
                     # Fails for TemplateSpecs since the unqualifiedName is 1.0
                     # [return new ResourceDeclarationSyntax(](https://github.com/PSBicep/PSBicep/blob/7122526f5c176789763aa4062823759bfc36c521/PSBicep.Core/Azure/AzureHelpers.cs#L121)
                     Write-Warning "Failed to convert $Id to bicep: $_"
-                    continue
+                    return
                 }
             }
             if ($PSCmdlet.ParameterSetName -like '*OutPath') {
