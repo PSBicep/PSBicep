@@ -66,7 +66,7 @@ function Export-BicepResource {
     
     process {
         if ($UseKQLResult.IsPresent) {
-            Write-Warning 'Using KQL result from Azure Rsource Graph is experimental and may generate invalid or incomplete bicep files'
+            Write-Warning 'Using KQL result from Azure Resource Graph is experimental and may generate invalid or incomplete bicep files'
             foreach ($resource in $Resources) {
                 $hash[$resource.id] = $resource | ConvertTo-Json -Depth 100
             }
