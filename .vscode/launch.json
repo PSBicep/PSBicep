@@ -14,13 +14,16 @@
                 "-NoExit",
                 "-NoProfile",
                 "-Command",
-                "Import-Module ${workspaceFolder}/output/Bicep -Verbose",
+                "Import-Module ${workspaceFolder}/output/RequiredModules/AzAuth; Import-Module ${workspaceFolder}/output/Bicep -Verbose",
             ],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "integratedTerminal",
-            "justMyCode": false,
-            "requireExactSource": false
+            "justMyCode": true,
+            "requireExactSource": false,
+            "env": {
+                "CompileConfiguration": "Debug",
+            }
         },
         {
           "name": "PowerShell: Binary Module Interactive Session",
