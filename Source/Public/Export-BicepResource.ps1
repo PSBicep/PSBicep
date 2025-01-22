@@ -168,25 +168,13 @@ function Export-BicepResource {
         # Ensure that we use any new tokens in module
         $script:Token = $hash['config']['token']
         $hash.Remove('config')
-        
+        if (-not $Raw.IsPresent) {
+            $hash =  ConvertTo-Bicep -ResourceDictionary $hash -RemoveUnknownProperties:$RemoveUnknownProperties.IsPresent -ErrorAction 'Stop'
+        }
         $hash.GetEnumerator() | ForEach-Object {
             $Id = $_.Key
-            $Value = $_.Value
-            if ($Raw.IsPresent) {
-                $Template = $Value
-            }
-            else {
-                try {
-                    $Template = ConvertTo-Bicep -ResourceId $Id -ResourceBody $Value -RemoveUnknownProperties:$RemoveUnknownProperties.IsPresent -ErrorAction 'Stop'
-                }
-                catch {
-                    # TODO: Add more error handling
-                    # Fails for TemplateSpecs since the unqualifiedName is 1.0
-                    # [return new ResourceDeclarationSyntax(](https://github.com/PSBicep/PSBicep/blob/7122526f5c176789763aa4062823759bfc36c521/PSBicep.Core/Azure/AzureHelpers.cs#L121)
-                    Write-Warning "Failed to convert $Id to bicep: $_"
-                    return
-                }
-            }
+            $Template = $_.Value
+
             if ($PSCmdlet.ParameterSetName -like '*OutPath') {
                 if (-not (Test-Path -Path $OutputDirectory -PathType 'Container')) {
                     $null = New-Item -Path $OutputDirectory -ItemType 'Directory'

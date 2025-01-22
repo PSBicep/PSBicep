@@ -19,7 +19,11 @@ function ConvertTo-Bicep {
         [Parameter(Mandatory, ParameterSetName = 'ConvertFromBody')]
         [string]$ResourceBody,
 
+        [Parameter(ParameterSetName = 'ConvertFromBodyHash')]
+        [hashtable]$ResourceDictionary,
+
         [Parameter(ParameterSetName = 'ConvertFromBody')]
+        [Parameter(ParameterSetName = 'ConvertFromBodyHash')]
         [switch]$RemoveUnknownProperties
     )
 
@@ -81,6 +85,9 @@ If you would like to report any issues or inaccurate conversions, please see htt
         }
         elseif ($PSCmdlet.ParameterSetName -eq 'ConvertFromBody') {
             Convert-ARMResourceToBicep -ResourceId $ResourceId -ResourceBody $ResourceBody -RemoveUnknownProperties:$RemoveUnknownProperties.IsPresent
+        }
+        elseif ($PSCmdlet.ParameterSetName -eq 'ConvertFromBodyHash') {
+            Convert-ArmResourceToBicep -ResourceDictionary $ResourceDictionary -RemoveUnknownProperties:$RemoveUnknownProperties.IsPresent
         }
         else {
             throw [System.Exception.NotimplementedException]::new()
