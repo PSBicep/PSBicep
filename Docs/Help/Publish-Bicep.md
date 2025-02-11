@@ -77,7 +77,7 @@ Accept wildcard characters: False
 ```
 
 ### -DocumentationUri
-{{ Fill DocumentationUri Description }}
+Uri to documentation for the module.
 
 ```yaml
 Type: String
@@ -92,7 +92,7 @@ Accept wildcard characters: False
 ```
 
 ### -PublishSource
-{{ Fill PublishSource Description }}
+Attach the bicep source code to the published module.
 
 ```yaml
 Type: SwitchParameter

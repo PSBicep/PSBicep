@@ -12,16 +12,28 @@ Exports a specified Azure resource as Bicep.
 
 ## SYNTAX
 
-### Path (Default)
+### ByQueryOutStream
 ```
-Export-BicepResource -ResourceId <String[]> [-IncludeTargetScope] -Path <String>
+Export-BicepResource -KQLQuery <String> [-UseKQLResult] [-IncludeTargetScope] [-RemoveUnknownProperties]
+ [-AsString] [-Raw] [<CommonParameters>]
+```
+
+### ByQueryOutPath
+```
+Export-BicepResource -KQLQuery <String> [-UseKQLResult] -OutputDirectory <String> [-IncludeTargetScope]
+ [-RemoveUnknownProperties] [-Raw] [<CommonParameters>]
+```
+
+### ByIdOutStream
+```
+Export-BicepResource -ResourceId <String[]> [-IncludeTargetScope] [-RemoveUnknownProperties] [-AsString] [-Raw]
  [<CommonParameters>]
 ```
 
-### AsString
+### ByIdOutPath
 ```
-Export-BicepResource -ResourceId <String[]> [-IncludeTargetScope] [-AsString]
- [<CommonParameters>]
+Export-BicepResource -ResourceId <String[]> -OutputDirectory <String> [-IncludeTargetScope]
+ [-RemoveUnknownProperties] [-Raw] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -50,10 +62,10 @@ Specify that the resource will be exported as a string.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: AsString
+Parameter Sets: ByQueryOutStream, ByIdOutStream
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: False
 Accept pipeline input: False
@@ -75,12 +87,27 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Path
-The path to the Bicep file that the resource will be exported to.
+### -ResourceId
+The id of the resource to export.
+
+```yaml
+Type: String[]
+Parameter Sets: ByIdOutStream, ByIdOutPath
+Aliases: id
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
+### -KQLQuery
+Query for Azure Resource Graph to select resources to export. Must include the property id containing a resource id for each resource.
 
 ```yaml
 Type: String
-Parameter Sets: Path
+Parameter Sets: ByQueryOutStream, ByQueryOutPath
 Aliases:
 
 Required: True
@@ -90,18 +117,63 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ResourceId
-The id of the resource to export.
+### -OutputDirectory
+Path to directory where output files will be saved.
 
 ```yaml
-Type: String[]
-Parameter Sets: (All)
+Type: String
+Parameter Sets: ByQueryOutPath, ByIdOutPath
 Aliases:
 
 Required: True
 Position: Named
 Default value: None
-Accept pipeline input: True (ByValue)
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Raw
+Output raw json without converting to bicep.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RemoveUnknownProperties
+Will use a rewriter to strip any property not defined in the resource schema. This can help to produce deployable templates but also has a risk of removing useful data, use with caution.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UseKQLResult
+Use resource body directly from KQL query result intead of getting the actual resource body.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: ByQueryOutStream, ByQueryOutPath
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

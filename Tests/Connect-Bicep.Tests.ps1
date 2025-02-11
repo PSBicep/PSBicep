@@ -23,7 +23,7 @@ Describe 'Connect-Bicep tests' {
         Context 'ManagedIdentity tests' {
             It 'Should connect using Managed Identity with tenantid' {
                 
-                Connect-Bicep -ManagedIdentity -TenantId $TenantId
+                Connect-Bicep -ManagedIdentity -Tenant $TenantId
 
                 Should -Invoke -CommandName Get-AzToken -Times 1
                 $Script:Token.PSBoundParameters.ClientId | Should -Be $DefaultClientId
@@ -48,7 +48,7 @@ Describe 'Connect-Bicep tests' {
         }
         Context 'Interactive tests' {
             It 'Should connect Interactively with tenantid' {
-                Connect-Bicep -TenantId $TenantId
+                Connect-Bicep -Tenant $TenantId
 
                 Should -Invoke -CommandName Get-AzToken -Times 1
                 $Script:Token.PSBoundParameters.ClientId | Should -Be $DefaultClientId
@@ -82,7 +82,7 @@ Describe 'Connect-Bicep tests' {
             }
             It 'Should connect using Certificate as path' {
                 $CertificatePath = 'TestDrive:\test.pfx'
-                Connect-Bicep -TenantId $TenantId -CertificatePath $CertificatePath -ClientId $FakeClientId
+                Connect-Bicep -Tenant $TenantId -CertificatePath $CertificatePath -ClientId $FakeClientId
 
                 Should -Invoke -CommandName Get-AzToken -Times 1
                 $Script:Token.PSBoundParameters.ClientId | Should -Be $FakeClientId
@@ -94,7 +94,7 @@ Describe 'Connect-Bicep tests' {
             }
             It 'Should connect using Certificate as path' {
                 $CertificatePath = 'Cert:\CurrentUser\My\12345678901234567890123456789012'
-                Connect-Bicep -TenantId $TenantId -CertificatePath $CertificatePath -ClientId $FakeClientId
+                Connect-Bicep -Tenant $TenantId -CertificatePath $CertificatePath -ClientId $FakeClientId
 
                 Should -Invoke -CommandName Get-AzToken -Times 1
                 $Script:Token.PSBoundParameters.ClientId | Should -Be $FakeClientId
