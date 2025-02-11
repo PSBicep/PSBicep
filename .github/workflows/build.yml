@@ -97,7 +97,7 @@ jobs:
         fetch-depth: 0
     
     - name: Download Build Artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: ${{ env.buildArtifactName }}
         path: ${{ env.buildFolderName }}
