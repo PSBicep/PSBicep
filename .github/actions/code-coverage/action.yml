@@ -12,13 +12,13 @@ runs:
       fetch-depth: 0
 
   - name: Download Test Artifact Linux
-    uses: actions/download-artifact@v3
+    uses: actions/download-artifact@v4
     with:
       name: CodeCoverageLinux
       path: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverageLinux/
 
   # - name: Download Test Artifact Windows
-  #   uses: actions/download-artifact@v3
+  #   uses: actions/download-artifact@v4
   #   with:
   #     name: CodeCoverageWin
   #     path: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverageWin/
