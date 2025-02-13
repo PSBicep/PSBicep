@@ -14,13 +14,13 @@ runs:
   - name: Download Test Artifact Linux
     uses: actions/download-artifact@v4
     with:
-      name: CodeCoverageLinux
+      name: CodeCoverage-Linux
       path: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverage-Linux/
 
   - name: Download Test Artifact Windows
     uses: actions/download-artifact@v4
     with:
-      name: CodeCoverageWin
+      name: CodeCoverage-Windows
       path: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverage-Windows/
 
   - name: Publish Linux Test Results
