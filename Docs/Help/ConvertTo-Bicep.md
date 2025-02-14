@@ -12,8 +12,21 @@ Decompile ARM templates to .bicep files
 
 ## SYNTAX
 
+### Decompile (Default)
 ```
 ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-AsString] [-Force]
+ [<CommonParameters>]
+```
+
+### ConvertFromBody
+```
+ConvertTo-Bicep -ResourceId <String> -ResourceBody <String> [-RemoveUnknownProperties]
+ [<CommonParameters>]
+```
+
+### ConvertFromBodyHash
+```
+ConvertTo-Bicep [-ResourceDictionary <Hashtable>] [-RemoveUnknownProperties]
  [<CommonParameters>]
 ```
 
@@ -51,7 +64,7 @@ ConvertTo-Bicep -Path vnet.json -AsString
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: Decompile
 Aliases:
 
 Required: False
@@ -67,7 +80,7 @@ If the output.bicep file already exists and -Force is not set we will not overwr
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: Decompile
 Aliases:
 
 Required: False
@@ -82,7 +95,7 @@ Specifies the path to the directory where the compiled files should be outputted
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Decompile
 Aliases:
 
 Required: False
@@ -97,12 +110,72 @@ Specfies the path to the directory or file that should be decompiled
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Decompile
 Aliases:
 
 Required: False
 Position: 0
 Default value: $pwd.path
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RemoveUnknownProperties
+Will use a rewriter to strip any property not defined in the resource schema. This can help to produce deployable templates but also has a risk of removing useful data, use with caution.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: ConvertFromBody, ConvertFromBodyHash
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ResourceBody
+A JSON representation of a resource
+
+```yaml
+Type: String
+Parameter Sets: ConvertFromBody
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ResourceDictionary
+A hashtable with resource id as key and resource body as value.
+
+```yaml
+Type: Hashtable
+Parameter Sets: ConvertFromBodyHash
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ResourceId
+Resource id of the resource.
+
+```yaml
+Type: String
+Parameter Sets: ConvertFromBody
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

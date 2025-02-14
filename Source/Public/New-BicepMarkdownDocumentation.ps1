@@ -43,6 +43,9 @@ function New-BicepMarkdownDocumentation {
         #region build Bicep PS object
         try {
             $BuildObject = (Build-BicepFile -Path $SourceFile.FullName -ErrorAction Stop) | ConvertFrom-Json -Depth 100
+            # The language version of the ARM template defines the schema
+            # 2.0 changes the resources array to a dictionary of key values
+            $LanguageVersion = $BuildObject.languageVersion ?? '1.0'
         }
         catch {
             Write-Error -Message "Failed to build $($SourceFile.Name) - $($_.Exception.Message)"
@@ -74,7 +77,7 @@ $MDMetadata
 
         #region Add providers to MD output
 
-        $MDProviders = NewMDProviders -Providers $BuildObject.resources
+        $MDProviders = NewMDProviders -Resources $BuildObject.resources -LanguageVersion $LanguageVersion
 
         $FileDocumentationResult += @"
 
@@ -86,7 +89,7 @@ $MDProviders
 
         #region Add Resources to MD output
 
-        $MDResources = NewMDResources -Resources $BuildObject.resources
+        $MDResources = NewMDResources -Resources $BuildObject.resources -LanguageVersion $LanguageVersion
 
         $FileDocumentationResult += @"
 

@@ -1,9 +1,9 @@
+using System;
+using System.Linq;
 using Azure.Deployments.Core.Comparers;
 using Bicep.Core.Resources;
 using Bicep.Core.TypeSystem.Providers.Az;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
 
 namespace PSBicep.Core;
 
@@ -13,7 +13,7 @@ internal static class BicepHelper
     {
         var matchedType = azResourceTypeLoader.GetAvailableTypes()
             .Where(x => StringComparer.OrdinalIgnoreCase.Equals(fullyQualifiedType, x.FormatType()))
-            .OrderByDescending(x => x.ApiVersion, ApiVersionComparer.Instance)
+            .OrderByDescending(x => x.ApiVersion ?? "", ApiVersionComparer.Instance)
             .FirstOrDefault();
         if (matchedType is null || matchedType.ApiVersion is null)
         {
@@ -23,5 +23,15 @@ internal static class BicepHelper
         }
 
         return matchedType;
+    }
+
+    internal static string[] GetApiVersions(ResourceTypeReference typeReference, AzResourceTypeLoader azResourceTypeLoader)
+    {
+        return azResourceTypeLoader.GetAvailableTypes()
+            .Where(x => StringComparer.OrdinalIgnoreCase.Equals(typeReference.FormatType(), x.FormatType()))
+            .Select(x => x.ApiVersion ?? "")
+            .Where(x => !string.IsNullOrEmpty(x))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
     }
 }

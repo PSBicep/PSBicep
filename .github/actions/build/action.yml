@@ -7,14 +7,18 @@ runs:
   using: 'composite'
   steps:
 
-  - name: Install GitVersion
-    uses: gittools/actions/gitversion/setup@v3.0.0
+  - uses: actions/setup-dotnet@v4
     with:
-      versionSpec: '6.x'
+      dotnet-version: '8.0.x'
+
+  - name: Install GitVersion
+    uses: gittools/actions/gitversion/setup@v3.1.11
+    with:
+      versionSpec: '6.0.x'
 
   - name: Determine Version
     id: gitversion
-    uses: gittools/actions/gitversion/execute@v3.0.0
+    uses: gittools/actions/gitversion/execute@v3.1.11
     with:
       useConfigFile: true
 
@@ -47,7 +51,7 @@ runs:
       ModuleVersion: ${{ steps.formatSemVer.outputs.formattedSemVer }}
 
   - name: Publish build artifacts
-    uses: actions/upload-artifact@v3
+    uses: actions/upload-artifact@v4
     with:
       name: ${{ env.buildArtifactName }}
       path: ${{ env.buildFolderName }}/

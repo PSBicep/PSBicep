@@ -1,5 +1,5 @@
 ---
-external help file: Bicep-help.xml
+external help file: PSBicep.dll-Help.xml
 Module Name: Bicep
 online version:
 schema: 2.0.0
@@ -14,22 +14,22 @@ Get bicep configuration (bicepconfig.json) in use for a bicep file.
 
 ### Default (Default)
 ```
-Get-BicepConfig [-Default] [<CommonParameters>]
+Get-BicepConfig [-Default] [-AsString] [<CommonParameters>]
 ```
 
 ### PathLocal
 ```
-Get-BicepConfig -Path <String> [-Local] [<CommonParameters>]
+Get-BicepConfig -Path <String> [-Local] [-AsString] [<CommonParameters>]
 ```
 
 ### PathMerged
 ```
-Get-BicepConfig -Path <String> [-Merged] [<CommonParameters>]
+Get-BicepConfig -Path <String> [-Merged] [-AsString] [<CommonParameters>]
 ```
 
 ### PathOnly
 ```
-Get-BicepConfig -Path <String> [<CommonParameters>]
+Get-BicepConfig -Path <String> [-AsString] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -122,6 +122,21 @@ Aliases:
 Required: True
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AsString
+Output result as string.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -34,13 +34,6 @@ task PSBicep.Compile {
 
         Push-Location -Path $projPath
 
-        # Remove output folder if exists
-        if (Test-Path -Path $outPath) {
-            Remove-Item -Path $outPath -Recurse -Force
-        }
-
-        Write-Host "Restoring '$projPath'" -ForegroundColor 'Magenta'
-        dotnet restore --force-evaluate "--property:NuGetAudit=false"
         Write-Host "Building '$projPath' to '$outPath'" -ForegroundColor 'Magenta'
         dotnet publish -c $Configuration -o $outPath "--property:NuGetAudit=false"
 

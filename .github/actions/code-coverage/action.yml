@@ -6,35 +6,35 @@ on:
 runs:
   using: 'composite'
   steps:
-  - uses: actions/checkout@v3
+  - uses: actions/checkout@v4
     with:
       ref: ${{ github.head_ref }}
       fetch-depth: 0
 
   - name: Download Test Artifact Linux
-    uses: actions/download-artifact@v3
+    uses: actions/download-artifact@v4
     with:
-      name: CodeCoverageLinux
-      path: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverageLinux/
+      name: CodeCoverage-Linux
+      path: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverage-Linux/
 
-  # - name: Download Test Artifact Windows
-  #   uses: actions/download-artifact@v3
-  #   with:
-  #     name: CodeCoverageWin
-  #     path: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverageWin/
+  - name: Download Test Artifact Windows
+    uses: actions/download-artifact@v4
+    with:
+      name: CodeCoverage-Windows
+      path: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverage-Windows/
 
   - name: Publish Linux Test Results
     id: linux-test-results
     uses: EnricoMi/publish-unit-test-result-action@v2
     if: always()
     with:
-      nunit_files: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverageLinux/NUnit*.xml
+      nunit_files: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverage-Linux/NUnit*.xml
       check_name: Linux Test Results
 
-  # - name: Publish Win Test Results
-  #   id: win-test-results
-  #   uses: EnricoMi/publish-unit-test-result-action@v2
-  #   if: always()
-  #   with:
-  #     nunit_files: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverageWin/NUnit*.xml
-  #     check_name: Win Test Results
+  - name: Publish Win Test Results
+    id: win-test-results
+    uses: EnricoMi/publish-unit-test-result-action@v2
+    if: always()
+    with:
+      nunit_files: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}/CodeCoverage-Windows/NUnit*.xml
+      check_name: Win Test Results

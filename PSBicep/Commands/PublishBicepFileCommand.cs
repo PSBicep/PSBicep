@@ -13,6 +13,10 @@ public class PublishBicepFileCommand : BaseCommand
     [ValidateNotNullOrEmpty]
     public string Target { get; set; }
 
+    [Parameter(Mandatory = true)]
+    [ValidateNotNullOrEmpty]
+    public string Token { get; set; }
+
     [Parameter(Mandatory = false)]
     [ValidateNotNullOrEmpty]
     public string DocumentationUri { get; set; }
@@ -24,6 +28,6 @@ public class PublishBicepFileCommand : BaseCommand
     public SwitchParameter Force { get; set; }
     protected override void ProcessRecord()
     {
-        bicepWrapper.Publish(Path, Target, DocumentationUri, PublishSource.IsPresent, Force.IsPresent);
+        bicepWrapper.Publish(Path, Target, Token, DocumentationUri, PublishSource.IsPresent, Force.IsPresent);
     }
 }

@@ -46,7 +46,7 @@ public static class BicepExtensions
         .AddSingleton<AzResourceTypeLoader>()
         .AddSingleton<K8sResourceTypeLoader>()
         .AddSingleton<MicrosoftGraphResourceTypeLoader>()
-        .AddSingleton<IWorkspace, Workspace>()
+        .AddSingleton<Workspace>()
         .AddSingleton<BicepConfigurationManager>()
         .AddSingleton<BicepTokenCredentialFactory>()
         .Replace(ServiceDescriptor.Singleton<ITokenCredentialFactory>(s => s.GetRequiredService<BicepTokenCredentialFactory>()))

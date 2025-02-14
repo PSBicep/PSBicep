@@ -1,62 +1,46 @@
-﻿using Bicep.Core.PrettyPrint;
-using Bicep.Core.PrettyPrint.Options;
-using Bicep.Core.Rewriters;
-using Bicep.Core.Semantics;
-using Bicep.Core.Workspaces;
-using PSBicep.Core.Azure;
-using System;
-using System.Collections.Immutable;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
+using PSBicep.Core.Azure;
 
 namespace PSBicep.Core;
 
 public partial class BicepWrapper
 {
-    public string ConvertResourceToBicep(string resourceId, string resourceBody)
+
+    public (string,string?) ConvertResourceToBicep(string resourceId, string resourceBody, string? configurationPath = null, bool includeTargetScope = false, bool removeUnknownProperties = false) => 
+        joinableTaskFactory.Run(() => ConvertResourceToBicepAsync(resourceId, resourceBody, configurationPath, includeTargetScope, removeUnknownProperties));
+
+    public async Task<(string, string?)> ConvertResourceToBicepAsync(string resourceId, string resourceBody, string? configurationPath = null, bool includeTargetScope = false, bool removeUnknownProperties = false)
     {
         var id = AzureHelpers.ValidateResourceId(resourceId);
-        var matchedType = BicepHelper.ResolveBicepTypeDefinition(id.FullyQualifiedType, azResourceTypeLoader, logger);
+        var matchedType = BicepHelper.ResolveBicepTypeDefinition(id.FullyQualifiedType, azResourceTypeLoader, logger: logger);
         JsonElement resource = JsonSerializer.Deserialize<JsonElement>(resourceBody);
-
-        var template = AzureResourceProvider.GenerateBicepTemplate(id, matchedType, resource, includeTargetScope: true);
-        return RewriteBicepTemplate(template);
+        configurationManager.GetConfiguration(new Uri(configurationPath ?? "inmemory:///main.bicep"));
+        var template = await Task.Run(() => AzureResourceProvider.GenerateBicepTemplate(compiler, id, matchedType, resource, configuration, includeTargetScope, removeUnknownProperties));
+        return (resourceId, template);
     }
+    
+    
+    public Hashtable ConvertResourceToBicep(Hashtable resourceDictionary, string? configurationPath = null, bool includeTargetScope = false, bool removeUnknownProperties = false) => 
+        joinableTaskFactory.Run(() => ConvertResourceToBicepAsync(resourceDictionary, configurationPath, includeTargetScope, removeUnknownProperties));
 
-    public string RewriteBicepTemplate(string template)
+    public async Task<Hashtable> ConvertResourceToBicepAsync(Hashtable resourceDictionary, string? configurationPath = null, bool includeTargetScope = false, bool removeUnknownProperties = false)
     {
-        BicepFile virtualBicepFile = SourceFileFactory.CreateBicepFile(new Uri($"inmemory:///generated.bicep"), template);
-
-        var sourceFileGrouping = SourceFileGroupingBuilder.Build(
-            fileResolver,
-            moduleDispatcher,
-            configurationManager,
-            workspace,
-            virtualBicepFile.FileUri,
-            featureProviderFactory,
-            false);
- 
-        var compilation = new Compilation(
-            featureProviderFactory,
-            environment,
-            namespaceProvider,
-            sourceFileGrouping,
-            configurationManager,
-            bicepAnalyzer,
-            moduleDispatcher,
-            new AuxiliaryFileCache(fileResolver),
-            ImmutableDictionary<ISourceFile, ISemanticModel>.Empty);
-
-        var bicepFile = RewriterHelper.RewriteMultiple(
-            compiler,
-            compilation,
-            virtualBicepFile,
-            rewritePasses: 1,
-            model => new TypeCasingFixerRewriter(model),
-            model => new ReadOnlyPropertyRemovalRewriter(model));
-
-        var printOptions = new PrettyPrintOptions(NewlineOption.LF, IndentKindOption.Space, 2, false);
-        template = PrettyPrinter.PrintValidProgram(bicepFile.ProgramSyntax, printOptions);
-
-        return template;
+        var taskList = new List<Task<(string,string?)>>();
+        foreach (DictionaryEntry entry in resourceDictionary)
+        {
+            taskList.Add(ConvertResourceToBicepAsync(entry.Key.ToString()!, entry.Value!.ToString()!, configurationPath, includeTargetScope, removeUnknownProperties));
+        }
+        var templates = await Task.WhenAll(taskList);
+        Hashtable output = [];
+        foreach(var template in templates)
+        {
+            output.Add(template.Item1, template.Item2);
+        }
+        return output;
     }
 }

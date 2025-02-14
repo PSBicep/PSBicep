@@ -23,8 +23,8 @@ public partial class BicepWrapper
         {
             var name = AzureHelpers.GetResourceFriendlyName(id);
             var resourceId = AzureHelpers.ValidateResourceId(id);
-            var matchedType = BicepHelper.ResolveBicepTypeDefinition(resourceId.FullyQualifiedType, azResourceTypeLoader, logger);
-            result.Add(name, AzureResourceProvider.GenerateBicepTemplate(resourceId, matchedType, resource, includeTargetScope: includeTargetScope));
+            var matchedType = BicepHelper.ResolveBicepTypeDefinition(resourceId.FullyQualifiedType, azResourceTypeLoader, logger: logger);
+            result.Add(name, AzureResourceProvider.GenerateBicepTemplate(compiler, resourceId, matchedType, resource, config, includeTargetScope: includeTargetScope));
         }
 
 		return result;

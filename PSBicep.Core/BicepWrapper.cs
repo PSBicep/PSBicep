@@ -1,11 +1,16 @@
-﻿using Bicep.Core;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Abstractions;
+using System.Management.Automation;
+using Bicep.Core;
 using Bicep.Core.Analyzers.Interfaces;
 using Bicep.Core.Configuration;
 using Bicep.Core.Features;
 using Bicep.Core.FileSystem;
 using Bicep.Core.Modules;
 using Bicep.Core.Registry;
-using Bicep.Core.Semantics;
+using Bicep.Core.Resources;
 using Bicep.Core.Semantics.Namespaces;
 using Bicep.Core.TypeSystem.Providers.Az;
 using Bicep.Core.Utils;
@@ -19,11 +24,6 @@ using PSBicep.Core.Azure;
 using PSBicep.Core.Configuration;
 using PSBicep.Core.Logging;
 using PSBicep.Core.Models;
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Abstractions;
-using System.Management.Automation;
 
 namespace PSBicep.Core;
 
@@ -53,7 +53,7 @@ public partial class BicepWrapper
     private readonly IFeatureProviderFactory featureProviderFactory;
     private readonly BicepCompiler compiler;
     private readonly BicepDecompiler decompiler;
-    private readonly IWorkspace workspace;
+    private readonly Workspace workspace;
     private readonly RootConfiguration configuration;
     private readonly AzureResourceProvider azResourceProvider;
 
@@ -83,7 +83,7 @@ public partial class BicepWrapper
 
         decompiler = services.GetRequiredService<BicepDecompiler>();
 
-        workspace = services.GetRequiredService<IWorkspace>();
+        workspace = services.GetRequiredService<Workspace>();
         configuration = configurationManager.GetConfiguration(new Uri("inmemory://main.bicep"));
         azResourceProvider = services.GetRequiredService<AzureResourceProvider>();
 
@@ -119,4 +119,15 @@ public partial class BicepWrapper
 
     public BicepConfigInfo GetBicepConfigInfo(BicepConfigScope scope, string path) =>
         configurationManager.GetConfigurationInfo(scope, PathHelper.FilePathToFileUrl(path ?? ""));
+
+    public string ResolveBicepResourceType(string id)
+    {
+        var resourceId = AzureHelpers.ValidateResourceId(id);
+        return BicepHelper.ResolveBicepTypeDefinition(resourceId.FullyQualifiedType, azResourceTypeLoader, logger).ToString();
+    }
+
+    public string[] GetApiVersions(string resourceTypeReference)
+    {
+        return BicepHelper.GetApiVersions(ResourceTypeReference.Parse(resourceTypeReference), azResourceTypeLoader);
+    }
 }

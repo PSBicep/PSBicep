@@ -21,36 +21,18 @@ public class BicepTokenCredentialFactory : ITokenCredentialFactory
 
     public TokenCredential CreateChain(IEnumerable<CredentialType> credentialPrecedence, CredentialOptions? credentialOptions, Uri authorityUri)
     {
+        return CreateSingle(credentialPrecedence.First(), credentialOptions, authorityUri);
+    }
+
+    public TokenCredential CreateSingle(CredentialType credentialType, CredentialOptions? credentialOptions, Uri authorityUri)
+    {
         // Return the credential if already authenticated in Bicep
         if (Credential is not null)
         {
             return Credential;
         }
 
-        // If not authenticated, ensure BicepConfig has a precedence
-        if (!credentialPrecedence.Any())
-        {
-            throw new ArgumentException($"At least one credential type must be provided.");
-        }
-
-        // Authenticate using BicepConfig precedence
-        return new ChainedTokenCredential(credentialPrecedence.Select(credentialType => CreateSingle(credentialType, null, authorityUri)).ToArray());
-    }
-
-    public TokenCredential CreateSingle(CredentialType credentialType, CredentialOptions? credentialOptions, Uri authorityUri)
-    {
-        Credential = credentialType switch
-        {
-            CredentialType.Environment => new EnvironmentCredential(new() { AuthorityHost = authorityUri }),
-            CredentialType.ManagedIdentity => new ManagedIdentityCredential(options: new() { AuthorityHost = authorityUri }),
-            CredentialType.VisualStudio => new VisualStudioCredential(new() { AuthorityHost = authorityUri }),
-            CredentialType.VisualStudioCode => new VisualStudioCodeCredential(new() { AuthorityHost = authorityUri }),
-            CredentialType.AzureCLI => new AzureCliCredential(),// AzureCLICrediential does not accept options. Azure CLI has built-in cloud profiles so AuthorityHost is not needed.
-            CredentialType.AzurePowerShell => new AzurePowerShellCredential(new() { AuthorityHost = authorityUri }),
-            _ => throw new NotImplementedException($"Unexpected credential type '{credentialType}'."),
-        };
-
-        return Credential;
+        throw new InvalidOperationException("Not connected to Azure. Please connect to Azure by running Connect-Bicep before running this command.");
     }
 
     internal void Clear()
@@ -59,12 +41,12 @@ public class BicepTokenCredentialFactory : ITokenCredentialFactory
 
         if (Credential == null)
         {
-            Logger?.LogInformation("No stored credential to clear.");
+            Logger?.LogTrace("No stored credential to clear.");
             return;
         }
 
         Credential = null;
-        Logger?.LogInformation("Cleared stored credential.");
+        Logger?.LogTrace("Cleared stored credential.");
     }
 
     internal void SetToken(Uri activeDirectoryAuthorityUri, string? token = null, string? tenantId = null)
@@ -72,8 +54,7 @@ public class BicepTokenCredentialFactory : ITokenCredentialFactory
         // User provided a token
         if (!string.IsNullOrWhiteSpace(token))
         {
-            Logger?.LogInformation("Token provided as authentication.");
-            InteractiveAuthentication = false;
+            Logger?.LogTrace("Token provided as authentication.");
 
             // Try to parse JWT for expiry date
             try
@@ -83,7 +64,7 @@ public class BicepTokenCredentialFactory : ITokenCredentialFactory
                 var tokenExp = jwtSecurityToken.Claims.First(claim => claim.Type.Equals("exp")).Value;
                 var expDateTime = DateTimeOffset.FromUnixTimeSeconds(long.Parse(tokenExp));
 
-                Logger?.LogInformation("Successfully parsed token, expiration date is {expDateTime}.", expDateTime);
+                Logger?.LogTrace("Successfully parsed token, expiration date is {expDateTime}.", expDateTime);
                 Credential = new ExternalTokenCredential(token, expDateTime);
             }
             catch (Exception ex)
@@ -91,20 +72,9 @@ public class BicepTokenCredentialFactory : ITokenCredentialFactory
                 throw new InvalidOperationException("Could not parse token as JWT, please ensure it is provided in the correct format!", ex);
             }
         }
-        else // User did not provide a token - interactive auth
+        else // User did not provide a token
         {
-            Logger?.LogInformation("Opening interactive browser for authentication...");
-
-            // Since we cannot change the method signatures of the ITokenCredentialFactory, set properties and check them within the class
-            InteractiveAuthentication = true;
-            Credential = new InteractiveBrowserCredential(options: new() { AuthorityHost = activeDirectoryAuthorityUri });
-            TokenRequestContext = new TokenRequestContext([Scope], tenantId: tenantId);
-
-            // Get token immediately to trigger browser prompt, instead of waiting until the credential is used
-            // The token is then stored in the Credential object, here we don't care about the return value
-            GetToken();
-
-            Logger?.LogInformation("Authentication successful.");
+            throw new ArgumentNullException(nameof(token), "Token must be provided for authentication.");
         }
     }
 

@@ -12,15 +12,8 @@ Exports all child resources of a specified Azure resource container as Bicep.
 
 ## SYNTAX
 
-### OutputPath (Default)
 ```
-Export-BicepChildResource [-ParentResourceId] <String> [-OutputDirectory] <String>
- [<CommonParameters>]
-```
-
-### AsString
-```
-Export-BicepChildResource [-ParentResourceId] <String> [-AsString]
+Export-BicepChildResource [-ParentResourceId] <String> [-IncludeTargetScope]
  [<CommonParameters>]
 ```
 
@@ -38,36 +31,6 @@ Exports all child resources from an Azure resource container by id.
 
 ## PARAMETERS
 
-### -AsString
-Exports the resources as string.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: AsString
-Aliases:
-
-Required: True
-Position: 2
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OutputDirectory
-Specifies the directory to output the Bicep files to.
-
-```yaml
-Type: String
-Parameter Sets: OutputPath
-Aliases:
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ParentResourceId
 The resource id of the resource container, or parent resource.
 
@@ -79,6 +42,21 @@ Aliases:
 Required: True
 Position: 1
 Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -IncludeTargetScope
+Will add a TargetScope declaration to the start of each template.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

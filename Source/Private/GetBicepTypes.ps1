@@ -10,6 +10,7 @@ function GetBicepTypes {
         $types = Get-Content -Path $Path | ConvertFrom-Json -AsHashtable
 
         $allResourceProviders = [System.Collections.ArrayList]::new()
+        $allResourceProvidersTable = @{}
         
         foreach ($type in $types) {
             # Type looks like this:  Microsoft.Aad/domainServicess@2017-01-01
@@ -25,18 +26,31 @@ function GetBicepTypes {
             else {
                 $child = $null
             }
-
+            $FullTypeName = ($type -split '@')[0]
+            $ApiVersion = ($type -split '@')[1]
             $ResourceProviders = [PSCustomObject]@{
                 ResourceProvider = ( ($type -split '@') -split '/' )[0]
                 Resource         = ( ($type -split '@') -split '/' )[1]
                 Child            = $child
-                ApiVersion       = ( $type -split '@' )[1]
+                ApiVersion       = $ApiVersion
                 FullName         = $type
             }
+
+            if($allResourceProvidersTable[$FullTypeName] -isnot [hashtable]) {
+                $allResourceProvidersTable[$FullTypeName] = @{}
+            }
+
+            
+            if($ApiVersion -gt ($allResourceProvidersTable[$FullTypeName].Keys.Where{$_ -ne 'latest'} | Sort-Object -Descending | Select-Object -First 1)) {
+                $allResourceProvidersTable[$FullTypeName]['latest'] = $ResourceProviders
+            }
+
+            $allResourceProvidersTable[$FullTypeName][$ApiVersion] = $ResourceProviders
             
             $null = $allResourceProviders.Add($ResourceProviders)
         }
-        $Script:BicepResourceProviders = $allResourceProviders
+        Set-Variable -Name 'BicepResourceProviders' -Value $allResourceProviders -Scope 'Script'
+        Set-Variable -Name 'BicepResourceProvidersTable' -Value $allResourceProvidersTable -Scope 'Script'
     }
 
     Write-Output -InputObject $Script:BicepResourceProviders

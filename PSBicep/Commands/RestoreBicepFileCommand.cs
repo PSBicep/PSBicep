@@ -9,6 +9,18 @@ public class RestoreBicepFileCommand : BaseCommand
     [ValidateNotNullOrEmpty]
     public string Path { get; set; }
 
+    [Parameter(Mandatory = false, ValueFromPipeline = false)]
+    [ValidateNotNullOrEmpty]
+    public string Token { get; set; }
+
+    protected override void BeginProcessing()
+    {
+        base.BeginProcessing();
+        if (!string.IsNullOrEmpty(Token))
+        {
+            SetAuthentication(Token);
+        }
+    }
     protected override void ProcessRecord()
     {
         bicepWrapper.Restore(Path);

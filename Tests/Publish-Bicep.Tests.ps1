@@ -3,11 +3,25 @@ BeforeAll {
     Copy-Item "$PSScriptRoot\supportFiles\*" -Destination TestDrive:\
 }
 
+AfterAll {
+    InModuleScope Bicep {
+        Remove-Variable -Name Token -Scope Script -ErrorAction SilentlyContinue
+        $Script:TokenSplat = @{}
+    }
+}
+
 Describe 'Publish-Bicep' {
-    BeforeEach {
+    BeforeAll {
         Mock -CommandName TestModuleVersion -ModuleName Bicep -Verifiable -MockWith { }
         Mock -CommandName Test-BicepFile -ModuleName Bicep -Verifiable -MockWith {
             Return $true
+        }
+        Mock -CommandName AssertAzureConnection -ModuleName Bicep -MockWith {
+            $script:Token = [pscustomobject]@{
+                Token             = 'FakeToken'
+                ExpiresOn         = [DateTimeOffset]::Now.AddHours(1)
+                PSBoundParameters = $PesterBoundParameters # Magic Pester variable: https://pester.dev/docs/usage/mocking#pesterboundparameters
+            }
         }
     }
     
@@ -68,7 +82,7 @@ Describe 'Publish-Bicep' {
                 function Publish-BicepFileFake { }
                 Mock Publish-BicepFileFake -Verifiable { }
                 Set-Alias Publish-BicepFile Publish-BicepFileFake
-                {$null = Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target $Pattern} | Should -Throw -ExpectedMessage 'Cannot validate argument on parameter ''Target''. Target does not match pattern for registry. Specify a path to a registry using "br:", or "br/" if using an alias.'
+                { $null = Publish-Bicep -Path 'TestDrive:\workingBicep.bicep' -Target $Pattern } | Should -Throw -ExpectedMessage 'Cannot validate argument on parameter ''Target''. Target does not match pattern for registry. Specify a path to a registry using "br:", or "br/" if using an alias.'
             }
         }
     }
