@@ -181,7 +181,7 @@ public class AzureResourceProvider(ITokenCredentialFactory credentialFactory) : 
         BicepSourceFile bicepFile = SourceFileFactory.CreateBicepFile(new Uri("inmemory:///generated.bicep"), program.ToString());
         var workspace = new Workspace();
         workspace.UpsertSourceFile(bicepFile);
-        var compilation = compiler.CreateCompilationWithoutRestore(bicepFile.FileUri, workspace);
+        var compilation = compiler.CreateCompilationWithoutRestore(bicepFile.Uri, workspace);
 
         var rewriters = new List<Func<SemanticModel, SyntaxRewriteVisitor>>
         {

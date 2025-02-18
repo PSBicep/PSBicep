@@ -16,6 +16,7 @@ using Bicep.Core.TypeSystem.Providers.Az;
 using Bicep.Core.Utils;
 using Bicep.Core.Workspaces;
 using Bicep.Decompiler;
+using Bicep.IO.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.Threading;
@@ -48,6 +49,7 @@ public partial class BicepWrapper
     private readonly IEnvironment environment;
     private readonly IFileResolver fileResolver;
     private readonly IFileSystem fileSystem;
+    private readonly IFileExplorer fileExplorer;
     private readonly BicepConfigurationManager configurationManager;
     private readonly IBicepAnalyzer bicepAnalyzer;
     private readonly IFeatureProviderFactory featureProviderFactory;
@@ -75,6 +77,7 @@ public partial class BicepWrapper
         tokenCredentialFactory.Logger = services.GetRequiredService<ILogger>();
         fileResolver = services.GetRequiredService<IFileResolver>();
         fileSystem = services.GetRequiredService<IFileSystem>();
+        fileExplorer = services.GetRequiredService<IFileExplorer>();
         configurationManager = services.GetRequiredService<BicepConfigurationManager>();
         bicepAnalyzer = services.GetRequiredService<IBicepAnalyzer>();
         featureProviderFactory = services.GetRequiredService<IFeatureProviderFactory>();
@@ -88,15 +91,15 @@ public partial class BicepWrapper
         azResourceProvider = services.GetRequiredService<AzureResourceProvider>();
 
         BicepVersion = FileVersionInfo.GetVersionInfo(typeof(Workspace).Assembly.Location).FileVersion ?? "dev";
-        OciCachePath = Path.Combine(services.GetRequiredService<IFeatureProviderFactory>().GetFeatureProvider(new Uri("inmemory:///main.bicp")).CacheRootDirectory, ArtifactReferenceSchemes.Oci);
-        TemplateSpecsCachePath = Path.Combine(services.GetRequiredService<IFeatureProviderFactory>().GetFeatureProvider(new Uri("inmemory:///main.bicp")).CacheRootDirectory, ArtifactReferenceSchemes.TemplateSpecs);
+        OciCachePath = Path.Combine($"{System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile)}/.bicep", ArtifactReferenceSchemes.Oci);
+        TemplateSpecsCachePath = Path.Combine($"{System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile)}/.bicep, ArtifactReferenceSchemes.TemplateSpecs);
     }
 
     public string GetOciCachePath(string path) =>
-        Path.Combine(services.GetRequiredService<IFeatureProviderFactory>().GetFeatureProvider(new Uri(path)).CacheRootDirectory, ArtifactReferenceSchemes.Oci);
+        Path.Combine(services.GetRequiredService<IFeatureProviderFactory>().GetFeatureProvider(new Uri(path)).CacheRootDirectory.Uri.Path, ArtifactReferenceSchemes.Oci);
 
     public string GetTemplateSpecsCachePath(string path) =>
-        Path.Combine(services.GetRequiredService<IFeatureProviderFactory>().GetFeatureProvider(new Uri(path)).CacheRootDirectory, ArtifactReferenceSchemes.TemplateSpecs);
+        Path.Combine(services.GetRequiredService<IFeatureProviderFactory>().GetFeatureProvider(new Uri(path)).CacheRootDirectory.Uri.Path, ArtifactReferenceSchemes.TemplateSpecs);
 
     public void ClearAuthentication() => tokenCredentialFactory.Clear();
     public void SetAuthentication(string? token = null, string? tenantId = null) =>

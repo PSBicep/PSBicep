@@ -1,4 +1,6 @@
-﻿using Azure.Bicep.Types;
+﻿using System.IO.Abstractions;
+using System.Management.Automation;
+using Azure.Bicep.Types;
 using Azure.Bicep.Types.Az;
 using Bicep.Core;
 using Bicep.Core.Analyzers.Interfaces;
@@ -17,8 +19,9 @@ using Bicep.Core.TypeSystem.Providers.MicrosoftGraph;
 using Bicep.Core.Utils;
 using Bicep.Core.Workspaces;
 using Bicep.Decompiler;
+using Bicep.IO.Abstraction;
+using Bicep.IO.FileSystem;
 using Bicep.LanguageServer.Providers;
-using IOFileSystem = System.IO.Abstractions.FileSystem;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -26,8 +29,7 @@ using PSBicep.Core.Authentication;
 using PSBicep.Core.Azure;
 using PSBicep.Core.Configuration;
 using PSBicep.Core.Logging;
-using System.IO.Abstractions;
-using System.Management.Automation;
+using IOFileSystem = System.IO.Abstractions.FileSystem;
 
 namespace PSBicep.Core;
 
@@ -50,7 +52,7 @@ public static class BicepExtensions
         .AddSingleton<BicepConfigurationManager>()
         .AddSingleton<BicepTokenCredentialFactory>()
         .Replace(ServiceDescriptor.Singleton<ITokenCredentialFactory>(s => s.GetRequiredService<BicepTokenCredentialFactory>()))
-        .AddSingleton(cmdlet);;
+        .AddSingleton(cmdlet); ;
 
         // AddBicepCore()
         services
@@ -64,13 +66,14 @@ public static class BicepExtensions
         .AddSingleton<IFileResolver, FileResolver>()
         .AddSingleton<IEnvironment, Environment>()
         .AddSingleton<IFileSystem, IOFileSystem>()
+        .AddSingleton<IFileExplorer, FileSystemFileExplorer>()
         .AddSingleton<IConfigurationManager, ConfigurationManager>()
         .AddSingleton<IBicepAnalyzer, LinterAnalyzer>()
         .AddSingleton<IFeatureProviderFactory, FeatureProviderFactory>()
         .AddSingleton<ILinterRulesProvider, LinterRulesProvider>()
         .AddPublicRegistryModuleMetadataProviderServices()
         .AddSingleton<BicepCompiler>();
-        
+
         // AddBicepDecompiler()
         services
         .AddSingleton<BicepDecompiler>();
