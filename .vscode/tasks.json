@@ -17,7 +17,12 @@
             "presentation": {
                 "reveal": "always"
             },
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "options": {
+                "env": {
+                    "CompileConfiguration": "Debug"
+                }
+            }
         }
     ]
 }
