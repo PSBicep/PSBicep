@@ -18,16 +18,16 @@ ConvertTo-Bicep [[-Path] <String>] [[-OutputDirectory] <String>] [-AsString] [-F
  [<CommonParameters>]
 ```
 
-### ConvertFromBody
-```
-ConvertTo-Bicep -ResourceId <String> -ResourceBody <String> [-RemoveUnknownProperties]
- [<CommonParameters>]
-```
-
 ### ConvertFromBodyHash
 ```
-ConvertTo-Bicep [-ResourceDictionary <Hashtable>] [-RemoveUnknownProperties]
- [<CommonParameters>]
+ConvertTo-Bicep [-IncludeTargetScope] [-ConfigurationPath <String>] [-ResourceDictionary <Hashtable>]
+ [-RemoveUnknownProperties] [<CommonParameters>]
+```
+
+### ConvertFromBody
+```
+ConvertTo-Bicep [-IncludeTargetScope] [-ConfigurationPath <String>] -ResourceId <String> -ResourceBody <String>
+ [-RemoveUnknownProperties] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -121,11 +121,12 @@ Accept wildcard characters: False
 ```
 
 ### -RemoveUnknownProperties
-Will use a rewriter to strip any property not defined in the resource schema. This can help to produce deployable templates but also has a risk of removing useful data, use with caution.
+Will use a rewriter to strip any property not defined in the resource schema.
+This can help to produce deployable templates but also has a risk of removing useful data, use with caution.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: ConvertFromBody, ConvertFromBodyHash
+Parameter Sets: ConvertFromBodyHash, ConvertFromBody
 Aliases:
 
 Required: False
@@ -174,6 +175,36 @@ Parameter Sets: ConvertFromBody
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeTargetScope
+{{ Fill IncludeTargetScope Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: ConvertFromBodyHash, ConvertFromBody
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ConfigurationPath
+{{ Fill ConfigurationPath Description }}
+
+```yaml
+Type: String
+Parameter Sets: ConvertFromBodyHash, ConvertFromBody
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

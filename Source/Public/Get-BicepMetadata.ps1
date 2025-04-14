@@ -21,8 +21,9 @@ function Get-BicepMetadata {
     
     process {
         $file = Get-Item -Path $Path
-        try {  
-            $ARMTemplate = Build-BicepFile -Path $file.FullName
+        try {
+            $BuildResult = Build-BicepFile -Path $file.FullName -NoRestore:$NoRestore.IsPresent
+            $ARMTemplate = $BuildResult.Template
             $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate
             $templateMetadata=$ARMTemplateObject.metadata
 

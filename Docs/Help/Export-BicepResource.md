@@ -103,7 +103,8 @@ Accept wildcard characters: False
 ```
 
 ### -KQLQuery
-Query for Azure Resource Graph to select resources to export. Must include the property id containing a resource id for each resource.
+Query for Azure Resource Graph to select resources to export.
+Must include the property id containing a resource id for each resource.
 
 ```yaml
 Type: String
@@ -148,7 +149,8 @@ Accept wildcard characters: False
 ```
 
 ### -RemoveUnknownProperties
-Will use a rewriter to strip any property not defined in the resource schema. This can help to produce deployable templates but also has a risk of removing useful data, use with caution.
+Will use a rewriter to strip any property not defined in the resource schema.
+This can help to produce deployable templates but also has a risk of removing useful data, use with caution.
 
 ```yaml
 Type: SwitchParameter

@@ -1,7 +1,7 @@
-﻿using Azure.Core;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure.Core;
 
 namespace PSBicep.Core.Authentication;
 

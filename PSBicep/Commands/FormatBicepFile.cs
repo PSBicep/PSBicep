@@ -1,12 +1,12 @@
 using System.Management.Automation;
-using PSBicep.Core;
 
 namespace PSBicep.Commands;
 
 [Cmdlet(VerbsCommon.Format, "Bicep")]
 public class FormatBicep : BaseCommand
 {
-    [Parameter(Mandatory = true, ValueFromPipeline = true)]
+    [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = "CustomConfig")]
+    [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = "BicepConfig")]
     [ValidateNotNullOrEmpty]
     public string Content { get; set; }
 
@@ -31,11 +31,15 @@ public class FormatBicep : BaseCommand
 
     [Parameter(Mandatory = false, ValueFromPipeline = false)]
     [ValidateNotNullOrEmpty]
+    public int Width { get; set; } = 120;
+
+    [Parameter(Mandatory = false, ValueFromPipeline = false)]
+    [ValidateNotNullOrEmpty]
     public bool InsertFinalNewline { get; set; } = false;
 
     protected override void ProcessRecord()
     {
-        var result = BicepWrapper.Format(Content, FileKind, NewlineOption, IndentKindOption, IndentSize, InsertFinalNewline);
+        var result = bicepWrapper.Format(Content, FileKind, NewlineOption, IndentKindOption, IndentSize, Width, InsertFinalNewline);
         WriteObject(result);
     }
 }

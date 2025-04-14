@@ -6,7 +6,7 @@ namespace PSBicep.Commands;
 [CmdletBinding]
 public class GetBicepCachePathCommand : BaseCommand
 {
-    [Parameter(ParameterSetName="br")]
+    [Parameter(ParameterSetName = "br")]
     public SwitchParameter Oci { get; set; }
 
     [Parameter(Mandatory = true, ParameterSetName = "ts")]
@@ -19,15 +19,7 @@ public class GetBicepCachePathCommand : BaseCommand
 
     protected override void EndProcessing()
     {
-        string result = "";
-        if (Oci.IsPresent || ParameterSetName == "br")
-        {
-            result = bicepWrapper.GetOciCachePath(Path);
-        }
-        else if (TemplateSpecs.IsPresent)
-        {
-            result = bicepWrapper.GetTemplateSpecsCachePath(Path);
-        }
+        string result = string.Concat(bicepWrapper.GetCachePath(Path), ParameterSetName);
         WriteObject(result);
     }
 }

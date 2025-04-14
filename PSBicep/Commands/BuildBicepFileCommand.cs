@@ -14,10 +14,6 @@ public class BuildFileCommand : BaseCommand
 
     protected override void ProcessRecord()
     {
-        var result = bicepWrapper.Build(Path, noRestore: NoRestore.IsPresent);
-        foreach (var item in result)
-        {
-            WriteObject(item);
-        }
+        WriteObject(bicepWrapper.Build(Path, noRestore: NoRestore.IsPresent));
     }
 }

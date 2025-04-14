@@ -3,11 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Azure.Core;
 using Azure.Deployments.Core.Definitions.Identifiers;
+using Bicep.Core;
+using Bicep.Core.Configuration;
+using Bicep.Core.Extensions;
 using Bicep.Core.Parsing;
+using Bicep.Core.PrettyPrintV2;
 using Bicep.Core.Resources;
+using Bicep.Core.Rewriters;
+using Bicep.Core.Semantics;
+using Bicep.Core.SourceGraph;
 using Bicep.Core.Syntax;
 using Bicep.LanguageServer.Providers;
+using PSBicep.Core.Rewriters;
 
 namespace PSBicep.Core.Azure;
 
@@ -40,9 +49,60 @@ public static partial class AzureHelpers
             out _,
             out _
         );
-        return string.Format("{0}_{1}", fullyQualifiedType.Replace(@"/", "_"), fullyQualifiedName.Replace(@"/", "")).ToLowerInvariant();
+        return string.Format("{0}_{1}", fullyQualifiedType.Replace(@"/", "-").ToLowerInvariant(), fullyQualifiedName.Replace(@"/", "-")).ToLowerInvariant();
     }
 
+    public static string GenerateBicepTemplate(BicepCompiler compiler, IAzResourceProvider.AzResourceIdentifier resourceId, ResourceTypeReference resourceType, JsonElement resource, RootConfiguration configuration, bool includeTargetScope = false, bool removeUnknownProperties = false)
+    {
+        // Calculate target scope to be able to add it to the top of the template
+        var resourceIdentifier = new ResourceIdentifier(resourceId.FullyQualifiedId);
+        string targetScope = (resourceIdentifier.Parent?.ResourceType.ToString()) switch
+        {
+            "Microsoft.Resources/resourceGroups" => $"targetScope = 'resourceGroup'{Environment.NewLine}",
+            "Microsoft.Resources/subscriptions" => $"targetScope = 'subscription'{Environment.NewLine}",
+            "Microsoft.Management/managementGroups" => $"targetScope = 'managementGroup'{Environment.NewLine}",
+            _ => $"targetScope = 'tenant'{Environment.NewLine}",
+        };
+        if (resourceIdentifier.ResourceType == "Microsoft.Management/managementGroups" || resourceIdentifier.ResourceType == "Microsoft.Management/managementGroups/subscriptions")
+        {
+            targetScope = $"targetScope = 'tenant'{Environment.NewLine}";
+        }
+
+        // Generate Bicep template
+        var resourceDeclaration = AzureHelpers.CreateResourceSyntax(resource, resourceId, resourceType);
+        var program = new ProgramSyntax(
+            [resourceDeclaration],
+            SyntaxFactory.EndOfFileToken);
+
+        BicepSourceFile bicepFile = compiler.SourceFileFactory.CreateBicepFile(new Uri("inmemory:///generated.bicep"), program.ToString());
+
+        var workspace = new Workspace();
+        workspace.UpsertSourceFile(bicepFile);
+        var compilation = compiler.CreateCompilationWithoutRestore(bicepFile.Uri, workspace);
+
+        var rewriters = new List<Func<SemanticModel, SyntaxRewriteVisitor>>
+        {
+            model => new TypeCasingFixerRewriter(model),
+            model => new ReadOnlyPropertyRemovalRewriter(model)
+        };
+
+
+        if (removeUnknownProperties == true)
+        {
+            rewriters.Add(model => new UnknownPropertyRemovalRewriter(model));
+        }
+
+        bicepFile = RewriterHelper.RewriteMultiple(
+            compiler,
+            compilation,
+            bicepFile,
+            rewritePasses: 5,
+            [.. rewriters]);
+
+        var template = PrettyPrinterV2.PrintValid(bicepFile.ProgramSyntax, configuration.Formatting.Data);
+
+        return includeTargetScope ? targetScope + template : template;
+    }
     // Private method originally copied from InsertResourceHandler.cs
     internal static IAzResourceProvider.AzResourceIdentifier? TryParseResourceId(string? resourceIdString)
     {

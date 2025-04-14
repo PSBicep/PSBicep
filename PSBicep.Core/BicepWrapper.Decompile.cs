@@ -1,7 +1,7 @@
-using Bicep.Core.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Bicep.Core.FileSystem;
 
 namespace PSBicep.Core;
 
