@@ -182,7 +182,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeTargetScope
-{{ Fill IncludeTargetScope Description }}
+Include target scope in the output bicep file.
 
 ```yaml
 Type: SwitchParameter
@@ -197,7 +197,7 @@ Accept wildcard characters: False
 ```
 
 ### -ConfigurationPath
-{{ Fill ConfigurationPath Description }}
+Path used to search for bicepconfig.json.
 
 ```yaml
 Type: String

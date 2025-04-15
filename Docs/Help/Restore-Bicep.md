@@ -47,7 +47,7 @@ Accept wildcard characters: False
 ```
 
 ### -Force
-{{ Fill Force Description }}
+Force restore and overwrite existing modules in the local module cache.
 
 ```yaml
 Type: SwitchParameter

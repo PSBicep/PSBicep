@@ -115,7 +115,7 @@ Accept wildcard characters: False
 ```
 
 ### -ConfigurationPath
-{{ Fill ConfigurationPath Description }}
+Path used to search for bicepconfig.json.
 
 ```yaml
 Type: String
