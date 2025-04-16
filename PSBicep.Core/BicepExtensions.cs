@@ -1,4 +1,6 @@
-﻿using Azure.Bicep.Types;
+﻿using System.IO.Abstractions;
+using System.Management.Automation;
+using Azure.Bicep.Types;
 using Azure.Bicep.Types.Az;
 using Bicep.Core;
 using Bicep.Core.Analyzers.Interfaces;
@@ -8,52 +10,41 @@ using Bicep.Core.Features;
 using Bicep.Core.FileSystem;
 using Bicep.Core.Registry;
 using Bicep.Core.Registry.Auth;
-using Bicep.Core.Registry.PublicRegistry;
+using Bicep.Core.Registry.Catalog.Implementation;
 using Bicep.Core.Semantics.Namespaces;
+using Bicep.Core.SourceGraph;
 using Bicep.Core.TypeSystem.Providers;
 using Bicep.Core.TypeSystem.Providers.Az;
-using Bicep.Core.TypeSystem.Providers.K8s;
-using Bicep.Core.TypeSystem.Providers.MicrosoftGraph;
 using Bicep.Core.Utils;
-using Bicep.Core.Workspaces;
 using Bicep.Decompiler;
-using Bicep.LanguageServer.Providers;
-using IOFileSystem = System.IO.Abstractions.FileSystem;
+using Bicep.IO.Abstraction;
+using Bicep.IO.FileSystem;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.Threading;
 using PSBicep.Core.Authentication;
-using PSBicep.Core.Azure;
 using PSBicep.Core.Configuration;
 using PSBicep.Core.Logging;
-using System.IO.Abstractions;
-using System.Management.Automation;
+using Environment = Bicep.Core.Utils.Environment;
+using LocalFileSystem = System.IO.Abstractions.FileSystem;
 
 namespace PSBicep.Core;
 
 public static class BicepExtensions
 {
-    public static ServiceCollection AddPSBicep(this ServiceCollection services, PSCmdlet cmdlet)
-    {
-        services
+    public static IServiceCollection AddPSBicep(this IServiceCollection services, PSCmdlet cmdlet) => services
+        .AddSingleton(cmdlet)
         .AddSingleton<DiagnosticLogger>()
         .AddSingleton<ILogger>(s => s.GetRequiredService<DiagnosticLogger>())
-        .AddSingleton<IModuleDispatcher, ModuleDispatcher>()
-        .AddSingleton<AzureResourceProvider>()
-        .AddSingleton<IAzResourceProvider>(s => s.GetRequiredService<AzureResourceProvider>())
-        .AddSingleton<AzTypeLoader>()
-        .AddSingleton<ITypeLoader>(s => s.GetRequiredService<AzTypeLoader>())
+        .AddSingleton<ITypeLoader, AzTypeLoader>()
         .AddSingleton<AzResourceTypeLoader>()
-        .AddSingleton<K8sResourceTypeLoader>()
-        .AddSingleton<MicrosoftGraphResourceTypeLoader>()
         .AddSingleton<Workspace>()
         .AddSingleton<BicepConfigurationManager>()
         .AddSingleton<BicepTokenCredentialFactory>()
-        .Replace(ServiceDescriptor.Singleton<ITokenCredentialFactory>(s => s.GetRequiredService<BicepTokenCredentialFactory>()))
-        .AddSingleton(cmdlet);;
+        .AddSingleton<JoinableTaskContext>()
+        .AddSingleton<JoinableTaskFactory>();
 
-        // AddBicepCore()
-        services
+    public static IServiceCollection AddBicepCore(this IServiceCollection services) => services
         .AddSingleton<INamespaceProvider, NamespaceProvider>()
         .AddSingleton<IResourceTypeProviderFactory, ResourceTypeProviderFactory>()
         .AddSingleton<IContainerRegistryClientFactory, ContainerRegistryClientFactory>()
@@ -63,18 +54,17 @@ public static class BicepExtensions
         .AddSingleton<ITokenCredentialFactory, TokenCredentialFactory>()
         .AddSingleton<IFileResolver, FileResolver>()
         .AddSingleton<IEnvironment, Environment>()
-        .AddSingleton<IFileSystem, IOFileSystem>()
+        .AddSingleton<IFileSystem, LocalFileSystem>()
+        .AddSingleton<IFileExplorer, FileSystemFileExplorer>()
+        .AddSingleton<IAuxiliaryFileCache, AuxiliaryFileCache>()
         .AddSingleton<IConfigurationManager, ConfigurationManager>()
         .AddSingleton<IBicepAnalyzer, LinterAnalyzer>()
         .AddSingleton<IFeatureProviderFactory, FeatureProviderFactory>()
         .AddSingleton<ILinterRulesProvider, LinterRulesProvider>()
-        .AddPublicRegistryModuleMetadataProviderServices()
+        .AddSingleton<ISourceFileFactory, SourceFileFactory>()
+        .AddRegistryCatalogServices()
         .AddSingleton<BicepCompiler>();
-        
-        // AddBicepDecompiler()
-        services
-        .AddSingleton<BicepDecompiler>();
 
-        return services;
-    }
+    public static IServiceCollection AddBicepDecompiler(this IServiceCollection services) => services
+        .AddSingleton<BicepDecompiler>();
 }

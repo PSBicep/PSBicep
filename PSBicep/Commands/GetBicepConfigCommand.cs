@@ -1,8 +1,6 @@
-using PSBicep.Core.Configuration;
-using System;
 using System.Linq;
 using System.Management.Automation;
-using System.Management.Automation.Provider;
+using PSBicep.Core.Configuration;
 
 namespace PSBicep.Commands;
 
@@ -52,19 +50,25 @@ public class GetBicepConfigCommand : BaseCommand
             _ => BicepConfigScope.Default
         };
         var config = bicepWrapper.GetBicepConfigInfo(scope, bicepFilePath);
-        if(AsString.IsPresent) {
+        if (AsString.IsPresent)
+        {
             WriteObject(config.ToString());
-        } else {
+        }
+        else
+        {
             WriteObject(config);
         }
     }
 }
 
-class ValidateFileExists:ValidateArgumentsAttribute {
-    protected override void Validate(object arguments,EngineIntrinsics engineIntrinsics) {
+class ValidateFileExists : ValidateArgumentsAttribute
+{
+    protected override void Validate(object arguments, EngineIntrinsics engineIntrinsics)
+    {
         var path = (string)arguments;
-        if (!System.IO.Path.Exists(path)) {
-            throw new ValidationMetadataException($"File { path } does not exist");
+        if (!System.IO.Path.Exists(path))
+        {
+            throw new ValidationMetadataException($"File {path} does not exist");
         }
     }
 }

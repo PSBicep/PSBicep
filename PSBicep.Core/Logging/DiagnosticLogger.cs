@@ -1,13 +1,13 @@
-using Bicep.Core.Diagnostics;
-using Bicep.Core.Semantics;
-using Bicep.Core.Text;
-using Bicep.Core.Workspaces;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Management.Automation;
+using Bicep.Core.Diagnostics;
+using Bicep.Core.Semantics;
+using Bicep.Core.SourceGraph;
+using Bicep.Core.Text;
+using Microsoft.Extensions.Logging;
 
 namespace PSBicep.Core.Logging;
 
@@ -79,8 +79,8 @@ public class DiagnosticLogger(PSCmdlet cmdlet) : ILogger
                 // build a a code description link if the Uri is assigned
                 var codeDescription = diagnostic.Uri == null ? string.Empty : $" [{diagnostic.Uri.AbsoluteUri}]";
 
-                var message = $"{bicepFile.FileUri.LocalPath}({line + 1},{character + 1}) : {diagnostic.Level} {diagnostic.Code}: {diagnostic.Message}{codeDescription}";
-                
+                var message = $"{bicepFile.FileHandle.Uri}({line + 1},{character + 1}) : {diagnostic.Level} {diagnostic.Code}: {diagnostic.Message}{codeDescription}";
+
                 WriteLog(diagnosticToLogLevel[diagnostic.Level], message);
             }
         }

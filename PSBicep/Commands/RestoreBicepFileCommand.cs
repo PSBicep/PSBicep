@@ -9,6 +9,10 @@ public class RestoreBicepFileCommand : BaseCommand
     [ValidateNotNullOrEmpty]
     public string Path { get; set; }
 
+    [Parameter(Mandatory = true, ValueFromPipeline = true)]
+    [ValidateNotNullOrEmpty]
+    public SwitchParameter Force { get; set; }
+
     [Parameter(Mandatory = false, ValueFromPipeline = false)]
     [ValidateNotNullOrEmpty]
     public string Token { get; set; }
@@ -23,6 +27,6 @@ public class RestoreBicepFileCommand : BaseCommand
     }
     protected override void ProcessRecord()
     {
-        bicepWrapper.Restore(Path);
+        bicepWrapper.Restore(Path, Force.IsPresent);
     }
 }

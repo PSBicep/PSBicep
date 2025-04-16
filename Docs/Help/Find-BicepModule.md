@@ -12,9 +12,21 @@ Command to list modules in private Bicep module registries (ACR).
 
 ## SYNTAX
 
+### Path
 ```
-Find-BicepModule [[-Path] <String>] [[-Registry] <String>] [-Cache]
+Find-BicepModule [-Path] <String> [[-Registry] <String>]
  [<CommonParameters>]
+```
+
+### Registry
+```
+Find-BicepModule [-Registry] <String> [-ConfigurationPath <String>]
+ [<CommonParameters>]
+```
+
+### Cache
+```
+Find-BicepModule [[-Registry] <String>] [-Cache] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -50,10 +62,10 @@ Find modules from registries in the local cache.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: Cache
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: False
 Accept pipeline input: False
@@ -65,10 +77,10 @@ Path to Bicep file.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Path
 Aliases:
 
-Required: False
+Required: True
 Position: 0
 Default value: None
 Accept pipeline input: False
@@ -80,11 +92,38 @@ URI to a Bicep registry (ACR)
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Path, Cache
 Aliases:
 
 Required: False
 Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String
+Parameter Sets: Registry
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ConfigurationPath
+Path used to search for bicepconfig.json.
+
+```yaml
+Type: String
+Parameter Sets: Registry
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

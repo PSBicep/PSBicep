@@ -1,29 +1,28 @@
-using Bicep.Core;
-using Bicep.Core.Diagnostics;
-using Bicep.Core.Exceptions;
-using Bicep.Core.FileSystem;
-using Bicep.Core.Registry;
-using Bicep.Core.SourceCode;
-using PSBicep.Core.Logging;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using Bicep.Core.Diagnostics;
+using Bicep.Core.Exceptions;
+using Bicep.Core.FileSystem;
+using Bicep.Core.Registry;
+using Bicep.Core.SourceLink;
+using Bicep.IO.Abstraction;
+using PSBicep.Core.Logging;
 
 namespace PSBicep.Core;
 
 public partial class BicepWrapper
 {
     public void Publish(string inputFilePath, string targetModuleReference, string token, string? documentationUri, bool publishSource = false, bool overwriteIfExists = false) =>
-        joinableTaskFactory.Run(() => PublishAsync(inputFilePath, targetModuleReference, token, documentationUri, overwriteIfExists));
+        joinableTaskFactory.Run(() => PublishAsync(inputFilePath, targetModuleReference, token, documentationUri, publishSource, overwriteIfExists));
 
     public async Task PublishAsync(string inputFilePath, string targetModuleReference, string token, string? documentationUri, bool publishSource = false, bool overwriteIfExists = false, bool skipRestore = false)
     {
         SetAuthentication(token);
-        
+
         var inputPath = PathHelper.ResolvePath(inputFilePath);
         var inputUri = PathHelper.FilePathToFileUrl(inputPath);
-        var features = featureProviderFactory.GetFeatureProvider(inputUri);
         var moduleReference = ValidateReference(targetModuleReference, inputUri);
 
         if (PathHelper.HasArmTemplateLikeExtension(inputUri))
@@ -33,13 +32,12 @@ public partial class BicepWrapper
                 throw new BicepException("Cannot publish with source when the target is an ARM template file.");
             }
             // Publishing an ARM template file.
-            using var armTemplateStream = fileSystem.FileStream.New(inputPath, FileMode.Open, FileAccess.Read);
+            using var armTemplateStream = fileExplorer.GetFile(IOUri.FromLocalFilePath(inputPath)).OpenRead();
             await this.PublishModuleAsync(moduleReference, BinaryData.FromStream(armTemplateStream), null, documentationUri, overwriteIfExists);
             return;
         }
 
-        var bicepCompiler = new BicepCompiler(featureProviderFactory, environment, namespaceProvider, configurationManager, bicepAnalyzer, fileResolver, moduleDispatcher);
-        var compilation = await bicepCompiler.CreateCompilation(inputUri, skipRestore: skipRestore);
+        var compilation = await compiler.CreateCompilation(inputUri, skipRestore: skipRestore);
         var result = compilation.Emitter.Template();
 
         var summary = diagnosticLogger.LogDiagnostics(DiagnosticOptions.Default, result.Diagnostics);
@@ -58,7 +56,7 @@ public partial class BicepWrapper
         Stream? sourcesStream = null;
         if (publishSource)
         {
-            sourcesStream = SourceArchive.PackSourcesIntoStream(moduleDispatcher, compilation.SourceFileGrouping, features.CacheRootDirectory);
+            sourcesStream = SourceArchive.PackSourcesIntoStream(moduleDispatcher, compilation.SourceFileGrouping, compilation.GetEntrypointSemanticModel().Features.CacheRootDirectory);
             Trace.WriteLine("Publishing Bicep module with source");
         }
 
@@ -91,7 +89,9 @@ public partial class BicepWrapper
 
     private ArtifactReference ValidateReference(string targetModuleReference, Uri targetModuleUri)
     {
-        if (!this.moduleDispatcher.TryGetArtifactReference(ArtifactType.Module, targetModuleReference, targetModuleUri).IsSuccess(out var moduleReference, out var failureBuilder))
+        var dummyReferencingFile = compiler.SourceFileFactory.CreateBicepFile(targetModuleUri, string.Empty);
+
+        if (!this.moduleDispatcher.TryGetArtifactReference(dummyReferencingFile, ArtifactType.Module, targetModuleReference).IsSuccess(out var moduleReference, out var failureBuilder))
         {
             // TODO: We should probably clean up the dispatcher contract so this sort of thing isn't necessary (unless we change how target module is set in this command)
             var message = failureBuilder(DiagnosticBuilder.ForDocumentStart()).Message;

@@ -30,12 +30,13 @@ Connect-Bicep [-Tenant <String>] [-ClientId <String>] [-ManagedIdentity]
 ```
 
 ## DESCRIPTION
-Used to create a connection to Azure. Required by command Export-BicepResource but also supported by commands that rely on some kind of Azure resoruce, like for example getting or publishing modules from Azure Container Registry.
+Used to create a connection to Azure.
+Required by command Export-BicepResource but also supported by commands that rely on some kind of Azure resoruce, like for example getting or publishing modules from Azure Container Registry.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Connect-Bicep
 ```
 
@@ -95,7 +96,7 @@ Aliases:
 
 Required: True
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

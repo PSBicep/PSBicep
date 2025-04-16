@@ -1,24 +1,43 @@
-using Bicep.Core.Parsing;
-using Bicep.Core.PrettyPrint;
-using Bicep.Core.PrettyPrint.Options;
-using Bicep.Core.Workspaces;
 using System;
+using System.IO;
+using Bicep.Core.FileSystem;
+using Bicep.Core.PrettyPrintV2;
+using Bicep.Core.SourceGraph;
 
 namespace PSBicep.Core;
 
 public partial class BicepWrapper
 {
-    public static string Format(string content,  string kind, string newline, string indentKind, int indentSize = 2, bool insertFinalNewline = false)
+    public string Format(string content, string kind, string newline, string indentKind, int indentSize = 2, int width = 120, bool insertFinalNewline = false)
     {
         var fileKind = (BicepSourceFileKind)Enum.Parse(typeof(BicepSourceFileKind), kind, true);
-        var newlineOption = (NewlineOption)Enum.Parse(typeof(NewlineOption), newline, true);
-        var indentKindOption = (IndentKindOption)Enum.Parse(typeof(IndentKindOption), indentKind, true);
+        var newlineOption = (NewlineKind)Enum.Parse(typeof(NewlineKind), newline, true);
+        var indentKindOption = (IndentKind)Enum.Parse(typeof(IndentKind), indentKind, true);
 
-        BaseParser parser = fileKind == BicepSourceFileKind.BicepFile ? new Parser(content) : new ParamsParser(content);
+        var options = new PrettyPrinterV2Options(indentKindOption, newlineOption, indentSize, width, insertFinalNewline);
 
-        var options = new PrettyPrintOptions(newlineOption, indentKindOption, indentSize, insertFinalNewline);
-        var output = PrettyPrinter.PrintProgram(parser.Program(), options, parser.LexingErrorLookup, parser.ParsingErrorLookup);
-        
-        return output;
+        return Format(content, options, fileKind);
+    }
+
+    public string Format(string content, string configurationPath, string kind = "BicepFile")
+    {
+        var configuration = configurationManager.GetConfiguration(PathHelper.FilePathToFileUrl(configurationPath ?? ""));
+        var fileKind = (BicepSourceFileKind)Enum.Parse(typeof(BicepSourceFileKind), kind, true);
+        return Format(content, configuration.Formatting.Data, fileKind);
+    }
+
+    public string Format(string content, PrettyPrinterV2Options options, BicepSourceFileKind fileKind = BicepSourceFileKind.BicepFile)
+    {
+        var uri = fileKind == BicepSourceFileKind.BicepFile ? new Uri("inmemory:///generated.bicep") : new Uri("inmemory:///generated.bicepparams");
+        if (compiler.SourceFileFactory.CreateSourceFile(uri, content) is not BicepSourceFile sourceFile)
+        {
+            throw new InvalidOperationException("Unable to create Bicep source file.");
+        }
+
+        var context = PrettyPrinterV2Context.Create(options, sourceFile.LexingErrorLookup, sourceFile.ParsingErrorLookup);
+
+        using var stringWriter = new StringWriter();
+        PrettyPrinterV2.PrintTo(stringWriter, sourceFile.ProgramSyntax, context);
+        return stringWriter.ToString();
     }
 }

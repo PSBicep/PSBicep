@@ -1,0 +1,11 @@
+{
+    "dotnet.automaticallyCreateSolutionInWorkspace": false,
+    "[csharp]": {
+        "editor.defaultFormatter": "ms-dotnettools.csharp",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "always"
+        }
+    },
+    "csharpOrganizeUsings.splitGroups": false,
+}

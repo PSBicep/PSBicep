@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Linq.Expressions;
 using System.Management.Automation;
-using Humanizer.Localisation;
 
 namespace PSBicep.Commands;
 

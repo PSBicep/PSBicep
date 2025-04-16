@@ -1,10 +1,11 @@
-﻿using Bicep.Core.Configuration;
-using Bicep.Core.Json;
-using PSBicep.Core.Models;
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
+using Bicep.Core.Configuration;
+using Bicep.Core.Json;
+using Bicep.IO.Abstraction;
+using PSBicep.Core.Models;
 
 namespace PSBicep.Core.Configuration;
 
@@ -13,7 +14,7 @@ namespace PSBicep.Core.Configuration;
 public partial class BicepConfigurationManager
 {
     private const string BuiltInConfigurationResourceName = "PSBicep.Core.Configuration.bicepconfig.json";
-    
+
     public static BicepConfigInfo GetConfigurationInfo()
     {
         string configString = GetDefaultConfiguration().ToUtf8Json();
@@ -29,14 +30,14 @@ public partial class BicepConfigurationManager
                 return new BicepConfigInfo("Default", config.ToUtf8Json());
             case BicepConfigScope.Merged:
                 config = GetConfiguration(sourceFileUri);
-                return new BicepConfigInfo(config.ConfigFileUri?.LocalPath ?? "Default", config.ToUtf8Json());
+                return new BicepConfigInfo(config.ConfigFileUri?.Path ?? "Default", config.ToUtf8Json());
             case BicepConfigScope.Local:
                 config = GetConfiguration(sourceFileUri);
                 if (config.ConfigFileUri is not null)
                 {
-                    using var fileStream = fileSystem.FileStream.New(config.ConfigFileUri.LocalPath, FileMode.Open, FileAccess.Read);
-                    var configString = JsonElementFactory.CreateElementFromStream(fileStream).ToString();
-                    return new BicepConfigInfo(config.ConfigFileUri.LocalPath, configString);
+                    using var filestream = fileExplorer.GetFile((IOUri)config.ConfigFileUri).OpenRead();
+                    var configString = JsonElementFactory.CreateElementFromStream(filestream).ToString();
+                    return new BicepConfigInfo(config.ConfigFileUri, configString);
                 }
                 throw new FileNotFoundException("Local configuration file not found for path {path}!", sourceFileUri.LocalPath);
             default:
@@ -53,7 +54,7 @@ public partial class BicepConfigurationManager
 
     private static JsonElement GetBuiltInConfigurationElement()
     {
-        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(BuiltInConfigurationResourceName) ?? 
+        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(BuiltInConfigurationResourceName) ??
             throw new InvalidOperationException("Could not get manifest resource stream for built-in configuration.");
         return JsonElementFactory.CreateElementFromStream(stream);
     }

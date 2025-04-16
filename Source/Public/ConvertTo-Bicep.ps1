@@ -13,6 +13,15 @@ function ConvertTo-Bicep {
         [Parameter(ParameterSetName = 'Decompile')]
         [switch]$Force,
 
+        [Parameter(ParameterSetName = 'ConvertFromBody')]
+        [Parameter(ParameterSetName = 'ConvertFromBodyHash')]
+        [switch]$IncludeTargetScope,
+
+        # Path used to get bicepconfig.json which is used for formatting options
+        [Parameter(ParameterSetName = 'ConvertFromBody')]
+        [Parameter(ParameterSetName = 'ConvertFromBodyHash')]
+        [string]$ConfigurationPath = $pwd.path,
+
         [Parameter(Mandatory, ParameterSetName = 'ConvertFromBody')]
         [string]$ResourceId,
         
@@ -84,10 +93,10 @@ If you would like to report any issues or inaccurate conversions, please see htt
             }
         }
         elseif ($PSCmdlet.ParameterSetName -eq 'ConvertFromBody') {
-            Convert-ARMResourceToBicep -ResourceId $ResourceId -ResourceBody $ResourceBody -RemoveUnknownProperties:$RemoveUnknownProperties.IsPresent
+            Convert-ARMResourceToBicep -ResourceId $ResourceId -ResourceBody $ResourceBody -ConfigurationPath $ConfigurationPath -IncludeTargetScope:$IncludeTargetScope.IsPresent -RemoveUnknownProperties:$RemoveUnknownProperties.IsPresent
         }
         elseif ($PSCmdlet.ParameterSetName -eq 'ConvertFromBodyHash') {
-            Convert-ArmResourceToBicep -ResourceDictionary $ResourceDictionary -RemoveUnknownProperties:$RemoveUnknownProperties.IsPresent
+            Convert-ArmResourceToBicep -ResourceDictionary $ResourceDictionary -ConfigurationPath $ConfigurationPath -IncludeTargetScope:$IncludeTargetScope.IsPresent -RemoveUnknownProperties:$RemoveUnknownProperties.IsPresent
         }
         else {
             throw [System.Exception.NotimplementedException]::new()

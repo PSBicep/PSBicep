@@ -1,62 +1,48 @@
 function Find-BicepModule {
     [CmdletBinding()]
     param (
-        [Parameter()]
+        [Parameter(ParameterSetName = 'Path', Mandatory = $true, Position = 1)]
         [ValidateNotNullOrEmpty()]
         [ValidateScript( { Test-Path $_ })]
         [string]$Path,
 
+        [Parameter(ParameterSetName = 'Registry', Mandatory = $true, Position = 1)]
         [Parameter()]
         [ValidateNotNullOrEmpty()]
         [string]$Registry,
 
-        [Parameter()]
+        [Parameter(ParameterSetName = 'Registry', Mandatory = $false, Position = 2)]
+        [string]$ConfigurationPath,
+
+        [Parameter(ParameterSetName = 'Cache', Mandatory = $true, Position = 1)]
         [ValidateNotNullOrEmpty()]
         [switch]$Cache
 
     )
 
-    process {        
-        # Find modules used in local bicep file
-        if ($Path) {
-            $BicepFile = Get-Childitem -Path $Path -File
-        
-            try {
+    process {
+        switch ($PSCmdlet.ParameterSetName) {
+            'Path' {
+                $BicepFile = Get-Childitem -Path $Path -File
+
                 $validBicep = Test-BicepFile -Path $BicepFile.FullName -IgnoreDiagnosticOutput -AcceptDiagnosticLevel Warning
                 if (-not ($validBicep)) {
                     throw "The provided bicep is not valid. Make sure that your bicep file builds successfully before publishing."
                 }
-                else {
-                    Write-Verbose "[$($BicepFile.Name)] is valid"
-                    Find-BicepModule -Path $Path
-                    Write-Verbose -Message "Finding modules used in [$($BicepFile.Name)]"
-                }
-            }
-            catch {
-                Throw $_  
-            }
-        }
-        
-        # Find modules in ACR
-        if ($Registry) {
-            try {
-                Find-BicepModule -Registry $Registry
-                Write-Verbose -Message "Finding all modules stored in: [$Registry]"
-            }
-            catch {
-                Throw $_
-            }
-        }
 
-        # Find modules in the local cache
-        if ($Cache) {
-            # Find module
-            try {
-                Find-BicepModule -Cache
-                Write-Verbose -Message "Finding modules in the local module cache"
+                Write-Verbose "[$($BicepFile.Name)] is valid"
+                Write-Verbose -Message "Finding modules used in [$($BicepFile.Name)]"
+                Find-BicepModule -Path $Path -ErrorAction 'Stop'
+              
             }
-            catch {
-                
+            'Registry' {
+                Write-Verbose -Message "Finding all modules stored in: [$Registry]"
+                Find-BicepModule -Registry $Registry -ErrorAction 'Stop'
+
+            }
+            'Cache' {
+                Write-Verbose -Message "Finding modules in the local module cache"
+                Find-BicepModule -Cache -ErrorAction 'Stop'
             }
         }
     }

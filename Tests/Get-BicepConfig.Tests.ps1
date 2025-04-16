@@ -120,10 +120,13 @@ Describe 'Get-BicepConfig tests' {
                 "legacyFormatter": false,
                 "testFramework": false,
                 "assertions": false,
-                "optionalModuleNames": false,
+                "waitAndRetry": false,
                 "localDeploy": false,
-                "resourceDerivedTypes": false,
-                "secureOutputs": false
+                "secureOutputs": false,
+                "resourceInfoCodegen": false,
+                "typedVariables": false,
+                "moduleExtensionConfigs": false,
+                "desiredStateConfiguration": false
               },
               "formatting": {
                 "indentKind": "Space",

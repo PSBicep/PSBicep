@@ -72,11 +72,11 @@ function Build-Bicep {
             foreach ($file in $files) {
                 if ($file.Name -notin $ExcludeFile) {
                     if ($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue) {
-                        $bicepConfig= Get-BicepConfig -Path $file
+                        $bicepConfig = Get-BicepConfig -Path $file
                         Write-Verbose -Message "Using Bicep configuration: $($bicepConfig.Path)"
                     }
-                    $ARMTemplate = Build-BicepFile -Path $file.FullName -NoRestore:$NoRestore.IsPresent
-
+                    $BuildResult = Build-BicepFile -Path $file.FullName -NoRestore:$NoRestore.IsPresent
+                    $ARMTemplate = $BuildResult.Template
                     if (-not [string]::IsNullOrWhiteSpace($ARMTemplate)) {
                         $BicepModuleVersion = Get-Module -Name Bicep | Sort-Object -Descending | Select-Object -First 1
                         $ARMTemplateObject = ConvertFrom-Json -InputObject $ARMTemplate

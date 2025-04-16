@@ -29,7 +29,8 @@ function New-BicepParameterFile {
             break
         }
         if ($File) {
-            $ARMTemplate = Build-BicepFile -Path $file.FullName
+            $BuildResult = Build-BicepFile -Path $file.FullName
+            $ARMTemplate = $BuildResult.Template
 
             if($PSBoundParameters.ContainsKey('OutputDirectory')) {
                 $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath ('{0}.parameters.json' -f $File.BaseName)

@@ -3,7 +3,10 @@ function Restore-Bicep {
     param (
         [Parameter(Mandatory, Position = 1)]
         [ValidateNotNullOrEmpty()]
-        [string]$Path         
+        [string]$Path,
+        
+        [Parameter(Position = 2)]
+        [switch]$Force
     )
 
     begin {   
@@ -29,7 +32,7 @@ function Restore-Bicep {
 
         # Restore modules
         try {
-            Restore-BicepFile -Path $BicepFile.FullName @BicepToken -ErrorAction Stop
+            Restore-BicepFile -Path $BicepFile.FullName -Force:$Force.IsPresent @BicepToken -ErrorAction Stop
             Write-Verbose -Message "Successfully restored all modules"
         }
         catch {

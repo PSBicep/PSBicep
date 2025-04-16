@@ -1,19 +1,18 @@
-﻿using Azure.Core;
-using Azure.Identity;
-using Bicep.Core.Configuration;
-using Bicep.Core.Registry.Auth;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using Azure.Core;
+using Bicep.Core.Configuration;
+using Bicep.Core.Registry.Auth;
+using Microsoft.Extensions.Logging;
 
 namespace PSBicep.Core.Authentication;
 
 public class BicepTokenCredentialFactory : ITokenCredentialFactory
 {
     public static string Scope { get; } = "https://management.core.windows.net/.default";
-    
+
     internal ILogger? Logger { get; set; }
     internal TokenRequestContext TokenRequestContext { get; set; }
     internal TokenCredential? Credential { get; set; }

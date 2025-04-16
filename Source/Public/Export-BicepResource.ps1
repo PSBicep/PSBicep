@@ -179,7 +179,8 @@ function Export-BicepResource {
                 if (-not (Test-Path -Path $OutputDirectory -PathType 'Container')) {
                     $null = New-Item -Path $OutputDirectory -ItemType 'Directory'
                 }
-                $FileName = $Id -replace '/', '_'
+                $ResourceIdParts = $Id -split '/'
+                $FileName = [string]::Concat($ResourceIdParts[6], '_', $ResourceIdParts[7], '-', $ResourceIdParts[8])
                 $OutputFilePath = Join-Path -Path $OutputDirectory -ChildPath "$FileName.bicep"
                 $null = Out-File -InputObject $Template -FilePath $OutputFilePath -Encoding utf8
             }
