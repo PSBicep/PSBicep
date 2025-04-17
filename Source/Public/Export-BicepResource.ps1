@@ -169,7 +169,13 @@ function Export-BicepResource {
         $script:Token = $hash['config']['token']
         $hash.Remove('config')
         if (-not $Raw.IsPresent) {
-            $hash =  ConvertTo-Bicep -ResourceDictionary $hash -RemoveUnknownProperties:$RemoveUnknownProperties.IsPresent -ErrorAction 'Stop'
+            $convertParams = @{
+                ResourceDictionary      = $hash
+                RemoveUnknownProperties = $RemoveUnknownProperties.IsPresent
+                IncludeTargetScope      = $IncludeTargetScope.IsPresent
+                ErrorAction             = 'Stop'
+            }
+            $hash = ConvertTo-Bicep @convertParams
         }
         $hash.GetEnumerator() | ForEach-Object {
             $Id = $_.Key
