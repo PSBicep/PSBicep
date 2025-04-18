@@ -4,18 +4,42 @@ using System.IO;
 using System.Linq;
 using Azure;
 using Azure.Containers.ContainerRegistry;
+using Bicep.Core;
 using Bicep.Core.Configuration;
 using Bicep.Core.FileSystem;
 using Bicep.Core.Registry;
 using Bicep.Core.SourceGraph;
 using Bicep.Core.Tracing;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.Threading;
+using PSBicep.Core.Authentication;
+using PSBicep.Core.Configuration;
 using PSBicep.Core.Models;
 
-namespace PSBicep.Core;
+namespace PSBicep.Core.Services;
 
-public partial class BicepWrapper
+public class BicepModuleFinder
 {
+    private readonly JoinableTaskFactory joinableTaskFactory;
+    private readonly BicepCompiler compiler;
+    private readonly BicepConfigurationManager configurationManager;
+    private readonly ILogger logger;
+    private readonly BicepTokenCredentialFactory tokenCredentialFactory;
+
+    public BicepModuleFinder(
+        JoinableTaskFactory joinableTaskFactory,
+        BicepCompiler compiler,
+        BicepConfigurationManager configurationManager,
+        ILogger logger,
+        BicepTokenCredentialFactory tokenCredentialFactory)
+    {
+        this.joinableTaskFactory = joinableTaskFactory;
+        this.compiler = compiler;
+        this.configurationManager = configurationManager;
+        this.logger = logger;
+        this.tokenCredentialFactory = tokenCredentialFactory;
+    }
+
     /// <summary>
     /// Find modules in registries by using a specific endpoints or by seraching a bicep file.
     /// </summary>
@@ -73,6 +97,11 @@ public partial class BicepWrapper
         }
 
         return FindModulesByEndpoints(endpoints, configuration);
+    }
+
+    private string GetCachePath(string path)
+    {
+        return configurationManager.GetConfiguration(PathHelper.FilePathToFileUrl(path)).CacheRootDirectory!;
     }
 
     private List<BicepRepository> FindModulesByEndpoints(IList<string> endpoints, RootConfiguration configuration)

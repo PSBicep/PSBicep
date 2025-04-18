@@ -132,7 +132,8 @@ param
 
 process
 {
-
+    $PregressPreference = 'SilentlyContinue'
+    
     if ($MyInvocation.ScriptName -notLike '*Invoke-Build.ps1')
     {
         # Only run the process block through InvokeBuild (look at the Begin block at the bottom of this script).

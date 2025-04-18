@@ -1,14 +1,32 @@
 using System;
 using System.Threading.Tasks;
+using Bicep.Core;
 using Bicep.Core.FileSystem;
 using Bicep.Core.SourceGraph;
+using Microsoft.VisualStudio.Threading;
+using PSBicep.Core.Logging;
 using PSBicep.Core.Models;
 
-namespace PSBicep.Core;
+namespace PSBicep.Core.Services;
 
-public partial class BicepWrapper
+public class BicepBuilder
 {
-    public BuildResult Build(string bicepPath, string usingPath = "", bool noRestore = false) => joinableTaskFactory.Run(() => BuildAsync(bicepPath, usingPath, noRestore));
+    private readonly JoinableTaskFactory joinableTaskFactory;
+    private readonly BicepCompiler compiler;
+    private readonly DiagnosticLogger diagnosticLogger;
+
+    public BicepBuilder(
+        JoinableTaskFactory joinableTaskFactory,
+        BicepCompiler compiler,
+        DiagnosticLogger diagnosticLogger)
+    {
+        this.joinableTaskFactory = joinableTaskFactory;
+        this.compiler = compiler;
+        this.diagnosticLogger = diagnosticLogger;
+    }
+
+    public BuildResult Build(string bicepPath, string usingPath = "", bool noRestore = false) =>
+        joinableTaskFactory.Run(() => BuildAsync(bicepPath, usingPath, noRestore));
 
     public async Task<BuildResult> BuildAsync(string bicepPath, string usingPath = "", bool noRestore = false)
     {

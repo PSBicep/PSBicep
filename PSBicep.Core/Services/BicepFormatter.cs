@@ -1,13 +1,27 @@
 using System;
 using System.IO;
+using Bicep.Core;
 using Bicep.Core.FileSystem;
 using Bicep.Core.PrettyPrintV2;
 using Bicep.Core.SourceGraph;
+using PSBicep.Core.Configuration;
+using PSBicep.Core.Models;
 
-namespace PSBicep.Core;
+namespace PSBicep.Core.Services;
 
-public partial class BicepWrapper
+public class BicepFormatter
 {
+    private readonly BicepCompiler compiler;
+    private readonly BicepConfigurationManager configurationManager;
+
+    public BicepFormatter(
+        BicepCompiler compiler,
+        BicepConfigurationManager configurationManager)
+    {
+        this.compiler = compiler;
+        this.configurationManager = configurationManager;
+    }
+
     public string Format(string content, string kind, string newline, string indentKind, int indentSize = 2, int width = 120, bool insertFinalNewline = false)
     {
         var fileKind = (BicepSourceFileKind)Enum.Parse(typeof(BicepSourceFileKind), kind, true);

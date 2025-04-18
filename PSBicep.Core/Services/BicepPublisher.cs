@@ -2,18 +2,45 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using Bicep.Core;
 using Bicep.Core.Diagnostics;
 using Bicep.Core.Exceptions;
 using Bicep.Core.FileSystem;
 using Bicep.Core.Registry;
 using Bicep.Core.SourceLink;
 using Bicep.IO.Abstraction;
+using Microsoft.VisualStudio.Threading;
+using PSBicep.Core.Authentication;
 using PSBicep.Core.Logging;
+using PSBicep.Core.Models;
 
-namespace PSBicep.Core;
+namespace PSBicep.Core.Services;
 
-public partial class BicepWrapper
+public class BicepPublisher
 {
+    private readonly JoinableTaskFactory joinableTaskFactory;
+    private readonly BicepCompiler compiler;
+    private readonly DiagnosticLogger diagnosticLogger;
+    private readonly IModuleDispatcher moduleDispatcher;
+    private readonly IFileExplorer fileExplorer;
+    private readonly BicepTokenCredentialFactory tokenCredentialFactory;
+
+    public BicepPublisher(
+        JoinableTaskFactory joinableTaskFactory,
+        BicepCompiler compiler,
+        DiagnosticLogger diagnosticLogger,
+        IModuleDispatcher moduleDispatcher,
+        IFileExplorer fileExplorer,
+        BicepTokenCredentialFactory tokenCredentialFactory)
+    {
+        this.joinableTaskFactory = joinableTaskFactory;
+        this.compiler = compiler;
+        this.diagnosticLogger = diagnosticLogger;
+        this.moduleDispatcher = moduleDispatcher;
+        this.fileExplorer = fileExplorer;
+        this.tokenCredentialFactory = tokenCredentialFactory;
+    }
+
     public void Publish(string inputFilePath, string targetModuleReference, string token, string? documentationUri, bool publishSource = false, bool overwriteIfExists = false) =>
         joinableTaskFactory.Run(() => PublishAsync(inputFilePath, targetModuleReference, token, documentationUri, publishSource, overwriteIfExists));
 
@@ -66,8 +93,10 @@ public partial class BicepWrapper
             var sourcesPayload = sourcesStream is { } ? BinaryData.FromStream(sourcesStream) : null;
             await PublishModuleAsync(moduleReference, BinaryData.FromString(compiledArmTemplate), sourcesPayload, documentationUri, overwriteIfExists);
         }
-
     }
+
+    private void SetAuthentication(string token) =>
+        tokenCredentialFactory.SetToken(new Uri("inmemory:///main.bicp"), token);
 
     // copied from PublishCommand.cs
     private async Task PublishModuleAsync(ArtifactReference target, BinaryData compiledArmTemplate, BinaryData? bicepSources, string? documentationUri, bool overwriteIfExists)
