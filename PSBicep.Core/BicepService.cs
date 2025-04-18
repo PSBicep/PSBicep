@@ -20,6 +20,7 @@ public class BicepService
     public readonly BicepAuthentication authentication;
     public readonly BicepConfiguration configuration;
     public readonly BicepTypeResolver typeResolver;
+    public readonly string bicepVersion;
 
     public BicepService(PSCmdlet cmdlet)
     {
@@ -40,7 +41,7 @@ public class BicepService
         authentication = _services.GetRequiredService<BicepAuthentication>();
         configuration = _services.GetRequiredService<BicepConfiguration>();
         typeResolver = _services.GetRequiredService<BicepTypeResolver>();
-    }
 
-    public static string BicepVersion => FileVersionInfo.GetVersionInfo(typeof(Workspace).Assembly.Location).FileVersion ?? "dev";
+        bicepVersion = FileVersionInfo.GetVersionInfo(typeof(Workspace).Assembly.Location).FileVersion ?? "dev";
+    }
 }
