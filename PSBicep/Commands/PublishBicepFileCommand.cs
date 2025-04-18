@@ -28,6 +28,6 @@ public class PublishBicepFileCommand : BaseCommand
     public SwitchParameter Force { get; set; }
     protected override void ProcessRecord()
     {
-        bicepWrapper.Publish(Path, Target, Token, DocumentationUri, PublishSource.IsPresent, Force.IsPresent);
+        bicepService.publisher.Publish(Path, Target, Token, DocumentationUri, PublishSource.IsPresent, Force.IsPresent);
     }
 }

@@ -9,7 +9,7 @@ public class GetBicepVersionCommand : BaseCommand
 {
     protected override void EndProcessing()
     {
-        var result = BicepWrapper.BicepVersion;
+        var result = BicepService.BicepVersion;
         WriteObject(result);
     }
 }

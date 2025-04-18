@@ -1,21 +1,21 @@
-﻿using PSBicep.Core;
-using System.Management.Automation;
+﻿using System.Management.Automation;
+using PSBicep.Core;
 
 namespace PSBicep.Commands;
 
 public class BaseCommand : PSCmdlet
 {
     protected string name;
-    protected BicepWrapper bicepWrapper;
+    protected BicepService bicepService;
 
     protected override void BeginProcessing()
     {
         base.BeginProcessing();
-        bicepWrapper = new BicepWrapper(this);
+        bicepService = new BicepService(this);
     }
 
     protected void SetAuthentication(string token)
     {
-        bicepWrapper.SetAuthentication(token);
+        bicepService.authentication.SetAuthentication(token);
     }
 }

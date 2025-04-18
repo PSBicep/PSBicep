@@ -19,7 +19,7 @@ public class GetBicepCachePathCommand : BaseCommand
 
     protected override void EndProcessing()
     {
-        string result = System.IO.Path.Combine(bicepWrapper.GetCachePath(Path), ParameterSetName);
+        string result = System.IO.Path.Combine(bicepService.configuration.GetCachePath(Path), ParameterSetName);
         WriteObject(result);
     }
 }

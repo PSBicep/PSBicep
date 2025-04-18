@@ -18,7 +18,7 @@ public class BuildBicepParamFileCommand : BaseCommand
 
     protected override void ProcessRecord()
     {
-        var result = bicepWrapper.Build(Path, TemplatePath, NoRestore.IsPresent);
+        var result = bicepService.builder.Build(Path, TemplatePath, NoRestore.IsPresent);
         WriteObject(result.Parameters);
     }
 }

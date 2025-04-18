@@ -13,6 +13,6 @@ public class GetBicepApiVersion : BaseCommand
     protected override void BeginProcessing()
     {
         base.BeginProcessing();
-        WriteObject(bicepWrapper.GetApiVersions(ResourceTypeReference));
+        WriteObject(bicepService.typeResolver.GetApiVersions(ResourceTypeReference));
     }
 }
