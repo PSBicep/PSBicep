@@ -5,14 +5,10 @@ using System.Diagnostics;
 using System.Management.Automation;
 using System.Threading.Tasks;
 using Azure.Core;
-using Bicep.Core;
-using Bicep.Core.FileSystem;
 using Bicep.Core.PrettyPrintV2;
 using Bicep.Core.SourceGraph;
-using Bicep.Decompiler;
 using Microsoft.Extensions.DependencyInjection;
 using PSBicep.Core.Configuration;
-using PSBicep.Core.Logging;
 using PSBicep.Core.Models;
 using PSBicep.Core.Services;
 
