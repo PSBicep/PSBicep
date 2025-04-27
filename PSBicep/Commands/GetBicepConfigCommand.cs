@@ -49,7 +49,7 @@ public class GetBicepConfigCommand : BaseCommand
             "PathOnly" => BicepConfigScope.Merged,
             _ => BicepConfigScope.Default
         };
-        var config = bicepWrapper.GetBicepConfigInfo(scope, bicepFilePath);
+        var config = psBicep.coreService.GetBicepConfigInfo(scope, bicepFilePath);
         if (AsString.IsPresent)
         {
             WriteObject(config.ToString());

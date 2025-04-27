@@ -1,5 +1,4 @@
 using System.Management.Automation;
-using PSBicep.Core;
 
 namespace PSBicep.Commands;
 
@@ -9,7 +8,7 @@ public class GetBicepVersionCommand : BaseCommand
 {
     protected override void EndProcessing()
     {
-        var result = BicepWrapper.BicepVersion;
+        var result = psBicep.bicepVersion;
         WriteObject(result);
     }
 }
