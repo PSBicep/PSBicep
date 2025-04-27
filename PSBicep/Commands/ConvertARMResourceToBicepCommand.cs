@@ -34,11 +34,11 @@ public class ConvertARMResourceToBicep : BaseCommand
         switch (ParameterSetName)
         {
             case "ResourceId":
-                var result = bicepService.resourceConverter.ConvertResourceToBicep(ResourceId, ResourceBody, ConfigurationPath, IncludeTargetScope.IsPresent, RemoveUnknownProperties.IsPresent);
+                var result = psBicep.coreService.ConvertResourceToBicep(ResourceId, ResourceBody, ConfigurationPath, IncludeTargetScope.IsPresent, RemoveUnknownProperties.IsPresent);
                 WriteObject(result.Item2);
                 break;
             case "ResourceDictionary":
-                var dictResult = bicepService.resourceConverter.ConvertResourceToBicep(ResourceDictionary, ConfigurationPath, IncludeTargetScope.IsPresent, RemoveUnknownProperties.IsPresent);
+                var dictResult = psBicep.coreService.ConvertResourceToBicep(ResourceDictionary, ConfigurationPath, IncludeTargetScope.IsPresent, RemoveUnknownProperties.IsPresent);
                 WriteObject(dictResult);
                 break;
             default:

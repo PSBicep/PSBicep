@@ -9,16 +9,12 @@ public class BuildBicepParamFileCommand : BaseCommand
     [ValidateNotNullOrEmpty]
     public string Path { get; set; }
 
-    [Parameter(Mandatory = false)]
-    [ValidateNotNullOrEmpty]
-    public string TemplatePath { get; set; } = "";
-
     [Parameter()]
     public SwitchParameter NoRestore { get; set; }
 
     protected override void ProcessRecord()
     {
-        var result = bicepService.builder.Build(Path, TemplatePath, NoRestore.IsPresent);
+        var result = psBicep.coreService.Build(Path, NoRestore.IsPresent);
         WriteObject(result.Parameters);
     }
 }

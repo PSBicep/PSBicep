@@ -39,7 +39,7 @@ public class FormatBicep : BaseCommand
 
     protected override void ProcessRecord()
     {
-        var result = bicepService.formatter.Format(Content, FileKind, NewlineOption, IndentKindOption, IndentSize, Width, InsertFinalNewline);
+        var result = psBicep.coreService.Format(Content, FileKind, NewlineOption, IndentKindOption, IndentSize, Width, InsertFinalNewline);
         WriteObject(result);
     }
 }

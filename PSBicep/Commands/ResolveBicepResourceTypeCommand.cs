@@ -13,6 +13,6 @@ public class ResolveBicepResourceTypeCommand : BaseCommand
     protected override void BeginProcessing()
     {
         base.BeginProcessing();
-        WriteObject(bicepService.typeResolver.ResolveBicepResourceType(ResourceId));
+        WriteObject(psBicep.coreService.ResolveBicepResourceType(ResourceId));
     }
 }

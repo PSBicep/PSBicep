@@ -23,12 +23,12 @@ public class FindBicepModuleCommand : BaseCommand
 
     protected override void ProcessRecord()
     {
-        var moduleFinder = bicepService.moduleFinder;
+        var registry = psBicep.registryService;
         var result = ParameterSetName switch
         {
-            "Path" => moduleFinder.FindModules(BicepPath, false, BicepPath),
-            "Registry" => moduleFinder.FindModules(Registry, true, ConfigurationPath),
-            "Cache" => moduleFinder.FindModules(),
+            "Path" => registry.FindModules(BicepPath, false, BicepPath),
+            "Registry" => registry.FindModules(Registry, true, ConfigurationPath),
+            "Cache" => registry.FindModules(),
             _ => throw new InvalidOperationException("Invalid parameter set"),
         };
 

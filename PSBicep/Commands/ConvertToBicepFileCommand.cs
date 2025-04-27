@@ -11,7 +11,7 @@ public class ConvertToBicepFile : BaseCommand
 
     protected override void ProcessRecord()
     {
-        var result = bicepService.decompiler.Decompile(Path);
+        var result = psBicep.coreService.Decompile(Path);
         WriteObject(result);
     }
 }

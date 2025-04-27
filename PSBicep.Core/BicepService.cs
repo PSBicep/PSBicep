@@ -7,41 +7,21 @@ using PSBicep.Core.Services;
 
 namespace PSBicep.Core;
 
-public class BicepService
+public class PSBicep
 {
     private readonly IServiceProvider _services;
-    public readonly BicepBuilder builder;
-    public readonly PSBicepDecompiler decompiler;
-    public readonly BicepFormatter formatter;
-    public readonly BicepPublisher publisher;
-    public readonly BicepRestorer restorer;
-    public readonly BicepModuleFinder moduleFinder;
-    public readonly BicepResourceConverter resourceConverter;
-    public readonly BicepAuthentication authentication;
-    public readonly BicepConfiguration configuration;
-    public readonly BicepTypeResolver typeResolver;
+    public readonly BicepCoreService coreService;
+    public readonly BicepRegistryService registryService;
     public readonly string bicepVersion;
 
-    public BicepService(PSCmdlet cmdlet)
+    public PSBicep(PSCmdlet cmdlet)
     {
         _services = new ServiceCollection()
             .AddBicepCore()
-            .AddBicepDecompiler()
             .AddPSBicep(cmdlet)
-            .AddBicepServices()
             .BuildServiceProvider();
-
-        builder = _services.GetRequiredService<BicepBuilder>();
-        decompiler = _services.GetRequiredService<PSBicepDecompiler>();
-        formatter = _services.GetRequiredService<BicepFormatter>();
-        publisher = _services.GetRequiredService<BicepPublisher>();
-        restorer = _services.GetRequiredService<BicepRestorer>();
-        moduleFinder = _services.GetRequiredService<BicepModuleFinder>();
-        resourceConverter = _services.GetRequiredService<BicepResourceConverter>();
-        authentication = _services.GetRequiredService<BicepAuthentication>();
-        configuration = _services.GetRequiredService<BicepConfiguration>();
-        typeResolver = _services.GetRequiredService<BicepTypeResolver>();
-
+        coreService = _services.GetRequiredService<BicepCoreService>();
+        registryService = _services.GetRequiredService<BicepRegistryService>();
         bicepVersion = FileVersionInfo.GetVersionInfo(typeof(Workspace).Assembly.Location).FileVersion ?? "dev";
     }
 }

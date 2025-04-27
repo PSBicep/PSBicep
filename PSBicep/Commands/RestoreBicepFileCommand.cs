@@ -27,6 +27,6 @@ public class RestoreBicepFileCommand : BaseCommand
     }
     protected override void ProcessRecord()
     {
-        bicepService.restorer.Restore(Path, Force.IsPresent);
+        psBicep.coreService.Restore(Path, Force.IsPresent);
     }
 }

@@ -33,18 +33,6 @@ namespace PSBicep.Core;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddBicepServices(this IServiceCollection services) => services
-        .AddSingleton<BicepBuilder>()
-        .AddSingleton<PSBicepDecompiler>()
-        .AddSingleton<BicepFormatter>()
-        .AddSingleton<BicepPublisher>()
-        .AddSingleton<BicepRestorer>()
-        .AddSingleton<BicepModuleFinder>()
-        .AddSingleton<BicepResourceConverter>()
-        .AddSingleton<BicepAuthentication>()
-        .AddSingleton<BicepConfiguration>()
-        .AddSingleton<BicepTypeResolver>();
-
     public static IServiceCollection AddPSBicep(this IServiceCollection services, PSCmdlet cmdlet) => services
         .AddSingleton(cmdlet)
         .AddSingleton<DiagnosticLogger>()
@@ -55,7 +43,9 @@ public static class ServiceCollectionExtensions
         .AddSingleton<BicepConfigurationManager>()
         .AddSingleton<BicepTokenCredentialFactory>()
         .AddSingleton<JoinableTaskContext>()
-        .AddSingleton<JoinableTaskFactory>();
+        .AddSingleton<JoinableTaskFactory>()
+        .AddSingleton<BicepCoreService>()
+        .AddSingleton<BicepRegistryService>();
 
     public static IServiceCollection AddBicepCore(this IServiceCollection services) => services
         .AddSingleton<INamespaceProvider, NamespaceProvider>()
@@ -76,8 +66,6 @@ public static class ServiceCollectionExtensions
         .AddSingleton<ILinterRulesProvider, LinterRulesProvider>()
         .AddSingleton<ISourceFileFactory, SourceFileFactory>()
         .AddRegistryCatalogServices()
-        .AddSingleton<BicepCompiler>();
-
-    public static IServiceCollection AddBicepDecompiler(this IServiceCollection services) => services
+        .AddSingleton<BicepCompiler>()
         .AddSingleton<BicepDecompiler>();
 }

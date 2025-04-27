@@ -8,7 +8,7 @@ public class GetBicepVersionCommand : BaseCommand
 {
     protected override void EndProcessing()
     {
-        var result = bicepService.bicepVersion;
+        var result = psBicep.bicepVersion;
         WriteObject(result);
     }
 }
