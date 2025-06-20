@@ -229,7 +229,7 @@ public class BicepCoreService
     /// TODO: Add parameter to ignore preview API versions
     public string[] GetApiVersions(string resourceTypeReference, int skip = 0, bool avoidPreview = false)
     {
-        return BicepHelper.GetApiVersions(ResourceTypeReference.Parse(resourceTypeReference), azResourceTypeLoader);
+        return BicepHelper.GetApiVersions(ResourceTypeReference.Parse(resourceTypeReference), azResourceTypeLoader, logger, skip, avoidPreview);
     }
 
     /// <summary>

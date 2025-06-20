@@ -12,61 +12,37 @@ internal static class BicepHelper
 {
     internal static ResourceTypeReference ResolveBicepTypeDefinition(string fullyQualifiedType, AzResourceTypeLoader azResourceTypeLoader, ILogger? logger = null, int skip = 0, bool avoidPreview = false)
     {
-        var matchedType = GetApiVersions(fullyQualifiedType, azResourceTypeLoader, logger, skip, avoidPreview)
+        var matchedType = GetBicepTypes(fullyQualifiedType, azResourceTypeLoader, logger, skip, avoidPreview)
             .FirstOrDefault();
 
-        if (matchedType is null || matchedType.ApiVersion is null)
-        {
-            var message = $"Failed to find a Bicep type definition for resource of type \"{fullyQualifiedType}\".";
-            logger?.LogCritical("{message}", message);
-            throw new InvalidOperationException(message);
-        }
-
-        return matchedType;
+        return matchedType!;
     }
 
-    internal static IEnumerable<ResourceTypeReference> GetApiVersions(string fullyQualifiedType, AzResourceTypeLoader azResourceTypeLoader, ILogger? logger = null, int skip = 0, bool avoidPreview = false)
+    internal static IEnumerable<ResourceTypeReference> GetBicepTypes(string fullyQualifiedType, AzResourceTypeLoader azResourceTypeLoader, ILogger? logger = null, int skip = 0, bool avoidPreview = false)
     {
-        var allMatchedTypes = azResourceTypeLoader.GetAvailableTypes()
+        var matchedTypes = azResourceTypeLoader.GetAvailableTypes()
             .Where(x => StringComparer.OrdinalIgnoreCase.Equals(fullyQualifiedType, x.FormatType()))
-            .Where(x => x.ApiVersion is not null);
+            .Where(x =>
+                x.ApiVersion is not null &&
+                (!avoidPreview || !x.ApiVersion.EndsWith("-preview", StringComparison.OrdinalIgnoreCase)))
+            .OrderByDescending(x => x.ApiVersion!, ApiVersionComparer.Instance)
+            .Skip(skip);
 
-        if (avoidPreview)
-        {
-            var NonPreviewMatchedTypes = allMatchedTypes
-                .Where(x => !x.ApiVersion!.EndsWith("-preview", StringComparison.OrdinalIgnoreCase));
-
-            if (NonPreviewMatchedTypes.Any())
-            {
-                allMatchedTypes = NonPreviewMatchedTypes;
-            }
-        }
-
-        if (skip > 0 && allMatchedTypes.Count() > skip)
-        {
-            allMatchedTypes = allMatchedTypes.Take(skip);
-        }
-
-        var orderedType = allMatchedTypes
-            .OrderByDescending(x => x.ApiVersion ?? "", ApiVersionComparer.Instance);
-
-        if (orderedType is null)
+        if (matchedTypes is null)
         {
             var message = $"Failed to find a Bicep type definition for resource of type \"{fullyQualifiedType}\".";
             logger?.LogCritical("{message}", message);
             throw new InvalidOperationException(message);
         }
 
-        return orderedType;
+        return matchedTypes;
     }
 
-    internal static string[] GetApiVersions(ResourceTypeReference typeReference, AzResourceTypeLoader azResourceTypeLoader, int skip = 0, bool avoidPreview = false)
+    internal static string[] GetApiVersions(ResourceTypeReference typeReference, AzResourceTypeLoader azResourceTypeLoader, ILogger? logger = null, int skip = 0, bool avoidPreview = false)
     {
-        return azResourceTypeLoader.GetAvailableTypes()
-            .Where(x => StringComparer.OrdinalIgnoreCase.Equals(typeReference.FormatType(), x.FormatType()))
+        return [.. GetBicepTypes(typeReference.FormatType(), azResourceTypeLoader, logger, skip, avoidPreview)
             .Select(x => x.ApiVersion ?? "")
             .Where(x => !string.IsNullOrEmpty(x))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToArray();
+            .Distinct(StringComparer.OrdinalIgnoreCase)];
     }
 }
