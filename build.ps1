@@ -157,7 +157,7 @@ param
 
 process
 {
-    $PregressPreference = 'SilentlyContinue'
+    $ProgressPreference = 'SilentlyContinue'
     
     if ($MyInvocation.ScriptName -notLike '*Invoke-Build.ps1')
     {
