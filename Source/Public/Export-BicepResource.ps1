@@ -49,7 +49,7 @@ function Export-BicepResource {
         AssertAzureConnection -TokenSplat $script:TokenSplat -BicepConfig $Config
         
         if ($PSCmdlet.ParameterSetName -like 'ByQuery*') {
-            $Resources = SearchAzureResourceGraph -Query $KQLQuery
+            $Resources = Search-AzureResourceGraph -Query $KQLQuery
             if ($null -eq $Resources.id) {
                 throw 'KQL query must return a column named "id"'
             }

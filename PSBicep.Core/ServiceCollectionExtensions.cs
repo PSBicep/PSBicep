@@ -1,4 +1,4 @@
-﻿using System.IO.Abstractions;
+using System.IO.Abstractions;
 using System.Management.Automation;
 using Azure.Bicep.Types;
 using Azure.Bicep.Types.Az;
@@ -25,12 +25,13 @@ using Microsoft.VisualStudio.Threading;
 using PSBicep.Core.Authentication;
 using PSBicep.Core.Configuration;
 using PSBicep.Core.Logging;
+using PSBicep.Core.Services;
 using Environment = Bicep.Core.Utils.Environment;
 using LocalFileSystem = System.IO.Abstractions.FileSystem;
 
 namespace PSBicep.Core;
 
-public static class BicepExtensions
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddPSBicep(this IServiceCollection services, PSCmdlet cmdlet) => services
         .AddSingleton(cmdlet)
@@ -42,7 +43,9 @@ public static class BicepExtensions
         .AddSingleton<BicepConfigurationManager>()
         .AddSingleton<BicepTokenCredentialFactory>()
         .AddSingleton<JoinableTaskContext>()
-        .AddSingleton<JoinableTaskFactory>();
+        .AddSingleton<JoinableTaskFactory>()
+        .AddSingleton<BicepCoreService>()
+        .AddSingleton<BicepRegistryService>();
 
     public static IServiceCollection AddBicepCore(this IServiceCollection services) => services
         .AddSingleton<INamespaceProvider, NamespaceProvider>()
@@ -63,8 +66,6 @@ public static class BicepExtensions
         .AddSingleton<ILinterRulesProvider, LinterRulesProvider>()
         .AddSingleton<ISourceFileFactory, SourceFileFactory>()
         .AddRegistryCatalogServices()
-        .AddSingleton<BicepCompiler>();
-
-    public static IServiceCollection AddBicepDecompiler(this IServiceCollection services) => services
+        .AddSingleton<BicepCompiler>()
         .AddSingleton<BicepDecompiler>();
 }
