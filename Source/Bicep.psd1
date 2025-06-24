@@ -93,6 +93,7 @@ FunctionsToExport = @(
     'Connect-Bicep',
     'Convert-JsonToBicep',
     'ConvertTo-Bicep',
+    'Disconnect-Bicep',
     'Export-BicepResource',
     'Find-BicepModule',
     'Format-BicepFile',
