@@ -41,7 +41,7 @@ Due to the separation of code in C# and PowerShell, we currently depend on two d
 
 We hope to use Connect-Bicep as default for all commands in the future.
 
-The following commands will communcate with Azure and requires authentication:
+The following commands will communicate with Azure and requires authentication:
 
 - [Connect-Bicep](./Docs/Help/Connect-Bicep.md)
 - [Export-BicepResource](./Docs/Help/Export-BicepResource.md)
@@ -77,17 +77,14 @@ If you like the Bicep PowerShell module and want to contribute you are very much
 
 ## Maintainers
 
-This project is currently maintained by the following coders:
+This project is actively maintained by the following coders:
 
-- [StefanIvemo](https://github.com/StefanIvemo)
 - [SimonWahlin](https://github.com/SimonWahlin)
-- [bjompen](https://github.com/bjompen)
-- [JohnRoos](https://github.com/JohnRoos)
 - [PalmEmanuel](https://github.com/PalmEmanuel)
-- [emilguden](https://github.com/emilguden)
+- [StefanIvemo](https://github.com/StefanIvemo)
 
 <!-- References -->
 [BicepIcon]: logo/BicePS_40px.png
-[Bicep]: https://img.shields.io/badge/Bicep-v2.7.0-blue
+[Bicep]: https://img.shields.io/badge/Bicep-v2.9.1-blue
 [BicepDownloads]: https://img.shields.io/powershellgallery/dt/Bicep
 [BicepGallery]: https://www.powershellgallery.com/packages/Bicep/
