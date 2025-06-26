@@ -37,7 +37,6 @@ public class BicepRegistryService
     private readonly IFileExplorer fileExplorer;
     private readonly BicepTokenCredentialFactory tokenCredentialFactory;
     private readonly BicepConfigurationManager configurationManager;
-    private readonly ILogger logger;
 
     /// <summary>
     /// Using a fake URI to satify the SetToken method.
@@ -53,8 +52,7 @@ public class BicepRegistryService
         IModuleDispatcher moduleDispatcher,
         IFileExplorer fileExplorer,
         BicepTokenCredentialFactory tokenCredentialFactory,
-        BicepConfigurationManager configurationManager,
-        ILogger logger)
+        BicepConfigurationManager configurationManager)
     {
         this.joinableTaskFactory = joinableTaskFactory;
         this.compiler = compiler;
@@ -63,7 +61,6 @@ public class BicepRegistryService
         this.fileExplorer = fileExplorer;
         this.tokenCredentialFactory = tokenCredentialFactory;
         this.configurationManager = configurationManager;
-        this.logger = logger;
     }
 
     public void SetAuthentication(string token) =>
@@ -132,12 +129,13 @@ public class BicepRegistryService
         if (publishSource)
         {
             sourcesStream = SourceArchive.PackSourcesIntoStream(moduleDispatcher, compilation.SourceFileGrouping, compilation.GetEntrypointSemanticModel().Features.CacheRootDirectory);
-            logger?.LogTrace("Publishing Bicep module with source");
+            diagnosticLogger.Log(LogLevel.Trace, "Publishing Bicep module with source");
         }
 
         using (sourcesStream)
         {
-            logger?.LogTrace(sourcesStream is { } ? "Publishing Bicep module with source" : "Publishing Bicep module without source");
+            var preposition = sourcesStream is { } ? "with" : "without";
+            diagnosticLogger.Log(LogLevel.Trace, "Publishing Bicep module {0} source", preposition);
             var sourcesPayload = sourcesStream is { } ? BinaryData.FromStream(sourcesStream) : null;
             await PublishModuleAsync(moduleReference, BinaryData.FromString(compiledArmTemplate), sourcesPayload, documentationUri, overwriteIfExists);
         }
@@ -207,7 +205,7 @@ public class BicepRegistryService
         }
         else // Otherwise search a file for valid references
         {
-            logger?.LogTrace("Searching file {inputString} for endpoints", path);
+            diagnosticLogger.Log(LogLevel.Trace, "Searching file {path} for endpoints", path);
             var inputUri = PathHelper.FilePathToFileUrl(path);
             var workspace = new Workspace();
             var compilation = joinableTaskFactory.Run(async () =>
@@ -238,14 +236,14 @@ public class BicepRegistryService
 
         var ociCachePath = Path.Combine(GetCachePath(""), "br");
         var configuration = configurationManager.GetConfiguration(new Uri("inmemory:///main.bicp"));
-        logger?.LogTrace("Searching cache {ociCachePath} for endpoints", ociCachePath);
+        diagnosticLogger.Log(LogLevel.Trace, "Searching cache {ociCachePath} for endpoints", ociCachePath);
         var directories = Directory.GetDirectories(ociCachePath);
         foreach (var directoryPath in directories)
         {
             var directoryName = Path.GetFileName(directoryPath);
             if (directoryName != "mcr.microsoft.com")
             {
-                logger?.LogTrace("Found endpoint {directoryName}", directoryName);
+                diagnosticLogger.Log(LogLevel.Trace, "Found endpoint {directoryName}", directoryName);
                 endpoints.Add(directoryName);
             }
         }
@@ -273,11 +271,11 @@ public class BicepRegistryService
     {
         if (endpoints.Count > 0)
         {
-            logger?.LogTrace("Found endpoints:\n{joinedEndpoints}", string.Join("\n", endpoints));
+            diagnosticLogger.Log(LogLevel.Trace, "Found endpoints:\n{joinedEndpoints}", string.Join("\n", endpoints));
         }
         else
         {
-            logger?.LogTrace("Found no endpoints in file");
+            diagnosticLogger.Log(LogLevel.Trace, "Found no endpoints in file");
         }
 
         // Create credential and options
@@ -291,13 +289,13 @@ public class BicepRegistryService
         {
             try
             {
-                logger?.LogTrace("Searching endpoint {endpoint}", endpoint);
+                diagnosticLogger.Log(LogLevel.Trace, "Searching endpoint {endpoint}", endpoint);
                 var client = new ContainerRegistryClient(new Uri($"https://{endpoint}"), cred, options);
                 var repositoryNames = client.GetRepositoryNames();
 
                 foreach (var repositoryName in repositoryNames)
                 {
-                    logger?.LogTrace("Searching module {repositoryName}", repositoryName);
+                    diagnosticLogger.Log(LogLevel.Trace, "Searching module {repositoryName}", repositoryName);
 
                     // Create model repository to output
                     BicepRepository bicepRepository = new(endpoint, repositoryName);
@@ -306,7 +304,7 @@ public class BicepRegistryService
                     var repositoryManifests = repository.GetAllManifestProperties();
 
                     var manifestCount = repositoryManifests.Count();
-                    logger?.LogTrace("{manifestCount} manifest(s) found.", manifestCount);
+                    diagnosticLogger.Log(LogLevel.Trace, "{manifestCount} manifest(s) found.", manifestCount);
 
                     foreach (var moduleManifest in repositoryManifests)
                     {
@@ -320,7 +318,7 @@ public class BicepRegistryService
                         {
                             foreach (var tag in tags)
                             {
-                                logger?.LogTrace("Found tag \"{tag.Name}\"", tag.Name);
+                                diagnosticLogger.Log(LogLevel.Trace, "Found tag \"{tag.Name}\"", tag.Name);
                                 tagList.Add(new BicepRepositoryModuleTag(
                                     name: tag.Name,
                                     digest: tag.Digest,
@@ -332,7 +330,7 @@ public class BicepRegistryService
                         } // When there are no tags, we cannot enumerate null - disregard this error and continue
                         catch (InvalidOperationException ex) when (ex.TargetSite?.Name == "EnumerateArray" || ex.TargetSite?.Name == "ThrowJsonElementWrongTypeException")
                         {
-                            logger?.LogTrace("No tags found for manifest with digest {moduleManifest.Digest}", moduleManifest.Digest);
+                            diagnosticLogger.Log(LogLevel.Trace, "No tags found for manifest with digest {moduleManifest.Digest}", moduleManifest.Digest);
                         }
 
                         var bicepModule = new BicepRepositoryModule(
@@ -355,10 +353,10 @@ public class BicepRegistryService
                 switch (ex.Status)
                 {
                     case 401:
-                        logger?.LogWarning("The credentials provided are not authorized to the following registry: {endpoint}", endpoint);
+                        diagnosticLogger.Log(LogLevel.Warning, "The credentials provided are not authorized to the following registry: {endpoint}", endpoint);
                         break;
                     default:
-                        logger?.LogError(ex, "Could not get modules from endpoint {endpoint}!", endpoint);
+                        diagnosticLogger.Log(LogLevel.Error, ex, "Could not get modules from endpoint {endpoint}!", endpoint);
                         break;
                 }
             }
@@ -366,16 +364,16 @@ public class BicepRegistryService
             {
                 if (ex.InnerException != null)
                 {
-                    logger?.LogWarning("{message}", ex.InnerException.Message);
+                    diagnosticLogger.Log(LogLevel.Warning, "{message}", ex.InnerException.Message);
                 }
                 else
                 {
-                    logger?.LogError(ex, "Could not get modules from endpoint {endpoint}!", endpoint);
+                    diagnosticLogger.Log(LogLevel.Error, ex, "Could not get modules from endpoint {endpoint}!", endpoint);
                 }
             }
             catch (Exception ex)
             {
-                logger?.LogError(ex, "Could not get modules from endpoint {endpoint}!", endpoint);
+                diagnosticLogger.Log(LogLevel.Error, ex, "Could not get modules from endpoint {endpoint}!", endpoint);
             }
         }
 

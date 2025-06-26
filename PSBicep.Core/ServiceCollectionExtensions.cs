@@ -1,5 +1,4 @@
 using System.IO.Abstractions;
-using System.Management.Automation;
 using Azure.Bicep.Types;
 using Azure.Bicep.Types.Az;
 using Bicep.Core;
@@ -20,7 +19,6 @@ using Bicep.Decompiler;
 using Bicep.IO.Abstraction;
 using Bicep.IO.FileSystem;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.Threading;
 using PSBicep.Core.Authentication;
 using PSBicep.Core.Configuration;
@@ -33,10 +31,8 @@ namespace PSBicep.Core;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddPSBicep(this IServiceCollection services, PSCmdlet cmdlet) => services
-        .AddSingleton(cmdlet)
+    public static IServiceCollection AddPSBicep(this IServiceCollection services) => services
         .AddSingleton<DiagnosticLogger>()
-        .AddSingleton<ILogger>(s => s.GetRequiredService<DiagnosticLogger>())
         .AddSingleton<ITypeLoader, AzTypeLoader>()
         .AddSingleton<AzResourceTypeLoader>()
         .AddSingleton<Workspace>()

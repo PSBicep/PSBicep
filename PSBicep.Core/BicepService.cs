@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Management.Automation;
 using Bicep.Core.SourceGraph;
 using Microsoft.Extensions.DependencyInjection;
 using PSBicep.Core.Services;
@@ -14,11 +13,11 @@ public class PSBicep
     public readonly BicepRegistryService registryService;
     public readonly string bicepVersion;
 
-    public PSBicep(PSCmdlet cmdlet)
+    public PSBicep()
     {
         _services = new ServiceCollection()
             .AddBicepCore()
-            .AddPSBicep(cmdlet)
+            .AddPSBicep()
             .BuildServiceProvider();
         coreService = _services.GetRequiredService<BicepCoreService>();
         registryService = _services.GetRequiredService<BicepRegistryService>();

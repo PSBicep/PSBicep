@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Management.Automation;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Bicep.Core;
@@ -28,7 +29,6 @@ public class BicepCoreService
     private readonly JoinableTaskFactory joinableTaskFactory;
     private readonly BicepCompiler compiler;
     private readonly DiagnosticLogger diagnosticLogger;
-    private readonly ILogger logger;
     private readonly BicepConfigurationManager configurationManager;
     private readonly IFileResolver fileResolver;
     private readonly BicepDecompiler decompiler;
@@ -41,7 +41,6 @@ public class BicepCoreService
         JoinableTaskFactory joinableTaskFactory,
         BicepCompiler compiler,
         DiagnosticLogger diagnosticLogger,
-        ILogger logger,
         BicepConfigurationManager configurationManager,
         IFileResolver fileResolver,
         BicepDecompiler decompiler,
@@ -53,7 +52,6 @@ public class BicepCoreService
         this.joinableTaskFactory = joinableTaskFactory;
         this.compiler = compiler;
         this.diagnosticLogger = diagnosticLogger;
-        this.logger = logger;
         this.configurationManager = configurationManager;
         this.fileResolver = fileResolver;
         this.decompiler = decompiler;
@@ -61,6 +59,16 @@ public class BicepCoreService
         this.moduleDispatcher = moduleDispatcher;
         this.fileExplorer = fileExplorer;
         this.tokenCredentialFactory = tokenCredentialFactory;
+    }
+
+    public void InitializeLogger(PSCmdlet cmdlet)
+    {
+        diagnosticLogger.Initialize(cmdlet);
+    }
+
+    public void UnloadLogger()
+    {
+        diagnosticLogger.Unload();
     }
 
     /// <summary>
@@ -79,7 +87,7 @@ public class BicepCoreService
     /// <returns>A task representing the asynchronous operation</returns>
     public async Task RestoreAsync(string inputFilePath, bool forceModulesRestore = false)
     {
-        logger?.LogTrace("Restoring external modules to local cache for file {inputFilePath}", inputFilePath);
+        diagnosticLogger.Log(LogLevel.Trace, "Restoring external modules to local cache for file {inputFilePath}", inputFilePath);
         var inputPath = PathHelper.ResolvePath(inputFilePath);
         var inputUri = PathHelper.FilePathToFileUrl(inputPath);
 
@@ -214,7 +222,7 @@ public class BicepCoreService
         var resourceTypeReference = BicepHelper.ResolveBicepTypeDefinition(
             resourceId.FullyQualifiedType,
             azResourceTypeLoader,
-            logger: logger,
+            logger: diagnosticLogger,
             skip,
             avoidPreview);
 
@@ -229,7 +237,7 @@ public class BicepCoreService
     /// TODO: Add parameter to ignore preview API versions
     public string[] GetApiVersions(string resourceTypeReference, int skip = 0, bool avoidPreview = false)
     {
-        return BicepHelper.GetApiVersions(ResourceTypeReference.Parse(resourceTypeReference), azResourceTypeLoader, logger, skip, avoidPreview);
+        return BicepHelper.GetApiVersions(ResourceTypeReference.Parse(resourceTypeReference), azResourceTypeLoader, diagnosticLogger, skip, avoidPreview);
     }
 
     /// <summary>
@@ -256,7 +264,7 @@ public class BicepCoreService
     public async Task<(string, string?)> ConvertResourceToBicepAsync(string resourceId, string resourceBody, string configurationPath, bool includeTargetScope = false, bool removeUnknownProperties = false)
     {
         var id = AzureHelpers.ValidateResourceId(resourceId);
-        var matchedType = BicepHelper.ResolveBicepTypeDefinition(id.FullyQualifiedType, azResourceTypeLoader, logger: logger);
+        var matchedType = BicepHelper.ResolveBicepTypeDefinition(id.FullyQualifiedType, azResourceTypeLoader, logger: diagnosticLogger);
         JsonElement resource = JsonSerializer.Deserialize<JsonElement>(resourceBody);
         var configuration = configurationManager.GetConfiguration(PathHelper.FilePathToFileUrl(configurationPath));
         var template = await Task.Run(() => AzureHelpers.GenerateBicepTemplate(compiler, id, matchedType, resource, configuration, includeTargetScope, removeUnknownProperties));

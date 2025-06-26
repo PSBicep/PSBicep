@@ -29,9 +29,19 @@ public enum DiagnosticsFormat
     Sarif
 }
 
-public class DiagnosticLogger(PSCmdlet cmdlet) : ILogger
+public class DiagnosticLogger() : ILogger
 {
-    private readonly PSCmdlet cmdlet = cmdlet;
+    private PSCmdlet? cmdlet = null;
+
+    public void Initialize(PSCmdlet cmdlet)
+    {
+        this.cmdlet = cmdlet;
+    }
+
+    public void Unload()
+    {
+        this.cmdlet = null;
+    }
 
     public DiagnosticSummary LogDiagnostics(Compilation compilation)
     {
@@ -54,7 +64,7 @@ public class DiagnosticLogger(PSCmdlet cmdlet) : ILogger
         switch (options.Format)
         {
             case DiagnosticsFormat.Default:
-                LogDefaultDiagnostics(cmdlet, diagnosticsByBicepFile);
+                LogDefaultDiagnostics(diagnosticsByBicepFile);
                 break;
             case DiagnosticsFormat.Sarif:
                 throw new NotImplementedException("SARIF logging is not implemented.");
@@ -68,7 +78,7 @@ public class DiagnosticLogger(PSCmdlet cmdlet) : ILogger
             HasErrors: hasErrors);
     }
 
-    private void LogDefaultDiagnostics(PSCmdlet cmdlet, ImmutableDictionary<BicepSourceFile, ImmutableArray<IDiagnostic>> diagnosticsByBicepFile)
+    private void LogDefaultDiagnostics(ImmutableDictionary<BicepSourceFile, ImmutableArray<IDiagnostic>> diagnosticsByBicepFile)
     {
         foreach (var (bicepFile, diagnostics) in diagnosticsByBicepFile)
         {
@@ -91,20 +101,20 @@ public class DiagnosticLogger(PSCmdlet cmdlet) : ILogger
         switch (logLevel)
         {
             case LogLevel.Trace:
-                cmdlet.WriteVerbose(message);
+                cmdlet?.WriteVerbose(message);
                 break;
             case LogLevel.Debug:
-                cmdlet.WriteDebug(message);
+                cmdlet?.WriteDebug(message);
                 break;
             case LogLevel.Information:
                 HostInformationMessage informationMessage = new() { Message = message };
-                cmdlet.WriteInformation(informationMessage, ["PSHOST"]);
+                cmdlet?.WriteInformation(informationMessage, ["PSHOST"]);
                 break;
             case LogLevel.Warning:
-                cmdlet.WriteWarning(message);
+                cmdlet?.WriteWarning(message);
                 break;
             case LogLevel.Error:
-                cmdlet.WriteError(new ErrorRecord(exception ?? new Exception(message), cmdlet.MyInvocation.InvocationName, ErrorCategory.WriteError, null));
+                cmdlet?.WriteError(new ErrorRecord(exception ?? new Exception(message), cmdlet.MyInvocation.InvocationName, ErrorCategory.WriteError, null));
                 break;
             default:
                 break;
@@ -128,7 +138,7 @@ public class DiagnosticLogger(PSCmdlet cmdlet) : ILogger
 
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull => default!;
 
-    public bool IsEnabled(LogLevel logLevel) => logLevels.Contains(logLevel);
+    public bool IsEnabled(LogLevel logLevel) => cmdlet is not null && logLevels.Contains(logLevel);
 
     public void Log<TState>(
         LogLevel logLevel,
