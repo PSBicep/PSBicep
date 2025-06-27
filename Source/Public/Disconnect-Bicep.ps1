@@ -1,4 +1,4 @@
-﻿function Disconnect-AzResourceGraph {
+﻿function Disconnect-Bicep {
     [CmdletBinding()]
     param ()
 

@@ -21,7 +21,7 @@ function AssertAzureConnection {
     # Connect-Bicep has not been run and we can try to get a token based on credential precedence.
     if ($script:TokenSource -ne 'PSBicep') {
         Write-Warning -Message 'No token found. Attempting to get a new token.'
-        $CredentialPrecedence = $BicepConfig.cloud.credentialPrecedence ?? @('AzurePowerShell')
+        $CredentialPrecedence = $BicepConfig?.cloud.credentialPrecedence ?? @('AzurePowerShell')
         try {
             $NewToken = Get-AzToken @LocalTokenSplat -CredentialPrecedence $CredentialPrecedence -ErrorAction 'Stop'
             $script:Token = $NewToken # Only make assignment to script scope if no exception is thrown
