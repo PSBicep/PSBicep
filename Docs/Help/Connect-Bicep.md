@@ -14,18 +14,25 @@ Connect and sign in to Azure.
 
 ### Interactive (Default)
 ```
-Connect-Bicep [-Tenant <String>] [-ClientId <String>] [<CommonParameters>]
+Connect-Bicep [-Tenant <String>] [-ClientId <String>] [-ManagementEndpoint <Object>]
+ [<CommonParameters>]
+```
+
+### ClientSecret
+```
+Connect-Bicep -Tenant <String> -ClientId <String> -ClientSecret <String> [-ManagementEndpoint <Object>]
+ [<CommonParameters>]
 ```
 
 ### Certificate
 ```
-Connect-Bicep -Tenant <String> -ClientId <String> -CertificatePath <String>
+Connect-Bicep -Tenant <String> -ClientId <String> -CertificatePath <String> [-ManagementEndpoint <Object>]
  [<CommonParameters>]
 ```
 
 ### ManagedIdentity
 ```
-Connect-Bicep [-Tenant <String>] [-ClientId <String>] [-ManagedIdentity]
+Connect-Bicep [-Tenant <String>] [-ClientId <String>] [-ManagedIdentity] [-ManagementEndpoint <Object>]
  [<CommonParameters>]
 ```
 
@@ -76,7 +83,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: Certificate
+Parameter Sets: ClientSecret, Certificate
 Aliases:
 
 Required: True
@@ -118,10 +125,41 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: Certificate
+Parameter Sets: ClientSecret, Certificate
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ClientSecret
+Client secret of application to connect as.
+
+```yaml
+Type: String
+Parameter Sets: ClientSecret
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ManagementEndpoint
+Management endpoint to use for the connection, defaults to Azure Public Cloud.
+This can be used to connect to Azure Government or other clouds.
+If not specified, the default value is `https://management.azure.com/`.
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
