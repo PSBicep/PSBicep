@@ -31,7 +31,6 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
-        ref: ${{ github.head_ref }}
         fetch-depth: 0
 
     - name: 'Build and Package Module'
@@ -46,7 +45,6 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
-        ref: ${{ github.head_ref }}
         fetch-depth: 0
     - name: 'Test on Linux'
       uses: ./.github/actions/run-tests
@@ -60,7 +58,6 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
-        ref: ${{ github.head_ref }}
         fetch-depth: 0
     - name: 'Test on Windows'
       uses: ./.github/actions/run-tests
@@ -77,7 +74,6 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
-        ref: ${{ github.head_ref }}
         fetch-depth: 0
     - name: 'Publish Code Coverage'
       uses: ./.github/actions/code-coverage
@@ -88,12 +84,15 @@ jobs:
     needs:
     - build
     - test-linux
+    - test-win
     - code-coverage
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
-        ref: ${{ github.head_ref }}
         fetch-depth: 0
     
     - name: Download Build Artifact
@@ -111,6 +110,6 @@ jobs:
 
     - name: Send Changelog PR
       shell: pwsh
-      run: Get-Module -Name PowerShellForGitHub -ListAvailable ;./build.ps1  -tasks Create_ChangeLog_GitHub_PR
+      run: ./build.ps1 -tasks Create_ChangeLog_GitHub_PR
       env:
         GitHubToken: ${{ secrets.GITHUB_TOKEN }}

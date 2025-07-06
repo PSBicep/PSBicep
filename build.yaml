@@ -100,8 +100,8 @@ BuildWorkflow:
 
   publish:
     - getBicepTypes
+    - Publish_Release_To_GitHub # Runs first, if token is expired it will fail early
     - publish_module_to_gallery
-    #- Publish_Release_To_GitHub
 
 ####################################################
 #          PlatyPS Configuration                   #
@@ -200,3 +200,10 @@ TaskHeader: |
   Write-Build DarkGray "  $Path"
   Write-Build DarkGray "  $($Task.InvocationInfo.ScriptName):$($Task.InvocationInfo.ScriptLineNumber)"
   ""
+
+GitHubConfig:
+  GitHubFilesToAdd:
+    - 'CHANGELOG.md'
+  GitHubConfigUserName: SimonWahlin
+  GitHubConfigUserEmail: 5576847+SimonWahlin@users.noreply.github.com
+  UpdateChangelogOnPrerelease: false

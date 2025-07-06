@@ -6,11 +6,6 @@ on:
 runs:
   using: 'composite'
   steps:
-  - uses: actions/checkout@v4
-    with:
-      ref: ${{ github.head_ref }}
-      fetch-depth: 0
-
   - name: Download Test Artifact Linux
     uses: actions/download-artifact@v4
     with:
