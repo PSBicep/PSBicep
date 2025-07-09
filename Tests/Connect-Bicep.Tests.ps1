@@ -27,7 +27,7 @@ Describe 'Connect-Bicep tests' {
 
                 Should -Invoke -CommandName Get-AzToken -Times 1
                 $Script:Token.PSBoundParameters.ClientId | Should -Be $DefaultClientId
-                $Script:Token.PSBoundParameters.TenantId | Should -Be $TenantId
+                $Script:Token.PSBoundParameters.Tenant | Should -Be $TenantId
                 $Script:Token.PSBoundParameters.ClientCertificate | Should -BeNullOrEmpty
                 $Script:Token.PSBoundParameters.ClientCertificatePath | Should -BeNullOrEmpty
                 $Script:Token.PSBoundParameters.Interactive | Should -BeNullOrEmpty
@@ -39,7 +39,7 @@ Describe 'Connect-Bicep tests' {
 
                 Should -Invoke -CommandName Get-AzToken -Times 1
                 $Script:Token.PSBoundParameters.ClientId | Should -Be $DefaultClientId
-                $Script:Token.PSBoundParameters.TenantId | Should -BeNullOrEmpty
+                $Script:Token.PSBoundParameters.Tenant | Should -BeNullOrEmpty
                 $Script:Token.PSBoundParameters.ClientCertificate | Should -BeNullOrEmpty
                 $Script:Token.PSBoundParameters.ClientCertificatePath | Should -BeNullOrEmpty
                 $Script:Token.PSBoundParameters.Interactive | Should -BeNullOrEmpty
@@ -52,7 +52,7 @@ Describe 'Connect-Bicep tests' {
 
                 Should -Invoke -CommandName Get-AzToken -Times 1
                 $Script:Token.PSBoundParameters.ClientId | Should -Be $DefaultClientId
-                $Script:Token.PSBoundParameters.TenantId | Should -Be $TenantId
+                $Script:Token.PSBoundParameters.Tenant | Should -Be $TenantId
                 $Script:Token.PSBoundParameters.ClientCertificate | Should -BeNullOrEmpty
                 $Script:Token.PSBoundParameters.ClientCertificatePath | Should -BeNullOrEmpty
                 $Script:Token.PSBoundParameters.Interactive.IsPresent | Should -Be $true
@@ -63,7 +63,7 @@ Describe 'Connect-Bicep tests' {
 
                 Should -Invoke -CommandName Get-AzToken -Times 1
                 $Script:Token.PSBoundParameters.ClientId | Should -Be $DefaultClientId
-                $Script:Token.PSBoundParameters.TenantId | Should -BeNullOrEmpty
+                $Script:Token.PSBoundParameters.Tenant | Should -BeNullOrEmpty
                 $Script:Token.PSBoundParameters.ClientCertificate | Should -BeNullOrEmpty
                 $Script:Token.PSBoundParameters.ClientCertificatePath | Should -BeNullOrEmpty
                 $Script:Token.PSBoundParameters.Interactive.IsPresent | Should -Be $true
@@ -80,25 +80,25 @@ Describe 'Connect-Bicep tests' {
                     }
                 }
             }
-            It 'Should connect using Certificate as path' {
+            It 'Should connect using Certificate as path to pfx' {
                 $CertificatePath = 'TestDrive:\test.pfx'
                 Connect-Bicep -Tenant $TenantId -CertificatePath $CertificatePath -ClientId $FakeClientId
 
                 Should -Invoke -CommandName Get-AzToken -Times 1
                 $Script:Token.PSBoundParameters.ClientId | Should -Be $FakeClientId
-                $Script:Token.PSBoundParameters.TenantId | Should -Be $TenantId
+                $Script:Token.PSBoundParameters.Tenant | Should -Be $TenantId
                 $Script:Token.PSBoundParameters.ClientCertificate | Should -BeNullOrEmpty
                 $Script:Token.PSBoundParameters.ClientCertificatePath | Should -Be $CertificatePath
                 $Script:Token.PSBoundParameters.Interactive | Should -BeNullOrEmpty
                 $Script:Token.PSBoundParameters.ManagedIdentity | Should -BeNullOrEmpty
             }
-            It 'Should connect using Certificate as path' {
+            It 'Should connect using Certificate as path to certstore' {
                 $CertificatePath = 'Cert:\CurrentUser\My\12345678901234567890123456789012'
                 Connect-Bicep -Tenant $TenantId -CertificatePath $CertificatePath -ClientId $FakeClientId
 
                 Should -Invoke -CommandName Get-AzToken -Times 1
                 $Script:Token.PSBoundParameters.ClientId | Should -Be $FakeClientId
-                $Script:Token.PSBoundParameters.TenantId | Should -Be $TenantId
+                $Script:Token.PSBoundParameters.Tenant | Should -Be $TenantId
                 $Script:Token.PSBoundParameters.ClientCertificate | Should -BeOfType 'System.Security.Cryptography.X509Certificates.X509Certificate2'
                 $Script:Token.PSBoundParameters.ClientCertificatePath | Should -BeNullOrEmpty
                 $Script:Token.PSBoundParameters.Interactive | Should -BeNullOrEmpty

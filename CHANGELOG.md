@@ -5,8 +5,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+- Unused private functions WriteErrorStream, GetAzResourceGraphPage and Search-AzureResourceGraph
+
 ### Changed
 
+- Take dependency on AzResourceGraph module
 - Fix bug with Get-BicepConfig not properly resolving paths
 
 ### Added

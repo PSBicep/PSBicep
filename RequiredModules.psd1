@@ -22,8 +22,12 @@
                                         }
                                     }
     'AzAuth'                      = @{
-                                        Version = '2.4.0'
+                                        Version = '2.6.0'
                                         MaximumVersion = '2.99.99'
                                     }
+    'AzResourceGraph'             = @{
+                                        Version = '0.2.1'
+                                        MaximumVersion = '0.99.99'
+    }
     'Azure/Bicep'                 = 'v0.34.44'
 }
