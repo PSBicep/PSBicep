@@ -43,7 +43,7 @@ function Connect-Bicep {
     $script:TokenSplat['Resource'] = $ManagementEndpoint
     $script:TokenSplat['ClientId'] = $ClientId
     if ($PSBoundParameters.ContainsKey('Tenant')) {
-        $script:TokenSplat['TenantId'] = $Tenant
+        $script:TokenSplat['Tenant'] = $Tenant
     }
     if ($PSBoundParameters.ContainsKey('CertificatePath')) {
         $script:CertificatePath = $CertificatePath
