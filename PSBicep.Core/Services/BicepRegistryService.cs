@@ -125,18 +125,20 @@ public class BicepRegistryService
         }
 
         // Handle publishing source
+        SourceArchive? sourceArchive = null;
         Stream? sourcesStream = null;
         if (publishSource)
         {
-            sourcesStream = SourceArchive.PackSourcesIntoStream(moduleDispatcher, compilation.SourceFileGrouping, compilation.GetEntrypointSemanticModel().Features.CacheRootDirectory);
+            sourceArchive = SourceArchive.CreateFrom(compilation.SourceFileGrouping);
+            // sourcesStream = SourceArchive.PackSourcesIntoStream(moduleDispatcher, compilation.SourceFileGrouping, compilation.GetEntrypointSemanticModel().Features.CacheRootDirectory);
             diagnosticLogger.Log(LogLevel.Trace, "Publishing Bicep module with source");
         }
 
         using (sourcesStream)
         {
-            var preposition = sourcesStream is { } ? "with" : "without";
+            var preposition = sourceArchive is { } ? "with" : "without";
             diagnosticLogger.Log(LogLevel.Trace, "Publishing Bicep module {0} source", preposition);
-            var sourcesPayload = sourcesStream is { } ? BinaryData.FromStream(sourcesStream) : null;
+            var sourcesPayload = sourceArchive is { } ? sourceArchive.PackIntoBinaryData() : null;
             await PublishModuleAsync(moduleReference, BinaryData.FromString(compiledArmTemplate), sourcesPayload, documentationUri, overwriteIfExists);
         }
     }
