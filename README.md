@@ -6,7 +6,23 @@ This is the repository for the Bicep PowerShell Module. This is a community proj
 
 >**Note:** When new Bicep versions are released there will be a slight delay before the PowerShell module gets tested updated with the latest assemblies. If new functionality is added to Bicep CLI before the PowerShell module supports it, use `Install-BicepCLI` to install the latest Bicep CLI version and use the CLI while waiting for an updated PowerShell module.
 
-Commands implemented:
+## Features
+Here are a few features (other than just a native PowerShell experience) that sets the Bicep PowerShell module apart from using the official Bicep CLI.
+
+### Build and convert Bicep templates
+    Build Bicep templates to ARM templates and convert ARM templates to Bicep. Build-Bicep supports various output formats such as file, string and hashtable. Use a directory as input to build all Bicep templates in the directory.
+
+    Since all required Bicep assemblies are loaded into memory with the module, the build commands are very fast which is especially useful when building a large number of Bicep templates in a for example a pipeline.
+
+### Export Azure resources as bicep templates
+    Export Azure resources as deployable bicep templates using Export-BicepResource. Find resources to export using a KQL query to search Azure Resource Graph or a list of ResourceIds. Using a KQL query in combination with the parameter `-UseKQLResult` treat the output from Azure Resource Graph as a resource body used to generate a bicep template. This is a very performant way to export large quantities of resources. The parameter `-RemoveUnknownProperties` will append a custom rewriter that will remove any property not found in the latest known type definition, this helps clean up templates but has a small risk of removing properties not found in the type definition schema. Use `-IncludeTargetScope` when exporting resources that live outside of a ResourceGroup to append a targetScope declaration on the first line of each template.
+
+    By default, the command outputs a hashtable where the resourceId is the key and the template is the value, but using the parameter `-AsString` will cause the command to only output templates as strings, this can for example be useful when exporting several resources to one file.
+
+### Generate markdown documentation from bicep templates
+    The command `New-BicepMarkdownDocumentation` will generate a markdown document in the same folder as a bicep file containing documentation of, for example, the providers, resources, parameters variables and outputs of a template.
+
+## Commands implemented
 
 - [Build-Bicep](./Docs/Help/Build-Bicep.md)
 - [Build-BicepParam](./Docs/Help/Build-BicepParam.md)
@@ -16,7 +32,6 @@ Commands implemented:
 - [Convert-JsonToBicep](./Docs/Help/Convert-JsonToBicep.md)
 - [ConvertTo-Bicep](./Docs/Help/ConvertTo-Bicep.md)
 - [Export-BicepResource](./Docs/Help/Export-BicepResource.md)
-- [Export-BicepChildResource (**experimental**)](./Docs/Help/Export-BicepChildResource.md)
 - [Find-BicepModule](./Docs/Help/Find-BicepModule.md)
 - [Format-BicepFile](./Docs/Help/Format-BicepFile.md)
 - [Get-BicepApiReference](./Docs/Help/Get-BicepApiReference.md)
@@ -37,15 +52,12 @@ Commands implemented:
 
 ## Authentication
 
-Due to the separation of code in C# and PowerShell, we currently depend on two different authentication models. Any feature that relies on built-in functionality in Bicep uses the authentication set in bicepconfig.json while Export-BicepResource uses PSBicep authentication depending on the module AzAuth and uses the command Connect-Bicep to log in.
-
-We hope to use Connect-Bicep as default for all commands in the future.
+Use Connect-Bicep to create an authentication context for Bicep. If no context is created, Bicep will try to use the context from Azure PowerShell.
 
 The following commands will communicate with Azure and requires authentication:
 
 - [Connect-Bicep](./Docs/Help/Connect-Bicep.md)
 - [Export-BicepResource](./Docs/Help/Export-BicepResource.md)
-- [Export-BicepChildResource](./Docs/Help/Export-BicepChildResource.md)
 - [Publish-Bicep](./Docs/Help/Publish-Bicep.md)
 - [Restore-Bicep](./Docs/Help/Restore-Bicep.md)
 

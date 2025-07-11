@@ -85,7 +85,6 @@ Describe 'Get-BicepConfig tests' {
                     "no-hardcoded-env-urls": {
                       "level": "warning",
                       "disallowedhosts": [
-                        "api.loganalytics.io",
                         "azuredatalakeanalytics.net",
                         "azuredatalakestore.net",
                         "batch.core.windows.net",
@@ -97,8 +96,6 @@ Describe 'Get-BicepConfig tests' {
                         "login.microsoftonline.com",
                         "management.azure.com",
                         "management.core.windows.net",
-                        "region.asazure.windows.net",
-                        "trafficmanager.net",
                         "vault.azure.net"
                       ],
                       "excludedhosts": [
@@ -113,7 +110,6 @@ Describe 'Get-BicepConfig tests' {
               },
               "experimentalFeaturesEnabled": {
                 "symbolicNameCodegen": false,
-                "extensibility": false,
                 "extendableParamFiles": false,
                 "resourceTypedParamsAndOutputs": false,
                 "sourceMapping": false,
@@ -122,11 +118,12 @@ Describe 'Get-BicepConfig tests' {
                 "assertions": false,
                 "waitAndRetry": false,
                 "localDeploy": false,
-                "secureOutputs": false,
                 "resourceInfoCodegen": false,
-                "typedVariables": false,
                 "moduleExtensionConfigs": false,
-                "desiredStateConfiguration": false
+                "desiredStateConfiguration": false,
+                "externalInputFunction": false,
+                "onlyIfNotExists": false,
+                "moduleIdentity": false
               },
               "formatting": {
                 "indentKind": "Space",
