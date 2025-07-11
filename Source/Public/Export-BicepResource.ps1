@@ -80,7 +80,7 @@ function Export-BicepResource {
                     return
                 }
                 [pscustomobject]@{
-                    ApiVersions = Get-BicepApiVersion -ResourceTypeReference $resolvedType
+                    ApiVersions = Get-BicepApiVersion -ResourceType $resolvedType
                     ResourceId = $_
                     TypeIndex = 0
                 }
