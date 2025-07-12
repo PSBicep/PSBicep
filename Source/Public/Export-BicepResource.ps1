@@ -117,7 +117,7 @@ function Export-BicepResource {
                             authorization = "Bearer $($hashtable['config']['token'].Token)"
                             contentType   = 'application/json'
                         }
-                        $Response = Invoke-WebRequest -Uri $uri -Method 'Get' -Headers $Headers -UseBasicParsing
+                        $Response = Invoke-WebRequest -Uri $uri -Method 'Get' -Headers $Headers -UseBasicParsing -ErrorAction 'Stop'
      
                         if ($Response.StatusCode -eq 200) {
                             $hashtable[$ResourceId] = $Response.Content
@@ -133,13 +133,16 @@ function Export-BicepResource {
                         # Retrylogic for 400 errors
                         if ($CurrentError.Exception.Response.StatusCode -eq 400) {
 
-                            # If error is due to no registered provider, try next api version
-                            if($CurrentError.ErrorDetails.Message -like '*"code": "NoRegisteredProviderFound"*') {
+                            # If error is due to no registered provider or invalid ApiVersion, try next api version
+                            if(
+                                $CurrentError.ErrorDetails.Message -like '*"code": "NoRegisteredProviderFound"*' -or
+                                $CurrentError.ErrorDetails.Message -like '*"code": "InvalidApiVersionParameter"*'
+                            ) {
                                 $TypeIndex++
                                 $retryCount++
                                 if ($TypeIndex -ge $ApiVersionList.Count) {
                                     Write-Warning "No more api versions to try for $ResourceId"
-                                    throw $CurrentError
+                                    Write-Warning $CurrentError
                                 }
                                 continue
                             }
@@ -155,10 +158,10 @@ function Export-BicepResource {
                         }
 
                         Write-Warning ("Failed to get resource! {0}" -f $CurrentError.Exception.Message)
-                        throw $CurrentError
+                        Write-Warning $CurrentError
                     }
                 }
-                throw "Max retries reached for $_"
+                Write-Warning "Max retries reached for $_"
             }
         }
         

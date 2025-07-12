@@ -5,6 +5,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Fix bug in Export-BicepResource logged in issue [#373](https://github.com/PSBicep/PSBicep/issues/373)
+- Improved Export-BicepResource to not throw an error when failing to export a single resource
+
 ## [2.9.2] - 2025-07-09
 
 ### Removed
