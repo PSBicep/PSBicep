@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using Bicep.Core.SourceGraph;
+using Bicep.Core;
 using Microsoft.Extensions.DependencyInjection;
 using PSBicep.Core.Services;
 
@@ -21,6 +21,6 @@ public class PSBicep
             .BuildServiceProvider();
         coreService = _services.GetRequiredService<BicepCoreService>();
         registryService = _services.GetRequiredService<BicepRegistryService>();
-        bicepVersion = FileVersionInfo.GetVersionInfo(typeof(Workspace).Assembly.Location).FileVersion ?? "dev";
+        bicepVersion = FileVersionInfo.GetVersionInfo(typeof(BicepCompiler).Assembly.Location).FileVersion ?? "dev";
     }
 }

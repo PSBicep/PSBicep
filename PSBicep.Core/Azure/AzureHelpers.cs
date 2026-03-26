@@ -15,10 +15,20 @@ using Bicep.Core.Rewriters;
 using Bicep.Core.Semantics;
 using Bicep.Core.SourceGraph;
 using Bicep.Core.Syntax;
-using Bicep.LanguageServer.Providers;
 using PSBicep.Core.Rewriters;
 
 namespace PSBicep.Core.Azure;
+
+/// <summary>
+/// Represents an Azure resource identifier, originally from Bicep.LanguageServer.Providers.IAzResourceProvider.
+/// Defined locally since the LanguageServer package is no longer a dependency.
+/// </summary>
+public record AzResourceIdentifier(
+    string FullyQualifiedId,
+    string FullyQualifiedType,
+    string FullyQualifiedName,
+    string UnqualifiedName,
+    string subscriptionId);
 
 public static partial class AzureHelpers
 {
@@ -29,7 +39,7 @@ public static partial class AzureHelpers
     [GeneratedRegex(@"^/subscriptions/(?<subId>[^/]+)$", RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.CultureInvariant)]
     private static partial Regex SubscriptionId();
 
-    public static IAzResourceProvider.AzResourceIdentifier ValidateResourceId(string id)
+    public static AzResourceIdentifier ValidateResourceId(string id)
     {
         if (TryParseResourceId(id) is not { } resourceId)
         {
@@ -52,7 +62,7 @@ public static partial class AzureHelpers
         return string.Format("{0}_{1}", fullyQualifiedType.Replace(@"/", "-").ToLowerInvariant(), fullyQualifiedName.Replace(@"/", "-")).ToLowerInvariant();
     }
 
-    public static string GenerateBicepTemplate(BicepCompiler compiler, IAzResourceProvider.AzResourceIdentifier resourceId, ResourceTypeReference resourceType, JsonElement resource, RootConfiguration configuration, bool includeTargetScope = false, bool removeUnknownProperties = false)
+    public static string GenerateBicepTemplate(BicepCompiler compiler, AzResourceIdentifier resourceId, ResourceTypeReference resourceType, JsonElement resource, RootConfiguration configuration, bool includeTargetScope = false, bool removeUnknownProperties = false)
     {
         // Calculate target scope to be able to add it to the top of the template
         var resourceIdentifier = new ResourceIdentifier(resourceId.FullyQualifiedId);
@@ -74,11 +84,11 @@ public static partial class AzureHelpers
             [resourceDeclaration],
             SyntaxFactory.EndOfFileToken);
 
-        BicepSourceFile bicepFile = compiler.SourceFileFactory.CreateBicepFile(new Uri("inmemory:///generated.bicep"), program.ToString());
+        BicepSourceFile bicepFile = compiler.SourceFileFactory.CreateBicepFile(new Uri("inmemory:///generated.bicep").ToIOUri(), program.ToString());
 
-        var workspace = new Workspace();
-        workspace.UpsertSourceFile(bicepFile);
-        var compilation = compiler.CreateCompilationWithoutRestore(bicepFile.Uri, workspace);
+        var sourceFiles = new ActiveSourceFileSet();
+        sourceFiles.UpsertSourceFiles([bicepFile]);
+        var compilation = compiler.CreateCompilationWithoutRestore(bicepFile.FileHandle.Uri, sourceFiles);
 
         var rewriters = new List<Func<SemanticModel, SyntaxRewriteVisitor>>
         {
@@ -104,7 +114,7 @@ public static partial class AzureHelpers
         return includeTargetScope ? targetScope + template : template;
     }
     // Private method originally copied from InsertResourceHandler.cs
-    internal static IAzResourceProvider.AzResourceIdentifier? TryParseResourceId(string? resourceIdString)
+    internal static AzResourceIdentifier? TryParseResourceId(string? resourceIdString)
     {
         if (resourceIdString is null)
         {
@@ -135,7 +145,7 @@ public static partial class AzureHelpers
         var subRegexMatch = SubscriptionId().Match(resourceIdString);
         if (subRegexMatch.Success)
         {
-            IAzResourceProvider.AzResourceIdentifier resource = new(
+            AzResourceIdentifier resource = new(
                 resourceIdString,
                 "Microsoft.Management/managementGroups/subscriptions",
                 subRegexMatch.Groups["subId"].Value,
@@ -148,7 +158,7 @@ public static partial class AzureHelpers
     }
 
     // Private method originally copied from InsertResourceHandler.cs
-    internal static ResourceDeclarationSyntax CreateResourceSyntax(JsonElement resource, IAzResourceProvider.AzResourceIdentifier resourceId, ResourceTypeReference typeReference)
+    internal static ResourceDeclarationSyntax CreateResourceSyntax(JsonElement resource, AzResourceIdentifier resourceId, ResourceTypeReference typeReference)
     {
         var properties = new List<ObjectPropertySyntax>();
         foreach (var property in resource.EnumerateObject())

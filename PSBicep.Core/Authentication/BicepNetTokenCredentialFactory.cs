@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using Azure.Core;
+using Bicep.Core.AzureApi;
 using Bicep.Core.Configuration;
-using Bicep.Core.Registry.Auth;
 using Microsoft.Extensions.Logging;
 
 namespace PSBicep.Core.Authentication;

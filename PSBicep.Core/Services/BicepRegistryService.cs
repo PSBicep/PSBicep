@@ -8,8 +8,8 @@ using Azure.Containers.ContainerRegistry;
 using Bicep.Core;
 using Bicep.Core.Configuration;
 using Bicep.Core.Diagnostics;
+using Bicep.Core.Extensions;
 using Bicep.Core.Exceptions;
-using Bicep.Core.FileSystem;
 using Bicep.Core.Registry;
 using Bicep.Core.SourceGraph;
 using Bicep.Core.SourceLink;
@@ -93,18 +93,18 @@ public class BicepRegistryService
     {
         SetAuthentication(token);
 
-        var inputPath = PathHelper.ResolvePath(inputFilePath);
-        var inputUri = PathHelper.FilePathToFileUrl(inputPath);
+        var inputPath = Path.GetFullPath(inputFilePath);
+        var inputUri = IOUri.FromFilePath(inputPath);
         var moduleReference = ValidateReference(targetModuleReference, inputUri);
 
-        if (PathHelper.HasArmTemplateLikeExtension(inputUri))
+        if (inputUri.HasArmTemplateLikeExtension())
         {
             if (publishSource)
             {
                 throw new BicepException("Cannot publish with source when the target is an ARM template file.");
             }
             // Publishing an ARM template file.
-            using var armTemplateStream = fileExplorer.GetFile(IOUri.FromLocalFilePath(inputPath)).OpenRead();
+            using var armTemplateStream = fileExplorer.GetFile(IOUri.FromFilePath(inputPath)).OpenRead();
             await this.PublishModuleAsync(moduleReference, BinaryData.FromStream(armTemplateStream), null, documentationUri, overwriteIfExists);
             return;
         }
@@ -164,7 +164,7 @@ public class BicepRegistryService
     /// Validates a module reference and returns the artifact reference
     /// </summary>
     /// <remarks>copied from PublishCommand.cs in Bicep CLI</remarks>
-    private ArtifactReference ValidateReference(string targetModuleReference, Uri targetModuleUri)
+    private ArtifactReference ValidateReference(string targetModuleReference, IOUri targetModuleUri)
     {
         var dummyReferencingFile = compiler.SourceFileFactory.CreateBicepFile(targetModuleUri, string.Empty);
 
@@ -194,7 +194,7 @@ public class BicepRegistryService
     public IList<BicepRepository> FindModules(string path, bool isRegistryEndpoint, string configurationPath)
     {
         List<string> endpoints = [];
-        RootConfiguration configuration = configurationManager.GetConfiguration(PathHelper.FilePathToFileUrl(configurationPath));
+        RootConfiguration configuration = configurationManager.GetConfiguration(IOUri.FromFilePath(Path.GetFullPath(configurationPath)));
 
         // If a registry is specified, only add that
         if (isRegistryEndpoint)
@@ -204,8 +204,7 @@ public class BicepRegistryService
         else // Otherwise search a file for valid references
         {
             diagnosticLogger.Log(LogLevel.Trace, "Searching file {path} for endpoints", path);
-            var inputUri = PathHelper.FilePathToFileUrl(path);
-            var workspace = new Workspace();
+            var inputUri = IOUri.FromFilePath(Path.GetFullPath(path));
             var compilation = joinableTaskFactory.Run(async () =>
             {
                 return await compiler.CreateCompilation(inputUri, skipRestore: true);
@@ -233,7 +232,7 @@ public class BicepRegistryService
         List<string> endpoints = [];
 
         var ociCachePath = Path.Combine(GetCachePath(""), "br");
-        var configuration = configurationManager.GetConfiguration(new Uri("inmemory:///main.bicp"));
+        var configuration = configurationManager.GetConfiguration(new Uri("inmemory:///main.bicp").ToIOUri());
         diagnosticLogger.Log(LogLevel.Trace, "Searching cache {ociCachePath} for endpoints", ociCachePath);
         var directories = Directory.GetDirectories(ociCachePath);
         foreach (var directoryPath in directories)
@@ -256,7 +255,7 @@ public class BicepRegistryService
     /// <returns>The cache root directory path</returns>
     private string GetCachePath(string path)
     {
-        return configurationManager.GetConfiguration(PathHelper.FilePathToFileUrl(path)).CacheRootDirectory!;
+        return configurationManager.GetConfiguration(IOUri.FromFilePath(Path.GetFullPath(path))).CacheRootDirectory!;
     }
 
     /// <summary>
