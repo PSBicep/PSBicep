@@ -17,6 +17,10 @@ Describe 'ListBicepVersions' {
                     @{ tag_name = 'v1.2.1' }
                 }
             }
+            InModuleScope Bicep {
+                $Script:AvailableBicepVersions = $null
+                $Script:LatestBicepVersion = $null
+            }
         }
 
         It 'Returns correct latest version' {

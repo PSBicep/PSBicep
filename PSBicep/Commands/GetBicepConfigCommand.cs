@@ -65,8 +65,8 @@ class ValidateFileExists : ValidateArgumentsAttribute
 {
     protected override void Validate(object arguments, EngineIntrinsics engineIntrinsics)
     {
-        var path = (string)arguments;
-        if (!System.IO.Path.Exists(path))
+        var path = System.IO.Path.GetFullPath((string)arguments);
+        if (!System.IO.File.Exists(path))
         {
             throw new ValidationMetadataException($"File {path} does not exist");
         }
