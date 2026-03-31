@@ -28,6 +28,11 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+    - name: Install PowerShell
+      uses: PSModule/install-powershell@v1.1.0
+      with:
+        Version: 7.6.0
+
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
