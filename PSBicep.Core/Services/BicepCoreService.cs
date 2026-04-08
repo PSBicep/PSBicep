@@ -202,7 +202,7 @@ public class BicepCoreService
 
         foreach (var (fileUri, bicepOutput) in decompilation.FilesToSave)
         {
-            template.Add(fileUri.Path, bicepOutput);
+            template.Add(fileUri.ToString(), bicepOutput);
         }
 
         return template;
