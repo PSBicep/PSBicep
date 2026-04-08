@@ -166,8 +166,12 @@ public class BicepCoreService
     /// <param name="scope">The configuration scope (Merged, Default or Local)</param>
     /// <param name="path">Path to the file or directory used to find bicepconfig.json</param>
     /// <returns>BicepConfigInfo object containing configuration details</returns>
-    public BicepConfigInfo GetBicepConfigInfo(BicepConfigScope scope, string path) =>
-        configurationManager.GetConfigurationInfo(scope, new Uri(Path.GetFullPath(path ?? "psbicep://empty")));
+    public BicepConfigInfo GetBicepConfigInfo(BicepConfigScope scope, string? path) =>
+        configurationManager.GetConfigurationInfo(
+            scope,
+            path is not null
+                ? new Uri(Path.GetFullPath(path))
+                : new Uri("psbicep://empty"));
 
     /// <summary>
     /// Decompiles an ARM template into Bicep code

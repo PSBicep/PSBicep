@@ -41,7 +41,7 @@ public partial class BicepConfigurationManager
                     var configString = JsonElementFactory.CreateElementFromStream(filestream).ToString();
                     return new BicepConfigInfo(config.ConfigFileUri, configString);
                 }
-                throw new FileNotFoundException("Local configuration file not found for path {path}!", sourceFileUri.LocalPath);
+                throw new FileNotFoundException($"Local configuration file not found for path {sourceFileUri.LocalPath}!", sourceFileUri.LocalPath);
             default:
                 throw new ArgumentException("BicepConfigMode not valid!");
         }

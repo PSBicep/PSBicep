@@ -65,10 +65,28 @@ class ValidateFileExists : ValidateArgumentsAttribute
 {
     protected override void Validate(object arguments, EngineIntrinsics engineIntrinsics)
     {
-        var path = System.IO.Path.GetFullPath((string)arguments);
-        if (!System.IO.File.Exists(path))
+        var path = (string)arguments;
+        var resolvedPaths = engineIntrinsics.SessionState.Path.GetResolvedPSPathFromPSPath(path).ToArray();
+
+        if (resolvedPaths.Length == 0)
         {
             throw new ValidationMetadataException($"File {path} does not exist");
+        }
+
+        if (resolvedPaths.Length > 1)
+        {
+            throw new ValidationMetadataException($"Path {path} resolves to multiple items");
+        }
+
+        var resolvedPath = resolvedPaths[0];
+        if (!string.Equals(resolvedPath.Provider?.Name, "FileSystem", System.StringComparison.OrdinalIgnoreCase))
+        {
+            throw new ValidationMetadataException($"Path {path} is not a FileSystem path");
+        }
+
+        if (!System.IO.File.Exists(resolvedPath.Path))
+        {
+            throw new ValidationMetadataException($"File {resolvedPath.Path} does not exist");
         }
     }
 }
