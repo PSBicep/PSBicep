@@ -26,7 +26,7 @@ public partial class BicepConfigurationManager : IConfigurationManager
         this.fileExplorer = fileExplorer;
     }
 
-    public RootConfiguration GetConfiguration(Uri sourceFileUri)
+    public RootConfiguration GetConfiguration(IOUri sourceFileUri)
     {
         // We want to support looking up a configuration file even if the input path is a directory.
         // if (!sourceFileUri.IsFile)
@@ -34,8 +34,7 @@ public partial class BicepConfigurationManager : IConfigurationManager
         //     return GetDefaultConfiguration();
         // }
 
-        var sourceFileIOUri = sourceFileUri.ToIOUri();
-        var sourceDirectory = sourceFileUri.IsFile ? this.fileExplorer.GetFile(sourceFileIOUri).GetParent() : this.fileExplorer.GetDirectory(sourceFileIOUri);
+        var sourceDirectory = sourceFileUri.IsFile ? this.fileExplorer.GetFile(sourceFileUri).GetParent() : this.fileExplorer.GetDirectory(sourceFileUri);
 
         if (!configFileLookupCache.GetOrAdd(sourceDirectory, LookupConfigurationFile).IsSuccess(out var configFileHandle, out var lookupDiagnostic))
         {

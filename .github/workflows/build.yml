@@ -22,12 +22,18 @@ env:
   buildFolderName: output
   buildArtifactName: output
   testResultFolderName: testResults
+  requiredPowerShellVersion: 7.6.0
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
+    - name: Install PowerShell
+      uses: PSModule/install-powershell@v1.1.0
+      with:
+        Version: ${{ env.requiredPowerShellVersion }}
+
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
@@ -42,6 +48,10 @@ jobs:
     needs:
     - build
     steps:
+    - name: Install PowerShell
+      uses: PSModule/install-powershell@v1.1.0
+      with:
+        Version: ${{ env.requiredPowerShellVersion }}
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
@@ -55,6 +65,10 @@ jobs:
     needs:
     - build
     steps:
+    - name: Install PowerShell
+      uses: PSModule/install-powershell@v1.1.0
+      with:
+        Version: ${{ env.requiredPowerShellVersion }}
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
@@ -71,6 +85,10 @@ jobs:
     - test-linux
     - test-win
     steps:
+    - name: Install PowerShell
+      uses: PSModule/install-powershell@v1.1.0
+      with:
+        Version: ${{ env.requiredPowerShellVersion }}
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
@@ -90,6 +108,10 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+    - name: Install PowerShell
+      uses: PSModule/install-powershell@v1.1.0
+      with:
+        Version: ${{ env.requiredPowerShellVersion }}
     - name: Checkout Code
       uses: actions/checkout@v4
       with:

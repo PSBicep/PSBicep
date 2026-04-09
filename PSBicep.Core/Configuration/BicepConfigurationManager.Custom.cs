@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Text.Json;
 using Bicep.Core.Configuration;
+using Bicep.Core.Extensions;
 using Bicep.Core.Json;
 using Bicep.IO.Abstraction;
 using PSBicep.Core.Models;
@@ -22,6 +23,7 @@ public partial class BicepConfigurationManager
     }
     public BicepConfigInfo GetConfigurationInfo(BicepConfigScope mode, Uri sourceFileUri)
     {
+        var sourceIOUri = sourceFileUri.ToIOUri();
         RootConfiguration config;
         switch (mode)
         {
@@ -29,17 +31,17 @@ public partial class BicepConfigurationManager
                 config = GetDefaultConfiguration();
                 return new BicepConfigInfo("Default", config.ToUtf8Json());
             case BicepConfigScope.Merged:
-                config = GetConfiguration(sourceFileUri);
+                config = GetConfiguration(sourceIOUri);
                 return new BicepConfigInfo(config.ConfigFileUri?.Path ?? "Default", config.ToUtf8Json());
             case BicepConfigScope.Local:
-                config = GetConfiguration(sourceFileUri);
+                config = GetConfiguration(sourceIOUri);
                 if (config.ConfigFileUri is not null)
                 {
                     using var filestream = fileExplorer.GetFile((IOUri)config.ConfigFileUri).OpenRead();
                     var configString = JsonElementFactory.CreateElementFromStream(filestream).ToString();
                     return new BicepConfigInfo(config.ConfigFileUri, configString);
                 }
-                throw new FileNotFoundException("Local configuration file not found for path {path}!", sourceFileUri.LocalPath);
+                throw new FileNotFoundException($"Local configuration file not found for path {sourceFileUri.LocalPath}!", sourceFileUri.LocalPath);
             default:
                 throw new ArgumentException("BicepConfigMode not valid!");
         }

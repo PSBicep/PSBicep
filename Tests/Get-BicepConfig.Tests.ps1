@@ -108,6 +108,7 @@ Describe 'Get-BicepConfig tests' {
                   }
                 }
               },
+              "experimentalFeaturesWarning": false,
               "experimentalFeaturesEnabled": {
                 "symbolicNameCodegen": false,
                 "extendableParamFiles": false,
@@ -120,10 +121,10 @@ Describe 'Get-BicepConfig tests' {
                 "localDeploy": false,
                 "resourceInfoCodegen": false,
                 "moduleExtensionConfigs": false,
-                "desiredStateConfiguration": false,
-                "externalInputFunction": false,
-                "onlyIfNotExists": false,
-                "moduleIdentity": false
+                "userDefinedConstraints": false,
+                "deployCommands": false,
+                "thisNamespace": false,
+                "existingNullIfNotFound": false
               },
               "formatting": {
                 "indentKind": "Space",

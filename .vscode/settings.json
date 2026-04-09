@@ -8,4 +8,13 @@
         }
     },
     "csharpOrganizeUsings.splitGroups": false,
+    "terminal.integrated.automationProfile.osx": {
+        "path": "pwsh"
+    },
+    "terminal.integrated.automationProfile.linux": {
+        "path": "pwsh"
+    },
+    "terminal.integrated.automationProfile.windows": {
+        "path": "pwsh.exe"
+    },
 }

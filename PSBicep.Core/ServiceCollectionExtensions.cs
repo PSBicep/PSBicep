@@ -6,9 +6,8 @@ using Bicep.Core.Analyzers.Interfaces;
 using Bicep.Core.Analyzers.Linter;
 using Bicep.Core.Configuration;
 using Bicep.Core.Features;
-using Bicep.Core.FileSystem;
+using Bicep.Core.AzureApi;
 using Bicep.Core.Registry;
-using Bicep.Core.Registry.Auth;
 using Bicep.Core.Registry.Catalog.Implementation;
 using Bicep.Core.Semantics.Namespaces;
 using Bicep.Core.SourceGraph;
@@ -35,7 +34,7 @@ public static class ServiceCollectionExtensions
         .AddSingleton<DiagnosticLogger>()
         .AddSingleton<ITypeLoader, AzTypeLoader>()
         .AddSingleton<AzResourceTypeLoader>()
-        .AddSingleton<Workspace>()
+        .AddSingleton<ActiveSourceFileSet>()
         .AddSingleton<BicepConfigurationManager>()
         .AddSingleton<BicepTokenCredentialFactory>()
         .AddSingleton<JoinableTaskContext>()
@@ -51,7 +50,7 @@ public static class ServiceCollectionExtensions
         .AddSingleton<IModuleDispatcher, ModuleDispatcher>()
         .AddSingleton<IArtifactRegistryProvider, DefaultArtifactRegistryProvider>()
         .AddSingleton<ITokenCredentialFactory, TokenCredentialFactory>()
-        .AddSingleton<IFileResolver, FileResolver>()
+        .AddSingleton<IArmClientProvider, ArmClientProvider>()
         .AddSingleton<IEnvironment, Environment>()
         .AddSingleton<IFileSystem, LocalFileSystem>()
         .AddSingleton<IFileExplorer, FileSystemFileExplorer>()
@@ -61,7 +60,7 @@ public static class ServiceCollectionExtensions
         .AddSingleton<IFeatureProviderFactory, FeatureProviderFactory>()
         .AddSingleton<ILinterRulesProvider, LinterRulesProvider>()
         .AddSingleton<ISourceFileFactory, SourceFileFactory>()
-        .AddRegistryCatalogServices()
+        .AddBicepRegistryCatalogServices()
         .AddSingleton<BicepCompiler>()
         .AddSingleton<BicepDecompiler>();
 }

@@ -6,7 +6,7 @@ using System.Management.Automation;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Bicep.Core;
-using Bicep.Core.FileSystem;
+using Bicep.Core.Extensions;
 using Bicep.Core.PrettyPrintV2;
 using Bicep.Core.Registry;
 using Bicep.Core.Resources;
@@ -30,7 +30,6 @@ public class BicepCoreService
     private readonly BicepCompiler compiler;
     private readonly DiagnosticLogger diagnosticLogger;
     private readonly BicepConfigurationManager configurationManager;
-    private readonly IFileResolver fileResolver;
     private readonly BicepDecompiler decompiler;
     private readonly AzResourceTypeLoader azResourceTypeLoader;
     private readonly IModuleDispatcher moduleDispatcher;
@@ -42,7 +41,6 @@ public class BicepCoreService
         BicepCompiler compiler,
         DiagnosticLogger diagnosticLogger,
         BicepConfigurationManager configurationManager,
-        IFileResolver fileResolver,
         BicepDecompiler decompiler,
         AzResourceTypeLoader azResourceTypeLoader,
         IModuleDispatcher moduleDispatcher,
@@ -53,7 +51,6 @@ public class BicepCoreService
         this.compiler = compiler;
         this.diagnosticLogger = diagnosticLogger;
         this.configurationManager = configurationManager;
-        this.fileResolver = fileResolver;
         this.decompiler = decompiler;
         this.azResourceTypeLoader = azResourceTypeLoader;
         this.moduleDispatcher = moduleDispatcher;
@@ -88,8 +85,8 @@ public class BicepCoreService
     public async Task RestoreAsync(string inputFilePath, bool forceModulesRestore = false)
     {
         diagnosticLogger.Log(LogLevel.Trace, "Restoring external modules to local cache for file {inputFilePath}", inputFilePath);
-        var inputPath = PathHelper.ResolvePath(inputFilePath);
-        var inputUri = PathHelper.FilePathToFileUrl(inputPath);
+        var inputPath = Path.GetFullPath(inputFilePath);
+        var inputUri = IOUri.FromFilePath(inputPath);
 
         var compilation = compiler.CreateCompilationWithoutRestore(inputUri, markAllForRestore: forceModulesRestore);
         var restoreDiagnostics = await compiler.Restore(compilation, forceRestore: forceModulesRestore);
@@ -113,8 +110,8 @@ public class BicepCoreService
     /// <returns>A task returning a BuildResult containing the compiled ARM template and metadata</returns>
     public async Task<BuildResult> BuildAsync(string bicepPath, bool noRestore = false)
     {
-        var inputPath = PathHelper.ResolvePath(bicepPath);
-        var inputUri = PathHelper.FilePathToFileUrl(inputPath);
+        var inputPath = Path.GetFullPath(bicepPath);
+        var inputUri = IOUri.FromFilePath(inputPath);
 
         if (!IsBicepFile(inputUri) && !IsBicepparamsFile(inputUri))
         {
@@ -160,7 +157,7 @@ public class BicepCoreService
     /// <returns>The full path to the Bicep module cache directory</returns>
     public string GetCachePath(string path)
     {
-        return configurationManager.GetConfiguration(PathHelper.FilePathToFileUrl(path)).CacheRootDirectory!;
+        return configurationManager.GetConfiguration(IOUri.FromFilePath(Path.GetFullPath(path))).CacheRootDirectory!;
     }
 
     /// <summary>
@@ -169,8 +166,12 @@ public class BicepCoreService
     /// <param name="scope">The configuration scope (Merged, Default or Local)</param>
     /// <param name="path">Path to the file or directory used to find bicepconfig.json</param>
     /// <returns>BicepConfigInfo object containing configuration details</returns>
-    public BicepConfigInfo GetBicepConfigInfo(BicepConfigScope scope, string path) =>
-        configurationManager.GetConfigurationInfo(scope, PathHelper.FilePathToFileUrl(path ?? ""));
+    public BicepConfigInfo GetBicepConfigInfo(BicepConfigScope scope, string? path) =>
+        configurationManager.GetConfigurationInfo(
+            scope,
+            path is not null
+                ? new Uri(Path.GetFullPath(path))
+                : new Uri("psbicep://empty"));
 
     /// <summary>
     /// Decompiles an ARM template into Bicep code
@@ -187,20 +188,25 @@ public class BicepCoreService
     /// <returns>A task returning a dictionary mapping output file paths to decompiled Bicep code</returns>
     public async Task<IDictionary<string, string>> DecompileAsync(string templatePath)
     {
-        var inputPath = PathHelper.ResolvePath(templatePath);
-        var inputUri = PathHelper.FilePathToFileUrl(inputPath);
+        var inputPath = Path.GetFullPath(templatePath);
+        var inputUri = IOUri.FromFilePath(inputPath);
 
-        if (!fileResolver.TryRead(inputUri).IsSuccess(out var jsonContent))
+        string jsonContent;
+        try
+        {
+            jsonContent = fileExplorer.GetFile(inputUri).ReadAllText();
+        }
+        catch (Exception)
         {
             throw new InvalidOperationException($"Failed to read {inputUri}");
         }
 
         var template = new Dictionary<string, string>();
-        var decompilation = await decompiler.Decompile(PathHelper.ChangeToBicepExtension(inputUri), jsonContent);
+        var decompilation = await decompiler.Decompile(inputUri.WithExtension(".bicep"), jsonContent);
 
         foreach (var (fileUri, bicepOutput) in decompilation.FilesToSave)
         {
-            template.Add(fileUri.LocalPath, bicepOutput);
+            template.Add(fileUri.ToString(), bicepOutput);
         }
 
         return template;
@@ -266,7 +272,7 @@ public class BicepCoreService
         var id = AzureHelpers.ValidateResourceId(resourceId);
         var matchedType = BicepHelper.ResolveBicepTypeDefinition(id.FullyQualifiedType, azResourceTypeLoader, logger: diagnosticLogger);
         JsonElement resource = JsonSerializer.Deserialize<JsonElement>(resourceBody);
-        var configuration = configurationManager.GetConfiguration(PathHelper.FilePathToFileUrl(configurationPath));
+        var configuration = configurationManager.GetConfiguration(IOUri.FromFilePath(Path.GetFullPath(configurationPath)));
         var template = await Task.Run(() => AzureHelpers.GenerateBicepTemplate(compiler, id, matchedType, resource, configuration, includeTargetScope, removeUnknownProperties));
         return (resourceId, template);
     }
@@ -337,7 +343,7 @@ public class BicepCoreService
     /// <returns>The formatted Bicep code</returns>
     public string Format(string content, string configurationPath, string kind = "BicepFile")
     {
-        var configuration = configurationManager.GetConfiguration(PathHelper.FilePathToFileUrl(configurationPath ?? ""));
+        var configuration = configurationManager.GetConfiguration(IOUri.FromFilePath(Path.GetFullPath(configurationPath ?? "")));
         var fileKind = (BicepSourceFileKind)Enum.Parse(typeof(BicepSourceFileKind), kind, true);
         return Format(content, configuration.Formatting.Data, fileKind);
     }
@@ -351,7 +357,7 @@ public class BicepCoreService
     /// <returns>The formatted Bicep code</returns>
     public string Format(string content, PrettyPrinterV2Options options, BicepSourceFileKind fileKind = BicepSourceFileKind.BicepFile)
     {
-        var uri = fileKind == BicepSourceFileKind.BicepFile ? new Uri("inmemory:///generated.bicep") : new Uri("inmemory:///generated.bicepparams");
+        var uri = (fileKind == BicepSourceFileKind.BicepFile ? new Uri("inmemory:///generated.bicep") : new Uri("inmemory:///generated.bicepparams")).ToIOUri();
         if (compiler.SourceFileFactory.CreateSourceFile(uri, content) is not BicepSourceFile sourceFile)
         {
             throw new InvalidOperationException("Unable to create Bicep source file.");
@@ -364,7 +370,7 @@ public class BicepCoreService
         return stringWriter.ToString();
     }
 
-    private static bool IsBicepFile(Uri inputUri) => PathHelper.HasBicepExtension(inputUri);
-    private static bool IsBicepparamsFile(Uri inputUri) => PathHelper.HasBicepparamsExtension(inputUri);
+    private static bool IsBicepFile(IOUri inputUri) => inputUri.HasBicepExtension();
+    private static bool IsBicepparamsFile(IOUri inputUri) => inputUri.HasBicepParamExtension();
 
 }

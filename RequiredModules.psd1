@@ -29,5 +29,4 @@
                                         Version = '0.2.1'
                                         MaximumVersion = '0.99.99'
     }
-    'Azure/Bicep'                 = 'v0.36.177'
 }

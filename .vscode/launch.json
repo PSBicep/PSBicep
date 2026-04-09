@@ -14,7 +14,7 @@
                 "-NoExit",
                 "-NoProfile",
                 "-Command",
-                "Import-Module ${workspaceFolder}/output/RequiredModules/AzAuth; Import-Module ${workspaceFolder}/output/Bicep -Verbose",
+                "Import-Module ${workspaceFolder}/output/RequiredModules/AzAuth; Import-Module ${workspaceFolder}/output/RequiredModules/AzResourceGraph; Import-Module ${workspaceFolder}/output/Bicep -Verbose",
             ],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
