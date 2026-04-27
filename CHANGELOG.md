@@ -5,6 +5,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-04-09
+
 ### Changed
 - **Breaking** Requires minimum version of PowerShell 7.6 due to .NET 10 requirements of Bicep
 - Bicep support for version 0.41.2
