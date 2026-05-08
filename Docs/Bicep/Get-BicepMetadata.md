@@ -148,4 +148,3 @@ Returns the metadata from the Bicep template's compiled ARM template output. The
 - [Build-Bicep]()
 - [Build-BicepParam]()
 - [Get-BicepConfig]()
-- [Get-BicepMetadata]()
