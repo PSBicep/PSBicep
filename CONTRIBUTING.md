@@ -53,7 +53,7 @@ Import-Module .\Source\Bicep.psd1
 [Microsoft.PowerShell.PlatyPS](https://github.com/PowerShell/platyPS) is used to write the external help in markdown. When contributing always make sure that the changes are added to the help file.  
 A slightly modified version of Microsoft.PowerShell.PlatyPS is downloaded and used by the build script. The build script will also update markdown files and generate external help.
 
-Make sure to edit the markdown file(s) in the `.\Docs\Help` folder and populate `{{ ... }}` placeholders with missed help content.
+Make sure to edit the markdown file(s) in the `.\Docs\Bicep` folder and populate `{{ ... }}` placeholders with missed help content.
 
 ### Tests
 
