@@ -54,7 +54,7 @@ This cmdlet has the following aliases,
 ## DESCRIPTION
 
 Used to create a connection to Azure.
-Required by command Export-BicepResource but also supported by commands that rely on some kind of Azure resoruce, like for example getting or publishing modules from Azure Container Registry.
+Required by command Export-BicepResource but also supported by commands that rely on some kind of Azure resource, like for example getting or publishing modules from Azure Container Registry.
 
 ## EXAMPLES
 
