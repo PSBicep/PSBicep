@@ -10,5 +10,5 @@ task updateMarkdownHelp {
     Measure-PlatyPSMarkdown -Path ./Docs/$ProjectName/*.md |
         Where-Object Filetype -match 'CommandHelp' |
         Import-MarkdownCommandHelp -Path {$_.FilePath} |
-        Update-MarkdownModuleFile -Path ./docs/$ProjectName/$ProjectName.md -NoBackup -Force
+        Update-MarkdownModuleFile -Path ./Docs/$ProjectName/$ProjectName.md -NoBackup -Force
 }
