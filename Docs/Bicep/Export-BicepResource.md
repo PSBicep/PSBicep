@@ -301,7 +301,7 @@ HelpMessage: ''
 
 ### -UseKQLResult
 
-Use resource body directly from KQL query result intead of getting the actual resource body.
+Use resource body directly from KQL query result instead of getting the actual resource body.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
