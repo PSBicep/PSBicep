@@ -4,7 +4,7 @@ external help file: Bicep-help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 05/08/2026
+ms.date: 05-11-2026
 PlatyPS schema version: 2024-05-01
 title: Get-BicepApiReference
 ---
@@ -58,7 +58,7 @@ This will open the documentation for the `Microsoft.Storage` resource provider, 
 
 Get-BicepApiReference -ResourceProvider Microsoft.Storage -Resource storageAccounts -ApiVersion 2018-11-01
 
-This will open the documentation for the `Microsoft.Storage` resource provider, resource `storageAccounts` using the ´2018-11-01` API Version in a browser.
+This will open the documentation for the `Microsoft.Storage` resource provider, resource `storageAccounts` using the `2018-11-01` API Version in a browser.
 
 ### Get the ARM template reference for a child resource
 

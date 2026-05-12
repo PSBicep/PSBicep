@@ -4,7 +4,7 @@ external help file: Bicep-help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 05/08/2026
+ms.date: 05-11-2026
 PlatyPS schema version: 2024-05-01
 title: Find-BicepModule
 ---
@@ -32,7 +32,7 @@ Find-BicepModule [-Registry] <string> [[-ConfigurationPath] <string>] [<CommonPa
 ### Cache
 
 ```
-Find-BicepModule -Cache] [-Registry <string>] [<CommonParameters>]
+Find-BicepModule -Cache [-Registry <string>] [<CommonParameters>]
 ```
 
 ## ALIASES
@@ -78,7 +78,7 @@ SupportsWildcards: false
 Aliases: []
 ParameterSets:
 - Name: Cache
-  Position: 1
+  Position: Named
   IsRequired: true
   ValueFromPipeline: false
   ValueFromPipelineByPropertyName: false

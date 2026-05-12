@@ -4,7 +4,7 @@ external help file: Bicep-help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 05/08/2026
+ms.date: 05-11-2026
 PlatyPS schema version: 2024-05-01
 title: Get-BicepUsedModules
 ---

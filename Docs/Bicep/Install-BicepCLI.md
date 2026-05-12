@@ -4,7 +4,7 @@ external help file: Bicep-help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 05/08/2026
+ms.date: 05-11-2026
 PlatyPS schema version: 2024-05-01
 title: Install-BicepCLI
 ---
@@ -97,6 +97,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ## OUTPUTS
+
+### System.Object
+
+Installs the Bicep CLI (Windows only) by downloading the latest or specified version from the Azure Bicep GitHub releases and running the silent installer. Outputs status messages indicating the installed version and installation progress.
 
 ## NOTES
 

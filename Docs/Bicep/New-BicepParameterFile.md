@@ -4,7 +4,7 @@ external help file: Bicep-help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 05/08/2026
+ms.date: 05-11-2026
 PlatyPS schema version: 2024-05-01
 title: New-BicepParameterFile
 ---
@@ -144,8 +144,7 @@ HelpMessage: ''
 
 ### -WhatIf
 
-Shows what would happen if the cmdlet runs.
-The cmdlet is not run.
+Runs the command in a mode that only reports what would happen without performing the actions.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter

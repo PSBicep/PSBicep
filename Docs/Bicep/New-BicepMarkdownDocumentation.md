@@ -4,7 +4,7 @@ external help file: Bicep-help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 05/08/2026
+ms.date: 05-11-2026
 PlatyPS schema version: 2024-05-01
 title: New-BicepMarkdownDocumentation
 ---
@@ -59,7 +59,7 @@ The markdown files will be saved with the same name as the bicep files, using .m
 
 ### -AsString
 
-Output the resulting markdown to to the cosole as string.
+Output the resulting markdown to to the console as string.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
@@ -189,6 +189,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### File or string
 
 Returns the path to the created markdown file, or a string containing the markdown content if -AsString is used.
+
+### System.Object
+
+Generates markdown documentation from .bicep files, including metadata, providers, resources, outputs, parameters, and variables sections based on the compiled Bicep template.
 
 ## NOTES
 

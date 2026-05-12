@@ -2,8 +2,10 @@
     This test suite checks that the help files are correctly generated and contain the expected content.
 #>
 
-# Import the PlatyPS module before running tests
+$ModuleName = Get-SamplerProjectName -BuildRoot $PSScriptRoot/..
+
 BeforeAll {
+    # Import the PlatyPS module before running tests
     Import-Module -FullyQualifiedName "$PSScriptRoot/../output/RequiredModules/Microsoft.PowerShell.PlatyPS" -ErrorAction Stop
 }
 
@@ -23,9 +25,10 @@ Describe "Module $ModuleName Help" {
             $Diagnostics | Should -BeNullOrEmpty -Because 'markdown help files should be generated without errors or warnings'
         }
         
-        It 'Does not contain placeholder text' {
+        It "Does not contain placeholder text in ./Docs/$ModuleName/*.md files" {
             $PlaceholderRegex = '\{\{ [\s\w]+\}\}'
             $Placeholders = Select-String -Pattern $PlaceholderRegex -Path "./Docs/$ModuleName/*.md" -AllMatches
+            $Placeholders | Foreach-Object {Write-Host $_ -ForegroundColor Yellow}
             $Placeholders | Should -BeNullOrEmpty -Because 'markdown help files should not contain placeholder text'
         }
     }

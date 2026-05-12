@@ -14,10 +14,9 @@ function Find-BicepModule {
         [Parameter(ParameterSetName = 'Registry', Mandatory = $false, Position = 2)]
         [string]$ConfigurationPath,
 
-        [Parameter(ParameterSetName = 'Cache', Mandatory = $true, Position = 1)]
+        [Parameter(ParameterSetName = 'Cache', Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [switch]$Cache
-
     )
 
     process {

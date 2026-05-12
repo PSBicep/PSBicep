@@ -4,7 +4,7 @@ external help file: PSBicep.dll-Help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 05/08/2026
+ms.date: 05-11-2026
 PlatyPS schema version: 2024-05-01
 title: Get-BicepApiVersion
 ---
@@ -85,7 +85,8 @@ HelpMessage: ''
 
 ### -Skip
 
-The number of results to skip. Useful for pagination when there are many API versions available.
+The number of results to skip.
+Useful for pagination when there are many API versions available.
 
 ```yaml
 Type: System.Int32

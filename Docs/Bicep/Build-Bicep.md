@@ -4,7 +4,7 @@ external help file: Bicep-help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 05/08/2026
+ms.date: 05-11-2026
 PlatyPS schema version: 2024-05-01
 title: Build-Bicep
 ---
@@ -419,8 +419,7 @@ HelpMessage: ''
 
 ### -WhatIf
 
-Shows what would happen if the cmdlet runs.
-The cmdlet is not run.
+Runs the command in a mode that only reports what would happen without performing the actions.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
@@ -450,6 +449,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ## OUTPUTS
+
+### System.Object
+
+Returns the compiled ARM template as JSON files in the output directory, or as a string/hashtable when using -AsString or -AsHashtable. Also generates parameter files when -GenerateRequiredParametersFile or -GenerateAllParametersFile is specified.
 
 ## NOTES
 

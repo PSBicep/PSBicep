@@ -4,7 +4,7 @@ external help file: Bicep-help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 05/08/2026
+ms.date: 05-11-2026
 PlatyPS schema version: 2024-05-01
 title: Update-BicepCLI
 ---
@@ -51,6 +51,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ## OUTPUTS
+
+### System.Object
+
+Updates the Bicep CLI to the latest version by uninstalling the current version and installing the newest release. Outputs status messages indicating the update progress and installed version.
 
 ## NOTES
 

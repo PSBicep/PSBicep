@@ -4,7 +4,7 @@ external help file: Bicep-help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 05/08/2026
+ms.date: 05-11-2026
 PlatyPS schema version: 2024-05-01
 title: ConvertTo-Bicep
 ---
@@ -142,7 +142,8 @@ HelpMessage: ''
 
 ### -IncludeTargetScope
 
-When specified, includes the targetScope declaration in the generated Bicep file. This is useful when converting ARM templates that have a specific target scope defined.
+When specified, includes the targetScope declaration in the generated Bicep file.
+This is useful when converting ARM templates that have a specific target scope defined.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
@@ -310,6 +311,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ## OUTPUTS
+
+### System.Object
+
+Outputs bicep template as string if the -AsString parameter is used, else it will write the template to a file.
 
 ## NOTES
 
