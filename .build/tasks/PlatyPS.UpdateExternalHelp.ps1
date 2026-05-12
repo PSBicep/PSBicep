@@ -3,7 +3,6 @@ task updateExternalHelp {
 
     $OutputDocsDestination = (Get-Item ./output/$ProjectName/**/en-US | Select-Object -Last 1).FullName
     Import-Module 'Microsoft.PowerShell.PlatyPS' -ErrorAction 'Stop'
-    $ProjectName = Get-SamplerProjectName -BuildRoot $BuildRoot
     Measure-PlatyPSMarkdown -Path ./Docs/$ProjectName/*.md |
         Where-Object Filetype -match 'CommandHelp' |
         Import-MarkdownCommandHelp -Path {$_.FilePath} |
