@@ -66,9 +66,8 @@ BuildWorkflow:
     - Build_Module_ModuleBuilder
     - Set_PSModulePath
     - getBicepTypes
-    # - updateMarkdownHelp
-    # - repairPlatyPSHelp
-    # - updateExternalHelp
+    - updateMarkdownHelp
+    - updateExternalHelp
     - Create_changelog_release_output
 
   quickbuild: # Least amount of tasks to run to build the module, useful for quick testing while developing

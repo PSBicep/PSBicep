@@ -15,10 +15,11 @@
     'Sampler.GitHubTasks'         = 'latest'
     MarkdownLinkCheck             = 'latest'
     'SimonWahlin/platyPS'         = @{
-                                        Version = 'main'
+                                        Version = 'V2'
                                         DependencyType = 'GitHub'
                                         Parameters = @{
                                             TargetType = 'Exact'
+                                            ExtractPath = 'Microsoft.PowerShell.PlatyPS'
                                         }
                                     }
     'AzAuth'                      = @{

@@ -5,6 +5,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Changed help generation to use the new Microsoft.PowerShell.PlatyPS module
+
 ## [3.0.0] - 2026-04-09
 
 ### Changed
