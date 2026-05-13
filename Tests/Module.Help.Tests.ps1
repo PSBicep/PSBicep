@@ -2,14 +2,17 @@
     This test suite checks that the help files are correctly generated and contain the expected content.
 #>
 
+# Must be defined at script scope to be usable inside It descripions
 $ModuleName = Get-SamplerProjectName -BuildRoot $PSScriptRoot/..
 
 BeforeAll {
     # Import the PlatyPS module before running tests
     Import-Module -FullyQualifiedName "$PSScriptRoot/../output/RequiredModules/Microsoft.PowerShell.PlatyPS" -ErrorAction Stop
+    # Must be defined inside to be usable within It-blocks
+    $ModuleName = Get-SamplerProjectName -BuildRoot $PSScriptRoot/..
 }
 
-Describe "Module $ModuleName Help" {
+Describe "Module Help Generation" {
 
     Context 'Validate generated markdown help files' {
         It 'Generates markdown help files without errors' {

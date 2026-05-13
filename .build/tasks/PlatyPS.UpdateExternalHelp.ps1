@@ -7,4 +7,12 @@ task updateExternalHelp {
         Where-Object Filetype -match 'CommandHelp' |
         Import-MarkdownCommandHelp -Path {$_.FilePath} |
         Export-MamlCommandHelp -OutputFolder $OutputDocsDestination -Force
+
+    $ModuleInfo = Import-Module -Name $ProjectName -PassThru -ErrorAction 'Stop'
+    $newMarkdownCommandHelpSplat = @{
+        ModuleInfo = $ModuleInfo
+        OutputFolder = "./Docs"
+        WithModulePage = $false
+    }
+    New-MarkdownCommandHelp @newMarkdownCommandHelpSplat
 }

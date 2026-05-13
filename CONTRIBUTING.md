@@ -1,4 +1,4 @@
-# Contributing to Bicep PowerShell
+/Bicep# Contributing to Bicep PowerShell
 
 You are more than welcome to contribute to the Bicep PowerShell module, whether it is [Pull Requests](#pull-requests), [Feature Suggestions](#feature-suggestions) or [Bug Reports](#bug-reports)!
 
@@ -31,7 +31,7 @@ The Source folder contains the source code for the PowerShell module. This is th
 - **Public** (`Source/Public`): All functions that are written in PowerShell and exported by the module.
 - **Tests** (`Tests`): Pester tests executed at Pull Request. Can be invoked by calling `./build.ps1 -Tasks test`
 - **scripts** (`scripts`): Script file location used by Github Actions and to update assemblies when developing locally.
-- **Help** (`Docs\Help`): Markdown help files for external help.
+- **Help** (`Docs/Bicep`): Markdown help files for external help.
 
 ### Running the module locally
 
