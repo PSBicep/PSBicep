@@ -67,7 +67,6 @@ BuildWorkflow:
     - Set_PSModulePath
     - getBicepTypes
     - updateMarkdownHelp
-    # - repairPlatyPSHelp
     - updateExternalHelp
     - Create_changelog_release_output
 
