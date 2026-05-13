@@ -4,7 +4,7 @@ external help file: Bicep-help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 05-11-2026
+ms.date: 05/13/2026
 PlatyPS schema version: 2024-05-01
 title: Test-BicepFile
 ---
@@ -78,7 +78,7 @@ HelpMessage: ''
 
 ### -IgnoreDiagnosticOutput
 
-Will run silently, not outputing any diagnostic information  to the information stream.
+Will run silently, not outputting any diagnostic information  to the information stream.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter

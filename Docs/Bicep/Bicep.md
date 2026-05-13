@@ -5,7 +5,7 @@ HelpInfoUri: ''
 Locale: en-US
 Module Guid: dfce7d56-54cc-46df-8be8-2518093e803f
 Module Name: Bicep
-ms.date: 05-11-2026
+ms.date: 05/13/2026
 PlatyPS schema version: 2024-05-01
 title: Bicep Module
 ---
