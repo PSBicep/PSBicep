@@ -65,7 +65,6 @@ BuildWorkflow:
     - compile
     - Build_Module_ModuleBuilder
     - Set_PSModulePath
-    - getBicepTypes
     - updateMarkdownHelp
     - updateExternalHelp
     - Create_changelog_release_output
@@ -75,7 +74,6 @@ BuildWorkflow:
     - PSBicep.Compile
     - Build_Module_ModuleBuilder
     - Set_PSModulePath
-    - getBicepTypes
 
   pack:
     - build
@@ -83,7 +81,6 @@ BuildWorkflow:
 
   # Defining test task to be run when invoking `./build.ps1 -Tasks test`
   test:
-    - getBicepTypes
     # Uncomment to modify the PSModulePath in the test pipeline (also requires the build configuration section SetPSModulePath).
     - Set_PSModulePath
     - Pester_Tests_Stop_On_Fail
@@ -98,7 +95,6 @@ BuildWorkflow:
     #- Merge_CodeCoverage_Files
 
   publish:
-    - getBicepTypes
     - Publish_Release_To_GitHub # Runs first, if token is expired it will fail early
     - publish_module_to_gallery
 

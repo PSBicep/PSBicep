@@ -110,15 +110,18 @@ FunctionsToExport = @(
     'Test-BicepFile',
     'Uninstall-BicepCLI', 
     'Update-BicepCLI', 
-    'Update-BicepParameterFile',
-    'Update-BicepTypes'
+    'Update-BicepParameterFile'
 )
 
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
+# These are cmdlets from the nested PSBicep module.
 CmdletsToExport = @( 
     'Get-BicepConfig',
-    'Get-BicepApiVersion'
+    'Get-BicepApiVersion',
+    'Get-BicepResourceProvider',
+    'Get-BicepResourceType',
+    'Get-BicepChildResourceType'
 )
 
 # Variables to export from this module

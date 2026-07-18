@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Management.Automation;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -233,6 +234,26 @@ public class BicepCoreService
             avoidPreview);
 
         return new BicepResourceTypeReference(resourceTypeReference.Type, resourceTypeReference.ApiVersion);
+    }
+
+    public string[] GetResourceProviderNames(string providerName, bool fullyQualified = false, bool exactMatch = false)
+    {
+        return BicepHelper.GetResourceProviderNames(providerName, azResourceTypeLoader, fullyQualified, exactMatch, diagnosticLogger);
+    }
+
+    public string[] GetResourceTypeNames(string providerName, string typeName, bool fullyQualified = false, bool exactMatch = false)
+    {
+        return BicepHelper.GetResourceTypeNames(providerName, typeName, azResourceTypeLoader, fullyQualified, exactMatch, diagnosticLogger);
+    }
+
+    public string[] GetResourceTypeNamesByPrefix(string prefix)
+    {
+        return BicepHelper.GetResourceTypeNamesByPrefix(prefix, azResourceTypeLoader);
+    }
+
+    public string[] GetChildResourceTypeNames(string providerName, string typeName, string childName, bool fullyQualified = false, bool exactMatch = false)
+    {
+        return BicepHelper.GetChildResourceTypeNames(providerName, typeName, childName, azResourceTypeLoader, fullyQualified, exactMatch, diagnosticLogger);
     }
 
     /// <summary>

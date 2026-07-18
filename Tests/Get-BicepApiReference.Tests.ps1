@@ -34,6 +34,26 @@ Describe "Get-BicepApiReference" {
         }
     }
 
+    Context 'Argument completion' {
+        It 'Completes resource types deeper than three segments' {
+            $prefix = 'Microsoft.Web/sites/slots/'
+            $completer = [PSBicep.Completers.BicepTypeCompleter]::new()
+            $results = @($completer.CompleteArgument('', '', $prefix, $null, @{}))
+
+            $results.Count | Should -BeGreaterThan 0
+            @($results.CompletionText | Where-Object { $_ -notlike "$prefix*@*" }).Count | Should -BeGreaterThan 0
+        }
+
+        It 'Completes resource types with API version' {
+            $prefix = 'Microsoft.Web/sites/slots@'
+            $completer = [PSBicep.Completers.BicepTypeCompleter]::new()
+            $results = @($completer.CompleteArgument('', '', $prefix, $null, @{}))
+
+            $results.Count | Should -BeGreaterThan 0
+            @($results.CompletionText | Where-Object { $_ -notmatch "$prefix\d\d\d\d-\d\d-\d\d(-Preview)?" }).Count | Should -Be 0
+        }
+    }
+
     Context 'URL is built correctly' {
         
         $testcases = @(
@@ -141,6 +161,16 @@ Describe "Get-BicepApiReference" {
                     Resource         = 'domainServices'
                     Child            = 'ouContainer'
                     APIVersion       = '1600-01-01'
+                }
+                Result     = "Cannot validate argument on parameter 'APIVersion'*"
+            }
+            @{
+                Parameters = 'APIVersion'
+                Splat      = @{
+                    ResourceProvider = 'Microsoft.Aad'
+                    Resource         = 'domainServices'
+                    Child            = 'ouContainer'
+                    APIVersion       = 'v1'
                 }
                 Result     = "Cannot validate argument on parameter 'APIVersion'*"
             }

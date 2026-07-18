@@ -33,7 +33,3 @@ foreach ($file in (Get-ChildItem "$PSScriptRoot\Public\*.ps1"))
 		Write-Error "Failed to import '$($file.FullName)'. $_"
 	}
 }
-
-# cache bicep types
-Write-Verbose "Preloading Bicep types"
-$null = GetBicepTypes -Path "$PSScriptRoot\Assets\BicepTypes.json"
