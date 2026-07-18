@@ -68,6 +68,7 @@ BuildWorkflow:
     - getBicepTypes
     - updateMarkdownHelp
     - updateExternalHelp
+    - PSBicep.RestoreDateOnlyPlatyPSChanges
     - Create_changelog_release_output
 
   quickbuild: # Least amount of tasks to run to build the module, useful for quick testing while developing
