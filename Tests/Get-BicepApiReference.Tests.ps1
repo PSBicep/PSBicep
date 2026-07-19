@@ -41,8 +41,8 @@ Describe "Get-BicepApiReference" {
 
             $results.CompletionText | Should -Be @(
                 'Microsoft.Web/sites'
-                'Microsoft.Web/sites@'
                 'Microsoft.Web/sites/'
+                'Microsoft.Web/sites@'
             )
         }
 

@@ -4,7 +4,7 @@ external help file: PSBicep.dll-Help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 07/18/2026
+ms.date: 07/19/2026
 PlatyPS schema version: 2024-05-01
 title: Get-BicepResourceProvider
 ---
@@ -23,17 +23,11 @@ Gets Azure resource provider namespaces available to Bicep, optionally filtered 
 Get-BicepResourceProvider [[-ResourceProvider] <string>] [-ExactMatch] [<CommonParameters>]
 ```
 
-### byFullyQualifiedName
-
-```
-Get-BicepResourceProvider [-ExactMatch] [-FullyQualifiedName <string>] [<CommonParameters>]
-```
-
 ## ALIASES
 
 ## DESCRIPTION
 
-The cmdlet reads Bicep's available resource types and returns each distinct Azure resource provider namespace. Use `ResourceProvider` or the one-segment `FullyQualifiedName` parameter to limit results by a case-insensitive prefix.
+The cmdlet reads Bicep's available resource types and returns each distinct Azure resource provider namespace. Use `ResourceProvider` parameter to limit results by a case-insensitive prefix.
 
 ## EXAMPLES
 
@@ -58,12 +52,6 @@ SupportsWildcards: false
 Aliases: []
 ParameterSets:
 - Name: byName
-  Position: Named
-  IsRequired: false
-  ValueFromPipeline: false
-  ValueFromPipelineByPropertyName: false
-  ValueFromRemainingArguments: false
-- Name: byFullyQualifiedName
   Position: Named
   IsRequired: false
   ValueFromPipeline: false

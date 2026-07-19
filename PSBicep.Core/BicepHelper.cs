@@ -143,9 +143,14 @@ internal static class BicepHelper
         private static (string Type, string Version) Split(string value)
         {
             var separator = value.LastIndexOf('@');
-            return separator >= 0
-                ? (value[..separator], value[(separator + 1)..])
-                : (value, string.Empty);
+            if (separator < 0)
+                return (value, string.Empty);
+
+            // Treat trailing '@' (used as a completion continuation) as part of the type so it sorts after the bare type.
+            if (separator == value.Length - 1)
+                return (value, string.Empty);
+
+            return (value[..separator], value[(separator + 1)..]);
         }
 
         public override int Compare(string? x, string? y)

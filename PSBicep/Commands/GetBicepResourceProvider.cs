@@ -12,7 +12,6 @@ public class GetBicepResourceProvider : BaseCommand
     public string ResourceProvider { get; set; } = string.Empty;
 
     [Parameter(ParameterSetName = "byName")]
-    [Parameter(ParameterSetName = "byFullyQualifiedName")]
     public SwitchParameter ExactMatch { get; set; }
 
     protected override void ProcessRecord()

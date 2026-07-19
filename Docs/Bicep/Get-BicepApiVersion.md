@@ -4,7 +4,7 @@ external help file: PSBicep.dll-Help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 07-19-2026
+ms.date: 07/19/2026
 PlatyPS schema version: 2024-05-01
 title: Get-BicepApiVersion
 ---
