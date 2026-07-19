@@ -3,8 +3,9 @@
 #          ModuleBuilder Configuration             #
 ####################################################
 
-# Path to the Module Manifest to build (where path will be resolved from)
-SourcePath: Source/Bicep.psd1
+# Path to the module source directory (resolved from the repository root)
+SourcePath: Source
+BuiltModuleSubdirectory: module
 SourceDirectories: 
   - Classes
   - Private
