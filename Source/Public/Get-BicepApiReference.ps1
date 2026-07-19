@@ -28,7 +28,7 @@ function Get-BicepApiReference {
             Position = 0)]
         [ValidateScript( { $_ -like '*/*' },
             ErrorMessage = "Type must contain '/'.")]
-        [ArgumentCompleter([PSBicep.Completers.BicepTypeCompleter])]
+        [ArgumentCompleter([PSBicep.Completers.BicepTypeCompleterWithApiVersions])]
         [string]$Type,
 
         [Parameter(ParameterSetName = 'TypeString')]
@@ -106,9 +106,9 @@ function Get-BicepApiReference {
                         $TypeStringApiVersion = $null
                     }
 
-                    $TypeStringProvider, $TypeStringResource = $TypeString -split '/', 2
+                    $TypeStringProvider, $TypeStringResource = $TypeString.TrimEnd('/') -split '/', 2
 
-                    $url = @($BaseUrl, $TypeStringProvider, $TypeStringApiVersion, $TypeStringResource).Where{$null -ne $_} -join '/'
+                    $url = @($BaseUrl, $TypeStringProvider, $TypeStringApiVersion, $TypeStringResource).Where{ -not [string]::IsNullOrEmpty($_) } -join '/'
 
                     $url += $suffix
                 }

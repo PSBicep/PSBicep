@@ -7,7 +7,7 @@ namespace PSBicep.Commands;
 [OutputType(typeof(string))]
 public class GetBicepApiVersion : BaseCommand
 {
-    [ArgumentCompleter(typeof(Completers.BicepTypeCompleter))]
+    [ArgumentCompleter(typeof(Completers.BicepTypeCompleterWithoutApiVersions))]
     [Parameter(Mandatory = true, ValueFromPipeline = true)]
     [ValidateNotNullOrEmpty]
     public string ResourceType { get; set; }

@@ -35,9 +35,20 @@ Describe "Get-BicepApiReference" {
     }
 
     Context 'Argument completion' {
+        It 'Completes a partial type with type, child, and API version continuations' {
+            $completer = [PSBicep.Completers.BicepTypeCompleterWithApiVersions]::new()
+            $results = @($completer.CompleteArgument('', '', 'Microsoft.Web/sit', $null, @{}))
+
+            $results.CompletionText | Should -Be @(
+                'Microsoft.Web/sites'
+                'Microsoft.Web/sites@'
+                'Microsoft.Web/sites/'
+            )
+        }
+
         It 'Completes resource types deeper than three segments' {
             $prefix = 'Microsoft.Web/sites/slots/'
-            $completer = [PSBicep.Completers.BicepTypeCompleter]::new()
+            $completer = [PSBicep.Completers.BicepTypeCompleterWithApiVersions]::new()
             $results = @($completer.CompleteArgument('', '', $prefix, $null, @{}))
 
             $results.Count | Should -BeGreaterThan 0
@@ -46,7 +57,7 @@ Describe "Get-BicepApiReference" {
 
         It 'Completes resource types with API version' {
             $prefix = 'Microsoft.Web/sites/slots@'
-            $completer = [PSBicep.Completers.BicepTypeCompleter]::new()
+            $completer = [PSBicep.Completers.BicepTypeCompleterWithApiVersions]::new()
             $results = @($completer.CompleteArgument('', '', $prefix, $null, @{}))
 
             $results.Count | Should -BeGreaterThan 0

@@ -44,20 +44,32 @@ internal static class BicepHelper
             .OrderBy(x => x, StringComparer.OrdinalIgnoreCase)];
     }
 
-    internal static string[] GetResourceTypeNamesByPrefix(string prefix, AzResourceTypeLoader azResourceTypeLoader, bool recursive = false)
+    internal static string[] GetResourceTypeNamesByPrefix(string prefix, AzResourceTypeLoader azResourceTypeLoader, bool includeVersion = false, bool recursive = false)
     {
         var prefixSegments = prefix.Count(c => c == '/') + 1;
+        var prefixContainsVersion = prefix.Contains('@');
 
         return [.. azResourceTypeLoader.GetAvailableTypes()
             .Where(x => x.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
-            .Select(x => recursive || prefixSegments == x.TypeSegments.Length
-                ? prefix.Any(c => c == '@')
-                    ? x.Name
-                    : x.Type + '@'
-                : string.Join('/', x.TypeSegments[..prefixSegments]) + '/'
-            )
+            .SelectMany(x =>
+            {
+                if (prefixContainsVersion)
+                {
+                    return [x.Name];
+                }
+
+                if (recursive || prefixSegments == x.TypeSegments.Length)
+                {
+                    return includeVersion
+                        ? new[] { x.Type, x.Type + '@' }
+                        : [x.Type];
+                }
+
+                return [string.Join("/", x.TypeSegments.Take(prefixSegments)) + '/'];
+            })
             .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderByDescending(x => x, StringComparer.OrdinalIgnoreCase)];
+            .OrderBy(x => x, BicepHelper.ResourceTypeVersionComparer.Instance)
+        ];
     }
 
     internal static ResourceTypeReference[] GetChildResourceTypes(string providerName, string typeName, string childTypeName, AzResourceTypeLoader azResourceTypeLoader, bool exactMatch = false, ILogger? logger = null)
@@ -119,4 +131,53 @@ internal static class BicepHelper
             .Where(x => !string.IsNullOrEmpty(x))
             .Distinct(StringComparer.OrdinalIgnoreCase)];
     }
+
+    public sealed class ResourceTypeVersionComparer : StringComparer
+    {
+        public static ResourceTypeVersionComparer Instance { get; } = new();
+
+        private ResourceTypeVersionComparer()
+        {
+        }
+
+        private static (string Type, string Version) Split(string value)
+        {
+            var separator = value.LastIndexOf('@');
+            return separator >= 0
+                ? (value[..separator], value[(separator + 1)..])
+                : (value, string.Empty);
+        }
+
+        public override int Compare(string? x, string? y)
+        {
+            if (ReferenceEquals(x, y)) return 0;
+            if (x is null) return -1;
+            if (y is null) return 1;
+
+            var (xType, xVersion) = Split(x);
+            var (yType, yVersion) = Split(y);
+
+            // First compare type part in ascending order
+            var typeComparison = string.Compare(xType, yType, StringComparison.OrdinalIgnoreCase);
+            if (typeComparison != 0) return typeComparison;
+
+            // Type is equal, compare version part in descending order
+            return string.Compare(yVersion, xVersion, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public override bool Equals(string? x, string? y)
+            => Compare(x, y) == 0;
+
+        public override int GetHashCode(string obj)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            var (type, version) = Split(obj);
+
+            return HashCode.Combine(
+                StringComparer.OrdinalIgnoreCase.GetHashCode(type),
+                StringComparer.OrdinalIgnoreCase.GetHashCode(version));
+        }
+    }
+
 }

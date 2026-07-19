@@ -246,9 +246,9 @@ public class BicepCoreService
         return BicepHelper.GetResourceTypeNames(providerName, typeName, azResourceTypeLoader, fullyQualified, exactMatch, diagnosticLogger);
     }
 
-    public string[] GetResourceTypeNamesByPrefix(string prefix)
+    public string[] GetResourceTypeNamesByPrefix(string prefix, bool includeApiVersions = false)
     {
-        return BicepHelper.GetResourceTypeNamesByPrefix(prefix, azResourceTypeLoader);
+        return BicepHelper.GetResourceTypeNamesByPrefix(prefix, azResourceTypeLoader, includeApiVersions);
     }
 
     public string[] GetChildResourceTypeNames(string providerName, string typeName, string childName, bool fullyQualified = false, bool exactMatch = false)

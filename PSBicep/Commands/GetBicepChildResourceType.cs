@@ -20,7 +20,7 @@ public class GetBicepChildResourceType : BaseCommand
     [Parameter(Mandatory = false, Position = 2, ParameterSetName = "byName", HelpMessage = "The name of the child resource type to retrieve.")]
     public string Child { get; set; } = string.Empty;
 
-    [ArgumentCompleter(typeof(Completers.BicepTypeCompleter))]
+    [ArgumentCompleter(typeof(Completers.BicepTypeCompleterWithoutApiVersions))]
     [Parameter(ParameterSetName = "byFullyQualifiedName", HelpMessage = "The fully qualified name of the child resource type to retrieve.")]
     public string FullyQualifiedName { get; set; } = string.Empty;
 

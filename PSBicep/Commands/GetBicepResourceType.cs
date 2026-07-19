@@ -16,7 +16,7 @@ public class GetBicepResourceType : BaseCommand
     [Parameter(Mandatory = false, Position = 1, ParameterSetName = "byName", HelpMessage = "The name of the resource type to retrieve.")]
     public string Resource { get; set; } = string.Empty;
 
-    [ArgumentCompleter(typeof(Completers.BicepTypeCompleter))]
+    [ArgumentCompleter(typeof(Completers.BicepTypeCompleterWithoutApiVersions))]
     [Parameter(ParameterSetName = "byFullyQualifiedName", HelpMessage = "The fully qualified resource type to retrieve.")]
     public string FullyQualifiedName { get; set; } = string.Empty;
 

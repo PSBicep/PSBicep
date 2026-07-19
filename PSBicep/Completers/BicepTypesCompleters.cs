@@ -118,8 +118,10 @@ public sealed class BicepResourceApiVersionCompleter : IArgumentCompleter
     }
 }
 
-public sealed class BicepTypeCompleter : IArgumentCompleter
+public abstract class BicepTypeCompleter : IArgumentCompleter
 {
+    protected abstract bool IncludeApiVersions { get; }
+
     public IEnumerable<CompletionResult> CompleteArgument(
         string commandName,
         string parameterName,
@@ -135,7 +137,17 @@ public sealed class BicepTypeCompleter : IArgumentCompleter
                 .Select(provider => BicepTypeCompletion.Create($"{provider}/", provider));
         }
 
-        return BicepLoader.PSBicep.coreService.GetResourceTypeNamesByPrefix(wordToComplete)
+        return BicepLoader.PSBicep.coreService.GetResourceTypeNamesByPrefix(wordToComplete, IncludeApiVersions)
             .Select(type => BicepTypeCompletion.Create(type, type));
     }
+}
+
+public sealed class BicepTypeCompleterWithApiVersions : BicepTypeCompleter
+{
+    protected override bool IncludeApiVersions => true;
+}
+
+public sealed class BicepTypeCompleterWithoutApiVersions : BicepTypeCompleter
+{
+    protected override bool IncludeApiVersions => false;
 }

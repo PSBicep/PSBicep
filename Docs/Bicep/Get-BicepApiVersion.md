@@ -4,7 +4,7 @@ external help file: PSBicep.dll-Help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 07/18/2026
+ms.date: 07-19-2026
 PlatyPS schema version: 2024-05-01
 title: Get-BicepApiVersion
 ---
@@ -122,7 +122,7 @@ The Bicep resource type string to retrieve API versions for. Accepts pipeline in
 
 ### System.String
 
-Returns the API version information as an object.
+Returns the API version information as a string.
 
 ## NOTES
 
