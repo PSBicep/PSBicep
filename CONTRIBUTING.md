@@ -34,18 +34,18 @@ The Source folder contains the source code for the PowerShell module. This is th
 
 ### Running the module locally
 
-- Download the assemblies needed by the module by running the command `.\build.ps1 -ResolveDependency -Task build`. This will package the module to the path `output/Bicep`
+- Download the assemblies needed by the module by running the command `.\build.ps1 -ResolveDependency -Task build`. This will package the module to the path `output/module/Bicep`
 
 ```
 .\build.ps1 -ResolveDependency -Task build
-Import-Module ./output/Bicep
+Import-Module ./output/module/Bicep
 ```
 
 The assembly load context created by the PSBicep module is not fully unloaded when removing and re-importing the module. After doing any change to the C# code it is recommended to restart PowerShell. This is easiest done by building in a nested PowerShell instance for fast testing:
 
 ```powershell
 # Start a new instance of PowerShell, run quickbuild which skips restoring of nuget packages and updating of help and changelogs, and imports the module
-pwsh -NoExit -Command './build.ps1 -Task quickBuild; Import-Module ./output/Bicep'
+pwsh -NoExit -Command './build.ps1 -Task quickBuild; Import-Module ./output/module/Bicep'
 # Perform any testing and then exit the nested session to properly unload any associated assemblies.
 ```
 
