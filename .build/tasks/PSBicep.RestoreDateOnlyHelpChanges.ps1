@@ -2,13 +2,12 @@ param (
     [switch]$AgainstHead
 )
 
-task PSBicep.RestoreDateOnlyPlatyPSChanges {
+function Restore-DateOnlyPlatyPSChanges {
     $ErrorActionPreference = 'Stop'
     $PSNativeCommandUseErrorActionPreference = $true
 
     if (-not (Get-Command git -CommandType Application -ErrorAction SilentlyContinue)) {
-        Write-Warning 'Git is required but was not found in PATH.'
-        exit
+        throw 'Git is required but was not found in PATH.'
     }
 
     # Identify the root of the repo
@@ -33,4 +32,8 @@ task PSBicep.RestoreDateOnlyPlatyPSChanges {
             Write-Output "Restored $file"
         }
     }
+}
+
+task PSBicep.RestoreDateOnlyPlatyPSChanges {
+    Restore-DateOnlyPlatyPSChanges
 }

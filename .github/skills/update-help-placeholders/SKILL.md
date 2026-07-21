@@ -15,7 +15,7 @@ description: 'Update placeholders in PSBicep help markdown files. Use when: repl
 2. For each placeholder, run a subagent that performs the following steps:
    a. **Identify the affected cmdlet** by examining the file name and context of the placeholder
    b. **Read each affected file** to understand the OUTPUTS section context
-   c. **Read the corresponding source code** in to understand what the cmdlet does
+   c. **Read the corresponding source code** to understand what the cmdlet does
    d. **Replace each placeholder** with an accurate description based on the source code
 3. **Verify no placeholders remain** by running grep again
 
