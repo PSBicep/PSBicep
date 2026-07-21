@@ -4,8 +4,10 @@ namespace PSBicep.Commands;
 
 [Cmdlet(VerbsCommon.Get, "BicepApiVersion")]
 [CmdletBinding()]
+[OutputType(typeof(string))]
 public class GetBicepApiVersion : BaseCommand
 {
+    [ArgumentCompleter(typeof(Completers.BicepTypeCompleterWithoutApiVersions))]
     [Parameter(Mandatory = true, ValueFromPipeline = true)]
     [ValidateNotNullOrEmpty]
     public string ResourceType { get; set; }
@@ -17,9 +19,8 @@ public class GetBicepApiVersion : BaseCommand
 
     public SwitchParameter AvoidPreview { get; set; }
 
-    protected override void BeginProcessing()
+    protected override void ProcessRecord()
     {
-        base.BeginProcessing();
-        WriteObject(psBicep.coreService.GetApiVersions(ResourceType, Skip, AvoidPreview.IsPresent));
+        WriteObject(psBicep.coreService.GetApiVersions(ResourceType, Skip, AvoidPreview.IsPresent), true);
     }
 }

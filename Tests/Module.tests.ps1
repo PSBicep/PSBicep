@@ -39,7 +39,7 @@ if (Test-Path -Path "$PSScriptRoot\..\Source\Private" -PathType Container) {
 
 # Import the module files before starting tests
 BeforeAll {
-    Import-Module -FullyQualifiedName "$PSScriptRoot\..\output\Bicep" -ErrorAction Stop
+    Import-Module -FullyQualifiedName "$PSScriptRoot\..\output\module\Bicep" -ErrorAction Stop
 }
 
 Describe "Module $ModuleName" {

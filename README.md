@@ -48,7 +48,6 @@ The command `New-BicepMarkdownDocumentation` will generate a markdown document i
 - [Uninstall-BicepCLI](./Docs/Help/Uninstall-BicepCLI.md)
 - [Update-BicepCLI](./Docs/Help/Update-BicepCLI.md)
 - [Update-BicepParameterFile](./Docs/Help/Update-BicepParameterFile.md)
-- [Update-BicepTypes](./Docs/Help/Update-BicepTypes.md)
 
 ## Authentication
 

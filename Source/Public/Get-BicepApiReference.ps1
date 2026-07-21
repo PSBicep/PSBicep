@@ -4,38 +4,31 @@ function Get-BicepApiReference {
         [Parameter(Mandatory, 
             ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript( { (GetBicepTypes).ResourceProvider -contains $_ }, 
-            ErrorMessage = "ResourceProvider '{0}' was not found.")]
-        [ArgumentCompleter([BicepResourceProviderCompleter])]
+        [ArgumentCompleter([PSBicep.Completers.BicepResourceProviderCompleter])]
         [string]$ResourceProvider,
 
         [Parameter(Mandatory, 
             ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript( { (GetBicepTypes).Resource -contains $_ }, 
-            ErrorMessage = "Resource '{0}' was not found.")]
-        [ArgumentCompleter([BicepResourceCompleter])]
+        [ArgumentCompleter([PSBicep.Completers.BicepResourceCompleter])]
         [string]$Resource,
         
         [Parameter(ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript( { (GetBicepTypes).Child -contains $_ }, 
-            ErrorMessage = "Child '{0}' was not found.")]
-        [ArgumentCompleter([BicepResourceChildCompleter])]
+        [ArgumentCompleter([PSBicep.Completers.BicepResourceChildCompleter])]
         [string]$Child,
 
         [Parameter(ParameterSetName = 'ResourceProvider')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript( { (GetBicepTypes).ApiVersion -contains $_ }, 
-            ErrorMessage = "ApiVersion '{0}' was not found.")]
-        [ArgumentCompleter([BicepResourceApiVersionCompleter])]
+        [ValidatePattern('^\d{4}-\d{2}-\d{2}(-Preview)?$', ErrorMessage = "ApiVersion must be in the format YYYY-MM-DD or YYYY-MM-DD-Preview.")]
+        [ArgumentCompleter([PSBicep.Completers.BicepResourceApiVersionCompleter])]
         [string]$ApiVersion,
 
         [Parameter(ParameterSetName = 'TypeString',
             Position = 0)]
-        [ValidateScript( { $_ -like '*/*' -and $_ -like '*@*' },
-            ErrorMessage = "Type must contain '/' and '@'.")]
-        [ArgumentCompleter([BicepTypeCompleter])]
+        [ValidateScript( { $_ -like '*/*' },
+            ErrorMessage = "Type must contain '/'.")]
+        [ArgumentCompleter([PSBicep.Completers.BicepTypeCompleterWithApiVersions])]
         [string]$Type,
 
         [Parameter(ParameterSetName = 'TypeString')]
@@ -50,7 +43,39 @@ function Get-BicepApiReference {
         [Parameter(ParameterSetName = 'TypeString')]
         [switch]$ReturnUri
     )
-    
+
+    begin {
+        if (-not $Force.IsPresent -and $PSCmdlet.ParameterSetName -eq 'ResourceProvider') {
+
+            # Validate that the provided ResourceProvider is valid
+            if ($PSBoundParameters.ContainsKey('ResourceProvider')) {
+                if ($null -eq (Get-BicepResourceProvider -ResourceProvider $ResourceProvider -ExactMatch)) {
+                    throw "Cannot validate argument on parameter 'ResourceProvider'. The Resource Provider '$ResourceProvider' was not found. Use -Force to bypass this validation."
+                }
+            }
+
+            # Validate that the provided Resource is valid for the specified resource provider
+            if ($PSBoundParameters.ContainsKey('Resource')) {
+                if ($null -eq (Get-BicepResourceType -ResourceProvider $ResourceProvider -Resource $Resource -ExactMatch)) {
+                    throw "Cannot validate argument on parameter 'Resource'. The Resource '$Resource' was not found for the specified resource provider. Use -Force to bypass this validation."
+                }
+            }
+
+            # Validate that the provided Child is valid for the specified resource type
+            if ($PSBoundParameters.ContainsKey('Child')) {
+                if ($null -eq (Get-BicepChildResourceType -ResourceProvider $ResourceProvider -Resource $Resource -Child $Child -ExactMatch)) {
+                    throw "Cannot validate argument on parameter 'Child'. The Child '$Child' was not found for the specified resource type. Use -Force to bypass this validation."
+                }
+            }
+            # Validate that the provided ApiVersion is valid for the specified resource type
+            if ($PSBoundParameters.ContainsKey('ApiVersion')) {
+                if ((Get-BicepApiVersion -ResourceType (@($ResourceProvider, $Resource, $Child).Where{-Not [string]::IsNullOrEmpty($_)} -join '/')) -notcontains $ApiVersion) {
+                    throw "Cannot validate argument on parameter 'ApiVersion'. The ApiVersion '$ApiVersion' was not found for the specified resource type. Use -Force to bypass this validation."
+                }
+            }
+        }
+    }
+
     process {
         $baseUrl = "https://docs.microsoft.com/en-us/azure/templates"
         $suffix = '?tabs=bicep'
@@ -76,37 +101,14 @@ function Get-BicepApiReference {
             }
             'TypeString' {
                 if ($PSBoundParameters.ContainsKey('Type')) {
-                    # Type looks like this:   Microsoft.Aad/domainServicess@2017-01-01
-                    # Then we split here:                  ^               ^
-                    # Or it looks like this:  Microsoft.ApiManagement/service/certificates@2019-12-01
-                    # Then we split here:                            ^       ^            ^
-                    # Lets not use regex. regex kills kittens
-
-                    # First check if we have three parts before the @
-                    # In that case the last one should be the child
-                    if (($type -split '/' ).count -eq 3) {
-                        $TypeChild = ( ($type -split '@') -split '/' )[2]
-                    }  
-                    else {
-                        $TypeChild = $null
+                    $TypeString, $TypeStringApiVersion = $Type -split '@'
+                    if ($Latest.IsPresent) {
+                        $TypeStringApiVersion = $null
                     }
 
-                    $TypeResourceProvider = ( ($type -split '@') -split '/' )[0]
-                    $TypeResource = ( ($type -split '@') -split '/' )[1]
-                    $TypeApiVersion = ( $type -split '@' )[1]
-                
-                    if ([string]::IsNullOrEmpty($TypeChild) -and ($Latest.IsPresent)) {
-                        $url = "$BaseUrl/$TypeResourceProvider/$TypeResource"
-                    }
-                    elseif ([string]::IsNullOrEmpty($TypeChild)) {
-                        $url = "$BaseUrl/$TypeResourceProvider/$TypeApiVersion/$TypeResource"
-                    }
-                    elseif ($Latest.IsPresent) {
-                        $url = "$BaseUrl/$TypeResourceProvider/$TypeResource/$TypeChild"
-                    }
-                    else {
-                        $url = "$BaseUrl/$TypeResourceProvider/$TypeApiVersion/$TypeResource/$TypeChild"
-                    }
+                    $TypeStringProvider, $TypeStringResource = $TypeString.TrimEnd('/') -split '/', 2
+
+                    $url = @($BaseUrl, $TypeStringProvider, $TypeStringApiVersion, $TypeStringResource).Where{ -not [string]::IsNullOrEmpty($_) } -join '/'
 
                     $url += $suffix
                 }
