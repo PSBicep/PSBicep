@@ -5,7 +5,7 @@ HelpInfoUri: ''
 Locale: en-US
 Module Guid: dfce7d56-54cc-46df-8be8-2518093e803f
 Module Name: Bicep
-ms.date: 05/13/2026
+ms.date: 07/18/2026
 PlatyPS schema version: 2024-05-01
 title: Bicep Module
 ---
@@ -81,6 +81,10 @@ Get ARM Template reference docs for provided resource type.
 
 Retrieve the API version for a Bicep resource type.
 
+### [Get-BicepChildResourceType](Get-BicepChildResourceType.md)
+
+Gets available Azure child resource type names from Bicep's type definitions, optionally filtered by resource provider, parent resource type, and child type name. Use `-OutputFullyQualifiedName` to return provider-qualified names.
+
 ### [Get-BicepConfig](Get-BicepConfig.md)
 
 Get bicep configuration (bicepconfig.json) in use for a bicep file.
@@ -88,6 +92,14 @@ Get bicep configuration (bicepconfig.json) in use for a bicep file.
 ### [Get-BicepMetadata](Get-BicepMetadata.md)
 
 Get metadata from a Bicep template
+
+### [Get-BicepResourceProvider](Get-BicepResourceProvider.md)
+
+Gets Azure resource provider namespaces available to Bicep, optionally filtered by a case-insensitive name prefix.
+
+### [Get-BicepResourceType](Get-BicepResourceType.md)
+
+Gets available top-level Azure resource types, optionally filtering by an exact provider name and a resource-type name prefix and returning short or fully qualified names.
 
 ### [Get-BicepUsedModules](Get-BicepUsedModules.md)
 
@@ -132,8 +144,4 @@ Update Bicep CLI (Windows only)
 ### [Update-BicepParameterFile](Update-BicepParameterFile.md)
 
 Updates existing ARM Template parameter file based on a bicep file.
-
-### [Update-BicepTypes](Update-BicepTypes.md)
-
-Update Bicep Types data
 

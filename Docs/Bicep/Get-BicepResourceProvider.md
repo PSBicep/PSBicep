@@ -6,44 +6,44 @@ Locale: en-US
 Module Name: Bicep
 ms.date: 07/19/2026
 PlatyPS schema version: 2024-05-01
-title: Get-BicepApiVersion
+title: Get-BicepResourceProvider
 ---
 
-# Get-BicepApiVersion
+# Get-BicepResourceProvider
 
 ## SYNOPSIS
 
-Retrieve the API version for a Bicep resource type.
+Gets Azure resource provider namespaces available to Bicep, optionally filtered by a case-insensitive name prefix.
 
 ## SYNTAX
 
-### __AllParameterSets
+### byName (Default)
 
 ```
-Get-BicepApiVersion -ResourceType <string> [-Skip <int>] [-AvoidPreview] [<CommonParameters>]
+Get-BicepResourceProvider [[-ResourceProvider] <string>] [-ExactMatch] [<CommonParameters>]
 ```
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  None
-
-
 ## DESCRIPTION
 
-Retrieve the API version for a specified Bicep resource type. This command helps identify which API versions are available for a given resource, allowing you to target specific or latest API versions in your Bicep templates.
+The cmdlet reads Bicep's available resource types and returns each distinct Azure resource provider namespace. Use `ResourceProvider` parameter to limit results by a case-insensitive prefix.
 
 ## EXAMPLES
 
 ### Example 1
 
-Get the API version for the Microsoft.Compute/virtualMachines resource type.
+This example returns all distinct Azure resource provider namespaces available in the loaded Bicep type definitions.
+
+```powershell
+Get-BicepResourceProvider
+```
 
 ## PARAMETERS
 
-### -AvoidPreview
+### -ExactMatch
 
-When specified, excludes preview API versions from the results, returning only stable/general availability (GA) versions.
+Requires the resource provider namespace to match exactly instead of treating the supplied value as a prefix. Matching remains case-insensitive.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
@@ -51,7 +51,7 @@ DefaultValue: ''
 SupportsWildcards: false
 Aliases: []
 ParameterSets:
-- Name: (All)
+- Name: byName
   Position: Named
   IsRequired: false
   ValueFromPipeline: false
@@ -62,9 +62,9 @@ AcceptedValues: []
 HelpMessage: ''
 ```
 
-### -ResourceType
+### -FullyQualifiedName
 
-The Bicep resource type to get the API version for (e.g., Microsoft.Compute/virtualMachines).
+The resource provider namespace to retrieve.
 
 ```yaml
 Type: System.String
@@ -72,10 +72,10 @@ DefaultValue: ''
 SupportsWildcards: false
 Aliases: []
 ParameterSets:
-- Name: (All)
+- Name: byFullyQualifiedName
   Position: Named
-  IsRequired: true
-  ValueFromPipeline: true
+  IsRequired: false
+  ValueFromPipeline: false
   ValueFromPipelineByPropertyName: false
   ValueFromRemainingArguments: false
 DontShow: false
@@ -83,19 +83,18 @@ AcceptedValues: []
 HelpMessage: ''
 ```
 
-### -Skip
+### -ResourceProvider
 
-The number of results to skip.
-Useful for pagination when there are many API versions available.
+The resource provider namespace to retrieve.
 
 ```yaml
-Type: System.Int32
+Type: System.String
 DefaultValue: ''
 SupportsWildcards: false
 Aliases: []
 ParameterSets:
-- Name: (All)
-  Position: Named
+- Name: byName
+  Position: 0
   IsRequired: false
   ValueFromPipeline: false
   ValueFromPipelineByPropertyName: false
@@ -114,21 +113,18 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### System.String
-
-The Bicep resource type string to retrieve API versions for. Accepts pipeline input.
-
 ## OUTPUTS
 
 ### System.String
 
-Returns the API version information as a string.
+Returns each matching distinct Azure resource provider namespace as a string.
 
 ## NOTES
 
-This command retrieves available API versions for a Bicep resource type. Use -AvoidPreview to filter out preview versions.
+Results come from the resource type definitions bundled with the loaded Bicep version; the cmdlet does not query an Azure subscription.
 
 ## RELATED LINKS
 
-- [Bicep Documentation](https://learn.microsoft.com/azure/azure-resource-manager/bicep/)
-- [Azure Resource Manager Template Reference](https://learn.microsoft.com/azure/azure-resource-manager/templates/template-reference)
+- [Get-BicepResourceType]()
+- [Get-BicepChildResourceType]()
+- [Get-BicepApiVersion]()
