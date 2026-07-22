@@ -74,6 +74,9 @@ Describe 'Get-BicepConfig tests' {
                   }
                 }
               },
+              "moduleAliasesMock": {
+                "br": {}
+              },
               "implicitExtensions": [
                 "az"
               ],
@@ -110,21 +113,19 @@ Describe 'Get-BicepConfig tests' {
               },
               "experimentalFeaturesWarning": false,
               "experimentalFeaturesEnabled": {
+                "ociEnabled": false,
                 "symbolicNameCodegen": false,
-                "extendableParamFiles": false,
                 "resourceTypedParamsAndOutputs": false,
                 "sourceMapping": false,
                 "legacyFormatter": false,
                 "testFramework": false,
                 "assertions": false,
-                "waitAndRetry": false,
+                "waitUntil": false,
                 "localDeploy": false,
                 "resourceInfoCodegen": false,
                 "moduleExtensionConfigs": false,
                 "userDefinedConstraints": false,
-                "deployCommands": false,
-                "thisNamespace": false,
-                "existingNullIfNotFound": false
+                "deployCommands": false
               },
               "formatting": {
                 "indentKind": "Space",
