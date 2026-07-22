@@ -130,6 +130,8 @@ jobs:
 
   code-coverage:
     name: Publish Code Coverage
+    permissions:
+      checks: write
     if: success() || failure()
     runs-on: ubuntu-latest
     needs:
