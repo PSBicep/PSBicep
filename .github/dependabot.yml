@@ -10,3 +10,15 @@ updates:
     commit-message:
       prefix: chore
       include: scope
+
+  - package-ecosystem: nuget
+    directories:
+      - "**/*"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+    commit-message:
+      prefix: chore
+      include: scope
