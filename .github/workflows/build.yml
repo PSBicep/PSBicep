@@ -132,6 +132,7 @@ jobs:
     name: Publish Code Coverage
     permissions:
       checks: write
+      pull-requests: write
     if: success() || failure()
     runs-on: ubuntu-latest
     needs:
