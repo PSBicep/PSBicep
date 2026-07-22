@@ -5,7 +5,6 @@
 
 # Path to the module source directory (resolved from the repository root)
 SourcePath: Source
-BuiltModuleSubdirectory: module
 SourceDirectories: 
   - Classes
   - Private
@@ -29,6 +28,7 @@ Encoding: UTF8
 # suffix: suffix.ps1
 # prefix: prefix.ps1
 VersionedOutputDirectory: true
+BuiltModuleSubdirectory: module
 
 ####################################################
 #      ModuleBuilder Submodules Configuration      #
