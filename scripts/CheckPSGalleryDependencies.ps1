@@ -1,4 +1,4 @@
-Import-Module 'PSDepend' -ErrorAction 'Stop'
+Import-Module 'PSDepend', 'Metadata', 'Microsoft.PowerShell.PSResourceGet' -ErrorAction 'Stop'
 
 $RequiredModulesPath = './RequiredModules.psd1'
 $RequiredModulesMetadata = ConvertFrom-Metadata -InputObject $RequiredModulesPath -Ordered
