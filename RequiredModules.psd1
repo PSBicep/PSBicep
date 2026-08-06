@@ -1,33 +1,21 @@
 @{
-    PSDependOptions               = @{
-        AddToPath  = $true
+    PSDependOptions                = @{
+        AddToPath  = $True
         Target     = 'output\RequiredModules'
         Parameters = @{
             Repository = 'PSGallery'
         }
     }
-    InvokeBuild                   = 'latest'
-    PSScriptAnalyzer              = 'latest'
-    Pester                        = 'latest'
-    ModuleBuilder                 = 'latest'
-    ChangelogManagement           = 'latest'
-    Sampler                       = 'latest'
-    'Sampler.GitHubTasks'         = 'latest'
-    MarkdownLinkCheck             = 'latest'
-    'SimonWahlin/platyPS'         = @{
-                                        Version = 'V2'
-                                        DependencyType = 'GitHub'
-                                        Parameters = @{
-                                            TargetType = 'Exact'
-                                            ExtractPath = 'Microsoft.PowerShell.PlatyPS'
-                                        }
-                                    }
-    'AzAuth'                      = @{
-                                        Version = '2.6.0'
-                                        MaximumVersion = '2.99.99'
-                                    }
-    'AzResourceGraph'             = @{
-                                        Version = '0.2.1'
-                                        MaximumVersion = '0.99.99'
-    }
+    AzAuth                         = '2.9.0'
+    AzResourceGraph                = '0.2.1'
+    'Microsoft.PowerShell.PlatyPS' = '1.0.2'
+    'Sampler.GitHubTasks'          = '0.4.1'
+    ChangelogManagement            = '3.1.0'
+    InvokeBuild                    = '5.14.23'
+    MarkdownLinkCheck              = '0.2.0'
+    Metadata                       = '1.5.7'
+    ModuleBuilder                  = '3.2.18'
+    Pester                         = '6.0.1'
+    PSScriptAnalyzer               = '1.25.0'
+    Sampler                        = '0.120.0'
 }
