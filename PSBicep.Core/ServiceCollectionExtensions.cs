@@ -8,7 +8,8 @@ using Bicep.Core.Configuration;
 using Bicep.Core.Features;
 using Bicep.Core.AzureApi;
 using Bicep.Core.Registry;
-using Bicep.Core.Registry.Catalog.Implementation;
+using Bicep.Core.Registry.Oci;
+using Bicep.Core.Registry.Oci.Oras;
 using Bicep.Core.Semantics.Namespaces;
 using Bicep.Core.SourceGraph;
 using Bicep.Core.TypeSystem.Providers;
@@ -46,8 +47,18 @@ public static class ServiceCollectionExtensions
         .AddSingleton<INamespaceProvider, NamespaceProvider>()
         .AddSingleton<IResourceTypeProviderFactory, ResourceTypeProviderFactory>()
         .AddSingleton<IContainerRegistryClientFactory, ContainerRegistryClientFactory>()
+        .AddSingleton<AzureContainerRegistryManager>()
+        .AddSingleton<DockerCredentialProvider>()
+        .AddSingleton<OrasOciRegistryTransport>()
+        .AddSingleton<IOciRegistryTransportFactory, OciRegistryTransportFactory>()
         .AddSingleton<ITemplateSpecRepositoryFactory, TemplateSpecRepositoryFactory>()
         .AddSingleton<IModuleDispatcher, ModuleDispatcher>()
+        .AddSingleton<RegistryConfiguration>(serviceProvider =>
+        {
+            var environment = serviceProvider.GetRequiredService<IEnvironment>();
+            var additionalTrustedRegistries = RegistryConfiguration.ParseTrustedRegistries(environment.GetVariable("BICEP_TRUSTED_REGISTRIES"));
+            return new RegistryConfiguration(PermitUntrustedRegistries: false, additionalTrustedRegistries);
+        })
         .AddSingleton<IArtifactRegistryProvider, DefaultArtifactRegistryProvider>()
         .AddSingleton<ITokenCredentialFactory, TokenCredentialFactory>()
         .AddSingleton<IArmClientProvider, ArmClientProvider>()
