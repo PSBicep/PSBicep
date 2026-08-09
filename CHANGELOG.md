@@ -5,6 +5,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- New cmdlets: `Get-BicepResourceProvider`, `Get-BicepResourceType`, and `Get-BicepChildResourceType` for enhanced resource type retrieval.
+- C# base argument completions in `BicepTypeCompleters`
+- Custom stringcomparer that lets us sort ResourceTypes with APIVersion in alphabetical order and still keep the latest APIVersion on top.
+
+### Changed
+
+- Use Bicep version 0.45.15
+- Migrate from legacy PlatyPS to new Microsoft.PowerShell.PlatyPS module
+- `Get-BicepApiVersion`: Improved argument completion and output handling 
+- Update Sampler files to match upstream Sampler
+- Update GitHub Actions dependencies to latest version
+
+### Removed
+
+- Dependency on `BicepTypes.json` in favor of native type resolution
+- GetBicepTypes function and related tests, dynamic update of BicepTypes.json is no longer supported
 - Changed help generation to use the new Microsoft.PowerShell.PlatyPS module
 
 ## [3.0.0] - 2026-04-09
