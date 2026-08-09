@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Install PowerShell
-      uses: PSModule/install-powershell@fae856952e6df680db7429f86b026c8741ff666d # v1.1.0
+      uses: PSModule/install-powershell@159c2929fac34e3c7fc55d75e8997fb27fc7f75a # v1.2.0
       with:
         Version: ${{ env.requiredPowerShellVersion }}
 
@@ -104,7 +104,7 @@ jobs:
           os: windows-latest
     steps:
     - name: Install PowerShell
-      uses: PSModule/install-powershell@fae856952e6df680db7429f86b026c8741ff666d # v1.1.0
+      uses: PSModule/install-powershell@159c2929fac34e3c7fc55d75e8997fb27fc7f75a # v1.2.0
       with:
         Version: ${{ env.requiredPowerShellVersion }}
     - name: Checkout Code
@@ -164,7 +164,7 @@ jobs:
       pull-requests: write
     steps:
     - name: Install PowerShell
-      uses: PSModule/install-powershell@fae856952e6df680db7429f86b026c8741ff666d # v1.1.0
+      uses: PSModule/install-powershell@159c2929fac34e3c7fc55d75e8997fb27fc7f75a # v1.2.0
       with:
         Version: ${{ env.requiredPowerShellVersion }}
     - name: Checkout Code
