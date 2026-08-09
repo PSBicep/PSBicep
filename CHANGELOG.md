@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - New cmdlets: `Get-BicepResourceProvider`, `Get-BicepResourceType`, and `Get-BicepChildResourceType` for enhanced resource type retrieval.
 - C# base argument completions in `BicepTypeCompleters`
-- Custom stringcomparer that lets us sort ResourceTypes with APIVersion in alphabetical order and still keep the latest APIVersion on top.
+- Custom `StringComparer` that lets us sort resource types with `ApiVersion` alphabetically while still keeping the latest API version on top.
 
 ### Changed
 
