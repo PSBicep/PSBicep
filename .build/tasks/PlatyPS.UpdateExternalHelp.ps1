@@ -1,6 +1,6 @@
 task updateExternalHelp {
     $ProjectName = Get-SamplerProjectName -BuildRoot $BuildRoot
-    $ModuleInfo = Import-Module -Name $ProjectName -PassThru -Force -ErrorAction 'Stop'
+    $ModuleInfo = Import-Module "$BuildRoot/output/module/$ProjectName" -PassThru -Force -ErrorAction 'Stop'
 
     $OutputDocsDestination = Join-Path -Path $ModuleInfo.ModuleBase -ChildPath 'en-US'
     Import-Module 'Microsoft.PowerShell.PlatyPS' -ErrorAction 'Stop'
