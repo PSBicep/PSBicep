@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Bicep.Core;
+using Bicep.Core.Configuration;
+using Bicep.Core.Documentation;
 using Bicep.Core.Extensions;
 using Bicep.Core.PrettyPrintV2;
 using Bicep.Core.Registry;
@@ -36,6 +39,7 @@ public class BicepCoreService
     private readonly IModuleDispatcher moduleDispatcher;
     private readonly IFileExplorer fileExplorer;
     private readonly BicepTokenCredentialFactory tokenCredentialFactory;
+    private readonly IBicepDocumentationGenerator documentationGenerator;
 
     public BicepCoreService(
         JoinableTaskFactory joinableTaskFactory,
@@ -46,7 +50,8 @@ public class BicepCoreService
         AzResourceTypeLoader azResourceTypeLoader,
         IModuleDispatcher moduleDispatcher,
         IFileExplorer fileExplorer,
-        BicepTokenCredentialFactory tokenCredentialFactory)
+        BicepTokenCredentialFactory tokenCredentialFactory,
+        IBicepDocumentationGenerator documentationGenerator)
     {
         this.joinableTaskFactory = joinableTaskFactory;
         this.compiler = compiler;
@@ -57,6 +62,7 @@ public class BicepCoreService
         this.moduleDispatcher = moduleDispatcher;
         this.fileExplorer = fileExplorer;
         this.tokenCredentialFactory = tokenCredentialFactory;
+        this.documentationGenerator = documentationGenerator;
     }
 
     public void InitializeLogger(PSCmdlet cmdlet)
@@ -149,6 +155,141 @@ public class BicepCoreService
             default:
                 throw new NotImplementedException($"Unexpected file kind '{fileKind}'");
         }
+    }
+
+    /// <summary>
+    /// Generates markdown documentation for a Bicep module using the native Bicep documentation generator
+    /// </summary>
+    /// <param name="bicepPath">Path to the Bicep file to document</param>
+    /// <param name="templateFile">Optional path to a custom Scriban template file</param>
+    /// <param name="templateRoot">Optional root directory for template includes</param>
+    /// <param name="customValues">Optional custom values exposed to the template</param>
+    /// <param name="noRestore">If true, skips restoring modules during compilation</param>
+    /// <returns>A DocumentationResult containing the rendered markdown and the configured output file name</returns>
+    public DocumentationResult GenerateDocumentation(
+        string bicepPath,
+        string? templateFile = null,
+        string? templateRoot = null,
+        Hashtable? customValues = null,
+        bool noRestore = false) =>
+        joinableTaskFactory.Run(() => GenerateDocumentationAsync(bicepPath, templateFile, templateRoot, customValues, noRestore));
+
+    /// <summary>
+    /// Generates markdown documentation for a Bicep module using the native Bicep documentation generator Asynchronously
+    /// </summary>
+    /// <param name="bicepPath">Path to the Bicep file to document</param>
+    /// <param name="templateFile">Optional path to a custom Scriban template file</param>
+    /// <param name="templateRoot">Optional root directory for template includes</param>
+    /// <param name="customValues">Optional custom values exposed to the template</param>
+    /// <param name="noRestore">If true, skips restoring modules during compilation</param>
+    /// <returns>A task returning a DocumentationResult containing the rendered markdown and the configured output file name</returns>
+    public async Task<DocumentationResult> GenerateDocumentationAsync(
+        string bicepPath,
+        string? templateFile = null,
+        string? templateRoot = null,
+        Hashtable? customValues = null,
+        bool noRestore = false)
+    {
+        var inputPath = Path.GetFullPath(bicepPath);
+        var inputUri = IOUri.FromFilePath(inputPath);
+
+        if (!IsBicepFile(inputUri))
+        {
+            throw new InvalidOperationException($"Input file '{inputPath}' must have a .bicep extension.");
+        }
+
+        var compilation = await compiler.CreateCompilation(inputUri, skipRestore: noRestore);
+
+        var summary = diagnosticLogger.LogDiagnostics(compilation);
+
+        if (summary.HasErrors)
+        {
+            throw new InvalidOperationException($"Failed to compile file: {inputPath}");
+        }
+
+        var configuration = compilation.GetEntrypointSemanticModel().Configuration;
+        var settings = configuration.Documentation.Data;
+
+        var options = new BicepDocumentationGenerationOptions(
+            ResolveTemplateFile(configuration, templateFile, settings.Template.File),
+            ResolveTemplateRoot(configuration, templateRoot, settings.Template.IncludeRoot),
+            MergeCustomValues(settings.Template.Values, customValues))
+        {
+            Examples = settings.Examples,
+        };
+
+        var markdown = documentationGenerator.Generate(compilation, options);
+
+        return new DocumentationResult(markdown, settings.Output.File);
+    }
+
+    private static IOUri? ResolveTemplateFile(RootConfiguration configuration, string? parameterPath, string? configuredPath) =>
+        parameterPath is not null
+            ? IOUri.FromFilePath(Path.GetFullPath(parameterPath))
+            : configuredPath is not null
+                ? IOUri.FromFilePath(ResolveConfiguredPath(configuration, configuredPath, "template.file"))
+                : null;
+
+    private static IOUri? ResolveTemplateRoot(RootConfiguration configuration, string? parameterPath, string? configuredPath)
+    {
+        var fullPath = parameterPath is not null
+            ? Path.GetFullPath(parameterPath)
+            : configuredPath is not null
+                ? ResolveConfiguredPath(configuration, configuredPath, "template.includeRoot")
+                : null;
+
+        if (fullPath is null)
+        {
+            return null;
+        }
+
+        if (!Directory.Exists(fullPath))
+        {
+            throw new InvalidOperationException($"The template include root directory \"{fullPath}\" does not exist.");
+        }
+
+        // Produce a directory URI the same way the Bicep CLI does.
+        return IOUri.FromFilePath(Path.Combine(fullPath, ".bicep-docs-root")).Resolve(".");
+    }
+
+    private static string ResolveConfiguredPath(RootConfiguration configuration, string configuredPath, string propertyName)
+    {
+        if (Path.IsPathRooted(configuredPath))
+        {
+            return Path.GetFullPath(configuredPath);
+        }
+
+        if (configuration.ConfigFileUri is not { } configFileUri)
+        {
+            throw new InvalidOperationException(
+                $"The documentation {propertyName} path \"{configuredPath}\" is relative, but no bicepconfig.json file was resolved.");
+        }
+
+        return Path.GetFullPath(Path.Combine(configFileUri.Resolve(".").GetFilePath(), configuredPath));
+    }
+
+    private static ImmutableSortedDictionary<string, string>? MergeCustomValues(
+        ImmutableSortedDictionary<string, string> configuredValues,
+        Hashtable? customValues)
+    {
+        if (customValues is null || customValues.Count == 0)
+        {
+            return configuredValues.IsEmpty ? null : configuredValues;
+        }
+
+        var values = configuredValues.ToBuilder();
+        foreach (DictionaryEntry entry in customValues)
+        {
+            var key = entry.Key?.ToString();
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new InvalidOperationException("Custom template value keys cannot be empty.");
+            }
+
+            values[key] = entry.Value?.ToString() ?? string.Empty;
+        }
+
+        return values.ToImmutable();
     }
 
     /// <summary>

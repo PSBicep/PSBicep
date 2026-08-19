@@ -5,6 +5,7 @@ using Bicep.Core;
 using Bicep.Core.Analyzers.Interfaces;
 using Bicep.Core.Analyzers.Linter;
 using Bicep.Core.Configuration;
+using Bicep.Core.Documentation;
 using Bicep.Core.Features;
 using Bicep.Core.AzureApi;
 using Bicep.Core.Registry;
@@ -72,6 +73,7 @@ public static class ServiceCollectionExtensions
         .AddSingleton<ILinterRulesProvider, LinterRulesProvider>()
         .AddSingleton<ISourceFileFactory, SourceFileFactory>()
         .AddBicepRegistryCatalogServices()
+        .AddSingleton<IBicepDocumentationGenerator, BicepDocumentationGenerator>()
         .AddSingleton<BicepCompiler>()
         .AddSingleton<BicepDecompiler>();
 }

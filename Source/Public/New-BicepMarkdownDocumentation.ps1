@@ -1,14 +1,41 @@
 function New-BicepMarkdownDocumentation {
     [CmdletBinding(DefaultParameterSetName = 'FromFile')]
     param (
-        [Parameter(ParameterSetName = 'FromFile', Position = 0)]
+        [Parameter(ParameterSetName = 'FromFile', Position = 0, Mandatory)]
         [string]$File,
 
-        [Parameter(ParameterSetName = 'FromFolder', Position = 0)]
+        [Parameter(ParameterSetName = 'FromFolder', Position = 0, Mandatory)]
         [string]$Path,
 
         [Parameter(ParameterSetName = 'FromFolder')]
         [switch]$Recurse,
+
+        [Parameter(ParameterSetName = 'FromFile')]
+        [string]$OutputPath,
+
+        [Parameter(ParameterSetName = 'FromFile')]
+        [Parameter(ParameterSetName = 'FromFolder')]
+        [string]$OutputDirectory,
+
+        [Parameter(ParameterSetName = 'FromFile')]
+        [Parameter(ParameterSetName = 'FromFolder')]
+        [string]$TemplateFile,
+
+        [Parameter(ParameterSetName = 'FromFile')]
+        [Parameter(ParameterSetName = 'FromFolder')]
+        [string]$TemplateRoot,
+
+        [Parameter(ParameterSetName = 'FromFile')]
+        [Parameter(ParameterSetName = 'FromFolder')]
+        [hashtable]$CustomValue,
+
+        [Parameter(ParameterSetName = 'FromFile')]
+        [Parameter(ParameterSetName = 'FromFolder')]
+        [string[]]$CustomValueFilePath,
+
+        [Parameter(ParameterSetName = 'FromFile')]
+        [Parameter(ParameterSetName = 'FromFolder')]
+        [switch]$NoRestore,
 
         [Parameter(ParameterSetName = 'FromFile')]
         [Parameter(ParameterSetName = 'FromFolder')]
@@ -19,37 +46,70 @@ function New-BicepMarkdownDocumentation {
         [switch]$Force
     )
 
+    if ($AsString.IsPresent -and ($OutputPath -or $OutputDirectory -or $Force.IsPresent)) {
+        throw 'The -AsString parameter cannot be combined with -OutputPath, -OutputDirectory or -Force.'
+    }
+
     switch ($PSCmdLet.ParameterSetName) {
-        'FromFile' { 
+        'FromFile' {
             [System.IO.FileInfo[]]$FileCollection = Get-Item $File
         }
-        'FromFolder' { 
+        'FromFolder' {
             [System.IO.FileInfo[]]$FileCollection = Get-ChildItem $Path *.bicep -Recurse:$Recurse
         }
     }
 
-    Write-Verbose -Verbose "Files to process:`n$($FileCollection.Name)"
+    Write-Verbose "Files to process:`n$($FileCollection.Name)"
 
-    $MDHeader = @'
-# {{SourceFile}}
-
-[[_TOC_]]
-
-'@
-
-    foreach ($SourceFile in $FileCollection) {
-        $FileDocumentationResult = $MDHeader.Replace('{{SourceFile}}', $SourceFile.Name)
-
-        #region build Bicep PS object
+    #region Merge custom template values
+    $MergedCustomValues = @{}
+    foreach ($ValueFile in $CustomValueFilePath) {
         try {
-            $BuildObject = (Build-BicepFile -Path $SourceFile.FullName -ErrorAction Stop).Template | ConvertFrom-Json -Depth 100
-            # The language version of the ARM template defines the schema
-            # 2.0 changes the resources array to a dictionary of key values
-            $LanguageVersion = $BuildObject.languageVersion ?? '1.0'
+            $ValueFileContent = Get-Content -Path $ValueFile -Raw -ErrorAction Stop | ConvertFrom-Json -AsHashtable -ErrorAction Stop
         }
         catch {
-            Write-Error -Message "Failed to build $($SourceFile.Name) - $($_.Exception.Message)"
-            
+            throw "Failed to read custom template values from '$ValueFile' - $($_.Exception.Message)"
+        }
+
+        if ($ValueFileContent -isnot [hashtable]) {
+            throw "The custom template value file '$ValueFile' must contain a JSON object."
+        }
+
+        foreach ($Key in $ValueFileContent.Keys) {
+            $Value = $ValueFileContent[$Key]
+            if ($Value -is [System.Collections.IDictionary] -or $Value -is [array]) {
+                throw "The custom template value '$Key' in '$ValueFile' must be a string, number or boolean."
+            }
+            $MergedCustomValues[$Key] = [string]$Value
+        }
+    }
+    foreach ($Key in ($CustomValue ?? @{}).Keys) {
+        $MergedCustomValues[$Key] = [string]$CustomValue[$Key]
+    }
+    if ($MergedCustomValues.Count -eq 0) {
+        $MergedCustomValues = $null
+    }
+    #endregion
+
+    $DocumentationParameters = @{}
+    if ($TemplateFile) { $DocumentationParameters['TemplateFile'] = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($TemplateFile) }
+    if ($TemplateRoot) { $DocumentationParameters['TemplateRoot'] = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($TemplateRoot) }
+    if ($MergedCustomValues) { $DocumentationParameters['CustomValue'] = $MergedCustomValues }
+
+    if ($PSCmdLet.ParameterSetName -eq 'FromFolder') {
+        $SourceRoot = (Resolve-Path -Path $Path).ProviderPath
+    }
+
+    $EmittedTargets = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+
+    foreach ($SourceFile in $FileCollection) {
+        #region Generate documentation using the native Bicep documentation generator
+        try {
+            $Documentation = New-BicepDocumentation -Path $SourceFile.FullName -NoRestore:$NoRestore @DocumentationParameters -ErrorAction Stop
+        }
+        catch {
+            Write-Error -Message "Failed to generate documentation for $($SourceFile.Name) - $($_.Exception.Message)"
+
             switch ($ErrorActionPreference) {
                 'Stop' { throw }
                 default { continue }
@@ -57,105 +117,48 @@ function New-BicepMarkdownDocumentation {
         }
         #endregion
 
-        #region Get used modules in the bicep file
-
-        $UsedModules = Get-BicepUsedModules -Path $SourceFile.FullName -ErrorAction Stop 
-
-        #endregion
-
-        #region Add Metadata to MD output
-
-        $MDMetadata = NewMDMetadata -Metadata $BuildObject.metadata
-
-        $FileDocumentationResult += @"
-## Metadata
-
-$MDMetadata
-"@
-
-        #endregion
-
-        #region Add providers to MD output
-
-        $MDProviders = NewMDProviders -Resources $BuildObject.resources -LanguageVersion $LanguageVersion
-
-        $FileDocumentationResult += @"
-
-## Providers
-
-$MDProviders
-"@
-        #endregion
-
-        #region Add Resources to MD output
-
-        $MDResources = NewMDResources -Resources $BuildObject.resources -LanguageVersion $LanguageVersion
-
-        $FileDocumentationResult += @"
-
-## Resources
-
-$MDResources
-"@
-        #endregion
-
-        #region Add Parameters to MD output
-
-        $MDParameters = NewMDParameters -Parameters $BuildObject.parameters
-
-        $FileDocumentationResult += @"
-
-## Parameters
-
-$MDParameters
-"@
-        #endregion
-
-        #region Add Variables to MD output
-
-        $MDVariables = NewMDVariables -Variables $BuildObject.variables
-
-        $FileDocumentationResult += @"
-
-## Variables
-
-$MDVariables
-"@
-        #endregion
-
-        #region Add Outputs to MD output
-
-        $MDOutputs = NewMDOutputs -Outputs $BuildObject.outputs
-
-        $FileDocumentationResult += @"
-
-## Outputs
-
-$MDOutputs
-"@
-        #endregion
-
-        #region Add Modules to MD output
-
-        $MDModules = NewMDModules -Modules $UsedModules
-
-        $FileDocumentationResult += @"
-
-## Modules
-
-$MDModules
-"@
-
-        #endregion
-
         #region output
         if ($AsString) {
-            $FileDocumentationResult
+            $Documentation.Markdown
+            continue
+        }
+
+        if ($OutputPath) {
+            $TargetPath = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($OutputPath)
+        }
+        elseif ($OutputDirectory) {
+            $TargetDirectory = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($OutputDirectory)
+            if ($PSCmdLet.ParameterSetName -eq 'FromFolder') {
+                # Preserve the source directory structure relative to -Path, like bicep docs generate --outdir
+                $RelativeDirectory = [System.IO.Path]::GetRelativePath($SourceRoot, $SourceFile.DirectoryName)
+                if ($RelativeDirectory -ne '.') {
+                    $TargetDirectory = Join-Path $TargetDirectory $RelativeDirectory
+                }
+            }
+            $TargetPath = Join-Path $TargetDirectory $Documentation.OutputFileName
         }
         else {
-            $OutFileName = $SourceFile.FullName -replace '\.bicep$', '.md'
-            $FileDocumentationResult | Out-File $OutFileName
+            $TargetPath = Join-Path $SourceFile.DirectoryName $Documentation.OutputFileName
         }
+
+        if (-not $EmittedTargets.Add($TargetPath)) {
+            Write-Error -Message "Skipping $($SourceFile.Name) - the output file '$TargetPath' was already generated from another Bicep file. Use bicepconfig.json 'documentation.output.file' or -OutputPath to disambiguate."
+            continue
+        }
+
+        if ((Test-Path -Path $TargetPath) -and -not $Force.IsPresent) {
+            Write-Error -Message "Skipping $($SourceFile.Name) - the output file '$TargetPath' already exists. Use -Force to overwrite it."
+            continue
+        }
+
+        $TargetDirectory = Split-Path -Path $TargetPath -Parent
+        if (-not (Test-Path -Path $TargetDirectory)) {
+            $null = New-Item -Path $TargetDirectory -ItemType Directory -Force
+        }
+
+        # Write directly to preserve the generator's deterministic output (LF endings, single trailing newline, UTF-8 without BOM)
+        [System.IO.File]::WriteAllText($TargetPath, $Documentation.Markdown)
+        Get-Item -Path $TargetPath
         #endregion
     }
 }
