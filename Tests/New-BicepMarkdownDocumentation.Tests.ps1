@@ -59,8 +59,11 @@ Describe 'New-BicepMarkdownDocumentation' -ForEach @(
         switch ($_.name) {
             'workingBicep.bicep' {
                 $result | Should -Match 'Microsoft\.Storage/storageAccounts'
+                # Parameters are listed in a table; a parameter only gets its own heading when it has details such as a default value
+                $result | Should -Match '\| `location` \| `string` \| No \|'
+                $result | Should -Match '\| `name` \| `string` \| Yes \|'
                 $result | Should -Match '### `location`'
-                $result | Should -Match '### `name`'
+                $result | Should -Match 'Default value: `resourceGroup\(\)\.location`'
                 $result | Should -Match 'resourceId'
             }
             'main.bicep' {

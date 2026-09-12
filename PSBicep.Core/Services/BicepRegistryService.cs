@@ -36,7 +36,7 @@ public class BicepRegistryService
     private readonly IModuleDispatcher moduleDispatcher;
     private readonly IFileExplorer fileExplorer;
     private readonly BicepTokenCredentialFactory tokenCredentialFactory;
-    private readonly BicepConfigurationManager configurationManager;
+    private readonly PSBicepConfigurationManager configurationManager;
 
     /// <summary>
     /// Using a fake URI to satify the SetToken method.
@@ -52,7 +52,7 @@ public class BicepRegistryService
         IModuleDispatcher moduleDispatcher,
         IFileExplorer fileExplorer,
         BicepTokenCredentialFactory tokenCredentialFactory,
-        BicepConfigurationManager configurationManager)
+        PSBicepConfigurationManager configurationManager)
     {
         this.joinableTaskFactory = joinableTaskFactory;
         this.compiler = compiler;
@@ -194,7 +194,7 @@ public class BicepRegistryService
     public IList<BicepRepository> FindModules(string path, bool isRegistryEndpoint, string configurationPath)
     {
         List<string> endpoints = [];
-        RootConfiguration configuration = configurationManager.GetConfiguration(IOUri.FromFilePath(Path.GetFullPath(configurationPath)));
+        IBicepConfiguration configuration = configurationManager.GetConfiguration(IOUri.FromFilePath(Path.GetFullPath(configurationPath)));
 
         // If a registry is specified, only add that
         if (isRegistryEndpoint)
@@ -264,7 +264,7 @@ public class BicepRegistryService
     /// <param name="endpoints">Collection of registry endpoints to search, in fqdn format</param>
     /// <param name="configuration">Bicep root configuration for authentication</param>
     /// <returns>List of repositories found in the specified endpoints</returns>
-    private List<BicepRepository> FindModulesByEndpoints(IList<string> endpoints, RootConfiguration configuration)
+    private List<BicepRepository> FindModulesByEndpoints(IList<string> endpoints, IBicepConfiguration configuration)
     {
         if (endpoints.Count > 0)
         {

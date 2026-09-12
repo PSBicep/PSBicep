@@ -33,7 +33,7 @@ public class BicepCoreService
     private readonly JoinableTaskFactory joinableTaskFactory;
     private readonly BicepCompiler compiler;
     private readonly DiagnosticLogger diagnosticLogger;
-    private readonly BicepConfigurationManager configurationManager;
+    private readonly PSBicepConfigurationManager configurationManager;
     private readonly BicepDecompiler decompiler;
     private readonly AzResourceTypeLoader azResourceTypeLoader;
     private readonly IModuleDispatcher moduleDispatcher;
@@ -45,7 +45,7 @@ public class BicepCoreService
         JoinableTaskFactory joinableTaskFactory,
         BicepCompiler compiler,
         DiagnosticLogger diagnosticLogger,
-        BicepConfigurationManager configurationManager,
+        PSBicepConfigurationManager configurationManager,
         BicepDecompiler decompiler,
         AzResourceTypeLoader azResourceTypeLoader,
         IModuleDispatcher moduleDispatcher,
@@ -223,14 +223,14 @@ public class BicepCoreService
         return new DocumentationResult(markdown, settings.Output.File);
     }
 
-    private static IOUri? ResolveTemplateFile(RootConfiguration configuration, string? parameterPath, string? configuredPath) =>
+    private static IOUri? ResolveTemplateFile(IBicepConfiguration configuration, string? parameterPath, string? configuredPath) =>
         parameterPath is not null
             ? IOUri.FromFilePath(Path.GetFullPath(parameterPath))
             : configuredPath is not null
                 ? IOUri.FromFilePath(ResolveConfiguredPath(configuration, configuredPath, "template.file"))
                 : null;
 
-    private static IOUri? ResolveTemplateRoot(RootConfiguration configuration, string? parameterPath, string? configuredPath)
+    private static IOUri? ResolveTemplateRoot(IBicepConfiguration configuration, string? parameterPath, string? configuredPath)
     {
         var fullPath = parameterPath is not null
             ? Path.GetFullPath(parameterPath)
@@ -252,7 +252,7 @@ public class BicepCoreService
         return IOUri.FromFilePath(Path.Combine(fullPath, ".bicep-docs-root")).Resolve(".");
     }
 
-    private static string ResolveConfiguredPath(RootConfiguration configuration, string configuredPath, string propertyName)
+    private static string ResolveConfiguredPath(IBicepConfiguration configuration, string configuredPath, string propertyName)
     {
         if (Path.IsPathRooted(configuredPath))
         {

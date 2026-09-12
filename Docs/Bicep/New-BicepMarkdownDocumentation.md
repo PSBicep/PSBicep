@@ -1,10 +1,10 @@
----
+﻿---
 document type: cmdlet
 external help file: Bicep-help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 05/13/2026
+ms.date: 09/12/2026
 PlatyPS schema version: 2024-05-01
 title: New-BicepMarkdownDocumentation
 ---
@@ -407,6 +407,10 @@ used.
 ### System.String
 
 The rendered markdown content when -AsString is used.
+
+### System.Object
+
+Returns the created markdown file as a System.IO.FileInfo object, or the rendered markdown as a string when -AsString is used.
 
 ## NOTES
 

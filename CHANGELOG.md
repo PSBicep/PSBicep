@@ -14,7 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Use Bicep version 0.47.x
+- Use Bicep version 0.47.16
+- `Get-BicepConfig` default configuration now includes the `documentation` section and `experimentalFeaturesWarning`, matching Bicep's built-in defaults
+- Internal: the cloned configuration manager was rewritten as `PSBicepConfigurationManager` on top of Bicep's new configuration chain API (`bicepconfig.json` `extends` support)
 - **Breaking** `New-BicepMarkdownDocumentation` now uses Bicep's native documentation generator (the engine behind `bicep docs generate`) instead of hand-rolled markdown tables. The output format changed entirely and the default output file name is now `README.md` (configurable via `documentation.output.file` in `bicepconfig.json`) instead of `<name>.md`.
 - Migrate help generation from legacy PlatyPS to Microsoft.PowerShell.PlatyPS module
 - `Get-BicepApiVersion`: Improved argument completion and output handling

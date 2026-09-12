@@ -46,6 +46,10 @@ function New-BicepMarkdownDocumentation {
         [switch]$Force
     )
 
+    if ($OutputPath -and $OutputDirectory) {
+         throw 'The -OutputPath and -OutputDirectory parameters cannot be combined.'
+    }
+
     if ($AsString.IsPresent -and ($OutputPath -or $OutputDirectory -or $Force.IsPresent)) {
         throw 'The -AsString parameter cannot be combined with -OutputPath, -OutputDirectory or -Force.'
     }
