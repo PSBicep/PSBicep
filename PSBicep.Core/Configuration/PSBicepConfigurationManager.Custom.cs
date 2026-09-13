@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
@@ -10,9 +10,9 @@ using PSBicep.Core.Models;
 
 namespace PSBicep.Core.Configuration;
 
-// Customizations and additions to out clone of Bicep.Core.Configuration.ConfigurationManager
+// Customizations and additions to our clone of Bicep.Core.Configuration.BicepConfigurationManager
 // Our code is kept in separate file to simplify maintenance
-public partial class BicepConfigurationManager
+public partial class PSBicepConfigurationManager
 {
     private const string BuiltInConfigurationResourceName = "PSBicep.Core.Configuration.bicepconfig.json";
 
@@ -24,7 +24,7 @@ public partial class BicepConfigurationManager
     public BicepConfigInfo GetConfigurationInfo(BicepConfigScope mode, Uri sourceFileUri)
     {
         var sourceIOUri = sourceFileUri.ToIOUri();
-        RootConfiguration config;
+        IBicepConfiguration config;
         switch (mode)
         {
             case BicepConfigScope.Default:
@@ -47,11 +47,12 @@ public partial class BicepConfigurationManager
         }
     }
 
-    // From Bicep.Core, implement GetBuiltInConfiguration to replace IConfigurationManager.GetBuiltInConfiguration()
-    private static RootConfiguration GetDefaultConfiguration() => BuiltInConfigurationLazy.Value;
+    // From Bicep.Core, our own built-in configuration replacing BicepConfiguration.BuiltIn
+    private static IBicepConfiguration GetDefaultConfiguration() => BuiltInConfigurationLazy.Value;
 
-    private static readonly Lazy<RootConfiguration> BuiltInConfigurationLazy = new(() => RootConfiguration.Bind(BuiltInConfigurationElement));
+    private static readonly Lazy<IBicepConfiguration> BuiltInConfigurationLazy = new(() => BicepConfiguration.Bind(BuiltInConfigurationElement));
 
+    // Replaces the internal BicepConfiguration.BuiltInConfigurationElement
     protected static readonly JsonElement BuiltInConfigurationElement = GetBuiltInConfigurationElement();
 
     private static JsonElement GetBuiltInConfigurationElement()

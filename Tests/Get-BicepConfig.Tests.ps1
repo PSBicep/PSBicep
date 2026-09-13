@@ -111,7 +111,7 @@ Describe 'Get-BicepConfig tests' {
                   }
                 }
               },
-              "experimentalFeaturesWarning": false,
+              "experimentalFeaturesWarning": true,
               "experimentalFeaturesEnabled": {
                 "ociEnabled": false,
                 "symbolicNameCodegen": false,
@@ -125,7 +125,10 @@ Describe 'Get-BicepConfig tests' {
                 "resourceInfoCodegen": false,
                 "moduleExtensionConfigs": false,
                 "userDefinedConstraints": false,
-                "deployCommands": false
+                "deployCommands": false,
+                "patch": false,
+                "runtimeValuesInTagsAndSku": false,
+                "azExtensionConfig": false
               },
               "formatting": {
                 "indentKind": "Space",
@@ -133,6 +136,38 @@ Describe 'Get-BicepConfig tests' {
                 "insertFinalNewline": true,
                 "indentSize": 2,
                 "width": 120
+              },
+              "documentation": {
+                "output": {
+                  "file": "README.md"
+                },
+                "template": {
+                  "values": {}
+                },
+                "examples": {
+                  "sources": [
+                    {
+                      "path": "examples",
+                      "include": [
+                        "*.bicep",
+                        "**/main.bicep"
+                      ],
+                      "exclude": [
+                        "**/dependencies*.bicep"
+                      ]
+                    },
+                    {
+                      "path": "tests",
+                      "include": [
+                        "**/*.test.bicep"
+                      ],
+                      "exclude": [
+                        "**/dependencies*.bicep"
+                      ]
+                    }
+                  ],
+                  "reassignments": []
+                }
               }
             }
 '@

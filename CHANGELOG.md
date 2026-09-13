@@ -12,10 +12,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New cmdlets: `Get-BicepResourceProvider`, `Get-BicepResourceType`, and `Get-BicepChildResourceType` for enhanced resource type retrieval.
 - C# base argument completions in `BicepTypesCompleters`
 - Custom `StringComparer` that lets us sort resource types with `ApiVersion` alphabetically while still keeping the latest API version on top.
+- New parameters on `New-BicepMarkdownDocumentation`: `-OutputPath`, `-OutputDirectory`, `-TemplateFile`, `-TemplateRoot`, `-CustomValue`, `-CustomValueFilePath` and `-NoRestore`, mirroring the switches of the new `bicep docs generate` CLI command. `-Force` is now honored: an existing output file is no longer overwritten without it.
 
 ### Changed
 
-- Use Bicep version 0.45.15
+- Use Bicep version 0.47.16
+- `Get-BicepConfig` default configuration now includes the `documentation` section and `experimentalFeaturesWarning`, matching Bicep's built-in defaults
+- Internal: the cloned configuration manager was rewritten as `PSBicepConfigurationManager` on top of Bicep's new configuration chain API (`bicepconfig.json` `extends` support)
+- **Breaking** `New-BicepMarkdownDocumentation` now uses Bicep's native documentation generator (the engine behind `bicep docs generate`) instead of hand-rolled markdown tables. The output format changed entirely and the default output file name is now `README.md` (configurable via `documentation.output.file` in `bicepconfig.json`) instead of `<name>.md`.
 - Migrate help generation from legacy PlatyPS to Microsoft.PowerShell.PlatyPS module
 - `Get-BicepApiVersion`: Improved argument completion and output handling
 - Update Sampler files to match upstream Sampler
@@ -25,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Dependency on `BicepTypes.json` in favor of native type resolution
 - Dynamic update of `BicepTypes.json` and related tests are no longer supported
+- Private markdown helper functions `NewMDMetadata`, `NewMDProviders`, `NewMDResources`, `NewMDParameters`, `NewMDVariables`, `NewMDOutputs`, `NewMDModules` and `NewMDTableHeader`, replaced by the native Bicep documentation generator
 
 ## [3.0.0] - 2026-04-09
 
