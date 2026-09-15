@@ -1,10 +1,10 @@
-﻿---
+---
 document type: cmdlet
 external help file: Bicep-help.xml
 HelpUri: ''
 Locale: en-US
 Module Name: Bicep
-ms.date: 09/12/2026
+ms.date: 09/16/2026
 PlatyPS schema version: 2024-05-01
 title: New-BicepMarkdownDocumentation
 ---
@@ -17,20 +17,36 @@ Create markdown documentation for bicep files
 
 ## SYNTAX
 
-### FromFile (Default)
+### Default (Default)
 
 ```
-New-BicepMarkdownDocumentation [-File] <string> [-OutputPath <string>] [-OutputDirectory <string>]
+New-BicepMarkdownDocumentation [[-Path] <string[]>] [-Recurse] [-TemplateFile <string>]
+ [-TemplateRoot <string>] [-CustomValue <hashtable>] [-CustomValueFilePath <string[]>] [-NoRestore]
+ [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### AsString
+
+```
+New-BicepMarkdownDocumentation [[-Path] <string[]>] -AsString [-Recurse] [-TemplateFile <string>]
+ [-TemplateRoot <string>] [-CustomValue <hashtable>] [-CustomValueFilePath <string[]>] [-NoRestore]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### OutputPath
+
+```
+New-BicepMarkdownDocumentation [[-Path] <string[]>] -OutputPath <string> [-Recurse]
  [-TemplateFile <string>] [-TemplateRoot <string>] [-CustomValue <hashtable>]
- [-CustomValueFilePath <string[]>] [-NoRestore] [-AsString] [-Force] [<CommonParameters>]
+ [-CustomValueFilePath <string[]>] [-NoRestore] [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
-### FromFolder
+### OutputDirectory
 
 ```
-New-BicepMarkdownDocumentation [-Path] <string> [-Recurse] [-OutputDirectory <string>]
+New-BicepMarkdownDocumentation [[-Path] <string[]>] -OutputDirectory <string> [-Recurse]
  [-TemplateFile <string>] [-TemplateRoot <string>] [-CustomValue <hashtable>]
- [-CustomValueFilePath <string[]>] [-NoRestore] [-AsString] [-Force] [<CommonParameters>]
+ [-CustomValueFilePath <string[]>] [-NoRestore] [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## ALIASES
@@ -59,7 +75,7 @@ and custom string values can be passed to the template with `-CustomValue` and
 
 ### Example 1
 
-PS C:\> New-BicepMarkdownDocumentation -File C:\MyBicepFile.bicep
+PS C:\> New-BicepMarkdownDocumentation -Path C:\MyBicepFile.bicep
 
 This command will create a file called `C:\README.md` containing documentation for the module.
 
@@ -72,7 +88,14 @@ documentation for all bicep files under C:\Docs, preserving the folder structure
 
 ### Example 3
 
-PS C:\> New-BicepMarkdownDocumentation -File C:\MyBicepFile.bicep -TemplateFile C:\Templates\docs.scriban -CustomValue @{ env = 'prod' }
+PS C:\> Get-ChildItem C:\MyBicepFiles -Filter *.bicep -Recurse | New-BicepMarkdownDocumentation -Force
+
+This command creates documentation next to every bicep file piped into it, overwriting any
+existing output file.
+
+### Example 4
+
+PS C:\> New-BicepMarkdownDocumentation -Path C:\MyBicepFile.bicep -TemplateFile C:\Templates\docs.scriban -CustomValue @{ env = 'prod' }
 
 This command renders the documentation using a custom Scriban template with the custom value
 `env` available to the template.
@@ -81,8 +104,7 @@ This command renders the documentation using a custom Scriban template with the 
 
 ### -AsString
 
-Output the resulting markdown to the console as string instead of writing a file. Cannot be
-combined with -OutputPath, -OutputDirectory or -Force.
+Output the resulting markdown to the console as string instead of writing a file.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
@@ -90,13 +112,29 @@ DefaultValue: False
 SupportsWildcards: false
 Aliases: []
 ParameterSets:
-- Name: FromFolder
+- Name: AsString
   Position: Named
-  IsRequired: false
+  IsRequired: true
   ValueFromPipeline: false
   ValueFromPipelineByPropertyName: false
   ValueFromRemainingArguments: false
-- Name: FromFile
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Confirm
+
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases:
+- cf
+ParameterSets:
+- Name: (All)
   Position: Named
   IsRequired: false
   ValueFromPipeline: false
@@ -119,13 +157,7 @@ DefaultValue: None
 SupportsWildcards: false
 Aliases: []
 ParameterSets:
-- Name: FromFolder
-  Position: Named
-  IsRequired: false
-  ValueFromPipeline: false
-  ValueFromPipelineByPropertyName: false
-  ValueFromRemainingArguments: false
-- Name: FromFile
+- Name: (All)
   Position: Named
   IsRequired: false
   ValueFromPipeline: false
@@ -147,36 +179,9 @@ DefaultValue: None
 SupportsWildcards: false
 Aliases: []
 ParameterSets:
-- Name: FromFolder
+- Name: (All)
   Position: Named
   IsRequired: false
-  ValueFromPipeline: false
-  ValueFromPipelineByPropertyName: false
-  ValueFromRemainingArguments: false
-- Name: FromFile
-  Position: Named
-  IsRequired: false
-  ValueFromPipeline: false
-  ValueFromPipelineByPropertyName: false
-  ValueFromRemainingArguments: false
-DontShow: false
-AcceptedValues: []
-HelpMessage: ''
-```
-
-### -File
-
-Bicep file to create documentation from
-
-```yaml
-Type: System.String
-DefaultValue: None
-SupportsWildcards: false
-Aliases: []
-ParameterSets:
-- Name: FromFile
-  Position: 0
-  IsRequired: true
   ValueFromPipeline: false
   ValueFromPipelineByPropertyName: false
   ValueFromRemainingArguments: false
@@ -196,13 +201,19 @@ DefaultValue: False
 SupportsWildcards: false
 Aliases: []
 ParameterSets:
-- Name: FromFolder
+- Name: OutputDirectory
   Position: Named
   IsRequired: false
   ValueFromPipeline: false
   ValueFromPipelineByPropertyName: false
   ValueFromRemainingArguments: false
-- Name: FromFile
+- Name: OutputPath
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Default
   Position: Named
   IsRequired: false
   ValueFromPipeline: false
@@ -223,13 +234,7 @@ DefaultValue: False
 SupportsWildcards: false
 Aliases: []
 ParameterSets:
-- Name: FromFolder
-  Position: Named
-  IsRequired: false
-  ValueFromPipeline: false
-  ValueFromPipelineByPropertyName: false
-  ValueFromRemainingArguments: false
-- Name: FromFile
+- Name: (All)
   Position: Named
   IsRequired: false
   ValueFromPipeline: false
@@ -242,8 +247,9 @@ HelpMessage: ''
 
 ### -OutputDirectory
 
-Directory to write the generated documentation to. In folder mode, the source folder structure
-relative to -Path is preserved beneath this directory. Directories are created as needed.
+Directory to write the generated documentation to. When -Path resolves to a folder, the source
+folder structure relative to that folder is preserved beneath this directory. Directories are
+created as needed.
 
 ```yaml
 Type: System.String
@@ -251,15 +257,9 @@ DefaultValue: None
 SupportsWildcards: false
 Aliases: []
 ParameterSets:
-- Name: FromFolder
+- Name: OutputDirectory
   Position: Named
-  IsRequired: false
-  ValueFromPipeline: false
-  ValueFromPipelineByPropertyName: false
-  ValueFromRemainingArguments: false
-- Name: FromFile
-  Position: Named
-  IsRequired: false
+  IsRequired: true
   ValueFromPipeline: false
   ValueFromPipelineByPropertyName: false
   ValueFromRemainingArguments: false
@@ -270,7 +270,8 @@ HelpMessage: ''
 
 ### -OutputPath
 
-Exact path of the generated documentation file. Only available when documenting a single file.
+Exact path of the generated documentation file. Can only be used when -Path resolves to a single
+bicep file.
 
 ```yaml
 Type: System.String
@@ -278,9 +279,9 @@ DefaultValue: None
 SupportsWildcards: false
 Aliases: []
 ParameterSets:
-- Name: FromFile
+- Name: OutputPath
   Position: Named
-  IsRequired: false
+  IsRequired: true
   ValueFromPipeline: false
   ValueFromPipelineByPropertyName: false
   ValueFromRemainingArguments: false
@@ -291,20 +292,22 @@ HelpMessage: ''
 
 ### -Path
 
-Path to folder containing bicep files.
-All files in folder will have markdown documentation created.
+Path to a bicep file or to a folder containing bicep files. A folder or a wildcard expands to the
+`*.bicep` files it matches, while a path naming a single file is used as given. Accepts several
+paths, and accepts file and folder paths from the pipeline. Defaults to the current directory.
 
 ```yaml
-Type: System.String
-DefaultValue: None
-SupportsWildcards: false
-Aliases: []
+Type: System.String[]
+DefaultValue: $pwd.Path
+SupportsWildcards: true
+Aliases:
+- FullName
 ParameterSets:
-- Name: FromFolder
+- Name: (All)
   Position: 0
-  IsRequired: true
-  ValueFromPipeline: false
-  ValueFromPipelineByPropertyName: false
+  IsRequired: false
+  ValueFromPipeline: true
+  ValueFromPipelineByPropertyName: true
   ValueFromRemainingArguments: false
 DontShow: false
 AcceptedValues: []
@@ -313,7 +316,7 @@ HelpMessage: ''
 
 ### -Recurse
 
-Search recursively for .bicep files.
+Search subfolders for .bicep files. Has no effect on a path that names a single file.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
@@ -321,7 +324,7 @@ DefaultValue: False
 SupportsWildcards: false
 Aliases: []
 ParameterSets:
-- Name: FromFolder
+- Name: (All)
   Position: Named
   IsRequired: false
   ValueFromPipeline: false
@@ -343,13 +346,7 @@ DefaultValue: None
 SupportsWildcards: false
 Aliases: []
 ParameterSets:
-- Name: FromFolder
-  Position: Named
-  IsRequired: false
-  ValueFromPipeline: false
-  ValueFromPipelineByPropertyName: false
-  ValueFromRemainingArguments: false
-- Name: FromFile
+- Name: (All)
   Position: Named
   IsRequired: false
   ValueFromPipeline: false
@@ -371,13 +368,29 @@ DefaultValue: None
 SupportsWildcards: false
 Aliases: []
 ParameterSets:
-- Name: FromFolder
+- Name: (All)
   Position: Named
   IsRequired: false
   ValueFromPipeline: false
   ValueFromPipelineByPropertyName: false
   ValueFromRemainingArguments: false
-- Name: FromFile
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -WhatIf
+
+Runs the command in a mode that only reports what would happen without performing the actions.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases:
+- wi
+ParameterSets:
+- Name: (All)
   Position: Named
   IsRequired: false
   ValueFromPipeline: false
@@ -397,20 +410,19 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
+### System.String[]
+
+Paths to bicep files or to folders containing bicep files.
+
 ## OUTPUTS
 
 ### System.IO.FileInfo
 
-Returns the created markdown file, or a string containing the markdown content if -AsString is
-used.
+Returns the created markdown file.
 
 ### System.String
 
 The rendered markdown content when -AsString is used.
-
-### System.Object
-
-Returns the created markdown file as a System.IO.FileInfo object, or the rendered markdown as a string when -AsString is used.
 
 ## NOTES
 
