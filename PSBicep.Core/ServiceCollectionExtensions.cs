@@ -4,7 +4,9 @@ using Azure.Bicep.Types.Az;
 using Bicep.Core;
 using Bicep.Core.Analyzers.Interfaces;
 using Bicep.Core.Analyzers.Linter;
+using Bicep.Core.Analyzers.Linter.ApiVersions;
 using Bicep.Core.Configuration;
+using Bicep.Core.Documentation;
 using Bicep.Core.Features;
 using Bicep.Core.AzureApi;
 using Bicep.Core.Registry;
@@ -36,7 +38,7 @@ public static class ServiceCollectionExtensions
         .AddSingleton<ITypeLoader, AzTypeLoader>()
         .AddSingleton<AzResourceTypeLoader>()
         .AddSingleton<ActiveSourceFileSet>()
-        .AddSingleton<BicepConfigurationManager>()
+        .AddSingleton<PSBicepConfigurationManager>()
         .AddSingleton<BicepTokenCredentialFactory>()
         .AddSingleton<JoinableTaskContext>()
         .AddSingleton<JoinableTaskFactory>()
@@ -45,6 +47,8 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddBicepCore(this IServiceCollection services) => services
         .AddSingleton<INamespaceProvider, NamespaceProvider>()
+        .AddSingleton(_ => AzResourceTypeProvider.Instance)
+        .AddSingleton<AzApiVersionProvider>()
         .AddSingleton<IResourceTypeProviderFactory, ResourceTypeProviderFactory>()
         .AddSingleton<IContainerRegistryClientFactory, ContainerRegistryClientFactory>()
         .AddSingleton<AzureContainerRegistryManager>()
@@ -66,12 +70,13 @@ public static class ServiceCollectionExtensions
         .AddSingleton<IFileSystem, LocalFileSystem>()
         .AddSingleton<IFileExplorer, FileSystemFileExplorer>()
         .AddSingleton<IAuxiliaryFileCache, AuxiliaryFileCache>()
-        .AddSingleton<IConfigurationManager, ConfigurationManager>()
+        .AddSingleton<IBicepConfigurationManager>(sp => sp.GetRequiredService<PSBicepConfigurationManager>())
         .AddSingleton<IBicepAnalyzer, LinterAnalyzer>()
         .AddSingleton<IFeatureProviderFactory, FeatureProviderFactory>()
         .AddSingleton<ILinterRulesProvider, LinterRulesProvider>()
         .AddSingleton<ISourceFileFactory, SourceFileFactory>()
         .AddBicepRegistryCatalogServices()
+        .AddSingleton<IBicepDocumentationGenerator, BicepDocumentationGenerator>()
         .AddSingleton<BicepCompiler>()
         .AddSingleton<BicepDecompiler>();
 }

@@ -62,7 +62,7 @@ public static partial class AzureHelpers
         return string.Format("{0}_{1}", fullyQualifiedType.Replace(@"/", "-").ToLowerInvariant(), fullyQualifiedName.Replace(@"/", "-")).ToLowerInvariant();
     }
 
-    public static string GenerateBicepTemplate(BicepCompiler compiler, AzResourceIdentifier resourceId, ResourceTypeReference resourceType, JsonElement resource, RootConfiguration configuration, bool includeTargetScope = false, bool removeUnknownProperties = false)
+    public static string GenerateBicepTemplate(BicepCompiler compiler, AzResourceIdentifier resourceId, ResourceTypeReference resourceType, JsonElement resource, IBicepConfiguration configuration, bool includeTargetScope = false, bool removeUnknownProperties = false)
     {
         // Calculate target scope to be able to add it to the top of the template
         var resourceIdentifier = new ResourceIdentifier(resourceId.FullyQualifiedId);

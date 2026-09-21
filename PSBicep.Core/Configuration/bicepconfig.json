@@ -29,6 +29,9 @@
       }
     }
   },
+  "moduleAliasesMock": {
+    "br": {}
+  },
   "extensions": {
     "az": "builtin:",
     "kubernetes": "builtin:"
@@ -60,6 +63,30 @@
       }
     }
   },
+  "experimentalFeaturesWarning": true,
   "experimentalFeaturesEnabled": {},
-  "formatting": {}
+  "formatting": {},
+  "documentation": {
+    "output": {
+      "file": "README.md"
+    },
+    "template": {
+      "values": {}
+    },
+    "examples": {
+      "sources": [
+        {
+          "path": "examples",
+          "include": ["*.bicep", "**/main.bicep"],
+          "exclude": ["**/dependencies*.bicep"]
+        },
+        {
+          "path": "tests",
+          "include": ["**/*.test.bicep"],
+          "exclude": ["**/dependencies*.bicep"]
+        }
+      ],
+      "reassignments": []
+    }
+  }
 }

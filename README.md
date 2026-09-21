@@ -20,7 +20,7 @@ Export Azure resources as deployable bicep templates using Export-BicepResource.
 By default, the command outputs a hashtable where the resourceId is the key and the template is the value, but using the parameter `-AsString` will cause the command to only output templates as strings, this can for example be useful when exporting several resources to one file.
 
 ### Generate markdown documentation from bicep templates
-The command `New-BicepMarkdownDocumentation` will generate a markdown document in the same folder as a bicep file containing documentation of, for example, the providers, resources, parameters variables and outputs of a template.
+The command `New-BicepMarkdownDocumentation` generates markdown documentation for Bicep modules using Bicep's native documentation generator (the same engine as `bicep docs generate`). By default it writes a `README.md` next to each Bicep file (the file name is configurable via `documentation.output.file` in `bicepconfig.json`) documenting the module's resource types, parameters, outputs, usage examples, exported types, variables and functions, and cross-referenced modules. Custom Scriban templates and custom template values are supported via `-TemplateFile`, `-TemplateRoot`, `-CustomValue` and `-CustomValueFilePath`.
 
 ## Commands implemented
 
